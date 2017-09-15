@@ -14,3 +14,9 @@
 Route::get('/', function () {
     return view('landing');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('mailbox', 'MessagesController@getMailbox')->name('mailbox');
