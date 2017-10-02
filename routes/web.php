@@ -20,3 +20,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('mailbox', 'MessagesController@getMailbox')->name('mailbox');
+
+Route::get('compose', 'MessagesController@getCompose')->name('compose');

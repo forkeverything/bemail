@@ -1,7 +1,7 @@
 <?php
 
-use App\TranslationStatus;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class TranslationStatusesTableSeeder extends Seeder
 {
@@ -20,7 +20,7 @@ class TranslationStatusesTableSeeder extends Seeder
     public function run()
     {
         foreach ($this->statuses as $status) {
-            TranslationStatus::create([
+            DB::table('translation_statuses')->insert([
                 'description' => $status
             ]);
         }
