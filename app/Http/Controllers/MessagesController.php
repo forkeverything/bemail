@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 
 class MessagesController extends Controller
 {
@@ -28,6 +30,12 @@ class MessagesController extends Controller
      */
     public function getCompose()
     {
-        return view('messages.compose');
+        $userLang = Auth::user()->language;
+        return view('messages.compose', ['userLang' => $userLang]);
+    }
+
+    public function postSendMessage(Request $request)
+    {
+        dd($request->all());
     }
 }

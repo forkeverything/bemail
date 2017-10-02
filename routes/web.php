@@ -18,7 +18,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
 Route::get('mailbox', 'MessagesController@getMailbox')->name('mailbox');
-
 Route::get('compose', 'MessagesController@getCompose')->name('compose');
+Route::post('compose', 'MessagesController@postSendMessage')->name('sendMessage');

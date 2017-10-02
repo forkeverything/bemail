@@ -15,7 +15,8 @@ class UserMike extends Seeder
         User::create([
             'name' => 'Mike Wu',
             'email' => 'mail@wumike.com',
-            'password' => bcrypt('mikewu1209')
+            'password' => bcrypt('mikewu1209'),
+            'language_id' => 1
         ]);
     }
 }
