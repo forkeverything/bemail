@@ -3,9 +3,9 @@
 @section('content')
     <div class="container">
         <form action="">
-            {{ csrf_field() }}
+        {{ csrf_field() }}
 
-            <!-- Name -->
+        <!-- Name -->
             <div class="form-group">
                 <label for="">Name</label>
                 <input name="name" type="text" value="{{ $user->name }}" class="form-control">
@@ -21,6 +21,14 @@
             <div class="form-group">
                 <label for="">Password</label>
                 <change-password-field></change-password-field>
+            </div>
+
+            <!-- Default Language -->
+            <div class="form-group">
+                <label>
+                    Your Language
+                </label>
+                <language-picker name="lang_tgt"  default="{{ $user->defaultLanguage->code }}"></language-picker>
             </div>
 
 

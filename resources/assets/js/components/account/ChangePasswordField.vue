@@ -3,20 +3,20 @@
         <a href="#" v-show="! show" @click.prevent="toggleField">Change Password</a>
         <div class="fields" v-show="show">
             <div>
-                <label for="">
+                <label>
                     <small>Current</small>
                 </label>
                 <input type="password" name="pwd_current" class="form-control">
             </div>
             <div>
-                <label for="">
-                    <small>New Password</small>
+                <label>
+                    <small>New</small>
                 </label>
                 <input type="password" name="pwd_new" class="form-control">
             </div>
             <div>
-                <label for="">
-                    <small>Confirm New Password</small>
+                <label>
+                    <small>Confirm New</small>
                 </label>
                 <input type="password" name="pwd_confirm" class="form-control">
             </div>

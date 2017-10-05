@@ -42656,11 +42656,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "fields"
   }, [_vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2)])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('label', {
-    attrs: {
-      "for": ""
-    }
-  }, [_c('small', [_vm._v("Current")])]), _vm._v(" "), _c('input', {
+  return _c('div', [_c('label', [_c('small', [_vm._v("Current")])]), _vm._v(" "), _c('input', {
     staticClass: "form-control",
     attrs: {
       "type": "password",
@@ -42668,11 +42664,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('label', {
-    attrs: {
-      "for": ""
-    }
-  }, [_c('small', [_vm._v("New Password")])]), _vm._v(" "), _c('input', {
+  return _c('div', [_c('label', [_c('small', [_vm._v("New")])]), _vm._v(" "), _c('input', {
     staticClass: "form-control",
     attrs: {
       "type": "password",
@@ -42680,11 +42672,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('label', {
-    attrs: {
-      "for": ""
-    }
-  }, [_c('small', [_vm._v("Confirm New Password")])]), _vm._v(" "), _c('input', {
+  return _c('div', [_c('label', [_c('small', [_vm._v("Confirm New")])]), _vm._v(" "), _c('input', {
     staticClass: "form-control",
     attrs: {
       "type": "password",

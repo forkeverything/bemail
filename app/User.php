@@ -45,6 +45,6 @@ class User extends Authenticatable
      */
     public function defaultLanguage()
     {
-        return $this->belongsTo(Language::class);
+        return $this->belongsTo(Language::class, 'language_id');
     }
 }
