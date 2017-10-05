@@ -10,16 +10,23 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Mass-assignable Fields
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'password',
+        'word_credits'
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * Hidden Fields
+     *
+     * These properties don't show up when you
+     * retrieve the model's array. ie. When
+     * you call User::all().
      *
      * @var array
      */
@@ -27,7 +34,16 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function language()
+    /**
+     * User's default language
+     *
+     * We assume this is the language that
+     * the User would want received mail
+     * to be translated into.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function defaultLanguage()
     {
         return $this->belongsTo(Language::class);
     }

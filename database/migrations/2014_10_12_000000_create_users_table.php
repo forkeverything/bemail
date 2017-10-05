@@ -19,6 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->integer('word_credits')->default(0);
+
 
             $table->integer('language_id')->unsigned();
             $table->foreign('language_id')->references('id')->on('languages');

@@ -20,7 +20,7 @@ class MessagesController extends Controller
      */
     public function getCompose()
     {
-        $userLang = Auth::user()->language;
+        $userLang = Auth::user()->defaultLanguage;
         return view('messages.compose', ['userLang' => $userLang]);
     }
 
