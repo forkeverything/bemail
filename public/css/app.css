@@ -8350,6 +8350,11 @@ button.close {
   }
 }
 
+.navbar .navbar-brand img {
+  height: 100%;
+  width: auto;
+}
+
 .recipients-input > .input {
   position: relative;
   cursor: text;

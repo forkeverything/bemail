@@ -24,7 +24,7 @@
             <div class="form-group">
                 <textarea name="body" class="form-control" id="message-form-body" cols="30" rows="10" style="resize: none;"></textarea>
             </div>
-                <button type="submit" class="btn btn-primary btn-sm">Send</button>
+                <button type="submit" class="btn btn-primary">Send</button>
         </form>
     </div>
 @endsection

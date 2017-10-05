@@ -1,4 +1,3 @@
-
 // Fonts
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
 
@@ -7,4 +6,11 @@
 
 // Bootstrap
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
-@import "components/recipients-input";
+
+// Layout
+@import "app/layout";
+
+// Pages
+
+// Components
+@import "app/components/recipients-input";
