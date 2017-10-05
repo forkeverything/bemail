@@ -1,5 +1,5 @@
 <template>
-    <select :name="name" v-model="selected">
+    <select :name="name" v-model="selected" class="form-control">
         <option value="" selected disabled>Pick One</option>
         <option v-for="language in languages" :value="language.code">{{ language.name }}</option>
     </select>

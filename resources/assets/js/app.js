@@ -17,6 +17,8 @@ window.Vue = require('vue');
 
 Vue.component('example', require('./components/Example.vue'));
 Vue.component('language-picker', require('./components/LanguagePicker.vue'));
+Vue.component('recipients-input', require('./components/RecipientsInput.vue'));
+Vue.component('tag-input', require('./components/TagInput.vue'));
 
 const app = new Vue({
     el: '#app'

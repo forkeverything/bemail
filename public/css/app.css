@@ -8350,3 +8350,77 @@ button.close {
   }
 }
 
+.recipients-input > .input {
+  position: relative;
+  cursor: text;
+  border: 1px solid #ccd0d2;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  padding: 8px 8px 0 8px;
+  margin: 0 0 1rem;
+  height: auto;
+}
+
+.recipients-input .input-wrap {
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.recipients-input .input-wrap .tag-input {
+  position: relative;
+  display: inline-block;
+}
+
+.recipients-input .input-wrap .tag-input .sizer {
+  opacity: 0;
+  display: inline-block;
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+.recipients-input .input-wrap .tag-input input {
+  min-width: 6px;
+  background: transparent;
+  position: relative;
+  border: 0;
+  display: inline-block;
+  height: 30px;
+  padding: 1px 0;
+  margin-right: -15px;
+}
+
+.recipients-input .input-wrap .tag-input input:focus {
+  outline: 0;
+}
+
+.recipients-input .btn-tag {
+  background: #f4fafd;
+  display: inline-block;
+  margin: 0 3px 4px 3px;
+  padding: 1px 10px;
+  border-radius: 3px;
+  white-space: normal;
+  word-wrap: break-word;
+  max-width: 100%;
+  outline: 0;
+  font-weight: normal;
+}
+
+.recipients-input .btn-tag:hover {
+  color: initial;
+}
+
+.recipients-input .btn-tag:focus,
+.recipients-input .btn-tag.focus {
+  background: #83c1e4;
+  color: #fff;
+}
+
+.recipients-input .error {
+  color: #bf5329;
+}
+
