@@ -10,4 +10,9 @@ class Language extends Model
         'name',
         'code'
     ];
+
+    public static function findByCode($code)
+    {
+        return static::where('code', $code)->first();
+    }
 }

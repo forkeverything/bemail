@@ -18,7 +18,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+// Compose
 Route::get('compose', 'MessagesController@getCompose')->name('compose');
 Route::post('compose', 'MessagesController@postSendMessage')->name('sendMessage');
 
+// Account
 Route::get('/account', 'AccountController@getSettings');
+Route::post('/account', 'AccountController@postUpdateSettings');

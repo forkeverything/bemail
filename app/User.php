@@ -18,7 +18,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'word_credits'
+        'word_credits',
+        'language_id'
     ];
 
     /**
