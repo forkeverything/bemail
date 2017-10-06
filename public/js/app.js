@@ -892,12 +892,10 @@ window.Vue = __webpack_require__(37);
 /**
  * Components
  */
-
 // Compose
 Vue.component('language-picker', __webpack_require__(38));
 Vue.component('recipients-input', __webpack_require__(41));
 Vue.component('tag-input', __webpack_require__(44));
-
 // Account
 Vue.component('change-password-field', __webpack_require__(47));
 
@@ -933,6 +931,14 @@ try {
 
   __webpack_require__(16);
 } catch (e) {}
+
+/**
+ * On Ready
+ */
+$(document).ready(function () {
+  // Boostrap tooltip
+  $('[data-toggle="tooltip"]').tooltip();
+});
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

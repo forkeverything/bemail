@@ -12,12 +12,10 @@ window.Vue = require('vue');
 /**
  * Components
  */
-
 // Compose
 Vue.component('language-picker', require('./components/compose/LanguagePicker.vue'));
 Vue.component('recipients-input', require('./components/compose/RecipientsInput.vue'));
 Vue.component('tag-input', require('./components/compose/TagInput.vue'));
-
 // Account
 Vue.component('change-password-field', require('./components/account/ChangePasswordField.vue'));
 
