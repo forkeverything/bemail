@@ -13,7 +13,6 @@ class Message extends Model
      * @var array
      */
     protected $fillable = [
-       'recipient',
         'subject',
         'body',
         'translated_body',
@@ -22,16 +21,8 @@ class Message extends Model
     ];
 
     /**
-     * Status of message translation.
+     * User that sent this message.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function translationStatus()
-    {
-        return $this->belongsTo(TranslationStatus::class, 'translation_status_id');
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function sender()
@@ -39,9 +30,24 @@ class Message extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-
-    public function translated()
+    /**
+     * Recipient(s) that this message will be sent to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function recipients()
     {
-        return !! $this->translated_message;
+        return $this->belongsToMany(Recipient::class);
     }
+
+    /**
+     * Status of Message translation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function status()
+    {
+        return $this->belongsTo(TranslationStatus::class, 'translation_status_id');
+    }
+
 }
