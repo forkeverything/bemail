@@ -12,8 +12,7 @@ class Recipient extends Model
     ];
 
     /**
-     * Recipient(s) can have multiple Message(s) sent to
-     * them.
+     * Message(s) sent to this Recipient.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

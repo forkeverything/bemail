@@ -17,7 +17,9 @@ class Message extends Model
         'body',
         'translated_body',
         'user_id',
-        'translation_status_id'
+        'translation_status_id',
+        'lang_src_id',
+        'lang_tgt_id'
     ];
 
     /**
@@ -48,6 +50,26 @@ class Message extends Model
     public function status()
     {
         return $this->belongsTo(TranslationStatus::class, 'translation_status_id');
+    }
+
+    /**
+     * Language originally written in.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function sourceLanguage()
+    {
+        return $this->belongsTo(Language::class, 'lang_src_id');
+    }
+
+    /**
+     * Language to be translated into.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function targetLanguage()
+    {
+        return $this->belongsTo(Language::class, 'lang_tgt_id');
     }
 
 }

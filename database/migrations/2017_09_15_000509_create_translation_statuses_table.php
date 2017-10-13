@@ -14,10 +14,20 @@ class CreateTranslationStatusesTable extends Migration
     public function up()
     {
         Schema::create('translation_statuses', function (Blueprint $table) {
+
+            /**
+             * Auto
+             */
+
             $table->increments('id');
             $table->timestamps();
 
+            /**
+             * Main
+             */
+
             $table->string('description');
+
         });
     }
 

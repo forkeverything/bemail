@@ -14,10 +14,20 @@ class CreateLanguagesTable extends Migration
     public function up()
     {
         Schema::create('languages', function (Blueprint $table) {
+
+            /**
+             * Auto
+             */
+
             $table->increments('id');
+
+            /**
+             * Main
+             */
 
             $table->string('name');
             $table->string('code'); // ISO 639-1 (2 letter)
+
         });
     }
 
