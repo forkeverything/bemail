@@ -2,16 +2,6 @@
 
 @section('content')
     <div class="container">
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
         @include('flash::message')
 
         <form action="account" method="POST">
@@ -20,19 +10,15 @@
         <!-- Name -->
             <div class="form-group">
                 <label for="">Name</label>
+                @include('layouts.single-error', ['errorField' => 'name'])
                 <input name="name" type="text" value="{{ $user->name }}" class="form-control">
-                @if($errors->first('name'))
-                    <p class="text-danger">{{ $errors->first('name') }}</p>
-                @endif
             </div>
 
             <!-- Email -->
             <div class="form-group">
                 <label for="">Email</label>
+                @include('layouts.single-error', ['errorField' => 'email'])
                 <input type="text" name="email" value="{{ $user->email }}" class="form-control">
-                @if($errors->first('email'))
-                    <p class="text-danger">{{ $errors->first('email') }}</p>
-                @endif
             </div>
 
             <!-- Password -->
@@ -49,6 +35,7 @@
                 <label>
                     Your Default Language
                 </label>
+                @include('layouts.single-error', ['errorField' => 'lang_default'])
                 <language-picker name="lang_default" default="{{ $user->defaultLanguage->code }}"></language-picker>
             </div>
 

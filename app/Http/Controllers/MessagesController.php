@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateMessageRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -24,7 +25,7 @@ class MessagesController extends Controller
         return view('messages.compose', ['userLang' => $userLang]);
     }
 
-    public function postSendMessage(Request $request)
+    public function postSendMessage(CreateMessageRequest $request)
     {
         dd($request->all());
     }

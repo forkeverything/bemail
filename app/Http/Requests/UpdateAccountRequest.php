@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\CurrentUserPassword;
+use App\Rules\LanguageCode;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -30,8 +31,8 @@ class UpdateAccountRequest extends FormRequest
     {
         $rules = [
                 'name' => 'required|string|max:255',
-                'email' => ['required','string','email','max:255', Rule::unique('users')->ignore(1)],
-                'lang_default' => 'required|exists:languages,code'
+                'email' => ['required','string','email','max:255', Rule::unique('users')->ignore(Auth::id())],
+                'lang_default' => ['required', new LanguageCode]
         ];
 
         $currentPassword = $this->input('pwd_current');
