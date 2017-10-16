@@ -90,7 +90,7 @@ class MessageFactory
                     'email' => $email
                 ]);
             }
-            array_push($this->recipients, $recipient);
+            array_push($this->recipients, $recipient->id);
         }
 
         return $this;
@@ -107,14 +107,20 @@ class MessageFactory
         return $this;
     }
 
+    /**
+     * Initiate translating.
+     *
+     * @return $this
+     */
     protected function startTranslation()
     {
+        $this->translator->translate($this->messageModel);
         return $this;
     }
 
     protected function sendNotifications()
     {
-        // Send email notifications / Fire events that send emails
+        // TODO ::: Send email notifications / Fire events that send emails
         return $this;
     }
 

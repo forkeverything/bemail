@@ -42,11 +42,17 @@ class GengoTranslator implements Translator
         return json_decode((new GengoService)->getLanguagePairs())->response;
     }
 
-    public function translate(Message $message)
+    /**
+     * Fill out Gengo's Job fields.
+     *
+     * @param Message $message
+     * @return array
+     */
+    protected function buildJob(Message $message)
     {
-        $job = [
+        return [
             'type' => 'text',
-            'slug' => "{$message->user->name} :: {$message->subject} :: Message ID: {$message->id}",
+            'slug' => "{$message->sender->name} :: {$message->subject} :: Message ID: {$message->id}",
             'body_src' => $message->body,
             'lc_src' => $message->sourceLanguage->code,
             'lc_tgt' => $message->targetLanguage->code,
@@ -59,16 +65,36 @@ class GengoTranslator implements Translator
             }",
             'use_preferred' => 0
         ];
+    }
+
+    /**
+     * Start translating using Gengo.
+     * Adds translation job to Gengo's internal
+     * queue.
+     *
+     * @param Message $message
+     * @return void
+     */
+    public function translate(Message $message)
+    {
 
         $jobs = [
-            "jobs_01" => $job
+            "jobs_01" => $this->buildJob($message)
         ];
 
         $jobsAPI = new GengoJobs;
-
         $jobsAPI->postJobs($jobs);
 
         $response = json_decode($jobsAPI->getResponseBody(), true);
+        // Get response status as per Gengo API docs.
+        $status = $response["opstat"];
+
+        if ($status == "error") {
+            // Fix silently and mark as error to be re-translated.
+            // We assume the error was not caused by the User
+            // at this stage.
+            $message->markError();
+        }
     }
 
 }

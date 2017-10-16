@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
+
+        @include('flash::message')
+
         <form action="compose" method="post">
             {!! csrf_field() !!}
             <div class="form-group">

@@ -72,4 +72,17 @@ class Message extends Model
         return $this->belongsTo(Language::class, 'lang_tgt_id');
     }
 
+    /**
+     * Change TranslationStatus to error.
+     *
+     * @return $this
+     */
+    public function markError()
+    {
+        $this->update([
+            'translation_status_id' => TranslationStatus::error()->id
+        ]);
+        return $this;
+    }
+
 }
