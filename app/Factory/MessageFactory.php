@@ -6,6 +6,7 @@ namespace App\Factory;
 use App\Contracts\Translation\Translator;
 use App\Http\Requests\CreateMessageRequest;
 use App\Language;
+use App\Recipient;
 use App\TranslationStatus;
 use App\User;
 
@@ -33,8 +34,19 @@ class MessageFactory
      */
     protected $messageModel;
 
-
+    /**
+     * Translator that handles ALL translating behavior.
+     *
+     * @var Translator
+     */
     protected $translator;
+
+    /**
+     * Recipient models.
+     *
+     * @var array
+     */
+    protected $recipients = [];
 
     public function __construct(CreateMessageRequest $createMessageRequest, User $user, Translator $translator)
     {
@@ -61,11 +73,37 @@ class MessageFactory
         return $this;
     }
 
+    /**
+     * Finds or creates Recipient(s).
+     *
+     * @return $this
+     */
+    protected function createRecipients()
+    {
+
+        $emails = explode(',', $this->formRequest->recipients);
+
+        foreach ($emails as $email) {
+            $recipient = Recipient::belongingTo($this->user)->where('email', $email)->first();
+            if (!$recipient) {
+                $recipient = $this->user->recipients()->create([
+                    'email' => $email
+                ]);
+            }
+            array_push($this->recipients, $recipient);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Assign Recipient(s) to Message.
+     *
+     * @return $this
+     */
     protected function assignRecipients()
     {
-        // Create recipients (if they don't exist)
-        // Attach to message model and user
-
+        $this->messageModel->recipients()->sync($this->recipients);
         return $this;
     }
 
@@ -82,22 +120,17 @@ class MessageFactory
 
     /**
      * Make a new Message.
+     *
      * This is the main method that kick-starts the whole sending a Message.
      * Messages should only ever be created using this function and no
      * where else in the app.
-     *
-     * @param CreateMessageRequest $createMessageRequest
-     * @param User $user
      */
-    static function make(CreateMessageRequest $createMessageRequest, User $user)
+    public function make()
     {
-        $factory = new static($createMessageRequest, $user);
-
-
-
-        $factory->createMessage()
-                ->assignRecipients()
-                ->startTranslation()
-                ->sendNotifications();
+        $this->createMessage()
+             ->createRecipients()
+             ->assignRecipients()
+             ->startTranslation()
+             ->sendNotifications();
     }
 }

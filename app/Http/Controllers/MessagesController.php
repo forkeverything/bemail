@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Translation\Translator;
+use App\Factory\MessageFactory;
 use App\Http\Requests\CreateMessageRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,8 +27,19 @@ class MessagesController extends Controller
         return view('messages.compose', ['userLang' => $userLang]);
     }
 
-    public function postSendMessage(CreateMessageRequest $request)
+    /**
+     * Send the Message.
+     *
+     * @param CreateMessageRequest $request
+     * @param Translator $translator
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postSendMessage(CreateMessageRequest $request, Translator $translator)
     {
-        dd($request->all());
+        $factory = new MessageFactory($request, Auth::user(), $translator);
+        $factory->make();   // Any errors here?
+        // flash message
+        // Return to compose screen
+        return redirect()->back();
     }
 }

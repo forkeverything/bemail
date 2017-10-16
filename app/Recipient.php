@@ -30,4 +30,15 @@ class Recipient extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    /**
+     * Search for Recipient(s) that belong to given User.
+     *
+     * @param User $user
+     * @return mixed
+     */
+    public static function belongingTo(User $user)
+    {
+        return static::where('user_id', $user->id);
+    }
 }

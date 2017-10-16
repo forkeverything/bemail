@@ -50,12 +50,22 @@ class User extends Authenticatable
     }
 
     /**
-     * Messages sent by User.
+     * Message(s) sent by User.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function messages()
     {
         return $this->hasMany(Message::class);
+    }
+
+    /**
+     * Recipient(s) that User has sent Message(s) to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function recipients()
+    {
+        return $this->hasMany(Recipient::class);
     }
 }
