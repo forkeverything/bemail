@@ -108,6 +108,19 @@ class MessageFactory
     }
 
     /**
+     * Create Attachment(s) for this Message.
+     *
+     * @return $this
+     */
+    protected function createAttachments()
+    {
+        foreach ($this->formRequest->attachments as $uploadedFile) {
+            (new AttachmentFactory($this->messageModel, $uploadedFile))->make();
+        }
+        return $this;
+    }
+
+    /**
      * Initiate translating.
      *
      * @return $this
@@ -136,6 +149,7 @@ class MessageFactory
         $this->createMessage()
              ->createRecipients()
              ->assignRecipients()
+             ->createAttachments()
              ->startTranslation()
              ->sendNotifications();
     }

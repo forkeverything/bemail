@@ -39,14 +39,20 @@ class MessagesController extends Controller
      */
     public function postSendMessage(CreateMessageRequest $request, Translator $translator)
     {
-        $factory = new MessageFactory($request, Auth::user(), $translator);
         try {
-            $factory->make();
+            (new MessageFactory($request, Auth::user(), $translator))->make();
         } catch (Exception $e) {
-            throw new TranslationException;
+            if(env('APP_ENV') !== 'local') {
+                // Catch any and all exceptions to indicate
+                // complete failure and the message will
+                // NOT be translated.
+                throw new TranslationException;
+            } else {
+                // In development, just throw the original exception.
+                throw $e;
+            }
         }
 
-        // flash message
         flash()->success('Success! Your message will be translated shortly.');
         // Return to compose screen
         return redirect()->back();

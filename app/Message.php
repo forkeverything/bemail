@@ -43,6 +43,16 @@ class Message extends Model
     }
 
     /**
+     * Attachment(s) User might want to send with the Message.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class);
+    }
+
+    /**
      * Status of Message translation.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -16,6 +16,7 @@ window.Vue = require('vue');
 Vue.component('language-picker', require('./components/compose/LanguagePicker.vue'));
 Vue.component('recipients-input', require('./components/compose/RecipientsInput.vue'));
 Vue.component('tag-input', require('./components/compose/TagInput.vue'));
+Vue.component('file-input', require('./components/compose/FileInput.vue'));
 // Account
 Vue.component('change-password-field', require('./components/account/ChangePasswordField.vue'));
 
