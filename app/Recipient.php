@@ -4,6 +4,23 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Recipient
+ *
+ * @property int $id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property string $email
+ * @property int $user_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Message[] $messages
+ * @property-read \App\User $sender
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Recipient whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Recipient whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Recipient whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Recipient whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Recipient whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Recipient extends Model
 {
     protected $fillable = [

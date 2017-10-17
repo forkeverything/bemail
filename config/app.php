@@ -169,6 +169,7 @@ return [
          */
 
         Laracasts\Flash\FlashServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
         /*
          * Application Service Providers...

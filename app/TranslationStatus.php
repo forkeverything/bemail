@@ -4,6 +4,19 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\TranslationStatus
+ *
+ * @property int $id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property string $description
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\TranslationStatus whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\TranslationStatus whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\TranslationStatus whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\TranslationStatus whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class TranslationStatus extends Model
 {
 

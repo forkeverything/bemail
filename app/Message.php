@@ -4,6 +4,37 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Message
+ *
+ * @property int $id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property string|null $subject
+ * @property string $body
+ * @property string|null $translated_body
+ * @property int $user_id
+ * @property int $lang_src_id
+ * @property int $lang_tgt_id
+ * @property int $translation_status_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Attachment[] $attachments
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Recipient[] $recipients
+ * @property-read \App\User $sender
+ * @property-read \App\Language $sourceLanguage
+ * @property-read \App\TranslationStatus $status
+ * @property-read \App\Language $targetLanguage
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereBody($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereLangSrcId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereLangTgtId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereSubject($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereTranslatedBody($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereTranslationStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Message extends Model
 {
 
