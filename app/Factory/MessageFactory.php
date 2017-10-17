@@ -80,29 +80,11 @@ class MessageFactory
      */
     protected function createRecipients()
     {
-
         $emails = explode(',', $this->formRequest->recipients);
-
         foreach ($emails as $email) {
-            $recipient = Recipient::belongingTo($this->user)->where('email', $email)->first();
-            if (!$recipient) {
-                $recipient = $this->user->recipients()->create([
-                    'email' => $email
-                ]);
-            }
+            $recipient = (new RecipientFactory($this->messageModel, $email))->make();
             array_push($this->recipients, $recipient->id);
         }
-
-        return $this;
-    }
-
-    /**
-     * Assign Recipient(s) to Message.
-     *
-     * @return $this
-     */
-    protected function assignRecipients()
-    {
         $this->messageModel->recipients()->sync($this->recipients);
         return $this;
     }
@@ -148,7 +130,6 @@ class MessageFactory
     {
         $this->createMessage()
              ->createRecipients()
-             ->assignRecipients()
              ->createAttachments()
              ->startTranslation()
              ->sendNotifications();
