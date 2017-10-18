@@ -44,6 +44,7 @@ class MessageReceipt extends Model
     protected $fillable = [
         'word_count',
         'cost_per_word',
+        'amount_charged',
         'message_id',
         'user_id'
     ];
@@ -54,7 +55,7 @@ class MessageReceipt extends Model
      * @var array
      */
     protected $appends = [
-        'total_cost'
+        'credits_used'
     ];
 
     /**
@@ -90,16 +91,6 @@ class MessageReceipt extends Model
     }
 
     /**
-     * Total cost of Message.
-     *
-     * @return float
-     */
-    public function getTotalCostAttribute()
-    {
-        return round($this->word_count * $this->cost_per_word, 2);
-    }
-
-    /**
      * How much word credits was used.
      *
      * @return int
@@ -109,5 +100,7 @@ class MessageReceipt extends Model
         $creditTransaction = $this->creditTransaction;
         return  $creditTransaction ? $creditTransaction->amount : 0;
     }
+
+
 
 }
