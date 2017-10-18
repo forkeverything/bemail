@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CreditTransactionType extends Model
 {
-    /**
+    /**\
      * Mass fillable fields.
      *
      * @var array
@@ -33,4 +33,55 @@ class CreditTransactionType extends Model
         'slug',
         'description'
     ];
+
+    /**
+     * For accepting an invitation to join.
+     *
+     * @return Model|null|static
+     */
+    public static function invite()
+    {
+        return CreditTransactionType::where('slug', 'invite')->first();
+    }
+
+    /**
+     * For inviting a friend to join.
+     *
+     * @return Model|null|static
+     */
+    public static function host()
+    {
+        return CreditTransactionType::where('slug', 'host')->first();
+    }
+
+    /**
+     * Paying for a Message.
+     *
+     * @return Model|null|static
+     */
+    public static function payment()
+    {
+        return CreditTransactionType::where('slug', 'payment')->first();
+    }
+
+    /**
+     * Manually added credit.
+     *
+     * @return Model|null|static
+     */
+    public static function manualAdd()
+    {
+        return CreditTransactionType::where('slug', 'manual')->where('add', 1)->first();
+    }
+
+    /**
+     * Manually added credit.
+     *
+     * @return Model|null|static
+     */
+    public static function manualDeduct()
+    {
+        return CreditTransactionType::where('slug', 'manual')->where('add', 0)->first();
+    }
+
 }

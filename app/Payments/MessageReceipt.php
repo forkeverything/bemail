@@ -42,11 +42,9 @@ class MessageReceipt extends Model
      * @var array
      */
     protected $fillable = [
-        'word_count',
         'cost_per_word',
         'amount_charged',
-        'message_id',
-        'user_id'
+        'message_id'
     ];
 
     /**

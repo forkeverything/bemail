@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Payments\MessageReceipt;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -51,6 +52,15 @@ class Message extends Model
         'translation_status_id',
         'lang_src_id',
         'lang_tgt_id'
+    ];
+
+    /**
+     * Automatically appended dynamic properties.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'word_count'
     ];
 
     /**
@@ -111,6 +121,26 @@ class Message extends Model
     public function targetLanguage()
     {
         return $this->belongsTo(Language::class, 'lang_tgt_id');
+    }
+
+    /**
+     * MessageReceipt that shows cost break-down for Message.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function receipt()
+    {
+        return $this->hasOne(MessageReceipt::class, 'message_id');
+    }
+
+    /**
+     * How many words to translate?
+     *
+     * @return mixed
+     */
+    public function getWordCountAttribute()
+    {
+        return str_word_count($this->body);
     }
 
     /**

@@ -26,7 +26,6 @@ class CreateMessageReceiptsTable extends Migration
              * Main
              */
 
-            $table->integer('word_count');
             $table->integer('cost_per_word');
             $table->integer('amount_charged');
             $table->boolean('reversed')->default(0);
@@ -37,10 +36,6 @@ class CreateMessageReceiptsTable extends Migration
 
             $table->integer('message_id')->unsigned();
             $table->foreign('message_id')->references('id')->on('messages');
-
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
-
         });
     }
 

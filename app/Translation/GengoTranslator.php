@@ -3,6 +3,7 @@
 namespace App\Translation;
 
 use App\Contracts\Translation\Translator;
+use App\Language;
 use App\Message;
 use Gengo\Config;
 use Gengo\Jobs as GengoJobs;
@@ -97,4 +98,15 @@ class GengoTranslator implements Translator
         }
     }
 
+    /**
+     * Gets the cost per word for given language pair.
+     *
+     * @param Language $sourceLangue
+     * @param Language $targetLanguage
+     * @return mixed
+     */
+    public function unitPrice(Language $sourceLangue, Language $targetLanguage)
+    {
+        // TODO: Implement unitPrice() method.
+    }
 }
