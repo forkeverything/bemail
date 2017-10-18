@@ -170,6 +170,7 @@ return [
 
         Laracasts\Flash\FlashServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        Laravel\Cashier\CashierServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -184,7 +185,8 @@ return [
          * Custom Application Service Providers
          */
 
-        App\Providers\TranslationServiceProvider::class
+        App\Providers\TranslationServiceProvider::class,
+        App\Payments\Providers\PaymentServiceProvider::class
 
     ],
 

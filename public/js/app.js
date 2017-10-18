@@ -870,8 +870,8 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(10);
-__webpack_require__(50);
-module.exports = __webpack_require__(51);
+__webpack_require__(53);
+module.exports = __webpack_require__(54);
 
 
 /***/ }),
@@ -896,9 +896,9 @@ window.Vue = __webpack_require__(37);
 Vue.component('language-picker', __webpack_require__(38));
 Vue.component('recipients-input', __webpack_require__(41));
 Vue.component('tag-input', __webpack_require__(44));
-Vue.component('file-input', __webpack_require__(62));
+Vue.component('file-input', __webpack_require__(47));
 // Account
-Vue.component('change-password-field', __webpack_require__(47));
+Vue.component('change-password-field', __webpack_require__(50));
 
 /**
  * Vue Instance
@@ -42525,6 +42525,123 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
+Component.options.__file = "/Users/Mike-Personal/Dropbox/Code/bemail/resources/assets/js/components/compose/FileInput.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] FileInput.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3ba73193", Component.options)
+  } else {
+    hotAPI.reload("data-v-3ba73193", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 48 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            files: []
+        };
+    },
+    computed: {
+        multipleFiles: function multipleFiles() {
+            return this.files.length > 1;
+        }
+    },
+    props: ['name', 'id', 'multiple'],
+    methods: {
+        updateList: function updateList() {
+            this.files = [];
+            var input = this.$refs.input;
+            for (var i = 0; i < input.files.length; i++) {
+                this.files.push(input.files.item(i).name);
+            }
+        }
+    },
+    mounted: function mounted() {}
+});
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "file-input"
+  }, [_c('input', {
+    ref: "input",
+    attrs: {
+      "id": _vm.id,
+      "type": "file",
+      "name": _vm.name,
+      "multiple": _vm.multiple
+    },
+    on: {
+      "change": _vm.updateList
+    }
+  }), _vm._v(" "), _c('ul', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.multipleFiles),
+      expression: "multipleFiles"
+    }],
+    staticClass: "files-list list-unstyled list-inline"
+  }, _vm._l((_vm.files), function(file) {
+    return _c('li', [_vm._v(_vm._s(file))])
+  }))])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-3ba73193", module.exports)
+  }
+}
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(51),
+  /* template */
+  __webpack_require__(52),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
 Component.options.__file = "/Users/Mike-Personal/Dropbox/Code/bemail/resources/assets/js/components/account/ChangePasswordField.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] ChangePasswordField.vue: functional components are not supported with templates, they should use render functions.")}
@@ -42549,7 +42666,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 48 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42602,7 +42719,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 49 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -42677,143 +42794,16 @@ if (false) {
 }
 
 /***/ }),
-/* 50 */
+/* 53 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 51 */
+/* 54 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 52 */,
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */,
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(63),
-  /* template */
-  __webpack_require__(64),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/Users/Mike-Personal/Dropbox/Code/bemail/resources/assets/js/components/compose/FileInput.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] FileInput.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-3ba73193", Component.options)
-  } else {
-    hotAPI.reload("data-v-3ba73193", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 63 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            files: []
-        };
-    },
-    computed: {
-        multipleFiles: function multipleFiles() {
-            return this.files.length > 1;
-        }
-    },
-    props: ['name', 'id', 'multiple'],
-    methods: {
-        updateList: function updateList() {
-            this.files = [];
-            var input = this.$refs.input;
-            for (var i = 0; i < input.files.length; i++) {
-                this.files.push(input.files.item(i).name);
-            }
-        }
-    },
-    mounted: function mounted() {}
-});
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "file-input"
-  }, [_c('input', {
-    ref: "input",
-    attrs: {
-      "id": _vm.id,
-      "type": "file",
-      "name": _vm.name,
-      "multiple": _vm.multiple
-    },
-    on: {
-      "change": _vm.updateList
-    }
-  }), _vm._v(" "), _c('ul', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.multipleFiles),
-      expression: "multipleFiles"
-    }],
-    staticClass: "files-list list-unstyled list-inline"
-  }, _vm._l((_vm.files), function(file) {
-    return _c('li', [_vm._v(_vm._s(file))])
-  }))])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-3ba73193", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);

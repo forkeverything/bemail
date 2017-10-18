@@ -13,5 +13,6 @@ class SysDataSeeder extends Seeder
     {
         $this->call(LanguagesTableSeeder::class);
         $this->call(TranslationStatusesTableSeeder::class);
+        $this->call(CreditTransactionTypesTableSeeder::class);
     }
 }
