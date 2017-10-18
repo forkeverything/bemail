@@ -4,7 +4,7 @@ namespace App\Payments\Contracts;
 
 
 use App\Language;
-use App\Message;
+use App\Translation\Message;
 use App\Payments\CreditTransactionType;
 use App\User;
 

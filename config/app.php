@@ -185,7 +185,7 @@ return [
          * Custom Application Service Providers
          */
 
-        App\Providers\TranslationServiceProvider::class,
+        App\Translation\Providers\TranslationServiceProvider::class,
         App\Payments\Providers\PaymentServiceProvider::class
 
     ],

@@ -1,12 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Translation;
 
+use App\Language;
 use App\Payments\MessageReceipt;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
+
 /**
- * App\Message
+ * App\Translation\Message
  *
  * @property int $id
  * @property \Carbon\Carbon|null $created_at
@@ -18,22 +21,24 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $lang_src_id
  * @property int $lang_tgt_id
  * @property int $translation_status_id
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Attachment[] $attachments
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Recipient[] $recipients
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Attachment[] $attachments
+ * @property-read mixed $word_count
+ * @property-read \App\Payments\MessageReceipt $receipt
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Recipient[] $recipients
  * @property-read \App\User $sender
  * @property-read \App\Language $sourceLanguage
- * @property-read \App\TranslationStatus $status
+ * @property-read \App\Translation\TranslationStatus $status
  * @property-read \App\Language $targetLanguage
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereBody($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereLangSrcId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereLangTgtId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereSubject($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereTranslatedBody($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereTranslationStatusId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereBody($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereLangSrcId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereLangTgtId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereSubject($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereTranslatedBody($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereTranslationStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereUserId($value)
  * @mixin \Eloquent
  */
 class Message extends Model

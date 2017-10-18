@@ -2,7 +2,7 @@
 
 namespace App\Payments;
 
-use App\Message;
+use App\Translation\Message;
 use Illuminate\Database\Eloquent\Model;
 
 /**

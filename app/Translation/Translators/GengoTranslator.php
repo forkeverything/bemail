@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Translation;
+namespace App\Translation\Translators;
 
-use App\Contracts\Translation\Translator;
+use App\Translation\Contracts\Translator;
 use App\Language;
-use App\Message;
+use App\Translation\Message;
 use Gengo\Config;
 use Gengo\Jobs as GengoJobs;
 use Gengo\Service as GengoService;

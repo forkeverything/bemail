@@ -5,7 +5,7 @@ namespace App\Payments\Accountants;
 
 
 use App\Language;
-use App\Message;
+use App\Translation\Message;
 use App\Payments\Contracts\Accountant;
 use App\Payments\CreditTransactionType;
 use App\User;
@@ -80,7 +80,7 @@ class LaravelCashierAccountant implements Accountant
      */
     protected function checkCostPerWord(Language $sourceLanguage, Language $targetLanguage)
     {
-        $translator = resolve('App\Contracts\Translation\Translator');
+        $translator = resolve('App\Translation\Contracts\Translator');
 
         // Get the unit price that the translator charges.
         $translatorUnitPrice = $translator->unitPrice($sourceLanguage, $targetLanguage);

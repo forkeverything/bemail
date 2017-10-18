@@ -1,6 +1,6 @@
 <?php
 
-use App\TranslationStatus;
+use App\Translation\TranslationStatus;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

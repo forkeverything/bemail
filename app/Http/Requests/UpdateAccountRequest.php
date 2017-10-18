@@ -29,6 +29,7 @@ class UpdateAccountRequest extends FormRequest
      */
     public function rules()
     {
+        /** @noinspection PhpUndefinedClassInspection */
         $rules = [
                 'name' => 'required|string|max:255',
                 'email' => ['required','string','email','max:255', Rule::unique('users')->ignore(Auth::id())],

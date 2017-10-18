@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Exceptions;
+namespace App\Translation\Exceptions;
 
 
 class TranslationException extends \Exception

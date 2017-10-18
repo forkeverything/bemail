@@ -2,9 +2,13 @@
 
 namespace App;
 
+use App\Translation\Message;
+use App\Translation\Recipient;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Cashier\Billable;
+
+
 
 /**
  * App\User
@@ -17,11 +21,18 @@ use Laravel\Cashier\Billable;
  * @property string $email
  * @property string $password
  * @property int $word_credits
+ * @property string|null $stripe_id
+ * @property string|null $card_brand
+ * @property string|null $card_last_four
+ * @property string|null $trial_ends_at
  * @property int $language_id
  * @property-read \App\Language $defaultLanguage
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Message[] $messages
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Message[] $messages
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Recipient[] $recipients
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Recipient[] $recipients
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Cashier\Subscription[] $subscriptions
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCardBrand($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCardLastFour($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereId($value)
@@ -29,18 +40,11 @@ use Laravel\Cashier\Billable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereStripeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereTrialEndsAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereWordCredits($value)
  * @mixin \Eloquent
- * @property string|null $stripe_id
- * @property string|null $card_brand
- * @property string|null $card_last_four
- * @property string|null $trial_ends_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Cashier\Subscription[] $subscriptions
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCardBrand($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCardLastFour($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereStripeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereTrialEndsAt($value)
  */
 class User extends Authenticatable
 {

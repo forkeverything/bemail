@@ -1,13 +1,12 @@
 <?php
 
 
-namespace App\Factory;
+namespace App\Translation\Factories;
 
-use App\Contracts\Translation\Translator;
+use App\Translation\Contracts\Translator;
 use App\Http\Requests\CreateMessageRequest;
 use App\Language;
-use App\Recipient;
-use App\TranslationStatus;
+use App\Translation\TranslationStatus;
 use App\User;
 
 class MessageFactory

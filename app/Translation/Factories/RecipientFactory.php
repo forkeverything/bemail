@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Factory;
+namespace App\Translation\Factories;
 
 
-use App\Message;
-use App\Recipient;
+use App\Translation\Message;
+use App\Translation\Recipient;
 
 class RecipientFactory
 {

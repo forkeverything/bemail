@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Contracts\Translation\Translator;
-use App\Factory\MessageFactory;
+use App\Translation\Contracts\Translator;
+use App\Translation\Factories\MessageFactory;
 use App\Http\Requests\CreateMessageRequest;
-use App\Exceptions\TranslationException;
+use App\Translation\Exceptions\TranslationException;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

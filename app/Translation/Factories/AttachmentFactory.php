@@ -1,11 +1,10 @@
 <?php
 
 
-namespace App\Factory;
+namespace App\Translation\Factories;
 
 
-use App\Attachment;
-use App\Message;
+use App\Translation\Message;
 use Illuminate\Http\UploadedFile;
 
 class AttachmentFactory

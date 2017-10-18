@@ -2,37 +2,35 @@
 
 namespace App\Payments;
 
-use App\Message;
+use App\Translation\Message;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 
 /**
- * Payment receipt for sending a Message.
+ * App\Payments\MessageReceipt
  *
- * @mixin \Eloquent
- * @property-read \App\Message $message
- * @property-read \App\User $user
  * @property int $id
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property int $word_count
- * @property int $total_cost
+ * @property int $cost_per_word
+ * @property int $reversed
  * @property int $message_id
  * @property int $user_id
+ * @property-read \App\Payments\CreditTransaction $creditTransaction
+ * @property-read int $credits_used
+ * @property-read \App\Translation\Message $message
+ * @property-read \App\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\MessageReceipt whereCostPerWord($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\MessageReceipt whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\MessageReceipt whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\MessageReceipt whereMessageId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\MessageReceipt whereTotalCost($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\MessageReceipt whereReversed($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\MessageReceipt whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\MessageReceipt whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\MessageReceipt whereWordCount($value)
- * @property-read \App\Payments\CreditTransaction $creditTransaction
- * @property int $cost_per_word
- * @property-read int|mixed $credits_used
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\MessageReceipt whereCostPerWord($value)
- * @property int $reversed
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\MessageReceipt whereReversed($value)
+ * @mixin \Eloquent
  */
 class MessageReceipt extends Model
 {

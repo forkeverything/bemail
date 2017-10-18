@@ -1,20 +1,21 @@
 <?php
 
-namespace App;
+namespace App\Translation;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 /**
- * App\TranslationStatus
+ * App\Translation\TranslationStatus
  *
  * @property int $id
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property string $description
- * @method static \Illuminate\Database\Eloquent\Builder|\App\TranslationStatus whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\TranslationStatus whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\TranslationStatus whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\TranslationStatus whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\TranslationStatus whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\TranslationStatus whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\TranslationStatus whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\TranslationStatus whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class TranslationStatus extends Model

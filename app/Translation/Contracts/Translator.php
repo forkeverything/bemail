@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Contracts\Translation;
+namespace App\Translation\Contracts;
 
 use App\Language;
-use App\Message;
+use App\Translation\Message;
 
 interface Translator
 {
