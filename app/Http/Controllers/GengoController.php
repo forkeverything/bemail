@@ -21,12 +21,20 @@ class GengoController extends Controller
         $body = json_decode($request->all()["job"], true);
         \Log::info($body);
         \Log::info("custom data: " . $body["custom_data"]);
-//
-//        $customData = json_decode($body["custom_data"], true);
-//
+
+        $messageHash = json_decode($body["custom_data"], true)["message_id"];
+
+        \Log::info("message hash: " . $messageHash);
+
+        $status = $body["status"];
+
+        \Log::info("status: " . $status);
+
 //        $messageId = \Vinkla\Hashids\Facades\Hashids::decode('message', $body["custom_data"]["message_id"]);
 //
 //        \Log::info('FOR MESSAGE ID: ' . $messageId);
+
+
 
         // Pending: Translator has begun work.
 
