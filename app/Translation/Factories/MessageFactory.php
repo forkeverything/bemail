@@ -95,8 +95,11 @@ class MessageFactory
      */
     protected function createAttachments()
     {
-        foreach ($this->formRequest->attachments as $uploadedFile) {
-            (new AttachmentFactory($this->messageModel, $uploadedFile))->make();
+        $attachments = $this->formRequest->attachments;
+        if($attachments) {
+            foreach ($attachments as $uploadedFile) {
+                (new AttachmentFactory($this->messageModel, $uploadedFile))->make();
+            }
         }
         return $this;
     }

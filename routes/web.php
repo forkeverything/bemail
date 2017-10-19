@@ -32,3 +32,4 @@ Route::get('/test', function (\App\Translation\Contracts\Translator $translator)
     return $translator->getLanguagePairs();
 
 });
+
