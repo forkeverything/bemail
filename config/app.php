@@ -171,6 +171,7 @@ return [
         Laracasts\Flash\FlashServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Laravel\Cashier\CashierServiceProvider::class,
+        Vinkla\Hashids\HashidsServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -236,6 +237,12 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+        /**
+         * Custom Aliases...
+         */
+
+        'Hashids' => Vinkla\Hashids\Facades\Hashids::class
 
     ],
 

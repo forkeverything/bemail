@@ -4,6 +4,7 @@ namespace App\Translation;
 
 use App\Language;
 use App\Payments\MessageReceipt;
+use App\Traits\Hashable;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -44,6 +45,8 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
 
+    use Hashable;
+
     /**
      * Mass-fillable fields
      *
@@ -65,6 +68,7 @@ class Message extends Model
      * @var array
      */
     protected $appends = [
+        'hash',
         'word_count'
     ];
 
