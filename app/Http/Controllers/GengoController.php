@@ -18,9 +18,9 @@ class GengoController extends Controller
     public function postPickUp(Request $request)
     {
         // Gengo posts the response inside a 'job' parameter
-        $body = $request->all()[0];
+        $body = $request->all()["job"];
 
-//        \Log::info($body);
+        \Log::info($body);
 //
 //        $customData = json_decode($body["custom_data"], true);
 //
@@ -31,7 +31,6 @@ class GengoController extends Controller
         // Pending: Translator has begun work.
 
         // Approved: job (completed translation)
-
 
 
         return response("Got it", 200);
