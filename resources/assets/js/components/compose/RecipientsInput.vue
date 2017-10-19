@@ -59,10 +59,10 @@
                 return this.tags.length < 1;
             },
             value: function () {
-                return this.tags.join();
+                return this.tags.join(",");
             }
         },
-        props: [],
+        props: ['old-input'],
         methods: {
             focusInput() {
                 $(this.$refs.container).find('.tag-input input').focus();
@@ -134,6 +134,10 @@
         },
         mounted(){
             this.inputPosition = this.tags.length;
+            // If we have an old input (ie. after validation error)
+            if(this.oldInput) {
+                this.tags = this.oldInput.split(',');
+            }
         }
     }
 </script>

@@ -29,10 +29,13 @@
                 ]
             };
         },
-        props: ['name', 'default'],
+        props: ['name', 'default', 'old-input'],
         methods: {},
         mounted(){
             this.selected = this.default ? this.default : '';
+            if(this.oldInput) {
+                this.selected = this.oldInput;
+            }
         }
     };
 </script>

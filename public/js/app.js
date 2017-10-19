@@ -41990,10 +41990,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }]
         };
     },
-    props: ['name', 'default'],
+    props: ['name', 'default', 'old-input'],
     methods: {},
     mounted: function mounted() {
         this.selected = this.default ? this.default : '';
+        if (this.oldInput) {
+            this.selected = this.oldInput;
+        }
     }
 });
 
@@ -42153,10 +42156,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.tags.length < 1;
         },
         value: function value() {
-            return this.tags.join();
+            return this.tags.join(",");
         }
     },
-    props: [],
+    props: ['old-input'],
     methods: {
         focusInput: function focusInput() {
             $(this.$refs.container).find('.tag-input input').focus();
@@ -42232,6 +42235,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         this.inputPosition = this.tags.length;
+        // If we have an old input (ie. after validation error)
+        if (this.oldInput) {
+            this.tags = this.oldInput.split(',');
+        }
     }
 });
 
