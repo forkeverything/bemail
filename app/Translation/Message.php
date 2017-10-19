@@ -2,6 +2,7 @@
 
 namespace App\Translation;
 
+use App\GengoError;
 use App\Language;
 use App\Payments\MessageReceipt;
 use App\Traits\Hashable;
@@ -150,6 +151,19 @@ class Message extends Model
     public function getWordCountAttribute()
     {
         return str_word_count($this->body);
+    }
+
+    /**
+     * Errors from Gengo's API.
+     * These are the errors that occurred when trying to translate
+     * this message. Receive errors from the Gengo API when
+     * we post the job.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function gengoErrors()
+    {
+        return $this->hasMany(GengoError::class, 'message_id');
     }
 
     /**

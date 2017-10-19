@@ -2,6 +2,7 @@
 
 namespace App\Translation\Translators;
 
+use App\GengoError;
 use App\Translation\Contracts\Translator;
 use App\Language;
 use App\Translation\Message;
@@ -91,10 +92,15 @@ class GengoTranslator implements Translator
         $status = $response["opstat"];
 
         if ($status == "error") {
-            // Fix silently and mark as error to be re-translated.
-            // We assume the error was not caused by the User
-            // at this stage.
+
+            // Mark and store error.
             $message->markError();
+            GengoError::record($message, $response);
+
+            // Things fail silently here because we assume that the error
+            // was system fault and not User. So we'll go back
+            // and attempt to rectify error in background.
+
         }
     }
 
