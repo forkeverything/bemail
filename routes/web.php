@@ -27,6 +27,9 @@ Route::post('compose', 'MessagesController@postSendMessage')->name('sendMessage'
 Route::get('/account', 'AccountController@getSettings');
 Route::post('/account', 'AccountController@postUpdateSettings');
 
+// Language
+Route::post('languages', 'LanguagesController@postFetchAllLanguages');
+
 Route::get('/test', function (\App\Translation\Contracts\Translator $translator) {
 
     return $translator->getLanguagePairs();

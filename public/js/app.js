@@ -41975,28 +41975,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             selected: '',
-            languages: [{
-                code: 'en',
-                name: 'English'
-            }, {
-                code: 'zh',
-                name: 'Chinese'
-            }, {
-                code: 'ja',
-                name: 'Japanese'
-            }, {
-                code: 'id',
-                name: 'Indonesian'
-            }]
+            languages: ''
         };
     },
     props: ['name', 'default', 'old-input'],
     methods: {},
     mounted: function mounted() {
-        this.selected = this.default ? this.default : '';
-        if (this.oldInput) {
-            this.selected = this.oldInput;
-        }
+        var _this = this;
+
+        // Fetch languages
+        axios.post('languages', {}).then(function (response) {
+            // set languages
+            _this.languages = response.data;
+            // set user default
+            _this.selected = _this.default ? _this.default : '';
+            // if we have an old input - ie. form validation error redirect
+            if (_this.oldInput) _this.selected = _this.oldInput;
+        }).catch(function (error) {
+            console.log(error);
+        });
     }
 });
 

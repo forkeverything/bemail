@@ -9,33 +9,25 @@
         data: function () {
             return {
                 selected: '',
-                languages: [
-                    {
-                        code: 'en',
-                        name: 'English'
-                    },
-                    {
-                        code: 'zh',
-                        name: 'Chinese'
-                    },
-                    {
-                        code: 'ja',
-                        name: 'Japanese'
-                    },
-                    {
-                        code: 'id',
-                        name: 'Indonesian'
-                    }
-                ]
+                languages: ''
             };
         },
         props: ['name', 'default', 'old-input'],
         methods: {},
-        mounted(){
-            this.selected = this.default ? this.default : '';
-            if(this.oldInput) {
-                this.selected = this.oldInput;
-            }
+        mounted() {
+            // Fetch languages
+            axios.post('languages', {})
+                .then((response) => {
+                    // set languages
+                    this.languages = response.data;
+                    // set user default
+                    this.selected = this.default ? this.default : '';
+                    // if we have an old input - ie. form validation error redirect
+                    if (this.oldInput) this.selected = this.oldInput;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
     };
 </script>

@@ -8,8 +8,7 @@ class LanguagesTableSeeder extends Seeder
     private $languages = [
         'en' => 'English',
         'zh' => 'Chinese',
-        'ja' => 'Japanese',
-        'id' => 'Indonesian'
+        'ja' => 'Japanese'
     ];
 
     /**
