@@ -20,13 +20,13 @@
             <ul class="list-inline form-group">
                 <li>
                     <div class="form-inline">
-                        <language-picker name="lang_src" default="{{ $userLang->code }}" old-input="{{ old('lang_src') }}"></language-picker>
+                        <language-picker :languages="{{ $languages }}" name="lang_src" default="{{ $userLang->code }}" old-input="{{ old('lang_src') }}"></language-picker>
                     </div>
                 </li>
                 <li><label>To</label></li>
                 <li>
                     <div class="form-inline">
-                        <language-picker name="lang_tgt" old-input="{{ old('lang_tgt') }}"></language-picker>
+                        <language-picker :languages="{{ $languages }}" name="lang_tgt" old-input="{{ old('lang_tgt') }}"></language-picker>
                     </div>
                 </li>
             </ul>

@@ -8,26 +8,16 @@
     export default {
         data: function () {
             return {
-                selected: '',
-                languages: ''
+                selected: ''
             };
         },
-        props: ['name', 'default', 'old-input'],
+        props: ['languages', 'name', 'default', 'old-input'],
         methods: {},
         mounted() {
-            // Fetch languages
-            axios.post('languages', {})
-                .then((response) => {
-                    // set languages
-                    this.languages = response.data;
-                    // set user default
-                    this.selected = this.default ? this.default : '';
-                    // if we have an old input - ie. form validation error redirect
-                    if (this.oldInput) this.selected = this.oldInput;
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            // set user default
+            this.selected = this.default ? this.default : '';
+            // if we have an old input - ie. form validation error redirect
+            if (this.oldInput) this.selected = this.oldInput;
         }
     };
 </script>

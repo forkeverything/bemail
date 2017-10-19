@@ -41974,26 +41974,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            selected: '',
-            languages: ''
+            selected: ''
         };
     },
-    props: ['name', 'default', 'old-input'],
+    props: ['languages', 'name', 'default', 'old-input'],
     methods: {},
     mounted: function mounted() {
-        var _this = this;
-
-        // Fetch languages
-        axios.post('languages', {}).then(function (response) {
-            // set languages
-            _this.languages = response.data;
-            // set user default
-            _this.selected = _this.default ? _this.default : '';
-            // if we have an old input - ie. form validation error redirect
-            if (_this.oldInput) _this.selected = _this.oldInput;
-        }).catch(function (error) {
-            console.log(error);
-        });
+        // set user default
+        this.selected = this.default ? this.default : '';
+        // if we have an old input - ie. form validation error redirect
+        if (this.oldInput) this.selected = this.oldInput;
     }
 });
 

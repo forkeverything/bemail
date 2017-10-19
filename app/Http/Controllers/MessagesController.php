@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Language;
 use App\Translation\Contracts\Translator;
 use App\Translation\Factories\MessageFactory;
 use App\Http\Requests\CreateMessageRequest;
@@ -26,7 +27,11 @@ class MessagesController extends Controller
     public function getCompose()
     {
         $userLang = Auth::user()->defaultLanguage;
-        return view('messages.compose', ['userLang' => $userLang]);
+        return view('messages.compose', [
+                'languages' => Language::all(),
+                'userLang' => $userLang
+            ]
+        );
     }
 
     /**
