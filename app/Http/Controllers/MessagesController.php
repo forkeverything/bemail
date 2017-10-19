@@ -43,7 +43,7 @@ class MessagesController extends Controller
         try {
             (new MessageFactory($request, Auth::user(), $translator))->make();
         } catch (Exception $e) {
-            if(env('APP_ENV') !== 'local') {
+            if(env('APP_ENV') == 'production') {
                 // Catch any and all exceptions to indicate
                 // complete failure and the message will
                 // NOT be translated.
