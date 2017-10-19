@@ -15,12 +15,10 @@ class GengoController extends Controller
      * Pick up the callback fromm Gengo.
      *
      * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function pickUp(Request $request)
     {
-        \Log::info("url {$request->url()}");
-        \Log::info("secure {$request->secure()}");
-        \Log::info("ip {$request->ip()}");
         \Log::info(print_r($request->all(), true));
         return response("Got it", 200);
     }
