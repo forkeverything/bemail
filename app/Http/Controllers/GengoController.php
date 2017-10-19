@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Translation\Message;
 use App\Translation\TranslationStatus;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,7 @@ class GengoController extends Controller
         $status = $body["status"];
 
         // What Message is this callback for?
-        $message = \App\Translation\Message::findByHash($messageHash);
+        $message = Message::findByHash($messageHash);
 
         switch ($status) {
             // Pending: Translator has begun work.
@@ -37,6 +38,7 @@ class GengoController extends Controller
             case "approved":
                 // Update message status
                 $message->updateStatus(TranslationStatus::approved());
+                // TODO ::: Finish the rest of the callback
                 // Send out actual email
                 // Send notification to user
                 break;
