@@ -53,7 +53,7 @@ class GengoTranslator implements Translator
     {
         return [
             'type' => 'text',
-            'slug' => "{$message->sender->name} :: {$message->subject} :: Message ID: {$message->id}",
+            'slug' => "{$message->sender->name} :: {$message->subject} :: Message ID: {$message->hash}",
             'body_src' => $message->body,
             'lc_src' => $message->sourceLanguage->code,
             'lc_tgt' => $message->targetLanguage->code,
@@ -62,7 +62,7 @@ class GengoTranslator implements Translator
             'force' => 0,
             'callback_url' => env('GENGO_CALLBACK_URL'),
             'custom_data' => "{
-                \"message_id\": \"{$message->id}\"
+                \"message_id\": \"{$message->hash}\"
             }",
             'use_preferred' => 0
         ];
