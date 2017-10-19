@@ -18,7 +18,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('gengo', function (Request $request) {
+    \Log::info("url {$request->url()}");
+    \Log::info("secure {$request->secure()}");
+    \Log::info("ip {$request->ip()}");
     \Log::info(print_r($request->all(), true));
     return response("Got it", 200);
 });
+
+Route::post('gengo', 'GengoController@pickUp');
 
