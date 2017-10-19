@@ -18,7 +18,7 @@ class GengoController extends Controller
     public function postPickUp(Request $request)
     {
         // Gengo posts the response inside a 'job' parameter
-        $body = $request->all()["job"];
+        $body = $request->all()->job;
 
 //        \Log::info($body);
 //
