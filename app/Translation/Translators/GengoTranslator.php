@@ -6,6 +6,7 @@ use App\GengoError;
 use App\Translation\Contracts\Translator;
 use App\Language;
 use App\Translation\Message;
+use App\Translation\TranslationStatus;
 use Gengo\Config;
 use Gengo\Jobs as GengoJobs;
 use Gengo\Service as GengoService;
@@ -94,7 +95,7 @@ class GengoTranslator implements Translator
         if ($status == "error") {
 
             // Mark and store error.
-            $message->markError();
+            $message->updateStatus(TranslationStatus::error());
             GengoError::record($message, $response);
 
             // Things fail silently here because we assume that the error

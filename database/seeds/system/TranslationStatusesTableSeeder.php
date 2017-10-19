@@ -8,9 +8,9 @@ class TranslationStatusesTableSeeder extends Seeder
 {
 
     protected $statuses = [
+        'available',
         'pending',
-        'translating',
-        'complete',
+        'approved',
         'error'
     ];
 

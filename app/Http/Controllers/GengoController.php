@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Translation\TranslationStatus;
 use Illuminate\Http\Request;
 
 
@@ -17,29 +18,31 @@ class GengoController extends Controller
      */
     public function postPickUp(Request $request)
     {
+
         // Gengo posts the response inside a 'job' parameter
         $body = json_decode($request->all()["job"], true);
-        \Log::info($body);
-        \Log::info("custom data: " . $body["custom_data"]);
-
         $messageHash = json_decode($body["custom_data"], true)["message_id"];
-
-        \Log::info("message hash: " . $messageHash);
-
         $status = $body["status"];
 
-        \Log::info("status: " . $status);
+        // What Message is this callback for?
+        $message = \App\Translation\Message::findByHash($messageHash);
 
-//        $messageId = \Vinkla\Hashids\Facades\Hashids::decode('message', $body["custom_data"]["message_id"]);
-//
-//        \Log::info('FOR MESSAGE ID: ' . $messageId);
-
-
-
-        // Pending: Translator has begun work.
-
-        // Approved: job (completed translation)
-
+        switch ($status) {
+            // Pending: Translator has begun work.
+            case "pending":
+                // Update message status
+                $message->updateStatus(TranslationStatus::pending());
+                break;
+            // Approved: job (completed translation)
+            case "approved":
+                // Update message status
+                $message->updateStatus(TranslationStatus::approved());
+                // Send out actual email
+                // Send notification to user
+                break;
+            default:
+                break;
+        }
 
         return response("Got it", 200);
     }

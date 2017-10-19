@@ -22,8 +22,19 @@ class TranslationStatus extends Model
 {
 
     /**
-     * Pending
+     * Available.
      * Submitted by User and is in queue.
+     *
+     * @return mixed
+     */
+    public static function available()
+    {
+        return TranslationStatus::where('description', 'available')->first();
+    }
+
+    /**
+     * Pending.
+     * Work has begun on translating the Message.
      *
      * @return mixed
      */
@@ -33,25 +44,14 @@ class TranslationStatus extends Model
     }
 
     /**
-     * Translating.
-     * Work has begun on translating the Message.
+     * Approved.
+     * Translation is complete and approved.
      *
      * @return mixed
      */
-    public static function translating()
+    public static function approved()
     {
-        return TranslationStatus::where('description', 'translating')->first();
-    }
-
-    /**
-     * Complete
-     * Translation is complete.
-     *
-     * @return mixed
-     */
-    public static function complete()
-    {
-        return TranslationStatus::where('description', 'complete')->first();
+        return TranslationStatus::where('description', 'approved')->first();
     }
 
     /**

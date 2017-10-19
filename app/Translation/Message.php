@@ -167,16 +167,15 @@ class Message extends Model
     }
 
     /**
-     * Change TranslationStatus to error.
+     * Updates the Message Status.
      *
-     * @return $this
+     * @param TranslationStatus $status
      */
-    public function markError()
+    public function updateStatus(TranslationStatus $status)
     {
         $this->update([
-            'translation_status_id' => TranslationStatus::error()->id
+            'translation_status_id' => $status->id
         ]);
-        return $this;
     }
 
 }

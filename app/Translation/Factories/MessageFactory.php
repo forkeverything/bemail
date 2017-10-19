@@ -66,7 +66,7 @@ class MessageFactory
             'body' => $this->formRequest->body,
             'lang_src_id' => Language::findByCode($this->formRequest->lang_src)->id,
             'lang_tgt_id' => Language::findByCode($this->formRequest->lang_tgt)->id,
-            'translation_status_id' => TranslationStatus::pending()->id
+            'translation_status_id' => TranslationStatus::available()->id
         ]);
 
         return $this;
