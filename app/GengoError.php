@@ -5,6 +5,23 @@ namespace App;
 use App\Translation\Message;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\GengoError
+ *
+ * @property int $id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property int $code
+ * @property string $description
+ * @property int $message_id
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\GengoError whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\GengoError whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\GengoError whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\GengoError whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\GengoError whereMessageId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\GengoError whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class GengoError extends Model
 {
     protected $fillable = [

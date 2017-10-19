@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.5.14 on 2017-10-18.
+ * Generated for Laravel 5.5.14 on 2017-10-19.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -12138,6 +12138,141 @@ namespace Illuminate\Support\Facades {
  
 }
 
+namespace Vinkla\Hashids\Facades { 
+
+    class Hashids {
+        
+        /**
+         * Get the factory instance.
+         *
+         * @return \Vinkla\Hashids\HashidsFactory 
+         * @static 
+         */ 
+        public static function getFactory()
+        {
+            return \Vinkla\Hashids\HashidsManager::getFactory();
+        }
+        
+        /**
+         * Get a connection instance.
+         *
+         * @param string|null $name
+         * @return object 
+         * @static 
+         */ 
+        public static function connection($name = null)
+        {
+            //Method inherited from \GrahamCampbell\Manager\AbstractManager            
+            return \Vinkla\Hashids\HashidsManager::connection($name);
+        }
+        
+        /**
+         * Reconnect to the given connection.
+         *
+         * @param string|null $name
+         * @return object 
+         * @static 
+         */ 
+        public static function reconnect($name = null)
+        {
+            //Method inherited from \GrahamCampbell\Manager\AbstractManager            
+            return \Vinkla\Hashids\HashidsManager::reconnect($name);
+        }
+        
+        /**
+         * Disconnect from the given connection.
+         *
+         * @param string|null $name
+         * @return void 
+         * @static 
+         */ 
+        public static function disconnect($name = null)
+        {
+            //Method inherited from \GrahamCampbell\Manager\AbstractManager            
+            \Vinkla\Hashids\HashidsManager::disconnect($name);
+        }
+        
+        /**
+         * Get the configuration for a connection.
+         *
+         * @param string|null $name
+         * @throws \InvalidArgumentException
+         * @return array 
+         * @static 
+         */ 
+        public static function getConnectionConfig($name = null)
+        {
+            //Method inherited from \GrahamCampbell\Manager\AbstractManager            
+            return \Vinkla\Hashids\HashidsManager::getConnectionConfig($name);
+        }
+        
+        /**
+         * Get the default connection name.
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function getDefaultConnection()
+        {
+            //Method inherited from \GrahamCampbell\Manager\AbstractManager            
+            return \Vinkla\Hashids\HashidsManager::getDefaultConnection();
+        }
+        
+        /**
+         * Set the default connection name.
+         *
+         * @param string $name
+         * @return void 
+         * @static 
+         */ 
+        public static function setDefaultConnection($name)
+        {
+            //Method inherited from \GrahamCampbell\Manager\AbstractManager            
+            \Vinkla\Hashids\HashidsManager::setDefaultConnection($name);
+        }
+        
+        /**
+         * Register an extension connection resolver.
+         *
+         * @param string $name
+         * @param callable $resolver
+         * @return void 
+         * @static 
+         */ 
+        public static function extend($name, $resolver)
+        {
+            //Method inherited from \GrahamCampbell\Manager\AbstractManager            
+            \Vinkla\Hashids\HashidsManager::extend($name, $resolver);
+        }
+        
+        /**
+         * Return all of the created connections.
+         *
+         * @return object[] 
+         * @static 
+         */ 
+        public static function getConnections()
+        {
+            //Method inherited from \GrahamCampbell\Manager\AbstractManager            
+            return \Vinkla\Hashids\HashidsManager::getConnections();
+        }
+        
+        /**
+         * Get the config instance.
+         *
+         * @return \Illuminate\Contracts\Config\Repository 
+         * @static 
+         */ 
+        public static function getConfig()
+        {
+            //Method inherited from \GrahamCampbell\Manager\AbstractManager            
+            return \Vinkla\Hashids\HashidsManager::getConfig();
+        }
+         
+    }
+ 
+}
+
 namespace Laracasts\Flash { 
 
     class Flash {
@@ -14354,6 +14489,8 @@ namespace  {
     class Validator extends \Illuminate\Support\Facades\Validator {}
 
     class View extends \Illuminate\Support\Facades\View {}
+
+    class Hashids extends \Vinkla\Hashids\Facades\Hashids {}
 
     class Flash extends \Laracasts\Flash\Flash {}
  

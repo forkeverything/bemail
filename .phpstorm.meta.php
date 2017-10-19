@@ -3,7 +3,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2017-10-18.
+    * Generated on 2017-10-19.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -41,6 +41,9 @@ namespace PHPSTORM_META {
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'Laracasts\Flash\SessionStore' => \Laracasts\Flash\LaravelSessionStore::class,
         'flash' => \Laracasts\Flash\FlashNotifier::class,
+        'hashids.factory' => \Vinkla\Hashids\HashidsFactory::class,
+        'hashids' => \Vinkla\Hashids\HashidsManager::class,
+        'hashids.connection' => \Hashids\Hashids::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'App\Translation\Contracts\Translator' => \App\Translation\Translators\GengoTranslator::class,
         'App\Payments\Contracts\Accountant' => \App\Payments\Accountants\LaravelCashierAccountant::class,
@@ -174,6 +177,9 @@ namespace PHPSTORM_META {
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'Laracasts\Flash\SessionStore' => \Laracasts\Flash\LaravelSessionStore::class,
         'flash' => \Laracasts\Flash\FlashNotifier::class,
+        'hashids.factory' => \Vinkla\Hashids\HashidsFactory::class,
+        'hashids' => \Vinkla\Hashids\HashidsManager::class,
+        'hashids.connection' => \Hashids\Hashids::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'App\Translation\Contracts\Translator' => \App\Translation\Translators\GengoTranslator::class,
         'App\Payments\Contracts\Accountant' => \App\Payments\Accountants\LaravelCashierAccountant::class,
@@ -307,6 +313,9 @@ namespace PHPSTORM_META {
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'Laracasts\Flash\SessionStore' => \Laracasts\Flash\LaravelSessionStore::class,
         'flash' => \Laracasts\Flash\FlashNotifier::class,
+        'hashids.factory' => \Vinkla\Hashids\HashidsFactory::class,
+        'hashids' => \Vinkla\Hashids\HashidsManager::class,
+        'hashids.connection' => \Hashids\Hashids::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'App\Translation\Contracts\Translator' => \App\Translation\Translators\GengoTranslator::class,
         'App\Payments\Contracts\Accountant' => \App\Payments\Accountants\LaravelCashierAccountant::class,
@@ -440,6 +449,9 @@ namespace PHPSTORM_META {
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'Laracasts\Flash\SessionStore' => \Laracasts\Flash\LaravelSessionStore::class,
         'flash' => \Laracasts\Flash\FlashNotifier::class,
+        'hashids.factory' => \Vinkla\Hashids\HashidsFactory::class,
+        'hashids' => \Vinkla\Hashids\HashidsManager::class,
+        'hashids.connection' => \Hashids\Hashids::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'App\Translation\Contracts\Translator' => \App\Translation\Translators\GengoTranslator::class,
         'App\Payments\Contracts\Accountant' => \App\Payments\Accountants\LaravelCashierAccountant::class,
@@ -573,6 +585,9 @@ namespace PHPSTORM_META {
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'Laracasts\Flash\SessionStore' => \Laracasts\Flash\LaravelSessionStore::class,
         'flash' => \Laracasts\Flash\FlashNotifier::class,
+        'hashids.factory' => \Vinkla\Hashids\HashidsFactory::class,
+        'hashids' => \Vinkla\Hashids\HashidsManager::class,
+        'hashids.connection' => \Hashids\Hashids::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'App\Translation\Contracts\Translator' => \App\Translation\Translators\GengoTranslator::class,
         'App\Payments\Contracts\Accountant' => \App\Payments\Accountants\LaravelCashierAccountant::class,
@@ -706,6 +721,9 @@ namespace PHPSTORM_META {
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'Laracasts\Flash\SessionStore' => \Laracasts\Flash\LaravelSessionStore::class,
         'flash' => \Laracasts\Flash\FlashNotifier::class,
+        'hashids.factory' => \Vinkla\Hashids\HashidsFactory::class,
+        'hashids' => \Vinkla\Hashids\HashidsManager::class,
+        'hashids.connection' => \Hashids\Hashids::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'App\Translation\Contracts\Translator' => \App\Translation\Translators\GengoTranslator::class,
         'App\Payments\Contracts\Accountant' => \App\Payments\Accountants\LaravelCashierAccountant::class,
@@ -839,6 +857,9 @@ namespace PHPSTORM_META {
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'Laracasts\Flash\SessionStore' => \Laracasts\Flash\LaravelSessionStore::class,
         'flash' => \Laracasts\Flash\FlashNotifier::class,
+        'hashids.factory' => \Vinkla\Hashids\HashidsFactory::class,
+        'hashids' => \Vinkla\Hashids\HashidsManager::class,
+        'hashids.connection' => \Hashids\Hashids::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'App\Translation\Contracts\Translator' => \App\Translation\Translators\GengoTranslator::class,
         'App\Payments\Contracts\Accountant' => \App\Payments\Accountants\LaravelCashierAccountant::class,

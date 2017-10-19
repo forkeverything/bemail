@@ -31,6 +31,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\MessageReceipt whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\MessageReceipt whereWordCount($value)
  * @mixin \Eloquent
+ * @property int $amount_charged
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\MessageReceipt whereAmountCharged($value)
  */
 class MessageReceipt extends Model
 {
