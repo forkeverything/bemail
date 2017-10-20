@@ -135,5 +135,7 @@ class MessageFactory
              ->createAttachments()
              ->startTranslation()
              ->sendNotifications();
+
+        return $this->messageModel;
     }
 }

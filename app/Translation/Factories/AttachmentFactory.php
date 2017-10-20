@@ -85,7 +85,7 @@ class AttachmentFactory
      */
     protected function createModel()
     {
-        $this->message->attachments()->create([
+        return $this->message->attachments()->create([
             'file_name' => $this->uploadedFile->hashName(),
             'original_file_name' => $this->uploadedFile->getClientOriginalName(),
             'path' => $this->path,
@@ -98,7 +98,7 @@ class AttachmentFactory
      */
     public function make()
     {
-        $this->setDirectory()
+        return $this->setDirectory()
              ->moveFile()
              ->createModel();
     }
