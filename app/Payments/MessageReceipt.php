@@ -99,6 +99,4 @@ class MessageReceipt extends Model
         return  $creditTransaction ? $creditTransaction->amount : 0;
     }
 
-
-
 }

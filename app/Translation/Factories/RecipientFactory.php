@@ -50,7 +50,7 @@ class RecipientFactory
     /**
      * Create Recipient model.
      *
-     * @return Recipient
+     * @return \Illuminate\Database\Eloquent\Model
      */
     protected function createRecipient()
     {
