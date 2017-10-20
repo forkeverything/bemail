@@ -19,6 +19,14 @@ class MessageTest extends TestCase
 
     use DatabaseTransactions;
 
+    private static $message;
+
+    public function setUp()
+    {
+        parent::setUp();
+        static::$message = factory(Message::class)->create();
+    }
+
     /**
      * @test
      */
@@ -51,9 +59,8 @@ class MessageTest extends TestCase
             'hash',
             'word_count'
         ];
-        $message = factory(Message::class)->create();
         foreach ($dynamicProperties as $property) {
-            $this->assertContains($property, array_keys($message->toArray()));
+            $this->assertContains($property, array_keys(static::$message->toArray()));
         }
     }
 
@@ -62,8 +69,7 @@ class MessageTest extends TestCase
      */
     public function it_fetches_user_that_sent_the_message()
     {
-        $message = factory(Message::class)->create();
-        $this->assertInstanceOf('App\User', $message->sender);
+        $this->assertInstanceOf('App\User', static::$message->sender);
     }
 
     /**
@@ -71,11 +77,10 @@ class MessageTest extends TestCase
      */
     public function it_fetches_recipients_for_the_message()
     {
-        $message = factory(Message::class)->create();
-        $this->assertCount(0, $message->recipients);
+        $this->assertCount(0, static::$message->recipients);
         $recipientIds = factory(Recipient::class, 5)->create()->pluck('id')->toArray();
-        $message->recipients()->sync($recipientIds);
-        $this->assertCount(5, $message->fresh()->recipients);
+        static::$message->recipients()->sync($recipientIds);
+        $this->assertCount(5, static::$message->fresh()->recipients);
     }
 
     /**
@@ -83,12 +88,11 @@ class MessageTest extends TestCase
      */
     public function it_fetches_message_attachments()
     {
-        $message = factory(Message::class)->create();
-        $this->assertCount(0, $message->attachments);
+        $this->assertCount(0, static::$message->attachments);
         factory(Attachment::class, 3)->create([
-            'message_id' => $message->id
+            'message_id' => static::$message->id
         ]);
-        $this->assertCount(3, $message->fresh()->attachments);
+        $this->assertCount(3, static::$message->fresh()->attachments);
     }
 
     /**
@@ -96,8 +100,7 @@ class MessageTest extends TestCase
      */
     public function it_has_a_translation_status()
     {
-        $message = factory(Message::class)->create();
-        $this->assertInstanceOf('App\Translation\TranslationStatus', $message->status);
+        $this->assertInstanceOf('App\Translation\TranslationStatus', static::$message->status);
     }
 
     /**
@@ -105,8 +108,7 @@ class MessageTest extends TestCase
      */
     public function it_has_a_source_language()
     {
-        $message = factory(Message::class)->create();
-        $this->assertInstanceOf('App\Language', $message->sourceLanguage);
+        $this->assertInstanceOf('App\Language', static::$message->sourceLanguage);
     }
 
     /**
@@ -114,8 +116,7 @@ class MessageTest extends TestCase
      */
     public function it_has_a_target_language()
     {
-        $message = factory(Message::class)->create();
-        $this->assertInstanceOf('App\Language', $message->targetLanguage);
+        $this->assertInstanceOf('App\Language', static::$message->targetLanguage);
     }
 
     /**
@@ -123,12 +124,11 @@ class MessageTest extends TestCase
      */
     public function it_fetches_a_receipt()
     {
-        $message = factory(Message::class)->create();
-        $this->assertNull($message->receipt);
+        $this->assertNull(static::$message->receipt);
         $receipt = factory(MessageReceipt::class)->create([
-            'message_id' => $message
+            'message_id' => static::$message
         ]);
-        $this->assertEquals($receipt->id, $message->fresh()->receipt->id);
+        $this->assertEquals($receipt->id, static::$message->fresh()->receipt->id);
     }
 
     /**
@@ -136,12 +136,11 @@ class MessageTest extends TestCase
      */
     public function it_fetches_all_gengo_errors()
     {
-        $message = factory(Message::class)->create();
-        $this->assertCount(0, $message->gengoErrors);
+        $this->assertCount(0, static::$message->gengoErrors);
         factory(GengoError::class, 10)->create([
-            'message_id' => $message->id
+            'message_id' => static::$message->id
         ]);
-        $this->assertCount(10, $message->fresh()->gengoErrors);
+        $this->assertCount(10, static::$message->fresh()->gengoErrors);
     }
 
     /**
@@ -150,9 +149,8 @@ class MessageTest extends TestCase
     public function it_updates_translation_status()
     {
         $status = TranslationStatus::all()->random();
-        $message = factory(Message::class)->create();
-        $message->updatestatus($status);
-        $this->assertEquals($message->translation_status_id, $status->id);
+        static::$message->updatestatus($status);
+        $this->assertEquals(static::$message->translation_status_id, $status->id);
     }
 
     /**
@@ -160,8 +158,7 @@ class MessageTest extends TestCase
      */
     public function it_gets_the_right_word_count()
     {
-        $message = factory(Message::class)->create();
-        $this->assertEquals(str_word_count($message->body), $message->word_count);
+        $this->assertEquals(str_word_count(static::$message->body), static::$message->word_count);
     }
 
     /**
@@ -170,11 +167,10 @@ class MessageTest extends TestCase
      */
     public function it_updates_message_translation_status()
     {
-        $message = factory(Message::class)->create();
         $translationStatuses = TranslationStatus::all();
         foreach ($translationStatuses as $status) {
-            $message->updateStatus($status);
-            $this->assertEquals($message->translation_status_id, $status->id);
+            static::$message->updateStatus($status);
+            $this->assertEquals(static::$message->translation_status_id, $status->id);
         }
     }
 }

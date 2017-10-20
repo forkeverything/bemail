@@ -67,16 +67,6 @@ class MessageReceipt extends Model
     }
 
     /**
-     * The User that paid for the Message.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
      * CreditTransaction associated with this payment.
      * Could potentially be null, User without credits paid in
      * full.
