@@ -5,6 +5,7 @@ namespace App\Translation\Translators;
 use App\GengoError;
 use App\Translation\Contracts\Translator;
 use App\Language;
+use App\Translation\Exceptions\TranslationException;
 use App\Translation\Message;
 use App\Translation\TranslationStatus;
 use Gengo\Config;
@@ -96,11 +97,10 @@ class GengoTranslator implements Translator
 
             // Mark and store error.
             $message->updateStatus(TranslationStatus::error());
-            GengoError::record($message, $response);
+            $gengoError = GengoError::record($message, $response);
 
-            // Things fail silently here because we assume that the error
-            // was system fault and not User. So we'll go back
-            // and attempt to rectify error in background.
+            // Throw error;
+            throw new TranslationException($gengoError->description);
 
         }
     }

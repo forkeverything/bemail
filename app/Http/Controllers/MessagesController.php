@@ -46,18 +46,24 @@ class MessagesController extends Controller
     {
 
         try {
+            // Create Message and begin translation.
             (new MessageFactory($request, Auth::user(), $translator))->make();
         } catch (Exception $e) {
             if(env('APP_ENV') == 'production') {
-                // Catch any and all exceptions to indicate
-                // complete failure and the message will
-                // NOT be translated.
-                throw new TranslationException;
+                // Catch all exceptions, and return back flashing
+                // an error message. Letting the user know
+                // that their message will NOT be sent.
+                flash()->error('Your message could not be sent and you have not been charged. Please try again or contact us for help.');
+                return redirect()->back();
             } else {
                 // In development, just throw the original exception.
                 throw $e;
             }
+            // TODO ::: Notify admin of failure
         }
+
+        // TODO ::: Try to charge user here
+            // If it fails, cancel translator job
 
         flash()->success('Success! Your message will be translated shortly.');
         // Return to compose screen

@@ -35,6 +35,7 @@ class GengoError extends Model
      *
      * @param Message $message
      * @param $gengoResponse
+     * @return $this|Model
      */
     public static function record(Message $message, $gengoResponse)
     {
@@ -45,7 +46,7 @@ class GengoError extends Model
         $msg = $isJobError ? $gengoResponse["err"]["jobs_01"][0]["msg"] : $gengoResponse["err"]["msg"];
         $description = $isJobError ? "job: {$msg}" : "system: {$msg}";
 
-        static::create([
+        return static::create([
             'code' => $code,
             'description' => $description,
             'message_id' => $message->id
