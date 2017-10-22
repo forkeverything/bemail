@@ -29,7 +29,22 @@ Route::post('/account', 'AccountController@postUpdateSettings');
 
 Route::get('/test', function (\App\Translation\Contracts\Translator $translator) {
 
-    return $translator->getLanguagePairs();
+//    dd(gmdate('U'));
+//    dd(hash_hmac('sha1', "1508572868429", env('GENGO_SECRET')));
 
+    $service = new \Gengo\Service;
+
+    $arrayOfLanguagePairs = json_decode($service->getLanguagePairs('zh'))->response;
+
+
+    return array_filter($arrayOfLanguagePairs, function ($languagePair) {
+        return true;
+    });
+
+});
+
+Route::get('/mail/test', function () {
+    Mail::to('mike@bemail.io')->send(new \App\Mail\TestMail());
+    return 'sent!';
 });
 
