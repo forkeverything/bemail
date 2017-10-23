@@ -8,6 +8,7 @@
                 <div class="panel-heading">Register</div>
 
                 <div class="panel-body">
+
                     <form class="form-horizontal" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
 
@@ -58,6 +59,19 @@
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group {{ $errors->has('lang_default') ? ' has-error' : '' }}">
+                            <label for="register-default-language" class="col-md-4 control-label">Your Language</label>
+
+                            <div class="col-md-6">
+                                <language-picker name="lang_default" :languages="{{ $languages }}" old-input="{{ old('lang_default') }}"></language-picker>
+                                @if ($errors->has('lang_default'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('lang_default') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
 

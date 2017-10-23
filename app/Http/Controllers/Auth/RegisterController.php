@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Language;
+use App\Rules\LanguageCode;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -51,6 +53,7 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'lang_default' => ['required', new LanguageCode]
         ]);
     }
 
@@ -66,6 +69,21 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'language_id' => Language::findByCode($data['lang_default'])->id
         ]);
+    }
+
+    /**
+     * Show the registration form view.
+     * Override the trait function to our own data to the
+     * view.
+     *
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showRegistrationForm()
+    {
+        $languages = Language::all();
+        return view('auth.register', compact('languages'));
     }
 }
