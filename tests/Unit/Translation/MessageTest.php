@@ -67,6 +67,19 @@ class MessageTest extends TestCase
     /**
      * @test
      */
+    public function it_retrieves_these_properties_as_carbon_dates()
+    {
+        $fields = [
+            'created_at'
+        ];
+        foreach ($fields as $field) {
+            $this->assertInstanceOf('Illuminate\Support\Carbon', static::$message->{$field});
+        }
+    }
+
+    /**
+     * @test
+     */
     public function it_fetches_user_that_sent_the_message()
     {
         $this->assertInstanceOf('App\User', static::$message->sender);

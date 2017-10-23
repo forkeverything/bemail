@@ -75,6 +75,15 @@ class Message extends Model
     ];
 
     /**
+     * Automatically turn these properties into Carbon instances.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'created_at'
+    ];
+
+    /**
      * User that sent this message.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

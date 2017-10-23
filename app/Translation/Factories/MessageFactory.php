@@ -6,8 +6,10 @@ namespace App\Translation\Factories;
 use App\Translation\Contracts\Translator;
 use App\Http\Requests\CreateMessageRequest;
 use App\Language;
+use App\Translation\Mail\ReceivedRequest;
 use App\Translation\TranslationStatus;
 use App\User;
+use Illuminate\Support\Facades\Mail;
 
 class MessageFactory
 {
@@ -115,9 +117,20 @@ class MessageFactory
         return $this;
     }
 
+    /**
+     * Notify sender that we've received a request
+     * to translate a Message.
+     *
+     * @return $this
+     */
     protected function sendNotifications()
     {
-        // TODO ::: Send email notifications / Fire events that send emails
+        $this->messageModel->load(['recipients', 'sourceLanguage', 'targetLanguage', 'receipt.creditTransaction']);
+
+        // Send email manually. In the future, if we need to do a lot of subsequent tasks here we should
+        // send the email off in a event-listener or through a notification (multiple channels).
+        Mail::to($this->messageModel->sender)->send(new ReceivedRequest($this->messageModel));
+
         return $this;
     }
 
