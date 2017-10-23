@@ -22,7 +22,8 @@ class AccountController extends Controller
     public function getSettings()
     {
         return view('account.settings', [
-            'user' => Auth::user()
+            'user' => Auth::user(),
+            'languages' => Language::all()
         ]);
     }
 

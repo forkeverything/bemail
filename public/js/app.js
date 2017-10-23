@@ -42765,13 +42765,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "text-danger"
   }, [_c('small', [_vm._v(_vm._s(_vm.pwdNewError))])]) : _vm._e()]), _vm._v(" "), _vm._m(2)])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('label', [_c('small', [_vm._v("Current")])])
+  return _c('label', {
+    staticClass: "control-label"
+  }, [_c('small', [_vm._v("Current")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('label', [_c('small', [_vm._v("New")])])
+  return _c('label', {
+    staticClass: "control-label"
+  }, [_c('small', [_vm._v("New")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "form-group"
-  }, [_c('label', [_c('small', [_vm._v("Confirm New")])]), _vm._v(" "), _c('input', {
+  }, [_c('label', {
+    staticClass: "control-label"
+  }, [_c('small', [_vm._v("Confirm New")])]), _vm._v(" "), _c('input', {
     staticClass: "form-control",
     attrs: {
       "type": "password",
