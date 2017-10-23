@@ -12,5 +12,6 @@ If you run into any issues, have any questions, or suggestions, please do let us
 <br>
 Best,
 <br>
-Mike Wu (<a href="mailto:mike@bemail.io">mike@bemail.io</a>)
+Mike W.
+<a href="mailto:mike@bemail.io">mike@bemail.io</a>
 <br>
