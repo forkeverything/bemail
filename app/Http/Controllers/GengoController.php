@@ -23,6 +23,7 @@ class GengoController extends Controller
         // Gengo posts the response inside a 'job' parameter
         $body = json_decode($request->all()["job"], true);
         $messageHash = json_decode($body["custom_data"], true)["message_id"];
+        // Get the status according to Gengo's API
         $status = $body["status"];
 
         // What Message is this callback for?
@@ -39,9 +40,12 @@ class GengoController extends Controller
                 // Update message status
                 $message->updateStatus(TranslationStatus::approved());
                 // TODO ::: Finish the rest of the callback
-                // Send out actual email
-                // Send notification to sender
-                    // remember to eager-load recipients, sourceLanguage, targetLanguage
+                // If sending to recipient
+                    // Send out actual email
+                    // Send notification to sender
+                        // remember to eager-load recipients, sourceLanguage, targetLanguage
+                // Else sending to sender (self)
+                    // Send translated message
                 break;
             default:
                 break;
