@@ -1,8 +1,9 @@
 <?php
 
+use App\Translation\MessageError;
 use Faker\Generator as Faker;
 
-$factory->define(\App\GengoError::class, function (Faker $faker) {
+$factory->define(MessageError::class, function (Faker $faker) {
     return [
         'code' => $faker->numberBetween(0, 4000),
         'description' => $faker->sentence(5),

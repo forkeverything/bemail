@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
-use App\GengoError;
 use App\Language;
 use App\Payments\MessageReceipt;
 use App\Translation\Attachment;
 use App\Translation\Message;
+use App\Translation\MessageError;
 use App\Translation\Recipient;
 use App\Translation\TranslationStatus;
 use App\User;
@@ -134,13 +134,13 @@ class MessageTest extends TestCase
     /**
      * @test
      */
-    public function it_fetches_all_gengo_errors()
+    public function it_fetches_message_error()
     {
-        $this->assertCount(0, static::$message->gengoErrors);
-        factory(GengoError::class, 10)->create([
+        $this->assertNull(static::$message->error);
+        factory(MessageError::class)->create([
             'message_id' => static::$message->id
         ]);
-        $this->assertCount(10, static::$message->fresh()->gengoErrors);
+        $this->assertNotNull(static::$message->fresh()->error);
     }
 
     /**

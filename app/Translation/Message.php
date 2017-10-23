@@ -2,7 +2,6 @@
 
 namespace App\Translation;
 
-use App\GengoError;
 use App\Language;
 use App\Payments\MessageReceipt;
 use App\Traits\Hashable;
@@ -42,8 +41,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereUserId($value)
  * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\GengoError[] $gengoErrors
  * @property-read mixed $hash
+ * @property-read \App\Translation\MessageError $error
  */
 class Message extends Model
 {
@@ -156,16 +155,13 @@ class Message extends Model
     }
 
     /**
-     * Errors from Gengo's API.
-     * These are the errors that occurred when trying to translate
-     * this message. Receive errors from the Gengo API when
-     * we post the job.
+     * Error when trying to translate Message.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function gengoErrors()
+    public function error()
     {
-        return $this->hasMany(GengoError::class, 'message_id');
+        return $this->hasOne(MessageError::class, 'message_id');
     }
 
     /**

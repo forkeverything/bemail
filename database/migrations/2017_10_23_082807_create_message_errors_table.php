@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGengoErrorsTable extends Migration
+class CreateMessageErrorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateGengoErrorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('gengo_errors', function (Blueprint $table) {
+        Schema::create('message_errors', function (Blueprint $table) {
 
             /**
              * Auto
@@ -46,6 +46,6 @@ class CreateGengoErrorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gengo_errors');
+        Schema::dropIfExists('message_errors');
     }
 }

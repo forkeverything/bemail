@@ -2,11 +2,11 @@
 
 namespace App\Translation\Translators;
 
-use App\GengoError;
 use App\Translation\Contracts\Translator;
 use App\Language;
 use App\Translation\Exceptions\TranslationException;
 use App\Translation\Message;
+use App\Translation\MessageError;
 use App\Translation\TranslationStatus;
 use Gengo\Config;
 use Gengo\Jobs as GengoJobs;
@@ -14,6 +14,9 @@ use Gengo\Service as GengoService;
 
 class GengoTranslator implements Translator
 {
+    /**
+     * GengoTranslator constructor.
+     */
     public function __construct()
     {
         $this->setup();
@@ -76,8 +79,10 @@ class GengoTranslator implements Translator
      * Adds translation job to Gengo's internal
      * queue.
      *
+     *–
      * @param Message $message
      * @return void
+     * @throws TranslationException
      */
     public function translate(Message $message)
     {
@@ -97,12 +102,35 @@ class GengoTranslator implements Translator
 
             // Mark and store error.
             $message->updateStatus(TranslationStatus::error());
-            $gengoError = GengoError::record($message, $response);
+            $messageError = $this->recordError($message, $response);
 
             // Throw error;
-            throw new TranslationException($gengoError->description);
+            throw new TranslationException($messageError->description);
 
         }
+    }
+
+    /**
+     * Parse error from response and record it for given Message.
+     *
+     * @param Message $message
+     * @param $response
+     * @return $this|\Illuminate\Database\Eloquent\Model
+     */
+    protected function recordError(Message $message, $response)
+    {
+        // Error could be due to the job (ie. unsupported language pair) or system (not enough Gengo credits).
+        $isJobError = array_key_exists("jobs_01", $response["err"]);
+
+        $code = $isJobError ? $response["err"]["jobs_01"][0]["code"] : $response["err"]["code"];
+        $msg = $isJobError ? $response["err"]["jobs_01"][0]["msg"] : $response["err"]["msg"];
+        $description = $isJobError ? "Gengo Job: {$msg}" : "Gengo System: {$msg}";
+
+        return MessageError::create([
+            'code' => $code,
+            'description' => $description,
+            'message_id' => $message->id
+        ]);
     }
 
     /**
