@@ -44,6 +44,7 @@ Route::get('/test', function (\App\Translation\Contracts\Translator $translator)
 });
 
 Route::get('/mail/test', function () {
+    return new \App\Mail\WelcomeMail(\App\User::first());
     Mail::to('mike@bemail.io')->send(new \App\Mail\TestMail());
     return 'sent!';
 });
