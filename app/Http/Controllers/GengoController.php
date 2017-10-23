@@ -40,7 +40,8 @@ class GengoController extends Controller
                 $message->updateStatus(TranslationStatus::approved());
                 // TODO ::: Finish the rest of the callback
                 // Send out actual email
-                // Send notification to user
+                // Send notification to sender
+                    // remember to eager-load recipients, sourceLanguage, targetLanguage
                 break;
             default:
                 break;
