@@ -26,9 +26,15 @@ class ReceivedRequest extends Mailable implements ShouldQueue
      *
      * @param Message $message
      */
-    public function  __construct(Message $message)
+    public function __construct(Message $message)
     {
-        $this->translationMessage = $message;
+        // Eager-load relations
+        $this->translationMessage = $message->load([
+            'recipients',
+            'sourceLanguage',
+            'targetLanguage',
+            'receipt.creditTransaction'
+        ]);
     }
 
     /**

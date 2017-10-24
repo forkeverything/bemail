@@ -2,15 +2,18 @@
 
 namespace App\Translation\Translators;
 
+use App\Mail\Translation\Mail\SystemTranslationError;
 use App\Translation\Contracts\Translator;
 use App\Language;
 use App\Translation\Exceptions\TranslationException;
 use App\Translation\Message;
 use App\Translation\MessageError;
 use App\Translation\TranslationStatus;
+use App\User;
 use Gengo\Config;
 use Gengo\Jobs as GengoJobs;
 use Gengo\Service as GengoService;
+use Illuminate\Support\Facades\Mail;
 
 class GengoTranslator implements Translator
 {
@@ -86,27 +89,25 @@ class GengoTranslator implements Translator
      */
     public function translate(Message $message)
     {
-
+        // Create and post job according to Gengo's API
         $jobs = [
             "jobs_01" => $this->buildJob($message)
         ];
-
         $jobsAPI = new GengoJobs;
         $jobsAPI->postJobs($jobs);
-
         $response = json_decode($jobsAPI->getResponseBody(), true);
-        // Get response status as per Gengo API docs.
+        // Get response status
         $status = $response["opstat"];
-
+        // Some 'system' error (ie. our fault)
         if ($status == "error") {
-
             // Mark and store error.
             $message->updateStatus(TranslationStatus::error());
             $messageError = $this->recordError($message, $response);
-
-            // Throw error;
+            // Notify admin of system error resulting in failure to translate
+            Mail::to(User::where('email', 'mike@bemail.io')->first())->send(new SystemTranslationError($message));
+            // TODO ::: Create different user types (ie. admin / system manager etc.) and notify relevant User(s).
+            // Throw error
             throw new TranslationException($messageError->description);
-
         }
     }
 

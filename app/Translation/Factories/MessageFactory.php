@@ -3,13 +3,10 @@
 
 namespace App\Translation\Factories;
 
-use App\Translation\Contracts\Translator;
 use App\Http\Requests\CreateMessageRequest;
 use App\Language;
-use App\Translation\Mail\ReceivedRequest;
 use App\Translation\TranslationStatus;
 use App\User;
-use Illuminate\Support\Facades\Mail;
 
 class MessageFactory
 {
@@ -36,24 +33,16 @@ class MessageFactory
     protected $messageModel;
 
     /**
-     * Translator that handles ALL translating behavior.
-     *
-     * @var Translator
-     */
-    protected $translator;
-
-    /**
      * Recipient models.
      *
      * @var array
      */
     protected $recipients = [];
 
-    public function __construct(CreateMessageRequest $createMessageRequest, User $user, Translator $translator)
+    public function __construct(CreateMessageRequest $createMessageRequest, User $user)
     {
         $this->user = $user;
         $this->formRequest = $createMessageRequest;
-        $this->translator = $translator;
     }
 
     /**
@@ -107,34 +96,6 @@ class MessageFactory
     }
 
     /**
-     * Initiate translating.
-     *
-     * @return $this
-     */
-    protected function startTranslation()
-    {
-        $this->translator->translate($this->messageModel);
-        return $this;
-    }
-
-    /**
-     * Notify sender that we've received a request
-     * to translate a Message.
-     *
-     * @return $this
-     */
-    protected function sendNotifications()
-    {
-        $this->messageModel->load(['recipients', 'sourceLanguage', 'targetLanguage', 'receipt.creditTransaction']);
-
-        // Send email manually. In the future, if we need to do a lot of subsequent tasks here we should
-        // send the email off in a event-listener or through a notification (multiple channels).
-        Mail::to($this->messageModel->sender)->send(new ReceivedRequest($this->messageModel));
-
-        return $this;
-    }
-
-    /**
      * Make a new Message.
      *
      * This is the main method that kick-starts the whole sending a Message.
@@ -145,9 +106,7 @@ class MessageFactory
     {
         $this->createMessage()
              ->createRecipients()
-             ->createAttachments()
-             ->startTranslation()
-             ->sendNotifications();
+             ->createAttachments();
 
         return $this->messageModel;
     }

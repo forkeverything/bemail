@@ -44,7 +44,9 @@ Route::get('/test', function (\App\Translation\Contracts\Translator $translator)
 });
 
 Route::get('/mail/test', function () {
-//    $message = factory(\App\Translation\Message::class)->create();
+    $message = factory(\App\Translation\Message::class)->create();
+    factory(\App\Translation\MessageError::class)->create(['message_id' => $message->id]);
+    return new \App\Translation\Mail\SystemTranslationError($message);
 //    $recipients = factory(\App\Translation\Recipient::class, 5)->create()->pluck('id')->toArray();
 //    $message->recipients()->sync($recipients);
     $message = \App\Translation\Message::with(['recipients', 'sourceLanguage', 'targetLanguage', 'receipt.creditTransaction'])->first();

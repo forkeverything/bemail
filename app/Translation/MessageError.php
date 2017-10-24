@@ -33,4 +33,13 @@ class MessageError extends Model
         'description',
         'message_id'
     ];
+
+    /**
+     * Automatically instantiate these properties as Carbon instances
+     *
+     * @var array
+     */
+    protected $dates = [
+        'created_at'
+    ];
 }
