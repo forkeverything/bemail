@@ -32,16 +32,9 @@ class MessageFactoryTest extends TestCase
             'lang_tgt' => $targetLanguage->code
         ];
 
-        // Even though we're mocking an interface, it works just
-        // the same as if we were mocking the concrete class!
-        $fakeTranslator = Mockery::mock('App\Translation\Contracts\Translator');
-        // Call translate
-        $fakeTranslator->shouldReceive('translate')
-                       ->once();
-
         $fakeRequest = new CreateMessageRequest($formFields);
 
-        $message = (new MessageFactory($fakeRequest, $user, $fakeTranslator))->make();
+        $message = (new MessageFactory($fakeRequest, $user))->make();
 
         // Check Message Model fields are stored correctly
         $this->assertEquals($formFields['subject'], $message->subject);
@@ -54,7 +47,5 @@ class MessageFactoryTest extends TestCase
         $this->assertCount(2, $message->recipients);
         $this->assertNotNull($message->recipients()->where('email', 'sam@bemail.io')->first());
         $this->assertNotNull($message->recipients()->where('email', 'john@bemail.io')->first());
-
-
     }
 }
