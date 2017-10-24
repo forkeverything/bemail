@@ -1,4 +1,4 @@
-,.l6l6?php
+<?php
 
 namespace App\Http\Controllers;
 
@@ -20,6 +20,8 @@ class GengoController extends Controller
     public function postPickUp(Request $request)
     {
 
+        \Log::info(json_decode($request->all()["job"], true));
+
         // Gengo posts the response inside a 'job' parameter
         $body = json_decode($request->all()["job"], true);
         $messageHash = json_decode($body["custom_data"], true)["message_id"];
@@ -38,10 +40,20 @@ class GengoController extends Controller
             // Approved: job (completed translation)
             case "approved":
 
+                // Store Translated Body
+
                 // Update message status
                 $message->updateStatus(TranslationStatus::approved());
 
                 // TODO ::: Finish the rest of the callback
+
+                if($message->send_to_self) {
+                    // Send translated message back to sender
+                } else {
+                    // Send to recipient(s)
+
+                }
+
                 // If sending to recipient
                     // Send out actual email
                         // If auto-translate-reply is off
