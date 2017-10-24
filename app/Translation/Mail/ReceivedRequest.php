@@ -26,7 +26,7 @@ class ReceivedRequest extends Mailable implements ShouldQueue
      *
      * @param Message $message
      */
-    public function __construct(Message $message)
+    public function  __construct(Message $message)
     {
         $this->translationMessage = $message;
     }

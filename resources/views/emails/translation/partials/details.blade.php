@@ -1,5 +1,7 @@
 <h3>Details</h3>
-<strong>Received: </strong>{{ $message->created_at->format('Y/m/d H:i') }}
+<strong>Received: </strong>
+<br>
+{{ $message->created_at->format('Y/m/d H:i') }}
 <br>
 <strong>Recipients: </strong> @foreach($message->recipients as $recipient)<a href="mailto:{{ $recipient->email }}">{{ $recipient->email }}</a>@if(! $loop->last), @endif @endforeach
 <br>
