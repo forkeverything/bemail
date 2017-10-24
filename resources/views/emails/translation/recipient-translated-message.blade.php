@@ -1,4 +1,4 @@
-Hello,
+Hi,
 <br>
 <br>
 You have received a translated message from {{ $translatedMessage->sender->name }} ({{ $translatedMessage->sender->email }}).

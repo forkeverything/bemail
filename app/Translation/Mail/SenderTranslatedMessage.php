@@ -9,7 +9,14 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class RecipientTranslatedMessage extends Mailable implements ShouldQueue
+/**
+ * Mail for the Sender when Message has been translated.
+ * This is the email that's sent when the 'send_to_self' option
+ * is enabled.
+ *
+ * @package App\Mail\Translation\Mail
+ */
+class SenderTranslatedMessage extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels, TranslatedMail;
 
@@ -25,7 +32,7 @@ class RecipientTranslatedMessage extends Mailable implements ShouldQueue
      */
     public function __construct(Message $translatedMessage)
     {
-        $this->translatedMessage = $translatedMessage->load(['sender', 'sourceLanguage']);
+        $this->translatedMessage = $translatedMessage;
     }
 
     /**
@@ -35,14 +42,8 @@ class RecipientTranslatedMessage extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        if ($this->translatedMessage->autoTranslateReply()) {
-            $this->from("reply_{$this->translatedMessage->hash}@in.bemail.io", $this->translatedMessage->sender->name);
-        } else {
-            $this->from($this->translatedMessage->sender->email, $this->translatedMessage->sender->name);
-        }
-
         return $this->setSubject()
                     ->includeAttachments()
-                    ->view('emails.translation.recipient-translated-message');
+                    ->view('emails.translation.sender-translated-message');
     }
 }

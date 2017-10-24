@@ -25,7 +25,7 @@ class MessageSent extends Mailable implements ShouldQueue
     public function __construct(Message $message)
     {
 
-        $this->translatedMessage = $message;
+        $this->translatedMessage = $message->load(['recipients', 'sourceLanguage', 'targetLanguage']);
     }
 
     /**
