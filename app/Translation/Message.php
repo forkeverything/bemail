@@ -58,6 +58,8 @@ class Message extends Model
         'subject',
         'body',
         'translated_body',
+        'auto_translate_reply',
+        'send_to_self',
         'user_id',
         'translation_status_id',
         'lang_src_id',

@@ -36,6 +36,8 @@ class MessageTest extends TestCase
             'subject' => 'Super important message',
             'body' => 'Please translate this',
             'translated_body' => 'Some translated text',
+            'auto_translate_reply' => 0,
+            'send_to_self' => 1,
             'user_id' => factory(User::class)->create()->id,
             'translation_status_id' => TranslationStatus::available()->id,
             'lang_src_id' => 1,

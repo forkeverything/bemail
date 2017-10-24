@@ -29,6 +29,8 @@ class CreateMessagesTable extends Migration
             $table->string('subject')->nullable();
             $table->text('body');
             $table->text('translated_body')->nullable();
+            $table->boolean('auto_translate_reply')->default(1);
+            $table->boolean('send_to_self')->default(0);
 
             /**
              * Relationships
