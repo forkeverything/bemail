@@ -44,7 +44,6 @@ class MessagesController extends Controller
      */
     public function postSendMessage(CreateMessageRequest $request, Translator $translator)
     {
-
         try {
             // Create Message and begin translation.
             (new MessageFactory($request, Auth::user(), $translator))->make();

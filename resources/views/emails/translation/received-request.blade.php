@@ -8,12 +8,13 @@ Messages usually take between 1-2 hours to be translated and sent. Once your mes
 <br>
 @include('emails.translation.partials.details', ['message' => $translationMessage])
 <br>
-<h3>Payment</h3>
-<strong>Unit Price:</strong> $ {{ $translationMessage->receipt->cost_per_word/100 }}/word
-<br>
-<strong>Credits Used:</strong> {{ $translationMessage->receipt->creditTransaction->amount }}
-<br>
-<strong>Amount Charge:</strong> $ {{ $translationMessage->receipt->amount_charged/100 }}
-<br>
+<!-- TODO ::: Uncomment after charging user has been implemented -->
+{{--<h3>Payment</h3>--}}
+{{--<strong>Unit Price:</strong> $ {{ $translationMessage->receipt->cost_per_word/100 }}/word--}}
+{{--<br>--}}
+{{--<strong>Credits Used:</strong> {{ $translationMessage->receipt->creditTransaction->amount }}--}}
+{{--<br>--}}
+{{--<strong>Amount Charge:</strong> $ {{ $translationMessage->receipt->amount_charged/100 }}--}}
+{{--<br>--}}
 <h3>Message</h3>
 {{ $translationMessage->body }}
