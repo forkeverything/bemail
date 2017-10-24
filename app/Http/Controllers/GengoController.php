@@ -1,4 +1,4 @@
-<?php
+,.l6l6?php
 
 namespace App\Http\Controllers;
 
@@ -37,15 +37,23 @@ class GengoController extends Controller
                 break;
             // Approved: job (completed translation)
             case "approved":
+
                 // Update message status
                 $message->updateStatus(TranslationStatus::approved());
+
                 // TODO ::: Finish the rest of the callback
                 // If sending to recipient
                     // Send out actual email
+                        // If auto-translate-reply is off
+                            // from address should be sender email
+                        // else
+                            // use message hash to make a from address to reply to
+                            // to have it automatically translated
                     // Send notification to sender
                         // remember to eager-load recipients, sourceLanguage, targetLanguage
                 // Else sending to sender (self)
                     // Send translated message
+
                 break;
             default:
                 break;
