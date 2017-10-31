@@ -42964,7 +42964,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }
-  }), _vm._v("Auto-Translate Reply")]), _vm._v(" "), _c('label', {
+  }), _c('span', {
+    attrs: {
+      "data-toggle": "tooltip",
+      "title": "All replies will be translated into your default language at a fee to you."
+    }
+  }, [_vm._v("Auto-Translate Reply")])]), _vm._v(" "), _c('label', {
     staticClass: "checkbox-inline"
   }, [_c('input', {
     directives: [{
@@ -42998,7 +43003,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }
-  }), _vm._v("Send to Self")])])
+  }), _c('span', {
+    attrs: {
+      "data-toggle": "tooltip",
+      "title": "Translated message will be sent back to you only."
+    }
+  }, [_vm._v("Send to Self")])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
