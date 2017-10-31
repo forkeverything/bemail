@@ -8366,6 +8366,10 @@ button.close {
   height: auto;
 }
 
+.recipients-input > .input.disabled {
+  cursor: not-allowed;
+}
+
 .recipients-input .input-wrap {
   display: inline-block;
   margin-bottom: 6px;

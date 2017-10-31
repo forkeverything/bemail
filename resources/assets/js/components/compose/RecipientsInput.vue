@@ -2,11 +2,14 @@
     <div class="recipients-input"
          @click="focusInput"
          ref="container"
+         :class="{
+            'disabled': disabled
+         }"
     >
         <div class="error" v-show="showError">
             {{ validateError }}
         </div>
-        <div class="input form-control">
+        <div class="input form-control" :class="{ 'disabled': disabled }">
             <input type="hidden" name="recipients" :value="value">
             <div class="input-wrap" v-if="inputPosition === 0">
                 <tag-input v-model="newTag"
@@ -14,6 +17,7 @@
                            :remove-tag="removeTag"
                            :focus-tag="focusTag"
                            :input-position="inputPosition"
+                           :is-disabled="disabled"
                 >
                 </tag-input>
             </div>
@@ -27,6 +31,7 @@
                         @keydown.delete.prevent.stop="removeTag(index)"
                         @keydown.right.prevent.stop="rightTag(index)"
                         :key="index"
+                        :disabled="disabled"
                 >
                     {{ tag }}
                 </button>
@@ -51,7 +56,8 @@
                 newTag: '',
                 inputPosition: 0,
                 showError: false,
-                validateError: ''
+                validateError: '',
+                disabled: false
             }
         },
         computed: {
@@ -65,6 +71,7 @@
         props: ['old-input'],
         methods: {
             focusInput() {
+                if(this.disabled) return;
                 $(this.$refs.container).find('.tag-input input').focus();
             },
             addTag: function (endAddingRecipient) {
@@ -138,6 +145,9 @@
             if(this.oldInput) {
                 this.tags = this.oldInput.split(',');
             }
+            vueGlobalEventBus.$on('send-to-self', (val) => {
+                this.disabled = val;
+            });
         }
     }
 </script>

@@ -28,6 +28,8 @@ class MessageFactoryTest extends TestCase
             'recipients' => 'sam@bemail.io,john@bemail.io',
             'subject' => 'Super important message.',
             'body' => 'Please translate this.',
+            'auto_translate_reply' => 'on',
+//            'send_to_self' => null,                               // Intentionally left blank (unchecked checkbox isn't sent in request)
             'lang_src' => $sourceLanguage->code,
             'lang_tgt' => $targetLanguage->code
         ];
@@ -39,6 +41,8 @@ class MessageFactoryTest extends TestCase
         // Check Message Model fields are stored correctly
         $this->assertEquals($formFields['subject'], $message->subject);
         $this->assertEquals($formFields['body'], $message->body);
+        $this->assertEquals(1, $message->auto_translate_reply);
+        $this->assertEquals(0, $message->send_to_self);
         $this->assertEquals($sourceLanguage->id, $message->lang_src_id);
         $this->assertEquals($targetLanguage->id, $message->lang_tgt_id);
         $this->assertEquals(TranslationStatus::available()->id, $message->translation_status_id);

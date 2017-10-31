@@ -55,6 +55,8 @@ class MessageFactory
         $this->messageModel = $this->user->messages()->create([
             'subject' => $this->formRequest->subject,
             'body' => $this->formRequest->body,
+            'auto_translate_reply' => !! $this->formRequest->auto_translate_reply,
+            'send_to_self' => !! $this->formRequest->send_to_self,
             'lang_src_id' => Language::findByCode($this->formRequest->lang_src)->id,
             'lang_tgt_id' => Language::findByCode($this->formRequest->lang_tgt)->id,
             'translation_status_id' => TranslationStatus::available()->id
@@ -70,6 +72,7 @@ class MessageFactory
      */
     protected function createRecipients()
     {
+        if($this->formRequest->send_to_self) return $this;
         $emails = explode(',', $this->formRequest->recipients);
         foreach ($emails as $email) {
             $recipient = (new RecipientFactory($this->messageModel, $email))->make();

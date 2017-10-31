@@ -897,8 +897,12 @@ Vue.component('language-picker', __webpack_require__(38));
 Vue.component('recipients-input', __webpack_require__(41));
 Vue.component('tag-input', __webpack_require__(44));
 Vue.component('file-input', __webpack_require__(47));
+Vue.component('message-options', __webpack_require__(65));
 // Account
 Vue.component('change-password-field', __webpack_require__(50));
+
+// Event
+window.vueGlobalEventBus = new Vue();
 
 /**
  * Vue Instance
@@ -42127,6 +42131,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -42135,7 +42144,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             newTag: '',
             inputPosition: 0,
             showError: false,
-            validateError: ''
+            validateError: '',
+            disabled: false
         };
     },
     computed: {
@@ -42149,6 +42159,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['old-input'],
     methods: {
         focusInput: function focusInput() {
+            if (this.disabled) return;
             $(this.$refs.container).find('.tag-input input').focus();
         },
 
@@ -42221,11 +42232,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     mounted: function mounted() {
+        var _this2 = this;
+
         this.inputPosition = this.tags.length;
         // If we have an old input (ie. after validation error)
         if (this.oldInput) {
             this.tags = this.oldInput.split(',');
         }
+        vueGlobalEventBus.$on('send-to-self', function (val) {
+            _this2.disabled = val;
+        });
     }
 });
 
@@ -42237,6 +42253,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     ref: "container",
     staticClass: "recipients-input",
+    class: {
+      'disabled': _vm.disabled
+    },
     on: {
       "click": _vm.focusInput
     }
@@ -42249,7 +42268,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "error"
   }, [_vm._v("\n        " + _vm._s(_vm.validateError) + "\n    ")]), _vm._v(" "), _c('div', {
-    staticClass: "input form-control"
+    staticClass: "input form-control",
+    class: {
+      'disabled': _vm.disabled
+    }
   }, [_c('input', {
     attrs: {
       "type": "hidden",
@@ -42264,7 +42286,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "remove-tag": _vm.removeTag,
       "focus-tag": _vm.focusTag,
-      "input-position": _vm.inputPosition
+      "input-position": _vm.inputPosition,
+      "is-disabled": _vm.disabled
     },
     on: {
       "add-tag": _vm.addTag
@@ -42281,7 +42304,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       key: index,
       staticClass: "single-tag btn btn-tag",
       attrs: {
-        "type": "button"
+        "type": "button",
+        "disabled": _vm.disabled
       },
       on: {
         "click": function($event) {
@@ -42399,6 +42423,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -42406,7 +42431,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             inputWidth: '20px'
         };
     },
-    props: ['value', 'remove-tag', 'input-position', 'focus-tag'],
+    props: ['value', 'remove-tag', 'input-position', 'focus-tag', 'is-disabled'],
     watch: {
         value: function value() {
             var _this = this;
@@ -42459,6 +42484,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     style: ({
       width: _vm.inputWidth
     }),
+    attrs: {
+      "disabled": _vm.isDisabled
+    },
     domProps: {
       "value": _vm.value
     },
@@ -42804,6 +42832,181 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(66),
+  /* template */
+  __webpack_require__(67),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/Mike-Personal/Dropbox/Code/bemail/resources/assets/js/components/compose/MessageOptions.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] MessageOptions.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-437e4982", Component.options)
+  } else {
+    hotAPI.reload("data-v-437e4982", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 66 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            disableAutoTranslate: false,
+            autoTranslateReply: 1,
+            sendToSelf: 0
+        };
+    },
+    watch: {
+        sendToSelf: function sendToSelf(val) {
+            this.disableAutoTranslate = val;
+            this.autoTranslateReply = !val;
+            vueGlobalEventBus.$emit('send-to-self', val);
+        }
+    },
+    props: ['old-auto-translate-reply', 'old-send-to-self'],
+    methods: {},
+    mounted: function mounted() {
+        this.autoTranslateReply = this.oldAutoTranslateReply ? 1 : 0;
+        this.sendToSelf = this.oldSendToSelf ? 1 : 0;
+    }
+});
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "message-options"
+  }, [_c('label', {
+    staticClass: "checkbox-inline",
+    class: {
+      'disabled': _vm.disableAutoTranslate
+    }
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.autoTranslateReply),
+      expression: "autoTranslateReply"
+    }],
+    attrs: {
+      "type": "checkbox",
+      "name": "auto_translate_reply",
+      "disabled": _vm.disableAutoTranslate
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.autoTranslateReply) ? _vm._i(_vm.autoTranslateReply, null) > -1 : (_vm.autoTranslateReply)
+    },
+    on: {
+      "__c": function($event) {
+        var $$a = _vm.autoTranslateReply,
+          $$el = $event.target,
+          $$c = $$el.checked ? (true) : (false);
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && (_vm.autoTranslateReply = $$a.concat($$v))
+          } else {
+            $$i > -1 && (_vm.autoTranslateReply = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.autoTranslateReply = $$c
+        }
+      }
+    }
+  }), _vm._v("Auto-Translate Reply")]), _vm._v(" "), _c('label', {
+    staticClass: "checkbox-inline"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.sendToSelf),
+      expression: "sendToSelf"
+    }],
+    attrs: {
+      "type": "checkbox",
+      "name": "send_to_self"
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.sendToSelf) ? _vm._i(_vm.sendToSelf, null) > -1 : (_vm.sendToSelf)
+    },
+    on: {
+      "__c": function($event) {
+        var $$a = _vm.sendToSelf,
+          $$el = $event.target,
+          $$c = $$el.checked ? (true) : (false);
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && (_vm.sendToSelf = $$a.concat($$v))
+          } else {
+            $$i > -1 && (_vm.sendToSelf = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.sendToSelf = $$c
+        }
+      }
+    }
+  }), _vm._v("Send to Self")])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-437e4982", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

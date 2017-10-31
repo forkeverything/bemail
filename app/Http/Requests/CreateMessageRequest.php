@@ -28,7 +28,7 @@ class CreateMessageRequest extends FormRequest
     public function rules()
     {
         return [
-            'recipients' => ['required', new ListOfEmails],
+            'recipients' => ['required_without:send_to_self', new ListOfEmails],
             'lang_src' => ['required', new LanguageCode],
             'lang_tgt' => ['required', new LanguageCode, 'different:lang_src'],
             'body' => 'required'

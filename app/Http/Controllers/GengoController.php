@@ -47,7 +47,7 @@ class GengoController extends Controller
                 $message->update(['translated_body' => $body["body_tgt"]]);
                 // Update message status
                 $message->updateStatus(TranslationStatus::approved());
-                // Send notofication emails
+                // Send notification emails
                 if($message->send_to_self) {
                     // Send translated message back to sender
                     Mail::to($message->sender)->send(new SenderTranslatedMessage($message));

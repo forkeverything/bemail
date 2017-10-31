@@ -3,7 +3,7 @@
 <br>
 {{ $message->created_at->format('Y/m/d H:i') }}
 <br>
-<strong>Recipients: </strong> @foreach($message->recipients as $recipient)<a href="mailto:{{ $recipient->email }}">{{ $recipient->email }}</a>@if(! $loop->last), @endif @endforeach
+<strong>Recipients: </strong> @if($message->hasRecipients()) @foreach($message->recipients as $recipient)<a href="mailto:{{ $recipient->email }}">{{ $recipient->email }}</a>@if(! $loop->last), @endif @endforeach @else Send to Self @endif
 <br>
 <strong>Translate:</strong> {{ $message->sourceLanguage->name }} <strong>to</strong> {{ $message->targetLanguage->name }}
 <br>

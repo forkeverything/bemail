@@ -73,7 +73,8 @@ class Message extends Model
      */
     protected $appends = [
         'hash',
-        'word_count'
+        'word_count',
+        'has_recipients'
     ];
 
     /**
@@ -163,6 +164,16 @@ class Message extends Model
     public function getWordCountAttribute()
     {
         return str_word_count($this->body);
+    }
+
+    /**
+     * Has Recipient(s) attached?
+     *
+     * @return bool
+     */
+    public function getHasRecipientsAttribute()
+    {
+        return $this->recipients->count() > 0;
     }
 
     /**

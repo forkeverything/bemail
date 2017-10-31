@@ -13,6 +13,7 @@
                @keydown.right="rightInput"
                @blur="blur"
                @input="onInput"
+               :disabled="isDisabled"
         >
     </div>
 </template>
@@ -23,7 +24,7 @@
                 inputWidth: '20px'
             }
         },
-        props: ['value', 'remove-tag', 'input-position', 'focus-tag'],
+        props: ['value', 'remove-tag', 'input-position', 'focus-tag', 'is-disabled'],
         watch: {
             value() {
                 this.$nextTick(() => {

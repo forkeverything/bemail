@@ -101,6 +101,17 @@ class MessageTest extends TestCase
     /**
      * @test
      */
+    public function it_checks_whether_message_has_recipients()
+    {
+        $this->assertFalse(static::$message->has_recipients);
+        $recipientIds = factory(Recipient::class, 1)->create()->pluck('id')->toArray();
+        static::$message->recipients()->sync($recipientIds);
+        $this->assertTrue(static::$message->fresh()->has_recipients);
+    }
+
+    /**
+     * @test
+     */
     public function it_fetches_message_attachments()
     {
         $this->assertCount(0, static::$message->attachments);

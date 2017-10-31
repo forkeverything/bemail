@@ -12,6 +12,9 @@
                 @include('layouts.single-error', ['errorField' => 'recipients'])
             </div>
             <div class="form-group">
+                <message-options old-auto-translate-reply="{{ old('auto_translate_reply') }}" old-send-to-self="{{ old('send_to_self') }}"></message-options>
+            </div>
+            <div class="form-group">
                 <label for="message-form-subject">Subject</label>
                 <input name="subject" type="text" id="message-form-subject" class="form-control" value="{{ old('subject') }}">
             </div>

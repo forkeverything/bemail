@@ -17,8 +17,12 @@ Vue.component('language-picker', require('./components/compose/LanguagePicker.vu
 Vue.component('recipients-input', require('./components/compose/RecipientsInput.vue'));
 Vue.component('tag-input', require('./components/compose/TagInput.vue'));
 Vue.component('file-input', require('./components/compose/FileInput.vue'));
+Vue.component('message-options', require('./components/compose/MessageOptions.vue'));
 // Account
 Vue.component('change-password-field', require('./components/account/ChangePasswordField.vue'));
+
+// Event
+window.vueGlobalEventBus = new Vue();
 
 /**
  * Vue Instance
