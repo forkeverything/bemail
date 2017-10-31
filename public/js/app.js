@@ -870,8 +870,8 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(10);
-__webpack_require__(53);
-module.exports = __webpack_require__(54);
+__webpack_require__(56);
+module.exports = __webpack_require__(57);
 
 
 /***/ }),
@@ -897,9 +897,9 @@ Vue.component('language-picker', __webpack_require__(38));
 Vue.component('recipients-input', __webpack_require__(41));
 Vue.component('tag-input', __webpack_require__(44));
 Vue.component('file-input', __webpack_require__(47));
-Vue.component('message-options', __webpack_require__(65));
+Vue.component('message-options', __webpack_require__(50));
 // Account
-Vue.component('change-password-field', __webpack_require__(50));
+Vue.component('change-password-field', __webpack_require__(53));
 
 // Event
 window.vueGlobalEventBus = new Vue();
@@ -42664,202 +42664,6 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/Mike-Personal/Dropbox/Code/bemail/resources/assets/js/components/account/ChangePasswordField.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] ChangePasswordField.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-61a8ee0f", Component.options)
-  } else {
-    hotAPI.reload("data-v-61a8ee0f", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 51 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            show: false
-        };
-    },
-    props: ['pwd-current-error', 'pwd-new-error'],
-    methods: {
-        toggleField: function toggleField() {
-            this.show = !this.show;
-        }
-    },
-    mounted: function mounted() {
-        if (this.pwdCurrentError || this.pwdNewError) {
-            this.show = true;
-        }
-    }
-});
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "change-password-field"
-  }, [_c('a', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (!_vm.show),
-      expression: "! show"
-    }],
-    attrs: {
-      "href": "#"
-    },
-    on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.toggleField($event)
-      }
-    }
-  }, [_vm._v("Change Password")]), _vm._v(" "), _c('div', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.show),
-      expression: "show"
-    }],
-    staticClass: "fields"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_vm._m(0), _vm._v(" "), _c('input', {
-    staticClass: "form-control",
-    attrs: {
-      "type": "password",
-      "name": "pwd_current"
-    }
-  }), _vm._v(" "), (_vm.pwdCurrentError) ? _c('p', {
-    staticClass: "text-danger"
-  }, [_c('small', [_vm._v(_vm._s(_vm.pwdCurrentError))])]) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_vm._m(1), _vm._v(" "), _c('input', {
-    staticClass: "form-control",
-    attrs: {
-      "type": "password",
-      "name": "pwd_new"
-    }
-  }), _vm._v(" "), (_vm.pwdNewError) ? _c('p', {
-    staticClass: "text-danger"
-  }, [_c('small', [_vm._v(_vm._s(_vm.pwdNewError))])]) : _vm._e()]), _vm._v(" "), _vm._m(2)])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('label', {
-    staticClass: "control-label"
-  }, [_c('small', [_vm._v("Current")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('label', {
-    staticClass: "control-label"
-  }, [_c('small', [_vm._v("New")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    staticClass: "control-label"
-  }, [_c('small', [_vm._v("Confirm New")])]), _vm._v(" "), _c('input', {
-    staticClass: "form-control",
-    attrs: {
-      "type": "password",
-      "name": "pwd_new_confirmation"
-    }
-  })])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-61a8ee0f", module.exports)
-  }
-}
-
-/***/ }),
-/* 53 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */,
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */,
-/* 65 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(66),
-  /* template */
-  __webpack_require__(67),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
 Component.options.__file = "/Users/Mike-Personal/Dropbox/Code/bemail/resources/assets/js/components/compose/MessageOptions.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] MessageOptions.vue: functional components are not supported with templates, they should use render functions.")}
@@ -42884,7 +42688,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 66 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42920,7 +42724,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 67 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -43017,6 +42821,192 @@ if (false) {
      require("vue-hot-reload-api").rerender("data-v-437e4982", module.exports)
   }
 }
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(54),
+  /* template */
+  __webpack_require__(55),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/Mike-Personal/Dropbox/Code/bemail/resources/assets/js/components/account/ChangePasswordField.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] ChangePasswordField.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-61a8ee0f", Component.options)
+  } else {
+    hotAPI.reload("data-v-61a8ee0f", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 54 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            show: false
+        };
+    },
+    props: ['pwd-current-error', 'pwd-new-error'],
+    methods: {
+        toggleField: function toggleField() {
+            this.show = !this.show;
+        }
+    },
+    mounted: function mounted() {
+        if (this.pwdCurrentError || this.pwdNewError) {
+            this.show = true;
+        }
+    }
+});
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "change-password-field"
+  }, [_c('a', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.show),
+      expression: "! show"
+    }],
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.toggleField($event)
+      }
+    }
+  }, [_vm._v("Change Password")]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.show),
+      expression: "show"
+    }],
+    staticClass: "fields"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_vm._m(0), _vm._v(" "), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "password",
+      "name": "pwd_current"
+    }
+  }), _vm._v(" "), (_vm.pwdCurrentError) ? _c('p', {
+    staticClass: "text-danger"
+  }, [_c('small', [_vm._v(_vm._s(_vm.pwdCurrentError))])]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_vm._m(1), _vm._v(" "), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "password",
+      "name": "pwd_new"
+    }
+  }), _vm._v(" "), (_vm.pwdNewError) ? _c('p', {
+    staticClass: "text-danger"
+  }, [_c('small', [_vm._v(_vm._s(_vm.pwdNewError))])]) : _vm._e()]), _vm._v(" "), _vm._m(2)])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "control-label"
+  }, [_c('small', [_vm._v("Current")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "control-label"
+  }, [_c('small', [_vm._v("New")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "control-label"
+  }, [_c('small', [_vm._v("Confirm New")])]), _vm._v(" "), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "password",
+      "name": "pwd_new_confirmation"
+    }
+  })])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-61a8ee0f", module.exports)
+  }
+}
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
