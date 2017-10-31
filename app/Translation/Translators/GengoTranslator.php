@@ -2,7 +2,7 @@
 
 namespace App\Translation\Translators;
 
-use App\Mail\Translation\Mail\SystemTranslationError;
+use App\Translation\Mail\SystemTranslationError;
 use App\Translation\Contracts\Translator;
 use App\Language;
 use App\Translation\Exceptions\TranslationException;
