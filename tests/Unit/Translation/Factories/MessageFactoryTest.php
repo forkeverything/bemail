@@ -19,7 +19,7 @@ class MessageFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_makes_a_message()
+    public function it_makes_a_new_message()
     {
         $user = factory(User::class)->create();
         $sourceLanguage = Language::first();
@@ -36,7 +36,7 @@ class MessageFactoryTest extends TestCase
 
         $fakeRequest = new CreateMessageRequest($formFields);
 
-        $message = (new MessageFactory($fakeRequest, $user))->make();
+        $message = MessageFactory::makeNewMessage($fakeRequest, $user);
 
         // Check Message Model fields are stored correctly
         $this->assertEquals($formFields['subject'], $message->subject);

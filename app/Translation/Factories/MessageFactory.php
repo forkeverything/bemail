@@ -8,6 +8,11 @@ use App\Language;
 use App\Translation\TranslationStatus;
 use App\User;
 
+/**
+ * MessageFactory - Creates Messages (new and replies).
+ *
+ * @package App\Translation\Factories
+ */
 class MessageFactory
 {
 
@@ -39,18 +44,12 @@ class MessageFactory
      */
     protected $recipients = [];
 
-    public function __construct(CreateMessageRequest $createMessageRequest, User $user)
-    {
-        $this->user = $user;
-        $this->formRequest = $createMessageRequest;
-    }
-
     /**
      * Create Message model.
      *
      * @return $this
      */
-    protected function createMessage()
+    protected function createNewMessage()
     {
         $this->messageModel = $this->user->messages()->create([
             'subject' => $this->formRequest->subject,
@@ -83,11 +82,11 @@ class MessageFactory
     }
 
     /**
-     * Create Attachment(s) for this Message.
+     * Create Attachment(s) for this Message from Request.
      *
      * @return $this
      */
-    protected function createAttachments()
+    protected function createAttachmentsFromFormRequest()
     {
         $attachments = $this->formRequest->attachments;
         if($attachments) {
@@ -98,19 +97,24 @@ class MessageFactory
         return $this;
     }
 
+
     /**
      * Make a new Message.
+     * New in this case meaning that the Message is NOT a reply to another
+     * Message.
      *
-     * This is the main method that kick-starts the whole sending a Message.
-     * Messages should only ever be created using this function and no
-     * where else in the app.
+     * @param CreateMessageRequest $request
+     * @param User $user
+     * @return mixed
      */
-    public function make()
+    public static function makeNewMessage(CreateMessageRequest $request, User $user)
     {
-        $this->createMessage()
-             ->createRecipients()
-             ->createAttachments();
-
-        return $this->messageModel;
+        $factory = new static();
+        $factory->user = $user;
+        $factory->formRequest = $request;
+        $factory->createNewMessage()
+                ->createRecipients()
+                ->createAttachmentsFromFormRequest();
+        return $factory->messageModel;
     }
 }
