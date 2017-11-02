@@ -38,6 +38,8 @@ class MessageTest extends TestCase
             'translated_body' => 'Some translated text',
             'auto_translate_reply' => 0,
             'send_to_self' => 1,
+            'reply_from_email' => 'foo@bar.com',
+            'message_id' => factory(Message::class)->create()->id,
             'user_id' => factory(User::class)->create()->id,
             'translation_status_id' => TranslationStatus::available()->id,
             'lang_src_id' => 1,
@@ -84,7 +86,18 @@ class MessageTest extends TestCase
      */
     public function it_fetches_user_that_sent_the_message()
     {
-        $this->assertInstanceOf('App\User', static::$message->sender);
+        $this->assertInstanceOf('App\User', static::$message->user);
+    }
+
+    /**
+     * @test
+     */
+    public function it_fetches_original_message()
+    {
+        static::$message->update([
+            'message_id' => factory(Message::class)->create()->id
+        ]);
+        $this->assertInstanceOf('App\Translation\Message', static::$message->originalMessage);
     }
 
     /**

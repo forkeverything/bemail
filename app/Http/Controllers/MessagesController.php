@@ -53,7 +53,7 @@ class MessagesController extends Controller
             // Attempt to translate our Message
             $translator->translate($message);
             // Send notification email (manually)
-            Mail::to($message->sender)->send(new ReceivedRequest($message));
+            Mail::to($message->user)->send(new ReceivedRequest($message));
             // TODO ::: If we need to do a lot of subsequent tasks, here we should send the email
             // using an event-listener or through a notification (for multiple channels).
         } catch (Exception $e) {

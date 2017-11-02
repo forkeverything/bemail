@@ -25,7 +25,7 @@ class RecipientTranslatedMessage extends Mailable implements ShouldQueue
      */
     public function __construct(Message $translatedMessage)
     {
-        $this->translatedMessage = $translatedMessage->load(['sender', 'sourceLanguage']);
+        $this->translatedMessage = $translatedMessage->load(['user', 'sourceLanguage']);
     }
 
     /**
@@ -36,9 +36,9 @@ class RecipientTranslatedMessage extends Mailable implements ShouldQueue
     public function build()
     {
         if ($this->translatedMessage->auto_translate_reply) {
-            $this->from("reply_{$this->translatedMessage->hash}@in.bemail.io", $this->translatedMessage->sender->name);
+            $this->from("reply_{$this->translatedMessage->hash}@in.bemail.io", $this->translatedMessage->user->name);
         } else {
-            $this->from($this->translatedMessage->sender->email, $this->translatedMessage->sender->name);
+            $this->from($this->translatedMessage->user->email, $this->translatedMessage->user->name);
         }
 
         return $this->setSubject()

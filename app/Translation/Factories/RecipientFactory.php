@@ -44,7 +44,7 @@ class RecipientFactory
      */
     protected function findExistingRecipient()
     {
-        return Recipient::belongingTo($this->message->sender)->where('email', $this->email)->first();
+        return Recipient::belongingTo($this->message->user)->where('email', $this->email)->first();
     }
 
     /**
@@ -54,7 +54,7 @@ class RecipientFactory
      */
     protected function createRecipient()
     {
-        return $this->message->sender->recipients()->create([
+        return $this->message->user->recipients()->create([
             'email' => $this->email
         ]);
     }

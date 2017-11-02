@@ -33,10 +33,10 @@ class RecipientFactoryTest extends TestCase
     */
    public function it_make_a_recipient_for_given_message_and_new_email()
    {
-       $this->assertCount(0, static::$message->sender->recipients);
+       $this->assertCount(0, static::$message->user->recipients);
        $email = 'somebody@example.com';
        (new RecipientFactory(static::$message, $email))->make();
-       $this->assertCount(1, static::$message->sender->fresh()->recipients);
+       $this->assertCount(1, static::$message->user->fresh()->recipients);
    }
    
    /**
@@ -46,8 +46,8 @@ class RecipientFactoryTest extends TestCase
    {
        $email = 'somebody@example.com';
        (new RecipientFactory(static::$message, $email))->make();
-       $this->assertCount(1, static::$message->sender->recipients);
+       $this->assertCount(1, static::$message->user->recipients);
        (new RecipientFactory(static::$message, $email))->make();
-       $this->assertCount(1, static::$message->sender->fresh()->recipients);
+       $this->assertCount(1, static::$message->user->fresh()->recipients);
    }
 }

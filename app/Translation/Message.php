@@ -60,7 +60,9 @@ class Message extends Model
         'translated_body',
         'auto_translate_reply',
         'send_to_self',
+        'reply_from_email',
         'user_id',
+        'message_id',
         'translation_status_id',
         'lang_src_id',
         'lang_tgt_id'
@@ -87,13 +89,26 @@ class Message extends Model
     ];
 
     /**
-     * User that sent this message.
+     * User that owns this Message.
+     * If this is the first message, this User is also the sender. If this is a reply
+     * to a Message, this will be the User that sent the first message and the
+     * sender email is stored in 'reply_from_email'.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function sender()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * The Message that this Message is a reply to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function originalMessage()
+    {
+        return $this->belongsTo(Message::class, 'message_id');
     }
 
     /**

@@ -62,7 +62,7 @@ class GengoTranslator implements Translator
     {
         return [
             'type' => 'text',
-            'slug' => "{$message->sender->name} :: {$message->subject} :: Message ID: {$message->hash}",
+            'slug' => "{$message->user->name} :: {$message->subject} :: Message ID: {$message->hash}",
             'body_src' => $message->body,
             'lc_src' => $message->sourceLanguage->code,
             'lc_tgt' => $message->targetLanguage->code,

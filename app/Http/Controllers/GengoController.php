@@ -50,14 +50,14 @@ class GengoController extends Controller
                 // Send notification emails
                 if($message->send_to_self) {
                     // Send translated message back to sender
-                    Mail::to($message->sender)->send(new SenderTranslatedMessage($message));
+                    Mail::to($message->user)->send(new SenderTranslatedMessage($message));
                 } else {
                     // Send translated Message to Recipient(s)
                     foreach ($message->recipients as $recipient) {
                         Mail::to($recipient->email)->send(new RecipientTranslatedMessage($message));
                     }
                     // Send translation complete notification to sender
-                    Mail::to($message->sender)->send(new MessageSent($message));
+                    Mail::to($message->user)->send(new MessageSent($message));
                 }
                 break;
             default:
