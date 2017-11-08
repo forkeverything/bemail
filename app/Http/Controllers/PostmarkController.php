@@ -9,6 +9,7 @@ use App\Translation\Exceptions\TranslationException;
 use App\Translation\Factories\MessageFactory;
 use App\Translation\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class PostmarkController extends Controller
 {
