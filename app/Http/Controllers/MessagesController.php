@@ -48,9 +48,8 @@ class MessagesController extends Controller
     public function postSendMessage(CreateMessageRequest $request, Translator $translator)
     {
         try {
-            // Create Message and begin translation.
-            $message = MessageFactory::makeNewMessage($request, Auth::user());
-
+            // Create Message and store in DB
+            $message = MessageFactory::makeNew($request)->from(Auth::user())->make();
             // Attempt to translate our Message
             $translator->translate($message);
             // Send notification email (manually)

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Translation\Factories\MessageFactory;
+use App\Translation\Message;
 use Illuminate\Http\Request;
 
 class PostmarkController extends Controller
@@ -9,28 +11,49 @@ class PostmarkController extends Controller
     public function postIncoming(Request $request)
     {
 
-        $inboundEmailAddress = $request["OriginalRecipient"];
+        // Address sent from
+        $fromAddress = $request["From"];
+
+        // Email Main
+        $subject = $request["Subject"];
+        $body = $request["StrippedTextReply"];      // TODO ::: CHECK IF THIS IS RIGHT!
+        $attachments = $request["Attachments"];
+
+        // Address sent to
+        $inboundAddress = $request["OriginalRecipient"];
 
         // Inbound Address Convention:
         // - snake_case for incoming mail address
         // - first part specifies the type of email
         // - ie. reply_s0m3h4$h@in.bemail.io, for replies to a specific Message
 
-        $inboundArray = explode("_", $inboundEmailAddress);
+        $inboundArray = explode("_", $inboundAddress);
 
-        // Replying to comment
+        // Re-write translated message email view so that it's:
+            // 1. Easily parse-able here
+            // 2. Indicate that only original sender will receive translated message.
+
+        // Replying to a Message
+
         if($inboundArray[0] === "reply") {
             // Grab everything until '@'
             preg_match("/.*(?=@)/", $inboundArray[1], $matches);
-            // Re-write translated message email view so that it's easily parse-able here
+            // First match is the message's hash ID
+            $messageHash = $matches[0];
+            // Can we find the message we're replying to?
+            if($originalMessage = Message::findByHash($matches[0])) {
+                $message = MessageFactory::makeReply($originalMessage)
+                                         ->from($fromAddress)
+                                         ->subject($subject)
+                                         ->body($body)
+                                         ->attachments($attachments)
+                                         ->make();
+                // Translate message
+                // Send notifications to sender and receiver
+            };
+
             // Find which message we're replying to
-            // Create a way of differentiating between:
-                // 1. Message sent by User
-                // 2. Message created as a reply from a sender that might not be registered.
-            // Create attachments
-            // Handle attachments
-            // Translate message?
-            // Send notification to sender (person replying) and receiver (original sender)
+
         }
 
         return response("Received Email", 200);

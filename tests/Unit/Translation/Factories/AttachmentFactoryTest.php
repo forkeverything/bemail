@@ -30,7 +30,7 @@ class AttachmentFactoryTest extends TestCase
         ];
 
         $message = factory(Message::class)->create();
-        $uploadedFile = \Mockery::mock('Illuminate\Http\UploadedFile');
+        $uploadedFile = \Mockery::mock('App\Translation\FormUploadedFile');
 
         // Assert that we're moving the file as well as setting the same
         // directory as we expect here.
@@ -38,17 +38,17 @@ class AttachmentFactoryTest extends TestCase
                      ->once()
                      ->with("{$environment}/user/{$message->user_id}/messages/{$message->id}/attachments")
                      ->andReturn($attributes['path']);
-        $uploadedFile->shouldReceive('getClientOriginalName')
+        $uploadedFile->shouldReceive('getOriginalName')
                      ->once()
                      ->andReturn($attributes['original_file_name']);
-        $uploadedFile->shouldReceive('hashName')
+        $uploadedFile->shouldReceive('getHashName')
                      ->once()
                      ->andReturn($attributes['file_name']);
-        $uploadedFile->shouldReceive('getClientSize')
+        $uploadedFile->shouldReceive('getFileSize')
                      ->once()
                      ->andReturn($attributes['size']);
 
-        $attachment = (new AttachmentFactory($message, $uploadedFile))->make();
+            $attachment = AttachmentFactory::makeFromUploadedFile($uploadedFile)->for($message)->make();
 
         foreach ($attributes as $attribute => $value) {
             $this->assertEquals($value, $attachment->{$attribute});

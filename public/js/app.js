@@ -42717,10 +42717,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     props: ['old-auto-translate-reply', 'old-send-to-self'],
     methods: {},
-    mounted: function mounted() {
-        this.autoTranslateReply = this.oldAutoTranslateReply ? 1 : 0;
-        this.sendToSelf = this.oldSendToSelf ? 1 : 0;
-    }
+    mounted: function mounted() {}
 });
 
 /***/ }),

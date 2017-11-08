@@ -36,7 +36,8 @@ class MessageFactoryTest extends TestCase
 
         $fakeRequest = new CreateMessageRequest($formFields);
 
-        $message = MessageFactory::makeNewMessage($fakeRequest, $user);
+
+        $message = MessageFactory::makeNew($fakeRequest)->from($user)->make();
 
         // Check Message Model fields are stored correctly
         $this->assertEquals($formFields['subject'], $message->subject);

@@ -4,6 +4,9 @@
 namespace App\Translation\Factories;
 
 
+use App\Translation\Contracts\AttachmentFile;
+use App\Translation\FormUploadedFile;
+use App\Translation\PostmarkAttachmentFile;
 use App\Translation\Message;
 use Illuminate\Http\UploadedFile;
 
@@ -11,11 +14,10 @@ class AttachmentFactory
 {
 
     /**
-     * Where to store attached file.
-     *
-     * @var
+     * @var AttachmentFile
      */
-    protected $directory;
+    protected $attachmentFile;
+
 
     /**
      * Complete path to physical file.
@@ -25,13 +27,6 @@ class AttachmentFactory
     protected $path;
 
     /**
-     * The UploadedFile.
-     *
-     * @var \Symfony\Component\HttpFoundation\File\UploadedFile;
-     */
-    protected $uploadedFile;
-
-    /**
      * Message to attach file to.
      *
      * @var Message
@@ -39,45 +34,16 @@ class AttachmentFactory
     protected $message;
 
     /**
-     * AttachmentFactory constructor.
+     * File storage directory path.
      *
-     * @param Message $message
-     * @param UploadedFile $uploadedFile
+     * @return string
      */
-    public function __construct(Message $message, UploadedFile $uploadedFile)
+    protected function directory()
     {
-        $this->message = $message;
-        $this->uploadedFile = $uploadedFile;
-    }
-
-    /**
-     * Set the directory to store physical file.
-     *
-     * @return $this
-     */
-    protected function setDirectory()
-    {
-        // Want to different root directories in case
-        // we might be live on remote server but
-        // still in development.
+        // Differentiate root directories based on app status
+        // as a precaution against messing up live data.
         $environment = env('APP_ENV', 'local');
-
-        $this->directory = "{$environment}/user/{$this->message->user_id}/messages/{$this->message->id}/attachments";
-
-        return $this;
-    }
-
-    /**
-     * Move physical file to disk.
-     *
-     * @return $this
-     */
-    protected function moveFile()
-    {
-        // The store() method generates a unique name for the file
-        // automatically.
-        $this->path = $this->uploadedFile->store($this->directory);
-        return $this;
+        return "{$environment}/user/{$this->message->user_id}/messages/{$this->message->id}/attachments";
     }
 
     /**
@@ -86,11 +52,46 @@ class AttachmentFactory
     protected function createModel()
     {
         return $this->message->attachments()->create([
-            'file_name' => $this->uploadedFile->hashName(),
-            'original_file_name' => $this->uploadedFile->getClientOriginalName(),
+            'file_name' => $this->attachmentFile->getHashName(),
+            'original_file_name' => $this->attachmentFile->getOriginalName(),
             'path' => $this->path,
-            'size' => $this->uploadedFile->getClientSize()
+            'size' => $this->attachmentFile->getFileSize()
         ]);
+    }
+
+    public static function makeFromPostmarkAttachment(PostmarkAttachmentFile $postmarkAttachmentFile)
+    {
+        $factory = new static();
+        $factory->attachmentFile = $postmarkAttachmentFile;
+        return $factory;
+    }
+
+    public static function makeFromUploadedFile(FormUploadedFile $uploadedFile)
+    {
+        $factory = new static();
+        $factory->attachmentFile = $uploadedFile;
+        return $factory;
+    }
+
+    /**
+     * Name of the method to call for given attachment file.
+     *
+     * @param $attachment array
+     * @return string
+     */
+    public static function attachmentTypeMethodName($attachment)
+    {
+        if($attachment instanceof UploadedFile) {
+            return "makeFromUploadedFile";
+        } else {
+            return "makeFromPostmarkAttachment";
+        }
+    }
+
+    public function for(Message $message)
+    {
+        $this->message = $message;
+        return $this;
     }
 
     /**
@@ -98,8 +99,11 @@ class AttachmentFactory
      */
     public function make()
     {
-        return $this->setDirectory()
-             ->moveFile()
-             ->createModel();
+        // Where to store file?
+        $directory = $this->directory();
+        $this->path = $this->attachmentFile->store($directory);
+        return $this->createModel();
     }
+
+
 }

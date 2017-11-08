@@ -24,18 +24,6 @@ class RecipientFactory
     private $email;
 
     /**
-     * RecipientFactory constructor.
-     *
-     * @param Message $message
-     * @param $email
-     */
-    public function __construct(Message $message, $email)
-    {
-        $this->message = $message;
-        $this->email = $email;
-    }
-
-    /**
      * Try to find an existing Recipient.
      * Recipient(s) belong to a given User, so we need to know
      * the sender of the Message.
@@ -60,18 +48,38 @@ class RecipientFactory
     }
 
     /**
-     * Make a Recipient
+     * Message the Recipient is receiving.
      *
-     * @return Recipient
+     * @param Message $message
+     * @return static
+     */
+    public static function for(Message $message)
+    {
+        $factory = new static();
+        $factory->message = $message;
+        return $factory;
+    }
+
+    /**
+     * Recipient email.
+     *
+     * @param $email
+     * @return $this
+     */
+    public function to($email)
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    /**
+     * Make Recipient.
+     *
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function make()
     {
-        $recipient = $this->findExistingRecipient();
-        if (!$recipient) {
-            $recipient = $this->createRecipient();
-        }
-        return $recipient;
+        return $this->findExistingRecipient() ?: $this->createRecipient();
     }
-
 
 }

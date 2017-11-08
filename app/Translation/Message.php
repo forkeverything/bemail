@@ -43,6 +43,17 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property-read mixed $hash
  * @property-read \App\Translation\MessageError $error
+ * @property int $auto_translate_reply
+ * @property int $send_to_self
+ * @property string|null $reply_from_email
+ * @property int|null $message_id
+ * @property-read bool $has_recipients
+ * @property-read \App\Translation\Message|null $originalMessage
+ * @property-read \App\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereAutoTranslateReply($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereMessageId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereReplyFromEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereSendToSelf($value)
  */
 class Message extends Model
 {
@@ -62,10 +73,10 @@ class Message extends Model
         'send_to_self',
         'reply_from_email',
         'user_id',
-        'message_id',
         'translation_status_id',
         'lang_src_id',
-        'lang_tgt_id'
+        'lang_tgt_id',
+        'message_id'
     ];
 
     /**

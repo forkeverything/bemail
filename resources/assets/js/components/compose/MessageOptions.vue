@@ -25,8 +25,6 @@ export default {
         
     },
     mounted(){
-        this.autoTranslateReply = this.oldAutoTranslateReply ? 1 : 0;
-        this.sendToSelf = this.oldSendToSelf ? 1 : 0;
     }
 }
 </script>
