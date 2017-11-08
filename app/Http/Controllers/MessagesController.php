@@ -50,7 +50,8 @@ class MessagesController extends Controller
     public function postSendMessage(CreateMessageRequest $request, Translator $translator)
     {
 
-        // Try to make message and translate
+        // Try to make message and translate...
+
         try {
             // Create Message and store in DB
             $message = MessageFactory::makeNew($request)->from(Auth::user())->make();
@@ -67,7 +68,8 @@ class MessagesController extends Controller
                 // Catch any and all exceptions, and return back flashing
                 // an error message. Letting the user know that their
                 // message will NOT be sent.
-                flash()->error('Your message could not be sent and you have not been charged. Please try again or contact us for help.');
+                flash()->error('System Error - Your message was not sent and you have not been charged. Please try again or contact us for help.');
+                // TODO ::: Notify system of error trying to send a NEW Message.
                 return redirect()->back();
             } else {
                 // In development, just throw the original exception.
@@ -75,16 +77,26 @@ class MessagesController extends Controller
             }
         }
 
-        // Send notification email (manually)
+        // Successfully made and requested translation...
+
+        // Manually send notification email (as opposed to firing an event)
         Mail::to($message->user)->send(new ReceivedNewMessageRequest($message));
+
         // TODO ::: If we need to do a lot of subsequent tasks, here we should send the email
         // using an event-listener or through a notification (for multiple channels).
 
         // TODO ::: Try to charge user here
-            // If it fails, cancel translator job
+            // Fail
+                // Cancel job
+                // Flash error
+                // Redirect back
+            // Success
+                // Keep going (ie. use a try-catch block here)
 
         flash()->success('Success! Your message will be translated shortly.');
+
         // Return to compose screen
         return redirect()->back();
+
     }
 }

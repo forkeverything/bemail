@@ -15,7 +15,7 @@ class MessageSent extends Mailable implements ShouldQueue
     /**
      * @var Message
      */
-    private $translatedMessage;
+    public $translatedMessage;
 
     /**
      * Create a new message instance.
@@ -35,6 +35,8 @@ class MessageSent extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->view('emails.translation.message-sent');
+        $subject = $this->translatedMessage->subject ? 'Translated and Sent: ' . $this->translatedMessage->subject : "Translated and Sent Message";
+        return $this->subject($subject)
+                    ->view('emails.translation.message-sent');
     }
 }

@@ -37,6 +37,7 @@ class SystemTranslationError extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->view('emails.translation.system-translation-error');
+        return $this->subject("SYSTEM TRANSLATION ERROR")
+                    ->view('emails.translation.system-translation-error');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Translation\Mail\ErrorSendingReply;
 use App\Translation\Contracts\Translator;
 use App\Translation\Exceptions\Handlers\TranslationExceptionHandler;
 use App\Translation\Exceptions\TranslationException;
@@ -63,6 +64,7 @@ class PostmarkController extends Controller
                 } catch (\Exception $exception) {
                     // Some error occurred
                     // - Send notification to sender (person replying) of failure to send reply. Need new
+                    Mail::to($fromAddress)->send(new ErrorSendingReply($originalMessage, $subject, $body));
                     // mail notification
                 }
 
