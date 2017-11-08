@@ -9,7 +9,7 @@ use App\Translation\Contracts\Translator;
 use App\Translation\Factories\MessageFactory;
 use App\Http\Requests\CreateMessageRequest;
 use App\Translation\Exceptions\TranslationException;
-use App\Translation\Mail\ReceivedRequest;
+use App\Translation\Mail\ReceivedNewMessageRequest;
 use App\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -76,7 +76,7 @@ class MessagesController extends Controller
         }
 
         // Send notification email (manually)
-        Mail::to($message->user)->send(new ReceivedRequest($message));
+        Mail::to($message->user)->send(new ReceivedNewMessageRequest($message));
         // TODO ::: If we need to do a lot of subsequent tasks, here we should send the email
         // using an event-listener or through a notification (for multiple channels).
 

@@ -50,7 +50,7 @@ Route::get('/mail/test', function () {
 //    $recipients = factory(\App\Translation\Recipient::class, 5)->create()->pluck('id')->toArray();
 //    $message->recipients()->sync($recipients);
     $message = \App\Translation\Message::with(['recipients', 'sourceLanguage', 'targetLanguage', 'receipt.creditTransaction'])->first();
-    return new \App\Translation\Mail\ReceivedRequest($message);
+    return new \App\Translation\Mail\ReceivedNewMessageRequest($message);
     $message->fresh()->with(['recipients', 'sourceLanguage', 'targetLanguage']);
     return $message;
     Mail::to('mike@bemail.io')->send(new \App\Mail\WelcomeMail(\App\User::first()));

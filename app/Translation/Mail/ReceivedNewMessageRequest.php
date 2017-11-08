@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ReceivedRequest extends Mailable implements ShouldQueue
+class ReceivedNewMessageRequest extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -44,6 +44,6 @@ class ReceivedRequest extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->view('emails.translation.received-request');
+        return $this->view('emails.translation.received-new-message-request');
     }
 }
