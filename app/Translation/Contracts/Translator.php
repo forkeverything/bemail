@@ -3,6 +3,7 @@
 namespace App\Translation\Contracts;
 
 use App\Language;
+use App\Translation\Exceptions\TranslationException;
 use App\Translation\Message;
 
 interface Translator
@@ -12,6 +13,7 @@ interface Translator
      *
      * @param Message $message
      * @return mixed
+     * @throws TranslationException
      */
     public function translate(Message $message);
 

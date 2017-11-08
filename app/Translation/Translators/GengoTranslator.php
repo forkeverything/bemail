@@ -2,18 +2,15 @@
 
 namespace App\Translation\Translators;
 
-use App\Translation\Mail\SystemTranslationError;
 use App\Translation\Contracts\Translator;
 use App\Language;
 use App\Translation\Exceptions\TranslationException;
 use App\Translation\Message;
 use App\Translation\MessageError;
 use App\Translation\TranslationStatus;
-use App\User;
 use Gengo\Config;
 use Gengo\Jobs as GengoJobs;
 use Gengo\Service as GengoService;
-use Illuminate\Support\Facades\Mail;
 
 class GengoTranslator implements Translator
 {
@@ -100,15 +97,36 @@ class GengoTranslator implements Translator
         $status = $response["opstat"];
         // Some 'system' error (ie. our fault)
         if ($status == "error") {
-            // Mark and store error.
-            $message->updateStatus(TranslationStatus::error());
-            $messageError = $this->recordError($message, $response);
-            // Notify admin of system error resulting in failure to translate
-            Mail::to(User::where('email', 'mike@bemail.io')->first())->send(new SystemTranslationError($message));
-            // TODO ::: Create different user types (ie. admin / system manager etc.) and notify relevant User(s).
-            // Throw error
-            throw new TranslationException($messageError->description);
+            $error = $this->parseErrorFromResponse($response);
+            throw new TranslationException($error["description"], $error["code"]);
         }
+    }
+
+    /**
+     * Retrives error information out of Gengo response.
+     *
+     * @param $response
+     * @return array
+     */
+    protected function parseErrorFromResponse($response)
+    {
+        // Error could be due to the job (ie. unsupported language pair) or
+        // gengo system (not enough Gengo credits). Either case, this
+        // is a system error on our part.
+        $isJobError = array_key_exists("jobs_01", $response["err"]);
+
+        // Depending on whether it's a job / gengo system error, the error code
+        // and message is stored under different properties.
+        $code = $isJobError ? $response["err"]["jobs_01"][0]["code"] : $response["err"]["code"];
+        $msg = $isJobError ? $response["err"]["jobs_01"][0]["msg"] : $response["err"]["msg"];
+
+        // Write our own custom description to clarify whether it was a Job / System error
+        $description = $isJobError ? "Gengo Job: {$msg}" : "Gengo System: {$msg}";
+
+        return [
+            "code" => $code,
+            "description" => $description
+        ];
     }
 
     /**
@@ -143,6 +161,6 @@ class GengoTranslator implements Translator
      */
     public function unitPrice(Language $sourceLangue, Language $targetLanguage)
     {
-        // TODO: Implement unitPrice() method.
+        // TODO ::: Implement unitPrice() method.
     }
 }

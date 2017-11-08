@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Language;
-use App\Mail\Translation\Mail\SystemTranslationError;
+use App\Translation\Exceptions\Handlers\TranslationExceptionHandler;
+use App\Translation\Mail\SystemTranslationError;
 use App\Translation\Contracts\Translator;
 use App\Translation\Factories\MessageFactory;
 use App\Http\Requests\CreateMessageRequest;
 use App\Translation\Exceptions\TranslationException;
 use App\Translation\Mail\ReceivedRequest;
+use App\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -47,20 +49,24 @@ class MessagesController extends Controller
      */
     public function postSendMessage(CreateMessageRequest $request, Translator $translator)
     {
+
+        // Try to make message and translate
         try {
             // Create Message and store in DB
             $message = MessageFactory::makeNew($request)->from(Auth::user())->make();
             // Attempt to translate our Message
-            $translator->translate($message);
-            // Send notification email (manually)
-            Mail::to($message->user)->send(new ReceivedRequest($message));
-            // TODO ::: If we need to do a lot of subsequent tasks, here we should send the email
-            // using an event-listener or through a notification (for multiple channels).
-        } catch (Exception $e) {
+            try {
+                $translator->translate($message);
+            } catch (TranslationException $e){
+                TranslationExceptionHandler::got($e)->for($message)->handle();
+                throw new \Exception;
+            }
+        }
+        catch (Exception $e) {
             if(env('APP_ENV') == 'production') {
-                // Catch all exceptions, and return back flashing
-                // an error message. Letting the user know
-                // that their message will NOT be sent.
+                // Catch any and all exceptions, and return back flashing
+                // an error message. Letting the user know that their
+                // message will NOT be sent.
                 flash()->error('Your message could not be sent and you have not been charged. Please try again or contact us for help.');
                 return redirect()->back();
             } else {
@@ -68,6 +74,11 @@ class MessagesController extends Controller
                 throw $e;
             }
         }
+
+        // Send notification email (manually)
+        Mail::to($message->user)->send(new ReceivedRequest($message));
+        // TODO ::: If we need to do a lot of subsequent tasks, here we should send the email
+        // using an event-listener or through a notification (for multiple channels).
 
         // TODO ::: Try to charge user here
             // If it fails, cancel translator job
