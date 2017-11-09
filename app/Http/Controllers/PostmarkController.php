@@ -70,7 +70,7 @@ class PostmarkController extends Controller
                 }
 
                 // Success!
-                // - Send notifications to sender and receiver
+                // - TODO ::: Send notifications to sender
             };
 
         }

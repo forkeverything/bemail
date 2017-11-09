@@ -55,6 +55,7 @@ class GengoController extends Controller
                     // Send translated Message to Recipient(s)
                     foreach ($message->recipients as $recipient) {
                         Mail::to($recipient->email)->send(new RecipientTranslatedMessage($message));
+                        // TODO ::: Send different mail for a reply
                     }
                     // Send translation complete notification to sender
                     Mail::to($message->user)->send(new MessageSent($message));
