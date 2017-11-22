@@ -44,17 +44,18 @@ Route::get('/test', function (\App\Translation\Contracts\Translator $translator)
 });
 
 Route::get('/mail/test', function () {
+
+    return new \App\Mail\WelcomeMail(\App\User::first());
+
     $message = factory(\App\Translation\Message::class)->create();
-    factory(\App\Translation\MessageError::class)->create(['message_id' => $message->id]);
-    return new \App\Translation\Mail\SystemTranslationError($message);
-//    $recipients = factory(\App\Translation\Recipient::class, 5)->create()->pluck('id')->toArray();
-//    $message->recipients()->sync($recipients);
-    $message = \App\Translation\Message::with(['recipients', 'sourceLanguage', 'targetLanguage', 'receipt.creditTransaction'])->first();
-    return new \App\Translation\Mail\ReceivedNewMessageRequest($message);
-    $message->fresh()->with(['recipients', 'sourceLanguage', 'targetLanguage']);
-    return $message;
-    Mail::to('mike@bemail.io')->send(new \App\Mail\WelcomeMail(\App\User::first()));
-    return 'sent!';
+
+
+    $mailClass = new \App\Translation\Mail\ReceivedNewMessageRequest($message);
+
+    return $mailClass;
+
+    Mail::to('mail@wumike.com')->send($mailClass);
+    return 'sent';
 });
 
 
