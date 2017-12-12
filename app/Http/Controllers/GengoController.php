@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\Translation\Mail\MessageSent;
-use App\Mail\Translation\Mail\RecipientTranslatedMessage;
-use App\Mail\Translation\Mail\SenderTranslatedMessage;
+use App\Translation\Mail\MessageSent;
+use App\Translation\Mail\RecipientTranslatedMessage;
+use App\Translation\Mail\SenderTranslatedMessage;
 use App\Translation\Message;
 use App\Translation\TranslationStatus;
 use Illuminate\Http\Request;

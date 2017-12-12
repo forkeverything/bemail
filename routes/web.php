@@ -43,19 +43,3 @@ Route::get('/test', function (\App\Translation\Contracts\Translator $translator)
 
 });
 
-Route::get('/mail/test', function () {
-
-    return new \App\Mail\WelcomeMail(\App\User::first());
-
-    $message = factory(\App\Translation\Message::class)->create();
-
-
-    $mailClass = new \App\Translation\Mail\ReceivedNewMessageRequest($message);
-
-    return $mailClass;
-
-    Mail::to('mail@wumike.com')->send($mailClass);
-    return 'sent';
-});
-
-

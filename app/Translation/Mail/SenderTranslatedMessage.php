@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\Translation\Mail;
+namespace App\Translation\Mail;
 
 use App\Translation\Mail\Traits\TranslatedMail;
 use App\Translation\Message;
@@ -44,6 +44,6 @@ class SenderTranslatedMessage extends Mailable implements ShouldQueue
     {
         return $this->setSubject()
                     ->includeAttachments()
-                    ->view('emails.translation.sender-translated-message');
+                    ->markdown('emails.translation.sender-translated-message');
     }
 }

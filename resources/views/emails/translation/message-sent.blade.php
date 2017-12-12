@@ -1,12 +1,14 @@
-Hi,
-<br>
-<br>
-This email is to confirm that we've completed translating your email and it has been sent to it's recipient(s).
-<br>
-@include('emails.translation.partials.details', ['message' => $translatedMessage])
-<br>
-<h3>Original Message</h3>
+@component('mail::message')
+# Your Message Has Been Translated And Sent
+
+We have sent your translated message, along with the original, to the recipients.
+
+## Original Message
+
 {{ $translatedMessage->body }}
-<br>
-<h3>Translated Message</h3>
+
+## Translated Message
+
 {{ $translatedMessage->translated_body }}
+
+@endcomponent

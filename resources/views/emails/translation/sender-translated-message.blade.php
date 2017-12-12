@@ -1,10 +1,13 @@
-Hi,
-<br>
-<br>
-Your message has been translated and is attached below.
-<br>
-<h3>Translated Message</h3>
+@component('mail::message')
+# Your Message Has Been Translated
+
+We have completed translating your message. As you have selected the 'Send-to-Self' option, your message was not automatically sent to any recipients and is attached below.
+
+## Translated Message
+
 {{ $translatedMessage->translated_body }}
-<br>
-<h3>Original Message</h3>
+
+## Original Message
+
 {{ $translatedMessage->body }}
+@endcomponent

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\Translation\Mail;
+namespace App\Translation\Mail;
 
 use App\Translation\Message;
 use Illuminate\Bus\Queueable;
@@ -17,7 +17,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  * Class MessageSent
  * @package App\Mail\Translation\Mail
  */
-
 class MessageSent extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
@@ -34,7 +33,6 @@ class MessageSent extends Mailable implements ShouldQueue
      */
     public function __construct(Message $message)
     {
-
         $this->translatedMessage = $message->load(['recipients', 'sourceLanguage', 'targetLanguage']);
     }
 
@@ -47,6 +45,6 @@ class MessageSent extends Mailable implements ShouldQueue
     {
         $subject = $this->translatedMessage->subject ? 'Translated and Sent: ' . $this->translatedMessage->subject : "Translated and Sent Message";
         return $this->subject($subject)
-                    ->view('emails.translation.message-sent');
+                    ->markdown('emails.translation.message-sent');
     }
 }

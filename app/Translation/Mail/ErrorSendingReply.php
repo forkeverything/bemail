@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\Translation\Mail;
+namespace App\Translation\Mail;
 
 use App\Translation\Message;
 use Illuminate\Bus\Queueable;
@@ -65,6 +65,6 @@ class ErrorSendingReply extends Mailable implements ShouldQueue
     {
         $subject = $this->subject ? 'Error Sending Reply: ' . $this->subject : "Error Sending Reply";
         return $this->subject($subject)
-                    ->view('emails.translation.error-sending-reply');
+                    ->markdown('emails.translation.error-sending-reply');
     }
 }

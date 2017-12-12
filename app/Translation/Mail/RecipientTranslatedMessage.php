@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\Translation\Mail;
+namespace App\Translation\Mail;
 
 use App\Translation\Mail\Traits\TranslatedMail;
 use App\Translation\Message;
@@ -36,13 +36,13 @@ class RecipientTranslatedMessage extends Mailable implements ShouldQueue
     public function build()
     {
         if ($this->translatedMessage->auto_translate_reply) {
-            $this->from("reply_{$this->translatedMessage->hash}@in.bemail.io", $this->translatedMessage->user->name);
+            $this->replyTo("reply_{$this->translatedMessage->hash}@in.bemail.io", $this->translatedMessage->user->name);
         } else {
-            $this->from($this->translatedMessage->user->email, $this->translatedMessage->user->name);
+            $this->replyTo($this->translatedMessage->user->email, $this->translatedMessage->user->name);
         }
 
         return $this->setSubject()
                     ->includeAttachments()
-                    ->view('emails.translation.recipient-translated-message');
+                    ->markdown('emails.translation.recipient-translated-message');
     }
 }

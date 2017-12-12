@@ -8,6 +8,14 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
+/**
+ * Tells System/Admins of translation error.
+ * This mail is  sent when the error is caused by the system.
+ * Skip mark-down formatting.
+ *
+ * Class SystemTranslationError
+ * @package App\Translation\Mail
+ */
 class SystemTranslationError extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
@@ -26,7 +34,7 @@ class SystemTranslationError extends Mailable implements ShouldQueue
     {
         $this->messageWithError = $messageWithError->load([
             'error',
-            'sender'
+            'user'
         ]);
     }
 

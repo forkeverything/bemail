@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\Translation\Mail\ErrorSendingReply;
+use App\Translation\Mail\ErrorSendingReply;
 use App\Translation\Contracts\Translator;
 use App\Translation\Exceptions\Handlers\TranslationExceptionHandler;
 use App\Translation\Exceptions\TranslationException;
