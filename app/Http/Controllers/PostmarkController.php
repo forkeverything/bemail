@@ -24,8 +24,6 @@ class PostmarkController extends Controller
         $body = $request["StrippedTextReply"];      // TODO ::: CHECK IF THIS IS RIGHT!
         $attachments = $request["Attachments"];
 
-        \Log::info($body);
-
         // Address sent to
         $inboundAddress = $request["OriginalRecipient"];
 
@@ -43,12 +41,23 @@ class PostmarkController extends Controller
         // Replying to a Message
 
         if($inboundArray[0] === "reply") {
+
+            \Log::info('Received a message reply.', [
+                'subject' => $subject,
+                'body' => $body,
+                'attachments' => $attachments
+            ]);
+
             // Grab everything until '@'
             preg_match("/.*(?=@)/", $inboundArray[1], $matches);
             // First match is the message's hash ID
             $messageHash = $matches[0];
             // Find message we're replying to
-            if($originalMessage = Message::findByHash($matches[0])) {
+            if($originalMessage = Message::findByHash($messageHash)) {
+
+                \Log::info('tracked down original message', ['original_message_id' => $originalMessage->id]);
+                return;
+
                 // Try to make reply and translate
                 try {
                     $message = MessageFactory::makeReply($originalMessage)
