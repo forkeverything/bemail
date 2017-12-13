@@ -100,6 +100,15 @@ img {
     -premailer-width: 100%;
 }
 
+/* Reply Line */
+
+.reply-line {
+    font-size: 12px;
+    color: #AEAEAE;
+    text-align: center;
+    padding: 5px 0;
+}
+
 /* Header */
 
 .header {

@@ -24,6 +24,8 @@ class PostmarkController extends Controller
         $body = $request["StrippedTextReply"];      // TODO ::: CHECK IF THIS IS RIGHT!
         $attachments = $request["Attachments"];
 
+        \Log::info($body);
+
         // Address sent to
         $inboundAddress = $request["OriginalRecipient"];
 

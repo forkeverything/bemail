@@ -1,4 +1,12 @@
 @component('mail::layout')
+
+    {{-- Reply Line --}}
+    @slot('replyLine')
+        <tr>
+            <td class="reply-line">##- Please type your reply above this line -##</td>
+        </tr>
+    @endslot
+
     {{-- Header --}}
     @slot('header')
         @component('mail::header', ['url' => config('app.url')])

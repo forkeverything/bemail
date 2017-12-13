@@ -27,6 +27,9 @@
         <tr>
             <td align="center">
                 <table class="content" width="100%" cellpadding="0" cellspacing="0">
+                    <!-- Reply Line -->
+                    {{ $replyLine or '' }}
+                    <!-- Header -->
                     {{ $header or '' }}
 
                     <!-- Email Body -->
