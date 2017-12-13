@@ -56,7 +56,7 @@ class PostmarkController extends Controller
             if($originalMessage = Message::findByHash($messageHash)) {
 
                 \Log::info('tracked down original message', ['original_message_id' => $originalMessage->id]);
-                return;
+                return 'Logged variables';
 
                 // Try to make reply and translate
                 try {
