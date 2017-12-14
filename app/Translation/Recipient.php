@@ -29,8 +29,22 @@ class Recipient extends Model
 {
     protected $fillable = [
         'email',
+        'recipient_type_id',
         'message_id'
     ];
+
+    /**
+     * Type of Recipient: standard, cc, bcc
+     * This corresponds to the respective fields in an email. Need to
+     * specify type so that emails can be sent accordingly for
+     * reply Message(s).
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function type()
+    {
+        return $this->belongsTo(RecipientType::class, 'recipient_type_id');
+    }
 
     /**
      * Message that this Recipient received.

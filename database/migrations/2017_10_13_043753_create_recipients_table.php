@@ -32,6 +32,9 @@ class CreateRecipientsTable extends Migration
              * Relationship
              */
 
+            $table->integer('recipient_type_id')->unsigned();
+            $table->foreign('recipient_type_id')->references('id')->on('recipient_types');
+
             $table->integer('message_id')->unsigned();
             $table->foreign('message_id')->references('id')->on('messages')->onDelete('cascade');
 

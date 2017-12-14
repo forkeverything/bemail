@@ -6,9 +6,20 @@ namespace App\Translation\Factories;
 
 use App\Translation\Message;
 use App\Translation\Recipient;
+use App\Translation\RecipientType;
 
 class RecipientFactory
 {
+    /**
+     * What kind of recipient?
+     * Corresponds to: (to/cc/bcc) fields of an email. If this
+     * isn't specified we'll just use standard - ie. the a
+     * 'to' email address.
+     *
+     * @var RecipientType
+     */
+    private $type;
+
     /**
      * Message that is intended for this Recipient.
      *
@@ -37,6 +48,18 @@ class RecipientFactory
     }
 
     /**
+     * Set type.
+     *
+     * @param RecipientType $type
+     * @return $this
+     */
+    public function type(RecipientType $type) {
+        $this->type = $type;
+        return $this;
+    }
+
+
+    /**
      * Recipient email.
      *
      * @param $email
@@ -56,6 +79,7 @@ class RecipientFactory
     public function make()
     {
         return Recipient::create([
+            'recipient_type_id' => $this->type ? $this->type->id : RecipientType::standard()->id,
             'message_id' => $this->message->id,
             'email' => $this->email
         ]);

@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Translation\Message;
 use App\Translation\Recipient;
+use App\Translation\RecipientType;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -32,6 +33,7 @@ class RecipientTest extends TestCase
     {
         $fields = [
             'email' => 'sam@recipient.com',
+            'recipient_type_id' => RecipientType::standard()->id,
             'message_id' => factory(Message::class)->create()->id
         ];
 
@@ -40,7 +42,17 @@ class RecipientTest extends TestCase
         foreach ($fields as $key => $value) {
             $this->assertEquals($recipient->{$key}, $value);
         }
+    }
 
+    /**
+     * @test
+     */
+    public function it_fetches_the_recipient_type()
+    {
+        $recipient = factory(Recipient::class)->create([
+            'recipient_type_id' => RecipientType::bcc()->id
+        ]);
+        $this->assertEquals(RecipientType::bcc()->id, $recipient->fresh()->type->id);
     }
 
     /**

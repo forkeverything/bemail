@@ -6,6 +6,7 @@ namespace App\Translation\Factories;
 use App\Http\Requests\CreateMessageRequest;
 use App\Language;
 use App\Translation\Message;
+use App\Translation\RecipientType;
 use App\Translation\TranslationStatus;
 use App\User;
 use Illuminate\Http\Request;
@@ -49,7 +50,11 @@ class MessageFactory
      *
      * @var array
      */
-    protected $recipientEmails = [];
+    protected $recipientEmails = [
+        'standard' => [],
+        'cc' => [],
+        'bcc' => []
+    ];
 
     /**
      * Email Subject
@@ -132,7 +137,7 @@ class MessageFactory
         $factory->sendToSelf = !!$request->send_to_self;
         $factory->langSrcId = Language::findByCode($request->lang_src)->id;
         $factory->langTgtId = Language::findByCode($request->lang_tgt)->id;
-        $factory->recipientEmails = explode(',', $request->recipients);
+        $factory->recipientEmails["standard"] = explode(',', $request->recipients);
         $factory->attachments = $request->attachments;
 
         return $factory;
@@ -259,8 +264,11 @@ class MessageFactory
      */
     protected function createRecipients()
     {
-        foreach ($this->recipientEmails as $email) {
-            RecipientFactory::for ($this->messageModel)->to($email)->make();
+        foreach ($this->recipientEmails as $type => $emails) {
+            $recipientType = RecipientType::findType($type);
+            foreach($emails as $email) {
+                RecipientFactory::for($this->messageModel)->type($recipientType)->to($email)->make();
+            }
         }
         return $this;
     }

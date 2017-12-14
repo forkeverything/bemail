@@ -29,7 +29,7 @@ class TranslationStatus extends Model
      */
     public static function available()
     {
-        return TranslationStatus::where('description', 'available')->first();
+        return static::where('description', 'available')->first();
     }
 
     /**
@@ -40,7 +40,7 @@ class TranslationStatus extends Model
      */
     public static function pending()
     {
-        return TranslationStatus::where('description', 'pending')->first();
+        return static::where('description', 'pending')->first();
     }
 
     /**
@@ -51,7 +51,7 @@ class TranslationStatus extends Model
      */
     public static function approved()
     {
-        return TranslationStatus::where('description', 'approved')->first();
+        return static::where('description', 'approved')->first();
     }
 
     /**
@@ -64,6 +64,6 @@ class TranslationStatus extends Model
      */
     public static function error()
     {
-        return TranslationStatus::where('description', 'error')->first();
+        return static::where('description', 'error')->first();
     }
 }

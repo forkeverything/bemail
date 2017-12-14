@@ -23,7 +23,6 @@ class LanguagesTableSeeder extends Seeder
                 'code' => $code,
                 'name' => $name
             ]);
-
         }
     }
 }

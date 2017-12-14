@@ -8,7 +8,6 @@ use App\Traits\Hashable;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
-
 /**
  * App\Translation\Message
  *
