@@ -1,13 +1,16 @@
 @component('mail::message')
+<sub>Message: {{  $translatedMessage->hash }}</sub>
 # Translated Message From {{ $translatedMessage->user->name }} ({{ $translatedMessage->user->email }})
 
-{{ $translatedMessage->translated_body }}
+"{{ $translatedMessage->translated_body }}"
 
 ## Original Message
 
-{{ $translatedMessage->body }}
+"{{ $translatedMessage->body }}"
 
 @if($translatedMessage->auto_translate_reply)
+---
+
 ## How To Reply
 
 {{ $translatedMessage->user->name }} has turned on 'Auto-Translate' for replies. This means you can:

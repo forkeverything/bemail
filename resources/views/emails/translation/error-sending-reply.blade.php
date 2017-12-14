@@ -1,4 +1,5 @@
 @component('mail::message')
+<sub>Message: {{  $originalMessage->hash }}</sub>
 # Your Reply Was Not Sent
 
 We're sorry to say that your recent reply to {{ $originalMessage->user->name }} ({{$originalMessage->user->email}}) was unable to be sent due to a system error on our part. We're really very sorry for the inconvenience. Our systems have notified us and we are currently working as fast as we can to fix the problem.
@@ -10,5 +11,5 @@ Your friends at bemail
 
 ## Message That Failed To Send
 
-{{ $body }}
+"{{ $body }}"
 @endcomponent
