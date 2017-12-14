@@ -42,16 +42,19 @@ return [
         'main' => [
             'salt' => env('HASH_SALT'),
             'length' => '8',
+            'alphabet' => 'abcdefghijklmnopqrstuvwxyz1234567890'    // lower-case and numeric only
         ],
 
         'message' => [
             'salt' => env('HASH_MESSAGE_SALT'),
             'length' => '8',
+            'alphabet' => 'abcdefghijklmnopqrstuvwxyz1234567890'
         ],
 
         'user' => [
             'salt' => env('HASH_USER_SALT'),
             'length' => '8',
+            'alphabet' => 'abcdefghijklmnopqrstuvwxyz1234567890'
         ]
 
     ],
