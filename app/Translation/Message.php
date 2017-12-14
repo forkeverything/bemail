@@ -86,7 +86,8 @@ class Message extends Model
     protected $appends = [
         'hash',
         'word_count',
-        'has_recipients'
+        'has_recipients',
+        'is_reply'
     ];
 
     /**
@@ -223,4 +224,13 @@ class Message extends Model
         ]);
     }
 
+    /**
+     * Determines whether Message is a reply.
+     *
+     * @return bool
+     */
+    public function getIsReplyAttribute()
+    {
+        return isset($this->message_id);
+    }
 }

@@ -213,4 +213,16 @@ class MessageTest extends TestCase
             $this->assertEquals(static::$message->translation_status_id, $status->id);
         }
     }
+
+    /**
+     * @test
+     */
+    public function it_checks_whether_message_is_reply()
+    {
+        $this->assertFalse(static::$message->is_reply);
+        $replyMessage = factory(\App\Translation\Message::class)->create([
+            'message_id' => static::$message->id
+        ]);
+        $this->assertTrue($replyMessage->is_reply);
+    }
 }

@@ -6,6 +6,7 @@ use App\Translation\Mail\MessageSent;
 use App\Translation\Mail\RecipientTranslatedMessage;
 use App\Translation\Mail\SenderTranslatedMessage;
 use App\Translation\Message;
+use App\Translation\RecipientType;
 use App\Translation\TranslationStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -52,11 +53,24 @@ class GengoController extends Controller
                     // Send translated message back to sender
                     Mail::to($message->user)->send(new SenderTranslatedMessage($message));
                 } else {
-                    // Send translated Message to Recipient(s)
-                    foreach ($message->recipients as $recipient) {
-                        Mail::to($recipient->email)->send(new RecipientTranslatedMessage($message));
-                        // TODO ::: Send different mail for a reply
-                    }
+
+                    $recipients = $message->recipients;
+                    $standardRecipients = $recipients->where('recipient_type_id', RecipientType::standard()->id);
+                    $ccRecipients = $recipients->where('recipient_type_id', RecipientType::cc()->id);
+                    $bccRecipients = $recipients->where('recipient_type_id', RecipientType::bcc()->id);
+
+                    // Send to recipients
+
+                    // If Message is a reply, also send to original sender.
+                    if($message->is_reply) array_push($standardRecipients, $message->user);
+
+                    Mail::to($standardRecipients)
+                        ->cc($ccRecipients)
+                        ->bcc($bccRecipients)
+                        ->send(new RecipientTranslatedMessage($message));
+
+                    // TODO ::: Send different mail for a reply
+
                     // Send translation complete notification to sender
                     Mail::to($message->user)->send(new MessageSent($message));
                 }
