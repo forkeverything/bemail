@@ -38,7 +38,7 @@ class MessageTest extends TestCase
             'translated_body' => 'Some translated text',
             'auto_translate_reply' => 0,
             'send_to_self' => 1,
-            'reply_from_email' => 'foo@bar.com',
+            'sender_email' => 'foo@bar.com',
             'message_id' => factory(Message::class)->create()->id,
             'user_id' => factory(User::class)->create()->id,
             'translation_status_id' => TranslationStatus::available()->id,

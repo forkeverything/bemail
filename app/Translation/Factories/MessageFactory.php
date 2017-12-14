@@ -236,7 +236,7 @@ class MessageFactory
             'body' => $this->body,
             'auto_translate_reply' => $this->autoTranslateReply,
             'send_to_self' => $this->sendToSelf,
-            'reply_from_email' => $this->replyFromEmail,
+            'sender_email' => $this->replyFromEmail,
             'user_id' => $this->user->id,
             'translation_status_id' => TranslationStatus::available()->id,
             'lang_src_id' => $this->langSrcId,
