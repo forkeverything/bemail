@@ -31,10 +31,15 @@ trait Hashable
      *
      * @param $hash
      * @return mixed
+     * @throws \Exception
      */
     public static function findByHash($hash)
     {
-        $id = Hashids::connection(static::getHashConnection())->decode($hash)[0];
+        try {
+            $id = Hashids::connection(static::getHashConnection())->decode($hash)[0];
+        } catch (\Exception $e){
+            throw new \Exception("Couldn't decode hash into ID");
+        }
         return static::findOrFail($id);
     }
 
