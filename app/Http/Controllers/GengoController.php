@@ -60,14 +60,15 @@ class GengoController extends Controller
                     $bccRecipients = $recipients->where('recipient_type_id', RecipientType::bcc()->id);
 
                     // Send to recipients
-
-                    // If Message is a reply, also send to original sender.
-                    if($message->is_reply) array_push($standardRecipients, $message->user);
-
                     Mail::to($standardRecipients)
                         ->cc($ccRecipients)
                         ->bcc($bccRecipients)
                         ->send(new RecipientTranslatedMessage($message));
+
+                    // If Message is a reply, also send to original sender.
+                    if($message->is_reply)  {
+                        Mail::to($message->user)->send(new RecipientTranslatedMessage($message));
+                    }
 
                     // TODO ::: Send different mail for a reply
 
