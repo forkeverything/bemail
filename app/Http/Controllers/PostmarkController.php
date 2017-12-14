@@ -21,7 +21,9 @@ class PostmarkController extends Controller
 
         // Email Main
         $subject = $request["Subject"];
-        $body = $request["StrippedTextReply"];      // TODO ::: CHECK IF THIS IS RIGHT!
+        // Only get the reply in plain-text. Already checked (manually)
+        // this to be true.
+        $body = $request["StrippedTextReply"];
         $attachments = $request["Attachments"];
 
         // Address sent to
@@ -39,14 +41,7 @@ class PostmarkController extends Controller
             // 2. Indicate that only original sender will receive translated message.
 
         // Replying to a Message
-
         if($inboundArray[0] === "reply") {
-
-            \Log::info('Received a message reply.', [
-                'subject' => $subject,
-                'body' => $body,
-                'attachments' => $attachments
-            ]);
 
             // Grab everything until '@'
             preg_match("/.*(?=@)/", $inboundArray[1], $matches);
@@ -54,9 +49,6 @@ class PostmarkController extends Controller
             $messageHash = $matches[0];
             // Find message we're replying to
             if($originalMessage = Message::findByHash($messageHash)) {
-
-                \Log::info('tracked down original message', ['original_message_id' => $originalMessage->id]);
-                return 'Logged variables';
 
                 // Try to make reply and translate
                 try {
