@@ -18,12 +18,15 @@ class PostmarkController extends Controller
 
         // Address sent from
         $fromAddress = $request["From"];
-
         // Email Main
         $subject = $request["Subject"];
         // Only get the reply in plain-text. Already checked (manually)
         // this to be true.
         $body = $request["StrippedTextReply"];
+
+        
+
+        // TODO ::: Convert attachments into an array of PostMarkAttachment classes.
         $attachments = $request["Attachments"];
 
         // Address sent to
@@ -52,6 +55,9 @@ class PostmarkController extends Controller
 
                 // Try to make reply and translate
                 try {
+
+                    // TODO ::: set recipient emails
+
                     $message = MessageFactory::makeReply($originalMessage)
                                              ->from($fromAddress)
                                              ->subject($subject)

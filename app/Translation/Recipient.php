@@ -21,6 +21,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Recipient whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Recipient whereUserId($value)
  * @mixin \Eloquent
+ * @property int $message_id
+ * @property-read \App\Translation\Message $message
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Recipient whereMessageId($value)
  */
 class Recipient extends Model
 {

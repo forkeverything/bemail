@@ -45,14 +45,11 @@ class MessageFactory
     protected $messageModel;
 
     /**
-     * Recipients in a comma-separated list.
+     * Recipient emails (string).
      *
-     * This is what we get from the compose form.
-     *
-     *
-     * @var string
+     * @var array
      */
-    protected $formRecipients;
+    protected $recipientEmails = [];
 
     /**
      * Email Subject
@@ -135,8 +132,7 @@ class MessageFactory
         $factory->sendToSelf = !!$request->send_to_self;
         $factory->langSrcId = Language::findByCode($request->lang_src)->id;
         $factory->langTgtId = Language::findByCode($request->lang_tgt)->id;
-
-        $factory->formRecipients = $request->recipients;
+        $factory->recipientEmails = explode(',', $request->recipients);
         $factory->attachments = $request->attachments;
 
         return $factory;
@@ -152,8 +148,14 @@ class MessageFactory
     {
         $factory = new static();
 
+        // Replies mean that original message had auto-translate 'on'
+        // and consequently send-to-self 'off'.
         $factory->autoTranslateReply = 1;
         $factory->sendToSelf = 0;
+
+        // A reply Message belongs to the same User that sent
+        // the original Message
+        $factory->user = $message->user;
 
         // a reply will have flipped language pairs to the
         // original message.
@@ -188,6 +190,17 @@ class MessageFactory
     }
 
     /**
+     * Set recipientEmails.
+     *
+     * @param $recipientEmails
+     * @return $this
+     */
+    public function recipientEmails($recipientEmails) {
+        $this->recipientEmails = $recipientEmails;
+        return $this;
+    }
+
+    /**
      * Set attachments.
      *
      * @param $attachments
@@ -211,7 +224,8 @@ class MessageFactory
             // Sending a new message
             $this->user = $user;
         } else {
-            // Reply from an email address
+            // Email address of the sender that sent
+            // the reply
             $this->replySenderEmail = $user;
         }
         return $this;
@@ -239,24 +253,13 @@ class MessageFactory
     }
 
     /**
-     * Check whether we should create Recipient(s).
-     *
-     * @return bool
-     */
-    protected function needToCreateRecipients()
-    {
-        return !$this->replySenderEmail && !$this->sendToSelf;
-    }
-
-    /**
      * Create Message Recipient(s).
      *
      * @return $this
      */
     protected function createRecipients()
     {
-        $emails = explode(',', $this->formRecipients);
-        foreach ($emails as $email) {
+        foreach ($this->recipientEmails as $email) {
             RecipientFactory::for ($this->messageModel)->to($email)->make();
         }
         return $this;
@@ -278,7 +281,7 @@ class MessageFactory
      */
     protected function createAttachments()
     {
-        $method = AttachmentFactory::attachmentTypeMethodName($this->attachments[0]);
+        $method = AttachmentFactory::resolveMethodFromAttachment($this->attachments[0]);
         foreach ($this->attachments as $attachment) {
             AttachmentFactory::$$method($attachment)->for($this->messageModel)->make();
         }
@@ -292,7 +295,7 @@ class MessageFactory
     public function make()
     {
         $this->createModel();
-        if ($this->needToCreateRecipients()) $this->createRecipients();
+        if (! $this->sendToSelf) $this->createRecipients();
         if ($this->hasAttachments()) $this->createAttachments();
         return $this->messageModel;
     }

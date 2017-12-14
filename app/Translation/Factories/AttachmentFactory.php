@@ -79,7 +79,7 @@ class AttachmentFactory
      * @param $attachment array
      * @return string
      */
-    public static function attachmentTypeMethodName($attachment)
+    public static function resolveMethodFromAttachment($attachment)
     {
         if($attachment instanceof UploadedFile) {
             return "makeFromUploadedFile";

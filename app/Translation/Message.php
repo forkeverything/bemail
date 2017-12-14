@@ -52,8 +52,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereAutoTranslateReply($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereMessageId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereReplyFromEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereSendToSelf($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereReplySenderEmail($value)
  */
 class Message extends Model
 {
