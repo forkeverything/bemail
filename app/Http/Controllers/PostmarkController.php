@@ -13,6 +13,15 @@ use Illuminate\Support\Facades\Mail;
 
 class PostmarkController extends Controller
 {
+    /**
+     * Parses recipient emails out of Postmark's POST request.
+     * Store the recipient emails by the recipient types within an array. This is
+     * the same format as 'recipientEmails' prop in RecipientFactory.
+     * Currently BccFull always returns empty [].
+     *
+     * @param Request $request
+     * @return array
+     */
     protected function parseRecipients(Request $request)
     {
         $recipients = [
@@ -29,7 +38,10 @@ class PostmarkController extends Controller
 
         foreach($keys as $key => $type) {
             foreach($request[$key] as $recipientJson) {
-                array_push($recipients[$type], $recipientJson["Email"]);
+                $email = $recipientJson["Email"];
+                // skip the inbound email address.
+                if(explode('@', $email)[1] == 'in.bemail.io') continue;
+                array_push($recipients[$type], $email);
             }
         }
         return $recipients;
@@ -48,8 +60,9 @@ class PostmarkController extends Controller
 
         $recipients = $this->parseRecipients($request);
 
-        \Log::info('success!', ['recipients' => $recipients]);
-        return "parsed recipients";
+        \Log::info($recipients);
+
+        return "logged";
 
         // TODO ::: Convert attachments into an array of PostMarkAttachment classes.
         $attachments = $request["Attachments"];
