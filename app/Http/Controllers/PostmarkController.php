@@ -28,11 +28,11 @@ class PostmarkController extends Controller
         ];
 
         foreach($keys as $key => $type) {
-            \Log::info($request[$key]);
             foreach($request[$key] as $recipientJson) {
                 array_push($recipients[$type], $recipientJson["Email"]);
             }
         }
+        return $recipients;
     }
 
     public function postIncoming(Request $request, Translator $translator)
