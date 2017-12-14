@@ -39,8 +39,9 @@ class PostmarkController extends Controller
         foreach($keys as $key => $type) {
             foreach($request[$key] as $recipientJson) {
                 $email = $recipientJson["Email"];
-                // skip the inbound email address.
-                if(explode('@', $email)[1] == 'in.bemail.io') continue;
+                // skip the inbound email address or team@bemail.io (when hitting reply-all)
+                $domain = explode('@', $email)[1];
+                if($domain == 'in.bemail.io' || $domain == 'bemail.io') continue;
                 array_push($recipients[$type], $email);
             }
         }
