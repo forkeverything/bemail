@@ -15,6 +15,8 @@ class PostmarkController extends Controller
 {
     protected function parseRecipients(Request $request)
     {
+        \Log::info($request);
+
         $recipients = [
             'standard' => [],
             'cc' => [],
