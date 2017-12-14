@@ -29,6 +29,8 @@ class PostmarkController extends Controller
 
         foreach($keys as $key => $type) {
             foreach($request[$key] as $json) {
+                \Log::info($request[$key]);
+                break;
                 $recipient = json_decode($json, true);
                 array_push($recipients[$type], $recipient["Email"]);
             }
