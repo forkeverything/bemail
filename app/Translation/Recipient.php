@@ -26,37 +26,28 @@ class Recipient extends Model
 {
     protected $fillable = [
         'email',
-        'user_id'
+        'message_id'
     ];
 
     /**
-     * Message(s) sent to this Recipient.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function messages()
-    {
-        return $this->belongsToMany(Message::class, 'message_recipient', 'recipient_id', 'message_id');
-    }
-
-    /**
-     * User that sends messages to this recipient.
+     * Message that this Recipient received.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function sender()
+    public function message()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Message::class, 'message_id');
     }
 
     /**
-     * Search for Recipient(s) that belong to given User.
+     * Sender that sent the Message that this Recipient received.
+     * If the Message was an original message (via app) then this will be the User model.
+     * Otherwise, if it was a reply, the sender will be the sender's email (string).
      *
-     * @param User $user
-     * @return mixed
+     * @return User|string
      */
-    public static function belongingTo(User $user)
+    public function getSender()
     {
-        return static::where('user_id', $user->id);
+        return $this->message->reply_sender_email ?: $this->message->user;
     }
 }

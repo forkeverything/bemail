@@ -32,8 +32,8 @@ class CreateRecipientsTable extends Migration
              * Relationship
              */
 
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('message_id')->unsigned();
+            $table->foreign('message_id')->references('id')->on('messages')->onDelete('cascade');
 
         });
     }

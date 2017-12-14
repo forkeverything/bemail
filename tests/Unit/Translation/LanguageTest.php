@@ -3,11 +3,15 @@
 namespace Tests\Unit;
 
 use App\Language;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class LanguageTest extends TestCase
 {
+
+    use DatabaseTransactions;
+
     /**
      * @test
      */

@@ -45,7 +45,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Translation\MessageError $error
  * @property int $auto_translate_reply
  * @property int $send_to_self
- * @property string|null $sender_email
+ * @property string|null $reply_sender_email
  * @property int|null $message_id
  * @property-read bool $has_recipients
  * @property-read \App\Translation\Message|null $originalMessage
@@ -71,7 +71,7 @@ class Message extends Model
         'translated_body',
         'auto_translate_reply',
         'send_to_self',
-        'sender_email',
+        'reply_sender_email',
         'user_id',
         'translation_status_id',
         'lang_src_id',
@@ -103,7 +103,7 @@ class Message extends Model
      * User that owns this Message.
      * If this is the first message, this User is also the sender. If this is a reply
      * to a Message, this will be the User that sent the first message and the
-     * sender email is stored in 'sender_email'.
+     * sender email is stored in 'reply_sender_email'.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -125,11 +125,11 @@ class Message extends Model
     /**
      * Recipient(s) that this message will be sent to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function recipients()
     {
-        return $this->belongsToMany(Recipient::class);
+        return $this->hasMany(Recipient::class);
     }
 
     /**

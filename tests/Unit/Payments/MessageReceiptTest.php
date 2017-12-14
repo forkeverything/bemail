@@ -13,6 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class MessageReceiptTest extends TestCase
 {
     use DatabaseTransactions;
+
     /**
      * @test
      */

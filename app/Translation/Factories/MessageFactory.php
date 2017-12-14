@@ -55,13 +55,6 @@ class MessageFactory
     protected $formRecipients;
 
     /**
-     * Array of Recipient models.
-     *
-     * @var array
-     */
-    protected $recipientIDs = [];
-
-    /**
      * Email Subject
      *
      * @var string
@@ -111,7 +104,7 @@ class MessageFactory
      *
      * @var string
      */
-    protected $replyFromEmail;
+    protected $replySenderEmail;
 
     /**
      * File attachments to the Email.
@@ -219,7 +212,7 @@ class MessageFactory
             $this->user = $user;
         } else {
             // Reply from an email address
-            $this->replyFromEmail = $user;
+            $this->replySenderEmail = $user;
         }
         return $this;
     }
@@ -236,7 +229,7 @@ class MessageFactory
             'body' => $this->body,
             'auto_translate_reply' => $this->autoTranslateReply,
             'send_to_self' => $this->sendToSelf,
-            'sender_email' => $this->replyFromEmail,
+            'reply_sender_email' => $this->replySenderEmail,
             'user_id' => $this->user->id,
             'translation_status_id' => TranslationStatus::available()->id,
             'lang_src_id' => $this->langSrcId,
@@ -252,7 +245,7 @@ class MessageFactory
      */
     protected function needToCreateRecipients()
     {
-        return !$this->replyFromEmail && !$this->sendToSelf;
+        return !$this->replySenderEmail && !$this->sendToSelf;
     }
 
     /**
@@ -264,10 +257,8 @@ class MessageFactory
     {
         $emails = explode(',', $this->formRecipients);
         foreach ($emails as $email) {
-            $recipient = RecipientFactory::for ($this->messageModel)->to($email)->make();
-            array_push($this->recipientIDs, $recipient->id);
+            RecipientFactory::for ($this->messageModel)->to($email)->make();
         }
-        $this->messageModel->recipients()->sync($this->recipientIDs);
         return $this;
     }
 

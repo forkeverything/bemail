@@ -30,7 +30,7 @@ class AttachmentFactoryTest extends TestCase
         ];
 
         $message = factory(Message::class)->create();
-        $uploadedFile = \Mockery::mock('App\Translation\FormUploadedFile');
+        $uploadedFile = \Mockery::mock('App\Translation\Http\FormUploadedFile');
 
         // Assert that we're moving the file as well as setting the same
         // directory as we expect here.

@@ -5,8 +5,8 @@ namespace App\Translation\Factories;
 
 
 use App\Translation\Contracts\AttachmentFile;
-use App\Translation\FormUploadedFile;
-use App\Translation\PostmarkAttachmentFile;
+use App\Translation\Http\FormUploadedFile;
+use App\Translation\Http\PostmarkAttachmentFile;
 use App\Translation\Message;
 use Illuminate\Http\UploadedFile;
 

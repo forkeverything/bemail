@@ -103,10 +103,10 @@ class User extends Authenticatable
     /**
      * Recipient(s) that User has sent Message(s) to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function recipients()
     {
-        return $this->hasMany(Recipient::class);
+        return $this->hasManyThrough('App\Translation\Recipient', 'App\Translation\Message', 'user_id', 'message_id');
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Translation;
+namespace App\Translation\Http;
 
 
 use App\Translation\Contracts\AttachmentFile;

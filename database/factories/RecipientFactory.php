@@ -6,6 +6,6 @@ use Faker\Generator as Faker;
 $factory->define(Recipient::class, function (Faker $faker) {
     return [
         'email' => $faker->email,
-        'user_id' => factory(\App\User::class)->create()->id
+        'message_id' => factory(\App\Translation\Message::class)->create()->id
     ];
 });

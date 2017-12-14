@@ -80,13 +80,20 @@ class UserTest extends TestCase
     /**
      * @test
      */
-    public function it_fetches_get_user_recipients()
+    public function it_fetches_recipients_for_messages_sent_by_user()
     {
-        $this->assertCount(0, static::$user->recipients);
-        factory(Recipient::class, 5)->create([
+        $message1 = factory(Message::class)->create([
             'user_id' => static::$user->id
         ]);
-        $this->assertCount(5, static::$user->fresh()->recipients);
+        factory(Recipient::class, 3)->create(['message_id' => $message1->id]);
+
+        $message2 = factory(Message::class)->create([
+            'user_id' => static::$user->id
+        ]);
+        factory(Recipient::class, 2)->create(['message_id' => $message2->id]);
+
+        $this->assertCount(5, static::$user->recipients);
+
     }
 }
 

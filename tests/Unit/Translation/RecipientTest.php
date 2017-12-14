@@ -32,7 +32,7 @@ class RecipientTest extends TestCase
     {
         $fields = [
             'email' => 'sam@recipient.com',
-            'user_id' => factory(User::class)->create()->id
+            'message_id' => factory(Message::class)->create()->id
         ];
 
         $recipient = Recipient::create($fields);
@@ -46,12 +46,11 @@ class RecipientTest extends TestCase
     /**
      * @test
      */
-    public function it_fetches_messages_sent_to_recipient()
+    public function it_fetches_the_message_sent_to_recipient()
     {
-        $this->assertCount(0, static::$recipient->messages);
-        $messageIds = factory(Message::class, 3)->create()->pluck('id')->toArray();
-        static::$recipient->messages()->sync($messageIds);
-        $this->assertCount(3, static::$recipient->fresh()->messages);
+        $message = factory(Message::class)->create();
+        $recipient = factory(Recipient::class)->create(['message_id' => $message->id]);
+        $this->assertEquals($recipient->message->id, $message->id);
     }
     
     /**
@@ -59,19 +58,18 @@ class RecipientTest extends TestCase
      */
     public function it_fetches_the_user_that_sends_messages_to_this_recipient()
     {
-        $this->assertInstanceOf('App\User', static::$recipient->sender);
+        $this->assertInstanceOf('App\User', static::$recipient->getSender());
     }
-
+    
     /**
      * @test
      */
-    public function it_finds_recipients_for_given_user()
+    public function it_fetches_the_email_that_sent_reply_message_to_recipient()
     {
-        $user = factory(User::class)->create();
-        $this->assertEquals($user->recipients->count(), 0);
-        $recipients = factory(Recipient::class, 3)->create([
-            'user_id' => $user->id
+        $message = factory(Message::class)->create([
+            'reply_sender_email' => 'foo@bar.com'
         ]);
-        $this->assertEquals(Recipient::belongingTo($user)->get()->count(), 3);
+        $recipient = factory(Recipient::class)->create(['message_id' => $message->id]);
+        $this->assertEquals('foo@bar.com', $recipient->getSender());
     }
 }

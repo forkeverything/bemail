@@ -24,30 +24,6 @@ class RecipientFactory
     private $email;
 
     /**
-     * Try to find an existing Recipient.
-     * Recipient(s) belong to a given User, so we need to know
-     * the sender of the Message.
-     *
-     * @return mixed
-     */
-    protected function findExistingRecipient()
-    {
-        return Recipient::belongingTo($this->message->user)->where('email', $this->email)->first();
-    }
-
-    /**
-     * Create Recipient model.
-     *
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    protected function createRecipient()
-    {
-        return $this->message->user->recipients()->create([
-            'email' => $this->email
-        ]);
-    }
-
-    /**
      * Message the Recipient is receiving.
      *
      * @param Message $message
@@ -79,7 +55,10 @@ class RecipientFactory
      */
     public function make()
     {
-        return $this->findExistingRecipient() ?: $this->createRecipient();
+        return Recipient::create([
+            'message_id' => $this->message->id,
+            'email' => $this->email
+        ]);
     }
 
 }

@@ -38,7 +38,7 @@ class MessageTest extends TestCase
             'translated_body' => 'Some translated text',
             'auto_translate_reply' => 0,
             'send_to_self' => 1,
-            'sender_email' => 'foo@bar.com',
+            'reply_sender_email' => 'foo@bar.com',
             'message_id' => factory(Message::class)->create()->id,
             'user_id' => factory(User::class)->create()->id,
             'translation_status_id' => TranslationStatus::available()->id,
@@ -61,7 +61,8 @@ class MessageTest extends TestCase
     {
         $dynamicProperties = [
             'hash',
-            'word_count'
+            'word_count',
+            'has_recipients'
         ];
         foreach ($dynamicProperties as $property) {
             $this->assertContains($property, array_keys(static::$message->toArray()));
@@ -92,12 +93,14 @@ class MessageTest extends TestCase
     /**
      * @test
      */
-    public function it_fetches_original_message()
+    public function it_fetches_original_message_when_it_is_a_reply()
     {
+        $this->assertNull(static::$message->originalMessage);
+        $originalMessage = factory(Message::class)->create();
         static::$message->update([
-            'message_id' => factory(Message::class)->create()->id
+            'message_id' => $originalMessage->id
         ]);
-        $this->assertInstanceOf('App\Translation\Message', static::$message->originalMessage);
+        $this->assertEquals($originalMessage->id, static::$message->fresh()->originalMessage->id);
     }
 
     /**
@@ -106,8 +109,7 @@ class MessageTest extends TestCase
     public function it_fetches_recipients_for_the_message()
     {
         $this->assertCount(0, static::$message->recipients);
-        $recipientIds = factory(Recipient::class, 5)->create()->pluck('id')->toArray();
-        static::$message->recipients()->sync($recipientIds);
+        factory(Recipient::class, 5)->create(['message_id' => static::$message->id]);
         $this->assertCount(5, static::$message->fresh()->recipients);
     }
 
@@ -117,8 +119,7 @@ class MessageTest extends TestCase
     public function it_checks_whether_message_has_recipients()
     {
         $this->assertFalse(static::$message->has_recipients);
-        $recipientIds = factory(Recipient::class, 1)->create()->pluck('id')->toArray();
-        static::$message->recipients()->sync($recipientIds);
+        factory(Recipient::class, 1)->create(['message_id' => static::$message->id]);
         $this->assertTrue(static::$message->fresh()->has_recipients);
     }
 
@@ -173,6 +174,24 @@ class MessageTest extends TestCase
     /**
      * @test
      */
+    public function it_gets_the_right_word_count()
+    {
+        $this->assertEquals(str_word_count(static::$message->body), static::$message->word_count);
+    }
+
+    /**
+     * @test
+     */
+    public function it_checks_whether_there_are_recipients()
+    {
+        $this->assertFalse(static::$message->has_recipients);
+        factory(Recipient::class)->create(['message_id' => static::$message->id]);
+        $this->assertTrue(static::$message->fresh()->has_recipients);
+    }
+    
+    /**
+     * @test
+     */
     public function it_fetches_message_error()
     {
         $this->assertNull(static::$message->error);
@@ -180,24 +199,6 @@ class MessageTest extends TestCase
             'message_id' => static::$message->id
         ]);
         $this->assertNotNull(static::$message->fresh()->error);
-    }
-
-    /**
-     * @test
-     */
-    public function it_updates_translation_status()
-    {
-        $status = TranslationStatus::all()->random();
-        static::$message->updatestatus($status);
-        $this->assertEquals(static::$message->translation_status_id, $status->id);
-    }
-
-    /**
-     * @test
-     */
-    public function it_gets_the_right_word_count()
-    {
-        $this->assertEquals(str_word_count(static::$message->body), static::$message->word_count);
     }
 
     /**
