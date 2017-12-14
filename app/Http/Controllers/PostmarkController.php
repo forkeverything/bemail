@@ -57,12 +57,8 @@ class PostmarkController extends Controller
         // Only get the reply in plain-text. Already checked (manually)
         // this to be true.
         $body = $request["StrippedTextReply"];
-
+        // Recipients
         $recipients = $this->parseRecipients($request);
-
-        \Log::info($recipients);
-
-        return "logged";
 
         // TODO ::: Convert attachments into an array of PostMarkAttachment classes.
         $attachments = $request["Attachments"];
@@ -93,9 +89,6 @@ class PostmarkController extends Controller
 
                 // Try to make reply and translate
                 try {
-
-                    // TODO ::: set recipient emails
-
                     $message = MessageFactory::makeReply($originalMessage)
                                              ->from($fromAddress)
                                              ->recipientEmails($recipients)
