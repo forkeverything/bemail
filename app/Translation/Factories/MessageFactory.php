@@ -30,21 +30,18 @@ class MessageFactory
      * @var
      */
     protected $user;
-
     /**
      * Compose Message form request.
      *
      * @var
      */
     protected $formRequest;
-
     /**
      * Newly created Message model.
      *
      * @var Message
      */
     protected $messageModel;
-
     /**
      * Recipient emails (string).
      *
@@ -55,28 +52,24 @@ class MessageFactory
         'cc' => [],
         'bcc' => []
     ];
-
     /**
      * Email Subject
      *
      * @var string
      */
     protected $subject;
-
     /**
      * Email body
      *
      * @var string
      */
     protected $body;
-
     /**
      * Whether to allow auto-translated replies.
      *
      * @var boolean
      */
     protected $autoTranslateReply;
-
     /**
      * Whether to send email back to sender.
      *
@@ -86,28 +79,32 @@ class MessageFactory
      * @var
      */
     protected $sendToSelf;
-
-    /**
-     * Source Language ID
-     *
-     * @var int
-     */
-    protected $langSrcId;
-
-    /**
-     * Target Language ID
-     *
-     * @var int
-     */
-    protected $langTgtId;
-
     /**
      * Email that sent the reply Message.
      *
      * @var string
      */
     protected $replySenderEmail;
-
+    /**
+     * ID of the original Message.
+     * This would be set when we are creating a reply
+     * Message.
+     *
+     * @var Message
+     */
+    protected $messageId = null;
+    /**
+     * Source Language ID
+     *
+     * @var int
+     */
+    protected $langSrcId;
+    /**
+     * Target Language ID
+     *
+     * @var int
+     */
+    protected $langTgtId;
     /**
      * File attachments to the Email.
      *
@@ -146,26 +143,25 @@ class MessageFactory
     /**
      * Make a REPLY Message.
      *
-     * @param Message $message
+     * @param Message $originalMessage
      * @return static
      */
-    public static function makeReply(Message $message)
+    public static function makeReply(Message $originalMessage)
     {
         $factory = new static();
 
+        $factory->messageId = $originalMessage->id;
         // Replies mean that original message had auto-translate 'on'
         // and consequently send-to-self 'off'.
         $factory->autoTranslateReply = 1;
         $factory->sendToSelf = 0;
-
         // A reply Message belongs to the same User that sent
         // the original Message
-        $factory->user = $message->user;
-
+        $factory->user = $originalMessage->user;
         // a reply will have flipped language pairs to the
         // original message.
-        $factory->langSrcId = $message->lang_tgt_id;
-        $factory->langTgtId = $message->lang_src_id;
+        $factory->langSrcId = $originalMessage->lang_tgt_id;
+        $factory->langTgtId = $originalMessage->lang_src_id;
 
         return $factory;
     }
@@ -251,6 +247,7 @@ class MessageFactory
             'reply_sender_email' => $this->replySenderEmail,
             'user_id' => $this->user->id,
             'translation_status_id' => TranslationStatus::available()->id,
+            'message_id' => $this->messageId,
             'lang_src_id' => $this->langSrcId,
             'lang_tgt_id' => $this->langTgtId
         ]);
