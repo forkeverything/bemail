@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Translation\Mail\MessageSent;
+use App\Translation\Events\MessageTranslated;
+use App\Translation\Mail\NotifyMessageTranslated;
 use App\Translation\Mail\RecipientTranslatedMessage;
 use App\Translation\Mail\SenderTranslatedMessage;
 use App\Translation\Message;
@@ -44,37 +45,7 @@ class GengoController extends Controller
                 break;
             // Approved: Job (completed translation)
             case "approved":
-                // Store translated Body
-                $message->update(['translated_body' => $body["body_tgt"]]);
-                // Update message status
-                $message->updateStatus(TranslationStatus::approved());
-                // Send notification emails
-                if($message->send_to_self) {
-                    // Send translated message back to sender
-                    Mail::to($message->user)->send(new SenderTranslatedMessage($message));
-                } else {
-
-                    $recipients = $message->recipients;
-                    $standardRecipients = $recipients->where('recipient_type_id', RecipientType::standard()->id);
-                    $ccRecipients = $recipients->where('recipient_type_id', RecipientType::cc()->id);
-                    $bccRecipients = $recipients->where('recipient_type_id', RecipientType::bcc()->id);
-
-                    // Send to recipients
-                    Mail::to($standardRecipients)
-                        ->cc($ccRecipients)
-                        ->bcc($bccRecipients)
-                        ->send(new RecipientTranslatedMessage($message));
-
-                    // If Message is a reply, also send to original sender.
-                    if($message->is_reply)  {
-                        Mail::to($message->user)->send(new RecipientTranslatedMessage($message));
-                    }
-
-                    // TODO ::: Send different mail for a reply
-
-                    // Send translation complete notification to sender
-                    Mail::to($message->user)->send(new MessageSent($message));
-                }
+                event(new MessageTranslated($message, $body["body_tgt"]));
                 break;
             default:
                 break;

@@ -14,10 +14,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  * recipients (send-to-self), the SenderTranslatedMessage
  * mail will be sent.
  *
- * Class MessageSent
+ * Class NotifyMessageTranslated
  * @package App\Mail\Translation\Mail
  */
-class MessageSent extends Mailable implements ShouldQueue
+class NotifyMessageTranslated extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 

@@ -15,6 +15,11 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'Illuminate\Auth\Events\Registered' => [
             'App\Listeners\SendWelcomeMail'
+        ],
+        'App\Translation\Events\MessageTranslated' => [
+            'App\Translation\Listeners\UpdateTranslatedMessageAttributes',
+            'App\Translation\Listeners\SendTranslatedMessageMail',
+            'App\Translation\Listeners\SendNotifyMessageTranslatedMail',
         ]
     ];
 
