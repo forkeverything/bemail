@@ -13,42 +13,14 @@ use Illuminate\Support\Facades\Mail;
 
 class PostmarkController extends Controller
 {
+
     /**
-     * Parses recipient emails out of Postmark's POST request.
-     * Store the recipient emails by the recipient types within an array. This is
-     * the same format as 'recipientEmails' prop in RecipientFactory.
-     * Currently BccFull always returns empty [].
-     *
+     * Handle inbound mail callback from Postmark.
      * @param Request $request
-     * @return array
+     * @param Translator $translator
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    protected function parseRecipients(Request $request)
-    {
-        $recipients = [
-            'standard' => [],
-            'cc' => [],
-            'bcc' => []
-        ];
-
-        $keys = [
-            'ToFull' => 'standard',
-            'CcFull' => 'cc',
-            'BccFull' => 'bcc'
-        ];
-
-        foreach($keys as $key => $type) {
-            foreach($request[$key] as $recipientJson) {
-                $email = $recipientJson["Email"];
-                // skip the inbound email address or team@bemail.io (when hitting reply-all)
-                $domain = explode('@', $email)[1];
-                if($domain == 'in.bemail.io' || $domain == 'bemail.io') continue;
-                array_push($recipients[$type], $email);
-            }
-        }
-        return $recipients;
-    }
-
-    public function postIncoming(Request $request, Translator $translator)
+    public function postInboundMail(Request $request, Translator $translator)
     {
 
         // Address sent from
@@ -118,5 +90,40 @@ class PostmarkController extends Controller
         }
 
         return response("Received Email", 200);
+    }
+
+    /**
+     * Parses recipient emails out of Postmark's POST request.
+     * Store the recipient emails by the recipient types within an array. This is
+     * the same format as 'recipientEmails' prop in RecipientFactory.
+     * Currently BccFull always returns empty [].
+     *
+     * @param Request $request
+     * @return array
+     */
+    protected function parseRecipients(Request $request)
+    {
+        $recipients = [
+            'standard' => [],
+            'cc' => [],
+            'bcc' => []
+        ];
+
+        $keys = [
+            'ToFull' => 'standard',
+            'CcFull' => 'cc',
+            'BccFull' => 'bcc'
+        ];
+
+        foreach($keys as $key => $type) {
+            foreach($request[$key] as $recipientJson) {
+                $email = $recipientJson["Email"];
+                // skip the inbound email address or team@bemail.io (when hitting reply-all)
+                $domain = explode('@', $email)[1];
+                if($domain == 'in.bemail.io' || $domain == 'bemail.io') continue;
+                array_push($recipients[$type], $email);
+            }
+        }
+        return $recipients;
     }
 }

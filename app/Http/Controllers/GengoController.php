@@ -20,7 +20,7 @@ class GengoController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function postHandleCallback(Request $request)
+    public function postCallback(Request $request)
     {
         // Store our response, in case we need to return early. If
         // we don't return a 200 - Gengo will keep trying.
@@ -33,7 +33,7 @@ class GengoController extends Controller
         $messageHash = json_decode($body["custom_data"], true)["message_id"];
         // Get the status
         $status = $body["status"];
-        // What Message is this callback for?
+        // Which Message is this callback for?
         $message = Message::findByHash($messageHash);
         // Switch on status - what was the callback for?
         switch ($status) {

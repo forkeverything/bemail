@@ -18,8 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 // Gengo Callback Route
-Route::post('gengo', 'GengoController@postHandleCallback');
+Route::post('gengo', 'GengoController@postCallback');
 
 // Postmark Incoming Mail Web-hook
-Route::post('postmark', 'PostmarkController@postIncoming');
+Route::post('postmark', 'PostmarkController@postInboundMail');
 
