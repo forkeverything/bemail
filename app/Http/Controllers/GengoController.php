@@ -20,7 +20,7 @@ class GengoController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function postPickUp(Request $request)
+    public function postHandleCallback(Request $request)
     {
         // Store our response, in case we need to return early. If
         // we don't return a 200 - Gengo will keep trying.
