@@ -29,7 +29,8 @@ class SendNotifyMessageTranslatedMail
     {
         if(! $event->message->send_to_self) {
             // Send translation complete notification to sender
-            Mail::to($event->message->user)->send(new NotifyMessageTranslated($event->message));
+            $recipient = $event->message->is_reply ? $event->message->reply_sender_email : $event->message->user;
+            Mail::to($recipient)->send(new NotifyMessageTranslated($event->message));
         }
     }
 }
