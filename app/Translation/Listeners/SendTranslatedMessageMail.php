@@ -46,7 +46,7 @@ class SendTranslatedMessageMail
         if($type->id == RecipientType::standard()->id && $message->is_reply)  {
             // Original sender email can be the owner of message thread (first reply) or
             // the 'reply_sender_email' field (subsequent replies).
-            $originalMessage = $message->message;
+            $originalMessage = $message->originalMessage;
             $email = $originalMessage->reply_sender_email ?: $originalMessage->user->email;
             array_push($addresses, ['email' => $email]);
         }

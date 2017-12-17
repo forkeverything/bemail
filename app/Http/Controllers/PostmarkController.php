@@ -24,7 +24,7 @@ class PostmarkController extends Controller
     {
 
         \Log::info($request);
-        
+
         // Address sent from
         $fromAddress = $request["From"];
         // Email Main
