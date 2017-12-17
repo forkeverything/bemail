@@ -15,7 +15,7 @@
 {{ $translatedMessage->user->name }} has turned on 'Auto-Translate' for replies. This means you can:
 
 1. Reply to this email - Your message will be automatically translated into {{ $translatedMessage->sourceLanguage->name }} at no cost to you.
-
+{{-- TODO ::: When Message was a reply, update the reply mailto and name to the person who sent the reply --}}
 2. Send a new email to <a href="mailto:{{ $translatedMessage->user->email }}">{{ $translatedMessage->user->name }}</a> - Your email will **not be translated** and there will be no fees involved.
 
 @endif

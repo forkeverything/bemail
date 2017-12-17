@@ -46,6 +46,11 @@ class SendTranslatedMessageMail
         if($type->id == RecipientType::standard()->id && $message->is_reply)  {
             array_push($addresses, ['email' => $message->user->email]);
         }
+        // Log out to see why we're not sending to cc's
+        \Log::info('BUILT OUTBOUND ADDRESSES', [
+            'recipient_type' => $type->name,
+            'addresses' => $addresses
+        ]);
         return $addresses;
     }
 

@@ -124,6 +124,11 @@ class PostmarkController extends Controller
                 array_push($recipients[$type], $email);
             }
         }
+
+        \Log::info('PARSED INBOUND RECIPIENTS', [
+            'recipients' => $recipients
+        ]);
+
         return $recipients;
     }
 }
