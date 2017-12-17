@@ -44,7 +44,11 @@ class SendTranslatedMessageMail
         }
         // If we're building for the 'to' field and Message is a reply, also send to original sender.
         if($type->id == RecipientType::standard()->id && $message->is_reply)  {
-            array_push($addresses, ['email' => $message->user->email]);
+            // Original sender email can be the owner of message thread (first reply) or
+            // the 'reply_sender_email' field (subsequent replies).
+            $originalMessage = $message->message;
+            $email = $originalMessage->reply_sender_email ?: $originalMessage->user->email;
+            array_push($addresses, ['email' => $email]);
         }
         // Log out to see why we're not sending to cc's
         \Log::info('BUILT OUTBOUND ADDRESSES', [
