@@ -14,11 +14,6 @@ class RecipientTranslatedMessage extends Mailable implements ShouldQueue
     use Queueable, SerializesModels, TranslatedMail;
 
     /**
-     * @var Message
-     */
-    public $translatedMessage;
-
-    /**
      * Create a new message instance.
      *
      * @param Message $translatedMessage

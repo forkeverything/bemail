@@ -9,14 +9,20 @@ use App\Translation\Message;
 trait TranslatedMail
 {
     /**
+     * Message that has been translated.
+     *
+     * @var
+     */
+    public $translatedMessage;
+
+    /**
      * Sets the subject of the message.
      *
      * @return $this
      */
     protected function setSubject()
     {
-        $subject = $this->translatedMessage->subject ? "Translated: {$this->translatedMessage->subject}" : "Translated Message";
-        $this->subject($subject);
+        $this->subject($this->translatedMessage->subject);
         return $this;
     }
 
