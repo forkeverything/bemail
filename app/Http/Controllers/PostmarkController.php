@@ -23,6 +23,8 @@ class PostmarkController extends Controller
     public function postInboundMail(Request $request, Translator $translator)
     {
 
+        \Log::info($request);
+        
         // Address sent from
         $fromAddress = $request["From"];
         // Email Main
