@@ -4,6 +4,15 @@ namespace App\Translation;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Translation\RecipientType
+ *
+ * @property int $id
+ * @property string $name
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\RecipientType whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\RecipientType whereName($value)
+ * @mixin \Eloquent
+ */
 class RecipientType extends Model
 {
     /**

@@ -24,6 +24,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $message_id
  * @property-read \App\Translation\Message $message
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Recipient whereMessageId($value)
+ * @property int $recipient_type_id
+ * @property-read \App\Translation\RecipientType $type
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Recipient bcc()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Recipient cc()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Recipient standard()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Recipient whereRecipientTypeId($value)
  */
 class Recipient extends Model
 {
@@ -66,5 +72,38 @@ class Recipient extends Model
     public function getSender()
     {
         return $this->message->reply_sender_email ?: $this->message->user;
+    }
+
+    /**
+     * 'standard' Recipients
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeStandard($query)
+    {
+        return $query->where('recipient_type_id', RecipientType::standard()->id);
+    }
+
+    /**
+     * 'cc' Recipients
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeCc($query)
+    {
+        return $query->where('recipient_type_id', RecipientType::cc()->id);
+    }
+
+    /**
+     * 'bcc' Recipients
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeBcc($query)
+    {
+        return $query->where('recipient_type_id', RecipientType::bcc()->id);
     }
 }

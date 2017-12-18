@@ -30,6 +30,7 @@ class ReceivedNewMessageRequest extends Mailable implements ShouldQueue
     {
         // Eager-load relations
         $this->translationMessage = $message->load([
+            'user',
             'recipients',
             'sourceLanguage',
             'targetLanguage',
@@ -45,7 +46,13 @@ class ReceivedNewMessageRequest extends Mailable implements ShouldQueue
     public function build()
     {
         $subject = $this->translationMessage->subject ? 'Translation Request: ' . $this->translationMessage->subject : "Received Translation Request";
+        $messages = [
+            $this->translationMessage,
+            $this->translationMessage->originalMessage
+        ];
         return $this->subject($subject)
-            ->markdown('emails.translation.received-new-message-request');
+        ->view('emails.messages.html.received-new-message-request', compact('messages'))
+        ->text('emails.messages.text.received-new-message-request', compact('messages'));
+
     }
 }

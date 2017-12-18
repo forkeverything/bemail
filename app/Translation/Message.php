@@ -53,6 +53,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereMessageId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereSendToSelf($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereReplySenderEmail($value)
+ * @property-read bool $is_reply
+ * @property-read string $readable_created_at
  */
 class Message extends Model
 {
@@ -87,7 +89,8 @@ class Message extends Model
         'hash',
         'word_count',
         'has_recipients',
-        'is_reply'
+        'is_reply',
+        'readable_created_at'
     ];
 
     /**
@@ -232,5 +235,16 @@ class Message extends Model
     public function getIsReplyAttribute()
     {
         return isset($this->message_id);
+    }
+
+    /**
+     * 'created_at' field date formatted for readability'
+     *
+     * @return string
+     */
+    public function getReadableCreatedAtAttribute()
+    {
+        // 'Jan 1, 05:23 UTC'
+        return $this->created_at->format('M j, H:i e');
     }
 }

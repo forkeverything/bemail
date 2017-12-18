@@ -1,3 +1,5 @@
+{!! strip_tags($replyLine) !!}
+
 {!! strip_tags($header) !!}
 
 {!! strip_tags($slot) !!}
