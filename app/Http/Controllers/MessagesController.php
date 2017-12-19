@@ -4,17 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Language;
 use App\Translation\Exceptions\Handlers\TranslationExceptionHandler;
-use App\Translation\Mail\SystemTranslationError;
 use App\Translation\Contracts\Translator;
 use App\Translation\Factories\MessageFactory;
 use App\Http\Requests\CreateMessageRequest;
 use App\Translation\Exceptions\TranslationException;
 use App\Translation\Mail\ReceivedNewMessageRequest;
-use App\User;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 
 class MessagesController extends Controller

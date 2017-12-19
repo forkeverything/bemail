@@ -51,8 +51,8 @@ class ReceivedNewMessageRequest extends Mailable implements ShouldQueue
             $this->translationMessage->originalMessage
         ];
         return $this->subject($subject)
-        ->view('emails.messages.html.received-new-message-request', compact('messages'))
-        ->text('emails.messages.text.received-new-message-request', compact('messages'));
+                    ->view('emails.messages.html.received-new-message-request', compact('messages'))
+                    ->text('emails.messages.text.received-new-message-request', compact('messages'));
 
     }
 }

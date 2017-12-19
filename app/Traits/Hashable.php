@@ -2,9 +2,8 @@
 
 
 namespace App\Traits;
-
-
 use Vinkla\Hashids\Facades\Hashids;
+
 
 /**
  * Allow's Hashable models to quickly encode/decode ids.

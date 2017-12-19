@@ -10,14 +10,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 /**
  * Notifies the sender that the email has been translated and sent.
- * Sent for messages with recipients. For Messages without
- * recipients (send-to-self), the SenderTranslatedMessage
- * mail will be sent.
+ * Sent for messages with recipients.
  *
- * Class NotifyMessageTranslated
+ * Class MessageHasBeenTranslatedNotification
  * @package App\Mail\Translation\Mail
  */
-class NotifyMessageTranslated extends Mailable implements ShouldQueue
+class MessageHasBeenTranslatedNotification extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 

@@ -3,14 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Translation\Events\MessageTranslated;
-use App\Translation\Mail\NotifyMessageTranslated;
-use App\Translation\Mail\RecipientTranslatedMessage;
-use App\Translation\Mail\SenderTranslatedMessage;
 use App\Translation\Message;
-use App\Translation\RecipientType;
 use App\Translation\TranslationStatus;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 
 class GengoController extends Controller

@@ -19,7 +19,7 @@ class EventServiceProvider extends ServiceProvider
         'App\Translation\Events\MessageTranslated' => [
             'App\Translation\Listeners\UpdateTranslatedMessageAttributes',
             'App\Translation\Listeners\SendTranslatedMessageMail',
-            'App\Translation\Listeners\SendNotifyMessageTranslatedMail',
+            'App\Translation\Listeners\SendMessageHasBeenTranslatedNotificationMail',
         ]
     ];
 

@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class RecipientTranslatedMessage extends Mailable implements ShouldQueue
+class TranslatedMessageForRecipient extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels, TranslatedMail;
 
@@ -31,9 +31,9 @@ class RecipientTranslatedMessage extends Mailable implements ShouldQueue
     public function build()
     {
         if ($this->translatedMessage->auto_translate_reply) {
-            $this->replyTo("reply_{$this->translatedMessage->hash}@in.bemail.io", "Translator");
+            $this->from("reply_{$this->translatedMessage->hash}@in.bemail.io", $this->translatedMessage->user->name);
         } else {
-            $this->replyTo($this->translatedMessage->user->email, $this->translatedMessage->user->name);
+            $this->from($this->translatedMessage->user->email, $this->translatedMessage->user->name);
         }
 
         return $this->setSubject()
