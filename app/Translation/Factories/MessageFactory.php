@@ -7,6 +7,7 @@ use App\Http\Requests\CreateMessageRequest;
 use App\Language;
 use App\Translation\Message;
 use App\Translation\RecipientType;
+use App\Translation\Reply;
 use App\Translation\TranslationStatus;
 use App\User;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class MessageFactory
      *
      * @var
      */
-    protected $user;
+    protected $owner;
     /**
      * Compose Message form request.
      *
@@ -80,20 +81,6 @@ class MessageFactory
      */
     protected $sendToSelf;
     /**
-     * Email that sent the reply Message.
-     *
-     * @var string
-     */
-    protected $replySenderEmail;
-    /**
-     * ID of the original Message.
-     * This would be set when we are creating a reply
-     * Message.
-     *
-     * @var Message
-     */
-    protected $messageId = null;
-    /**
      * Source Language ID
      *
      * @var int
@@ -124,7 +111,7 @@ class MessageFactory
      * @param CreateMessageRequest $request
      * @return static
      */
-    public static function makeNew(CreateMessageRequest $request)
+    public static function new(CreateMessageRequest $request)
     {
         $factory = new static();
 
@@ -143,25 +130,23 @@ class MessageFactory
     /**
      * Make a REPLY Message.
      *
-     * @param Message $originalMessage
+     * @param Reply $reply
      * @return static
      */
-    public static function makeReply(Message $originalMessage)
+    public static function reply(Reply $reply)
     {
         $factory = new static();
 
-        $factory->messageId = $originalMessage->id;
         // Replies mean that original message had auto-translate 'on'
         // and consequently send-to-self 'off'.
         $factory->autoTranslateReply = 1;
         $factory->sendToSelf = 0;
-        // A reply Message belongs to the same User that sent
-        // the original Message
-        $factory->user = $originalMessage->user;
-        // a reply will have flipped language pairs to the
+        // Reply message share same owner as original.
+        $factory->owner = $reply->originalMessage->owner;
+        // a reply message will have flipped language pairs to the
         // original message.
-        $factory->langSrcId = $originalMessage->lang_tgt_id;
-        $factory->langTgtId = $originalMessage->lang_src_id;
+        $factory->langSrcId = $reply->originalMessage->lang_tgt_id;
+        $factory->langTgtId = $reply->originalMessage->lang_src_id;
 
         return $factory;
     }
@@ -214,21 +199,14 @@ class MessageFactory
     }
 
     /**
-     * Set who Message is from.
+     * Set Message owner.
      *
-     * @param $user
+     * @param User $user
      * @return $this
      */
-    public function from($user)
+    public function owner(User $user)
     {
-        if ($user instanceof User) {
-            // Sending a new message
-            $this->user = $user;
-        } else {
-            // Email address of the sender that sent
-            // the reply
-            $this->replySenderEmail = $user;
-        }
+        $this->owner = $user;
         return $this;
     }
 
@@ -244,10 +222,8 @@ class MessageFactory
             'body' => $this->body,
             'auto_translate_reply' => $this->autoTranslateReply,
             'send_to_self' => $this->sendToSelf,
-            'reply_sender_email' => $this->replySenderEmail,
-            'user_id' => $this->user->id,
+            'user_id' => $this->owner->id,
             'translation_status_id' => TranslationStatus::available()->id,
-            'message_id' => $this->messageId,
             'lang_src_id' => $this->langSrcId,
             'lang_tgt_id' => $this->langTgtId
         ]);

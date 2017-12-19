@@ -8,54 +8,6 @@ use App\Traits\Hashable;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\Translation\Message
- *
- * @property int $id
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @property string|null $subject
- * @property string $body
- * @property string|null $translated_body
- * @property int $user_id
- * @property int $lang_src_id
- * @property int $lang_tgt_id
- * @property int $translation_status_id
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Attachment[] $attachments
- * @property-read mixed $word_count
- * @property-read \App\Payments\MessageReceipt $receipt
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Recipient[] $recipients
- * @property-read \App\User $sender
- * @property-read \App\Language $sourceLanguage
- * @property-read \App\Translation\TranslationStatus $status
- * @property-read \App\Language $targetLanguage
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereBody($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereLangSrcId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereLangTgtId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereSubject($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereTranslatedBody($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereTranslationStatusId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereUserId($value)
- * @mixin \Eloquent
- * @property-read mixed $hash
- * @property-read \App\Translation\MessageError $error
- * @property int $auto_translate_reply
- * @property int $send_to_self
- * @property string|null $reply_sender_email
- * @property int|null $message_id
- * @property-read bool $has_recipients
- * @property-read \App\Translation\Message|null $originalMessage
- * @property-read \App\User|null $user
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereAutoTranslateReply($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereMessageId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereSendToSelf($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereReplySenderEmail($value)
- * @property-read bool $is_reply
- * @property-read string $readable_created_at
- */
 class Message extends Model
 {
 
@@ -72,12 +24,11 @@ class Message extends Model
         'translated_body',
         'auto_translate_reply',
         'send_to_self',
-        'reply_sender_email',
         'user_id',
+        'reply_id',
         'translation_status_id',
         'lang_src_id',
         'lang_tgt_id',
-        'message_id'
     ];
 
     /**
@@ -89,7 +40,6 @@ class Message extends Model
         'hash',
         'word_count',
         'has_recipients',
-        'is_reply',
         'readable_created_at'
     ];
 
@@ -104,25 +54,14 @@ class Message extends Model
 
     /**
      * User that owns this Message.
-     * If this is the first message, this User is also the sender. If this is a reply
-     * to a Message, this will be the User that sent the first message and the
-     * sender email is stored in 'reply_sender_email'.
+     * This is different from the sender. This is the User that is
+     * gets charged for the message and reply messages.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    /**
-     * The Message that this Message is a reply to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function originalMessage()
-    {
-        return $this->belongsTo(Message::class, 'message_id');
     }
 
     /**
@@ -133,6 +72,56 @@ class Message extends Model
     public function recipients()
     {
         return $this->hasMany(Recipient::class);
+    }
+
+    /**
+     * Reply that this Message is for.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function intendedReply()
+    {
+        return $this->belongsTo(Reply::class, 'reply_id');
+    }
+
+    /**
+     * Message could have many replies each with their own Message.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function replies()
+    {
+        return $this->hasMany(Reply::class, 'original_message_id');
+    }
+
+    /**
+     * Check whether Message
+     *
+     * @return bool
+     */
+    public function isReply()
+    {
+        return !! $this->reply_id;
+    }
+
+    /**
+     * Sender email.
+     *
+     * @return mixed
+     */
+    public function senderEmail()
+    {
+        return $this->isReply() ? $this->intendedReply->sender_email : $this->owner->email;
+    }
+
+    /**
+     * Sender Name
+     *
+     * @return mixed
+     */
+    public function senderName()
+    {
+        return $this->isReply() ? $this->intendedReply->sender_name : $this->owner->name;
     }
 
     /**
@@ -206,6 +195,17 @@ class Message extends Model
     }
 
     /**
+     * 'created_at' field date formatted for readability'
+     *
+     * @return string
+     */
+    public function getReadableCreatedAtAttribute()
+    {
+        // 'Jan 1, 05:23 UTC'
+        return $this->created_at->format('M j, H:i e');
+    }
+
+    /**
      * Error when trying to translate Message.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -227,24 +227,4 @@ class Message extends Model
         ]);
     }
 
-    /**
-     * Determines whether Message is a reply.
-     *
-     * @return bool
-     */
-    public function getIsReplyAttribute()
-    {
-        return isset($this->message_id);
-    }
-
-    /**
-     * 'created_at' field date formatted for readability'
-     *
-     * @return string
-     */
-    public function getReadableCreatedAtAttribute()
-    {
-        // 'Jan 1, 05:23 UTC'
-        return $this->created_at->format('M j, H:i e');
-    }
 }

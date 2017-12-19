@@ -63,18 +63,6 @@ class Recipient extends Model
     }
 
     /**
-     * Sender that sent the Message that this Recipient received.
-     * If the Message was an original message (via app) then this will be the User model.
-     * Otherwise, if it was a reply, the sender will be the sender's email (string).
-     *
-     * @return User|string
-     */
-    public function getSender()
-    {
-        return $this->message->reply_sender_email ?: $this->message->user;
-    }
-
-    /**
      * 'standard' Recipients
      *
      * @param $query

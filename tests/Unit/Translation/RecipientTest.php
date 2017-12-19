@@ -64,24 +64,5 @@ class RecipientTest extends TestCase
         $recipient = factory(Recipient::class)->create(['message_id' => $message->id]);
         $this->assertEquals($recipient->message->id, $message->id);
     }
-    
-    /**
-     * @test
-     */
-    public function it_fetches_the_user_that_sends_messages_to_this_recipient()
-    {
-        $this->assertInstanceOf('App\User', static::$recipient->getSender());
-    }
-    
-    /**
-     * @test
-     */
-    public function it_fetches_the_email_that_sent_reply_message_to_recipient()
-    {
-        $message = factory(Message::class)->create([
-            'reply_sender_email' => 'foo@bar.com'
-        ]);
-        $recipient = factory(Recipient::class)->create(['message_id' => $message->id]);
-        $this->assertEquals('foo@bar.com', $recipient->getSender());
-    }
+
 }

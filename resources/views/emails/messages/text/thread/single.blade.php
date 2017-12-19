@@ -1,8 +1,8 @@
 {{ $message->readable_created_at }}
-@if($message->is_reply)
-{{ $message->reply_sender_email }}
+@if($senderName = $message->senderName())
+{{ $senderName }} ({{ $message->senderEmail() }})
 @else
-{{ $message->user->name }} ({{ $message->user->email }})
+{{ $message->senderEmail() }}
 @endif
 
 @include('emails.messages.text.thread.single.recipients')

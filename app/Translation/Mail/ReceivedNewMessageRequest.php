@@ -47,9 +47,9 @@ class ReceivedNewMessageRequest extends Mailable implements ShouldQueue
     {
         $subject = $this->translationMessage->subject ? 'Translation Request: ' . $this->translationMessage->subject : "Received Translation Request";
         $messages = [
-            $this->translationMessage,
-            $this->translationMessage->originalMessage
+            $this->translationMessage
         ];
+        // TODO ::: Loop through and add previous messages to messages array
         return $this->subject($subject)
                     ->view('emails.messages.html.received-new-message-request', compact('messages'))
                     ->text('emails.messages.text.received-new-message-request', compact('messages'));

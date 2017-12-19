@@ -8,6 +8,7 @@ use App\Translation\Exceptions\Handlers\TranslationExceptionHandler;
 use App\Translation\Exceptions\TranslationException;
 use App\Translation\Factories\MessageFactory;
 use App\Translation\Message;
+use App\Translation\Reply;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -25,6 +26,8 @@ class PostmarkController extends Controller
 
         \Log::info($request);
 
+        // Name of person who sent email
+        $fromName = $request["FromName"];
         // Address sent from
         $fromAddress = $request["From"];
         // Email Main
@@ -62,10 +65,15 @@ class PostmarkController extends Controller
             // Find message we're replying to
             if ($originalMessage = Message::findByHash($messageHash)) {
 
-                // Try to make reply and translate
+                // Try to make reply message and translate
                 try {
-                    $message = MessageFactory::makeReply($originalMessage)
-                                             ->from($fromAddress)
+                    $reply = Reply::create([
+                        'sender_email' => $fromAddress,
+                        'sender_name' => $fromName,
+                        'original_message_id' => $originalMessage->id
+                    ]);
+
+                    $message = MessageFactory::reply($reply)
                                              ->recipientEmails($recipients)
                                              ->subject($subject)
                                              ->body($body)

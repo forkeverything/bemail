@@ -50,7 +50,9 @@ class MessagesController extends Controller
 
         try {
             // Create Message and store in DB
-            $message = MessageFactory::makeNew($request)->from(Auth::user())->make();
+            $message = MessageFactory::new($request)
+                                     ->owner(Auth::user())
+                                     ->make();
             // Attempt to translate our Message
             try {
                 $translator->translate($message);

@@ -5,11 +5,10 @@
 				{{ $message->readable_created_at }}
 			</p>
 			<p style="font-family: Avenir, Helvetica, sans-serif; font-size: 15px; line-height: 22px; margin-bottom: 0; margin-top: 0; padding: 0; color: #1b1d1e">
-			@if($message->is_reply)
-				<!-- TODO ::: store and show replier's name here -->
-				<strong>{{ $message->reply_sender_email }}</strong>
+			@if($senderName = $message->senderName())
+				<strong>{{ $senderName }}</strong> ({{ $message->senderEmail() }})
 			@else
-				<strong>{{ $message->user->name }}</strong> ({{ $message->user->email }})
+				<strong>{{ $senderName }}</strong> ({{ $message->senderEmail() }})
 			@endif
 			</p>
 			<!-- Recipients -->

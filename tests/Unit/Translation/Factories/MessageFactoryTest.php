@@ -37,7 +37,7 @@ class MessageFactoryTest extends TestCase
         $fakeRequest = new CreateMessageRequest($formFields);
 
 
-        $message = MessageFactory::makeNew($fakeRequest)->from($user)->make();
+        $message = MessageFactory::new($fakeRequest)->owner($user)->make();
 
         // Check Message Model fields are stored correctly
         $this->assertEquals($formFields['subject'], $message->subject);
@@ -53,4 +53,6 @@ class MessageFactoryTest extends TestCase
         $this->assertNotNull($message->recipients()->where('email', 'sam@bemail.io')->first());
         $this->assertNotNull($message->recipients()->where('email', 'john@bemail.io')->first());
     }
+
+    // TODO ::: make a reply message test
 }

@@ -42,12 +42,11 @@ class SendTranslatedMessageMail
         foreach ($message->recipients->where('recipient_type_id', $type->id) as $recipient) {
             array_push($addresses, ['email' => $recipient->email]);
         }
-        // If we're building for the 'to' field and Message is a reply, also send to original sender.
-        if($type->id == RecipientType::standard()->id && $message->is_reply)  {
-            // Original sender email can be the owner of message thread (first reply) or
-            // the 'reply_sender_email' field (subsequent replies).
-            $originalMessage = $message->originalMessage;
-            $email = $originalMessage->reply_sender_email ?: $originalMessage->user->email;
+        // If we're building for the 'to' field and Message is a Reply, also send translated message
+        // to the person who sent the original Message.
+        if($type->id == RecipientType::standard()->id && $message->isReply())  {
+            $originalMessage = $message->intendedReply->originalMessage;
+            $email = $originalMessage->senderEmail();
             array_push($addresses, ['email' => $email]);
         }
         // Log out to see why we're not sending to cc's
