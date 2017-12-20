@@ -46,7 +46,7 @@ class ReceivedNewMessageRequest extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        $subject = $this->translationMessage->subject ? 'Translation Request: ' . $this->translationMessage->subject : "Received Translation Request";
+        $subject = $this->translationMessage->subject ? $this->translationMessage->subject : "New Translation Request";
         $messages = MessageThreadBuilder::startingFrom($this->translationMessage);
         return $this->subject($subject)
                     ->view('emails.messages.html.received-new-message-request', compact('messages'))
