@@ -3,6 +3,7 @@
 namespace App\Translation\Mail;
 
 use App\Translation\Message;
+use App\Translation\Utilities\MessageThreadBuilder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -30,7 +31,7 @@ class ReceivedNewMessageRequest extends Mailable implements ShouldQueue
     {
         // Eager-load relations
         $this->translationMessage = $message->load([
-            'user',
+            'owner',
             'recipients',
             'sourceLanguage',
             'targetLanguage',
@@ -46,10 +47,7 @@ class ReceivedNewMessageRequest extends Mailable implements ShouldQueue
     public function build()
     {
         $subject = $this->translationMessage->subject ? 'Translation Request: ' . $this->translationMessage->subject : "Received Translation Request";
-        $messages = [
-            $this->translationMessage
-        ];
-        // TODO ::: Loop through and add previous messages to messages array
+        $messages = MessageThreadBuilder::startingFrom($this->translationMessage);
         return $this->subject($subject)
                     ->view('emails.messages.html.received-new-message-request', compact('messages'))
                     ->text('emails.messages.text.received-new-message-request', compact('messages'));
