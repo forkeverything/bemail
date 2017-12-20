@@ -5,6 +5,8 @@ namespace Tests\Unit\Translation\Factories;
 use App\Http\Requests\CreateMessageRequest;
 use App\Language;
 use App\Translation\Factories\MessageFactory;
+use App\Translation\Message;
+use App\Translation\Reply;
 use App\Translation\TranslationStatus;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -54,5 +56,34 @@ class MessageFactoryTest extends TestCase
         $this->assertNotNull($message->recipients()->where('email', 'john@bemail.io')->first());
     }
 
-    // TODO ::: make a reply message test
+    /**
+     * @test
+     */
+    public function it_makes_a_message_from_a_reply()
+    {
+        $subject = 'important message';
+        $body = 'some body';
+        $recipients = [
+            'standard' => [
+                'john@example.com',
+                'jane@example.com',
+            ],
+            'cc' => ['stan@example.com'],
+            'bcc' => ['sarah@example.com']
+        ];
+        $reply = factory(Reply::class)->create();
+        $message = MessageFactory::reply($reply)
+                                 ->recipientEmails($recipients)
+                                 ->subject($subject)
+                                 ->body($body)
+                                 ->make();
+        $this->assertInstanceOf(Message::class, $message);
+        $this->assertEquals($subject, $message->subject);
+        $this->assertEquals($body, $message->body);
+        $this->assertCount(4, $message->recipients);
+    }
+
+    // TODO ::: Test Message Attachments
 }
+
+
