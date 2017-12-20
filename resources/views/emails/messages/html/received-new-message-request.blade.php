@@ -1,9 +1,9 @@
-@component('emails.messages.html.layout')
-	@component('emails.messages.html.main')
-		@component('emails.messages.html.main.header', ['hash' => $translationMessage->hash])
+@component('emails.messages.html.partials.layout')
+	@component('emails.messages.html.partials.main')
+		@component('emails.messages.html.partials.main.header', ['hash' => $translationMessage->hash])
 			Received request to translate message.
 		@endcomponent
-		@component('emails.messages.html.main.body')
+		@component('emails.messages.html.partials.main.body')
 			Messages usually take between 1-2 hours to be translated and sent. Once your message has
 			been sent, you will receive another confirmation email from us.
 			<br>
@@ -11,5 +11,5 @@
 			email and ask us for an update anytime.
 		@endcomponent
 	@endcomponent
-	@include('emails.messages.html.thread')
+	@include('emails.messages.html.partials.thread')
 @endcomponent

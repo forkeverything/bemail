@@ -5,7 +5,7 @@
 {{ $message->senderEmail() }}
 @endif
 
-@include('emails.messages.text.thread.single.recipients')
+@include('emails.messages.text.partials.thread.single.recipients')
 
 
 @if($message->translated_body)

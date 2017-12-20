@@ -6,5 +6,5 @@
 ------------------------------------------------------------
 
 @endif
-@include('emails.messages.text.thread.single')
+@include('emails.messages.text.partials.thread.single')
 @endforeach

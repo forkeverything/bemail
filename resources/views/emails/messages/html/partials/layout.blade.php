@@ -36,7 +36,7 @@
 			{{--</table>--}}
 		</div>
 		<!-- Footer -->
-		@include('emails.messages.html.layout.footer')
+		@include('emails.messages.html.partials.layout.footer')
 	</div>
 </body>
 </html>

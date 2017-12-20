@@ -13,7 +13,7 @@
 			</p>
 			<!-- Recipients -->
 			<p style="color: #2b2e2f; font-family: Avenir, Helvetica, sans-serif; font-size: 14px; line-height: 18px; margin: 0;">
-				@include('emails.messages.html.thread.single.recipients')
+				@include('emails.messages.html.partials.thread.single.recipients')
 			</p>
 			<!-- Translated Body -->
 			@if($message->translated_body)

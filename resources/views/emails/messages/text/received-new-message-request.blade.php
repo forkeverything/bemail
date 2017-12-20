@@ -1,4 +1,4 @@
-@component('emails.messages.text.layout')
+@component('emails.messages.text.partials.layout')
 
 Received request to translate message.
 
@@ -7,5 +7,5 @@ been sent, you will receive another confirmation email from us.
 If you would like to check the current status of your message, you can reply to this
 email and ask us for an update anytime.
 
-@include('emails.messages.text.thread')
+@include('emails.messages.text.partials.thread')
 @endcomponent
