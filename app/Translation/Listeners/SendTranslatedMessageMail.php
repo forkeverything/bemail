@@ -49,11 +49,6 @@ class SendTranslatedMessageMail
             $email = $originalMessage->senderEmail();
             array_push($addresses, ['email' => $email]);
         }
-        // Log out to see why we're not sending to cc's
-        \Log::info('BUILT OUTBOUND ADDRESSES', [
-            'recipient_type' => $type->name,
-            'addresses' => $addresses
-        ]);
         return $addresses;
     }
 

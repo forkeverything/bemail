@@ -24,7 +24,9 @@ class PostmarkController extends Controller
     public function postInboundMail(Request $request, Translator $translator)
     {
 
+
         \Log::info($request);
+        return response("received email", 200);
 
         // Name of person who sent email
         $fromName = $request["FromName"];
@@ -135,9 +137,6 @@ class PostmarkController extends Controller
             }
         }
 
-        \Log::info('PARSED INBOUND RECIPIENTS', [
-            'recipients' => $recipients
-        ]);
 
         return $recipients;
     }
