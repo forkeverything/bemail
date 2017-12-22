@@ -4,6 +4,7 @@ namespace App\Translation\Mail;
 
 use App\Translation\Mail\Traits\TranslatedMail;
 use App\Translation\Message;
+use App\Translation\Utilities\MessageThreadBuilder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -20,7 +21,10 @@ class TranslatedMessageForRecipient extends Mailable implements ShouldQueue
      */
     public function __construct(Message $translatedMessage)
     {
-        $this->translatedMessage = $translatedMessage->load(['user', 'sourceLanguage']);
+        $this->translatedMessage = $translatedMessage->load([
+            'owner',
+            'sourceLanguage'
+        ]);
     }
 
     /**
@@ -31,13 +35,17 @@ class TranslatedMessageForRecipient extends Mailable implements ShouldQueue
     public function build()
     {
         if ($this->translatedMessage->auto_translate_reply) {
-            $this->from("reply_{$this->translatedMessage->hash}@in.bemail.io", $this->translatedMessage->user->name);
+            $this->from("reply_{$this->translatedMessage->hash}@in.bemail.io", $this->translatedMessage->owner->name);
         } else {
-            $this->from($this->translatedMessage->user->email, $this->translatedMessage->user->name);
+            $this->from($this->translatedMessage->owner->email, $this->translatedMessage->owner->name);
         }
+
+        // Build thread
+        $messages = MessageThreadBuilder::startingFrom($this->translatedMessage);
 
         return $this->setSubject()
                     ->includeAttachments()
-                    ->markdown('emails.translation.recipient-translated-message');
+                    ->view('emails.messages.html.translated-message-for-recipient', compact('messages'))
+                    ->text('emails.messages.text.translated-message-for-recipient', compact('messages'));
     }
 }

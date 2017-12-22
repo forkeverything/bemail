@@ -69,7 +69,9 @@ Route::get('/test/mail', function () {
         'reply_id' =>  $reply2->id
     ]);
 
-    $mail = new \App\Translation\Mail\ReceivedNewMessageRequest($message1);
+    $mail = new \App\Translation\Mail\TranslatedMessageForRecipient($message1);
+
+//    return $mail;
 
     Mail::to('mail@wumike.com')->send($mail);
     return 'sent';
