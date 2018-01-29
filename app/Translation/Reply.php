@@ -4,6 +4,15 @@ namespace App\Translation;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Reply class
+ *
+ * This class encapsulates a Message when it is a reply to another Message.
+ * This is done because some senders might not have accounts and we need
+ * to store sender info consistently.
+ *
+ * @package App\Translation
+ */
 class Reply extends Model
 {
 
