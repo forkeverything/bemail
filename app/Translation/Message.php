@@ -79,7 +79,7 @@ class Message extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function intendedReply()
+    public function parentReplyClass()
     {
         return $this->belongsTo(Reply::class, 'reply_id');
     }
@@ -111,7 +111,7 @@ class Message extends Model
      */
     public function senderEmail()
     {
-        return $this->isReply() ? $this->intendedReply->sender_email : $this->owner->email;
+        return $this->isReply() ? $this->parentReplyClass->sender_email : $this->owner->email;
     }
 
     /**
@@ -121,7 +121,7 @@ class Message extends Model
      */
     public function senderName()
     {
-        return $this->isReply() ? $this->intendedReply->sender_name : $this->owner->name;
+        return $this->isReply() ? $this->parentReplyClass->sender_name : $this->owner->name;
     }
 
     /**

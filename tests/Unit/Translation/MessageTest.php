@@ -108,7 +108,7 @@ class MessageTest extends TestCase
      */
     public function it_fetches_reply_that_message_is_intended_for()
     {
-        $this->assertInstanceOf(Reply::class, static::$message->intendedReply);
+        $this->assertInstanceOf(Reply::class, static::$message->parentReplyClass);
     }
 
     /**

@@ -49,6 +49,14 @@ Route::get('/test/mail', function () {
         'body' => 'original message'
     ]);
 
+    $subject = "Reply message subject";
+    $body = "This body was not sent";
+
+    $mail = new \App\Translation\Mail\ErrorSendingReply($originalMessage, $subject, $body);
+
+    Mail::to('mail@wumike.com')->send($mail);
+
+    return 'done!';
     // Message we're translating
     $reply1 = factory(\App\Translation\Reply::class)->create([
         'original_message_id' => $originalMessage->id

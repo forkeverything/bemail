@@ -58,7 +58,7 @@ class MessageThreadBuilder
     public function addSiblings()
     {
 
-        $originalMessageId = $this->currentMessage->intendedReply->original_message_id;
+        $originalMessageId = $this->currentMessage->parentReplyClass->original_message_id;
 
         $siblings = Message::join('replies', 'messages.reply_id', '=', 'replies.id')
             // Ignore current message (already added to thread)
@@ -88,7 +88,7 @@ class MessageThreadBuilder
      */
     public function setNextMessage()
     {
-        $this->currentMessage = $this->currentMessage->intendedReply->originalMessage;
+        $this->currentMessage = $this->currentMessage->parentReplyClass->originalMessage;
     }
 
     /**

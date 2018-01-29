@@ -3,6 +3,7 @@
 namespace App\Translation\Mail;
 
 use App\Translation\Message;
+use App\Translation\Utilities\MessageThreadBuilder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -64,7 +65,10 @@ class ErrorSendingReply extends Mailable implements ShouldQueue
     public function build()
     {
         $subject = $this->subject ? 'Error Sending Reply: ' . $this->subject : "Error Sending Reply";
+        $messages = MessageThreadBuilder::startingFrom($this->originalMessage);
+
         return $this->subject($subject)
-                    ->markdown('emails.translation.error-sending-reply');
+            ->view('emails.messages.html.error-sending-reply', compact('messages'))
+            ->text('emails.messages.text.error-sending-reply', compact('messages'));
     }
 }
