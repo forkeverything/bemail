@@ -35,7 +35,7 @@ class PostmarkController extends Controller
         $body = $request["StrippedTextReply"];
 
         \Log::info($request["TextBody"]);
-        
+
         return response('ok', 200);
 
         // Recipients
