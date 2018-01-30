@@ -10,4 +10,4 @@
 {{ $messageWithError->error->description }}
 <br>
 <h4>Sender</h4>
-{{ $messageWithError->user->email }}
+{{ $messageWithError->senderEmail() }}
