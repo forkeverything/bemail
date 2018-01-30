@@ -15,6 +15,13 @@ class TranslatedMessageForRecipient extends Mailable implements ShouldQueue
     use Queueable, SerializesModels, TranslatedMail;
 
     /**
+     * Message(s) to be included in message thread.
+     *
+     * @var
+     */
+    public $messages;
+
+    /**
      * Create a new message instance.
      *
      * @param Message $translatedMessage
@@ -25,6 +32,9 @@ class TranslatedMessageForRecipient extends Mailable implements ShouldQueue
             'owner',
             'sourceLanguage'
         ]);
+
+        // Build thread
+        $this->messages = MessageThreadBuilder::startingFrom($this->translatedMessage);
     }
 
     /**
@@ -40,12 +50,9 @@ class TranslatedMessageForRecipient extends Mailable implements ShouldQueue
             $this->from($this->translatedMessage->owner->email, $this->translatedMessage->owner->name);
         }
 
-        // Build thread
-        $messages = MessageThreadBuilder::startingFrom($this->translatedMessage);
-
         return $this->setSubject()
                     ->includeAttachments()
-                    ->view('emails.messages.html.translated-message-for-recipient', compact('messages'))
-                    ->text('emails.messages.text.translated-message-for-recipient', compact('messages'));
+                    ->view('emails.messages.html.translated-message-for-recipient')
+                    ->text('emails.messages.text.translated-message-for-recipient');
     }
 }

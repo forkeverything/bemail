@@ -46,17 +46,16 @@ Route::get('/test', function (\App\Translation\Contracts\Translator $translator)
 Route::get('/test/mail', function () {
 
     $originalMessage = factory(\App\Translation\Message::class)->create([
-        'body' => 'original message'
+        'body' => 'original message',
+        'translated_body' => 'This is the translated message. Proin tincidunt eget ante viverra cursus. Praesent tincidunt nisi ac porta mollis. Praesent eu nibh et lorem convallis sollicitudin. Etiam venenatis sem nec ante ornare, eget suscipit felis venenatis. Vestibulum justo neque, commodo feugiat aliquet in, tincidunt placerat velit. Maecenas a purus risus. Vestibulum tempus non nisi vel luctus.'
     ]);
 
-    $subject = "Reply message subject";
-    $body = "This body was not sent";
-
-    $mail = new \App\Translation\Mail\ErrorSendingReply($originalMessage, $subject, $body);
+    $mail = new \App\Translation\Mail\MessageHasBeenTranslatedNotification($originalMessage);
 
     Mail::to('mail@wumike.com')->send($mail);
 
     return 'done!';
+
     // Message we're translating
     $reply1 = factory(\App\Translation\Reply::class)->create([
         'original_message_id' => $originalMessage->id

@@ -35,6 +35,13 @@ class ErrorSendingReply extends Mailable implements ShouldQueue
     public $body;
 
     /**
+     * Message(s) to be included in message thread.
+     *
+     * @var
+     */
+    public $messages;
+
+    /**
      * Create a new message instance.
      *
      * @param Message $originalMessage
@@ -55,6 +62,8 @@ class ErrorSendingReply extends Mailable implements ShouldQueue
         $this->body = $body;
 
         $this->originalMessage = $originalMessage;
+
+        $this->messages = MessageThreadBuilder::startingFrom($this->originalMessage);
     }
 
     /**
@@ -65,10 +74,9 @@ class ErrorSendingReply extends Mailable implements ShouldQueue
     public function build()
     {
         $subject = $this->subject ? 'Error Sending Reply: ' . $this->subject : "Error Sending Reply";
-        $messages = MessageThreadBuilder::startingFrom($this->originalMessage);
 
         return $this->subject($subject)
-            ->view('emails.messages.html.error-sending-reply', compact('messages'))
-            ->text('emails.messages.text.error-sending-reply', compact('messages'));
+            ->view('emails.messages.html.error-sending-reply')
+            ->text('emails.messages.text.error-sending-reply');
     }
 }

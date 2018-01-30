@@ -23,6 +23,13 @@ class ReceivedNewMessageRequest extends Mailable implements ShouldQueue
     public $translationMessage;
 
     /**
+     * Message(s) to be included in message thread.
+     *
+     * @var
+     */
+    public $messages;
+
+    /**
      * Create a new message instance.
      *
      * @param Message $message
@@ -37,6 +44,7 @@ class ReceivedNewMessageRequest extends Mailable implements ShouldQueue
             'targetLanguage',
             'receipt.creditTransaction'
         ]);
+        $this->messages = MessageThreadBuilder::startingFrom($this->translationMessage);
     }
 
     /**
@@ -47,10 +55,10 @@ class ReceivedNewMessageRequest extends Mailable implements ShouldQueue
     public function build()
     {
         $subject = $this->translationMessage->subject ? $this->translationMessage->subject : "New Translation Request";
-        $messages = MessageThreadBuilder::startingFrom($this->translationMessage);
+
         return $this->subject($subject)
-                    ->view('emails.messages.html.received-new-message-request', compact('messages'))
-                    ->text('emails.messages.text.received-new-message-request', compact('messages'));
+                    ->view('emails.messages.html.received-new-message-request')
+                    ->text('emails.messages.text.received-new-message-request');
 
     }
 }

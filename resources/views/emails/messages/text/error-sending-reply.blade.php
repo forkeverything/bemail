@@ -1,4 +1,5 @@
 @component('emails.messages.text.partials.layout')
+
 Your reply was not sent.
 
 We're sorry to say that the following reply to {{ $originalMessage->senderName() }} ({{$originalMessage->senderEmail() }}) was unable to be sent due to a system error.

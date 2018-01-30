@@ -3,6 +3,7 @@
 namespace App\Translation\Mail;
 
 use App\Translation\Message;
+use App\Translation\Utilities\MessageThreadBuilder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -25,6 +26,13 @@ class MessageHasBeenTranslatedNotification extends Mailable implements ShouldQue
     public $translatedMessage;
 
     /**
+     * Messages to include in the messages thread.
+     *
+     * @var
+     */
+    public $messages;
+
+    /**
      * Create a new message instance.
      *
      * @param Message $message
@@ -32,6 +40,7 @@ class MessageHasBeenTranslatedNotification extends Mailable implements ShouldQue
     public function __construct(Message $message)
     {
         $this->translatedMessage = $message->load(['recipients', 'sourceLanguage', 'targetLanguage']);
+        $this->messages = MessageThreadBuilder::startingFrom($this->translatedMessage);
     }
 
     /**
@@ -43,6 +52,8 @@ class MessageHasBeenTranslatedNotification extends Mailable implements ShouldQue
     {
         $subject = $this->translatedMessage->subject ? 'Translated and Sent: ' . $this->translatedMessage->subject : "Translated and Sent Message";
         return $this->subject($subject)
-                    ->markdown('emails.translation.message-sent');
+            ->view('emails.messages.html.message-has-been-translated-notification')
+            ->text('emails.messages.text.message-has-been-translated-notification');
+
     }
 }
