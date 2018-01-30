@@ -33,6 +33,11 @@ class PostmarkController extends Controller
         // Only get the reply in plain-text. Already checked (manually)
         // this to be true.
         $body = $request["StrippedTextReply"];
+
+        \Log::info($request["TextBody"]);
+        
+        return response('ok', 200);
+
         // Recipients
         $recipients = $this->parseRecipients($request);
 
