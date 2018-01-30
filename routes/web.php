@@ -50,7 +50,7 @@ Route::get('/test/mail', function () {
         'translated_body' => 'This is the translated message. Proin tincidunt eget ante viverra cursus. Praesent tincidunt nisi ac porta mollis. Praesent eu nibh et lorem convallis sollicitudin. Etiam venenatis sem nec ante ornare, eget suscipit felis venenatis. Vestibulum justo neque, commodo feugiat aliquet in, tincidunt placerat velit. Maecenas a purus risus. Vestibulum tempus non nisi vel luctus.'
     ]);
 
-    $mail = new \App\Translation\Mail\MessageHasBeenTranslatedNotification($originalMessage);
+    $mail = new \App\Translation\Mail\TranslatedMessageForSendToSelf($originalMessage);
 
     Mail::to('mail@wumike.com')->send($mail);
 

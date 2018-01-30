@@ -13,12 +13,12 @@
 			</p>
 			<!-- Translated Body -->
 			@if($message->translated_body)
-				<p style="color: #01A3EF; font-family: Avenir, Helvetica, sans-serif; font-size: 14px; line-height: 22px; margin: 15px 0;">
+				<p style="color: #1b1d1e; font-family: Avenir, Helvetica, sans-serif; font-size: 14px; line-height: 22px; margin: 15px 0;">
 					{{ $message->translated_body }}
 				</p>
 			@endif
 			<!-- Original Body -->
-			<p style="color: #1b1d1e; font-family: Avenir, Helvetica, sans-serif; font-size: 14px; line-height: 22px; margin: 15px 0;">
+			<p style="color: #01A3EF; font-family: Avenir, Helvetica, sans-serif; font-size: 14px; line-height: 22px; margin: 15px 0;">
 				{{ $message->body }}
 			</p>
 		</td>

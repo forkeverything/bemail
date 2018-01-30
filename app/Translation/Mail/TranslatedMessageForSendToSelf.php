@@ -4,6 +4,7 @@ namespace App\Translation\Mail;
 
 use App\Translation\Mail\Traits\TranslatedMail;
 use App\Translation\Message;
+use App\Translation\Utilities\MessageThreadBuilder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -21,6 +22,13 @@ class TranslatedMessageForSendToSelf extends Mailable implements ShouldQueue
     use Queueable, SerializesModels, TranslatedMail;
 
     /**
+     * Message(s) to be included in messages thread.
+     *
+     * @var
+     */
+    public $messages;
+
+    /**
      * Create a new message instance.
      *
      * @param Message $translatedMessage
@@ -28,6 +36,7 @@ class TranslatedMessageForSendToSelf extends Mailable implements ShouldQueue
     public function __construct(Message $translatedMessage)
     {
         $this->translatedMessage = $translatedMessage;
+        $this->messages = MessageThreadBuilder::startingFrom($this->translatedMessage);
     }
 
     /**
@@ -39,6 +48,7 @@ class TranslatedMessageForSendToSelf extends Mailable implements ShouldQueue
     {
         return $this->setSubject()
                     ->includeAttachments()
-                    ->markdown('emails.translation.sender-translated-message');
+                    ->view('emails.messages.html.translated-message-for-send-to-self')
+                    ->text('emails.messages.text.translated-message-for-send-to-self');
     }
 }
