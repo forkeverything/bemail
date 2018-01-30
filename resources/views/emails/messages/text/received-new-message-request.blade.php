@@ -1,6 +1,6 @@
 @component('emails.messages.text.partials.layout')
 
-	Message: {{ $translatedMessage->hash }}
+	Message: {{ $translationMessage->hash }}
 	Received request to translate message.
 
 	Messages usually take between 1-2 hours to be translated and sent. Once your message has
