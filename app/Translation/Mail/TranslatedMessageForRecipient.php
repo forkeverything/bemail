@@ -35,6 +35,7 @@ class TranslatedMessageForRecipient extends Mailable implements ShouldQueue
 
         // Build thread
         $this->messages = MessageThreadBuilder::startingFrom($this->translatedMessage);
+        \Log::info($this->messages->pluck('id'));
     }
 
     /**

@@ -84,7 +84,9 @@ class MessageFactoryTest extends TestCase
         $this->assertInstanceOf(Message::class, $message);
         $this->assertEquals($subject, $message->subject);
         $this->assertEquals($body, $message->body);
-        $this->assertCount(4, $message->recipients);
+        // There should be 5 recipients because when a Message is a reply
+        // we add the original sender in as recipient.
+        $this->assertCount(5, $message->recipients);
     }
 
     // TODO ::: Test Message Attachments
