@@ -42,13 +42,6 @@ class SendTranslatedMessageMail
         foreach ($message->recipients->where('recipient_type_id', $type->id) as $recipient) {
             array_push($addresses, ['email' => $recipient->email]);
         }
-        // If we're building for the 'to' field and Message is a Reply, also send translated message
-        // to the person who sent the original Message.
-        if($type->id == RecipientType::standard()->id && $message->isReply())  {
-            $originalMessage = $message->parentReplyClass->originalMessage;
-            $email = $originalMessage->senderEmail();
-            array_push($addresses, ['email' => $email]);
-        }
         return $addresses;
     }
 

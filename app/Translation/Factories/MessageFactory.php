@@ -185,7 +185,8 @@ class MessageFactory
      * @param $recipientEmails
      * @return $this
      */
-    public function recipientEmails($recipientEmails) {
+    public function recipientEmails($recipientEmails)
+    {
         $this->recipientEmails = $recipientEmails;
         return $this;
     }
@@ -244,10 +245,19 @@ class MessageFactory
     {
         foreach ($this->recipientEmails as $type => $emails) {
             $recipientType = RecipientType::findType($type);
-            foreach($emails as $email) {
-                RecipientFactory::for($this->messageModel)->type($recipientType)->to($email)->make();
+            foreach ($emails as $email) {
+                RecipientFactory::for ($this->messageModel)->type($recipientType)->to($email)->make();
             }
         }
+
+        // Manually create Recipient (original sender) when message is
+        // a reply because the reply address is bemail's inbound
+        // address.
+        if ($this->messageModel->isReply()) {
+            $originalMessageSenderEmail = $this->messageModel->parentReplyClass->originalMessage->senderEmail();
+            RecipientFactory::for($this->messageModel)->type(RecipientType::standard())->to($originalMessageSenderEmail)->make();
+        }
+
         return $this;
     }
 
@@ -281,7 +291,7 @@ class MessageFactory
     public function make()
     {
         $this->createModel();
-        if (! $this->sendToSelf) $this->createRecipients();
+        if (!$this->sendToSelf) $this->createRecipients();
         if ($this->hasAttachments()) $this->createAttachments();
         return $this->messageModel;
     }

@@ -78,6 +78,9 @@ class RecipientFactory
      */
     public function make()
     {
+
+        // TODO ::: Store recipient names too.
+
         return Recipient::create([
             'recipient_type_id' => $this->type ? $this->type->id : RecipientType::standard()->id,
             'message_id' => $this->message->id,
