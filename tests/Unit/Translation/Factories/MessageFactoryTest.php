@@ -50,6 +50,9 @@ class MessageFactoryTest extends TestCase
         $this->assertEquals($targetLanguage->id, $message->lang_tgt_id);
         $this->assertEquals(TranslationStatus::available()->id, $message->translation_status_id);
 
+        // Not a reply
+        $this->assertNull($message->reply_id);
+
         // Check recipients
         $this->assertCount(2, $message->recipients);
         $this->assertNotNull($message->recipients()->where('email', 'sam@bemail.io')->first());
@@ -77,6 +80,7 @@ class MessageFactoryTest extends TestCase
                                  ->subject($subject)
                                  ->body($body)
                                  ->make();
+        $this->assertEquals($reply->id, $message->reply_id);
         $this->assertInstanceOf(Message::class, $message);
         $this->assertEquals($subject, $message->subject);
         $this->assertEquals($body, $message->body);

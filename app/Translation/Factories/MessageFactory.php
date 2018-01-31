@@ -37,6 +37,8 @@ class MessageFactory
      * @var
      */
     protected $formRequest;
+    /** Id of reply if Message is a reply */
+    protected $replyId;
     /**
      * Newly created Message model.
      *
@@ -137,6 +139,8 @@ class MessageFactory
     {
         $factory = new static();
 
+        // set reply id
+        $factory->replyId = $reply->id;
         // Replies mean that original message had auto-translate 'on'
         // and consequently send-to-self 'off'.
         $factory->autoTranslateReply = 1;
@@ -223,6 +227,7 @@ class MessageFactory
             'auto_translate_reply' => $this->autoTranslateReply,
             'send_to_self' => $this->sendToSelf,
             'user_id' => $this->owner->id,
+            'reply_id' => $this->replyId,
             'translation_status_id' => TranslationStatus::available()->id,
             'lang_src_id' => $this->langSrcId,
             'lang_tgt_id' => $this->langTgtId
