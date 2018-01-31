@@ -66,13 +66,18 @@ class MessageThreadBuilder
                 // Get replies to the same Message
                ->where('original_message_id', $originalMessageId)
                 // Latest first
-               ->orderBy('created_at', 'asc')
+               ->orderBy('created_at', 'desc')
                 // Only return Message fields (ignore Reply fields).
                 // 'messages.id as id' is needed because for some
                 // reason id is replaced by replies.id
                ->select('messages.*', 'messages.id as id')
                ->get();
-        $this->thread = $this->thread->merge($siblings);
+
+        // Push onto thread. Use push instead of merge
+        // to ensure message order.
+        foreach ($siblings as $sibling) {
+            $this->thread->push($sibling);
+        }
     }
 
     /**
