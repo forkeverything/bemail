@@ -9,6 +9,7 @@ use App\Translation\Exceptions\TranslationException;
 use App\Translation\Factories\MessageFactory;
 use App\Translation\Message;
 use App\Translation\Reply;
+use App\Translation\Utilities\EmailReplyParser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -32,11 +33,8 @@ class PostmarkController extends Controller
         $subject = $request["Subject"];
         // Only get the reply in plain-text. Already checked (manually)
         // this to be true.
-        $body = $request["StrippedTextReply"];
-
-        \Log::info($request["TextBody"]);
-
-        return response('ok', 200);
+        $body = $request["TextBody"];
+        $strippedTextBody = EmailReplyParser::parse($body);
 
         // Recipients
         $recipients = $this->parseRecipients($request);
@@ -58,7 +56,7 @@ class PostmarkController extends Controller
         // 1. Easily parse-able here
         // 2. Indicate that only original sender will receive translated message.
 
-        // Replying to a Message
+        // Replying to a Message?
         if ($inboundArray[0] === "reply") {
 
             // Grab everything until '@'
@@ -79,7 +77,7 @@ class PostmarkController extends Controller
                     $message = MessageFactory::reply($reply)
                                              ->recipientEmails($recipients)
                                              ->subject($subject)
-                                             ->body($body)
+                                             ->body($strippedTextBody)
                                              ->attachments($attachments)
                                              ->make();
                     // Translate message
@@ -92,7 +90,7 @@ class PostmarkController extends Controller
                 } catch (\Exception $exception) {
                     // Some error occurred
                     // - Send notification to sender (person replying) of failure to send reply. Need new
-                    Mail::to($fromAddress)->send(new ErrorSendingReply($originalMessage, $subject, $body));
+                    Mail::to($fromAddress)->send(new ErrorSendingReply($originalMessage, $subject, $strippedTextBody));
                     // mail notification
                 }
 
@@ -137,10 +135,6 @@ class PostmarkController extends Controller
                 array_push($recipients[$type], $email);
             }
         }
-
-        \Log::info('PARSED INBOUND RECIPIENTS', [
-            'recipients' => $recipients
-        ]);
 
         return $recipients;
     }
