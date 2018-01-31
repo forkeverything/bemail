@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Translation\Mail\MessageReplyReceivedNotification;
 use App\Translation\Mail\ErrorSendingReply;
 use App\Translation\Contracts\Translator;
 use App\Translation\Exceptions\Handlers\TranslationExceptionHandler;
@@ -66,6 +67,8 @@ class PostmarkController extends Controller
             // Find message we're replying to
             if ($originalMessage = Message::findByHash($messageHash)) {
 
+                // TODO ::: Create event to handle when reply received.
+
                 // Try to make reply message and translate
                 try {
                     $reply = Reply::create([
@@ -80,13 +83,17 @@ class PostmarkController extends Controller
                                              ->body($strippedTextBody)
                                              ->attachments($attachments)
                                              ->make();
-                    // Translate message
+                    // Try to translate message
                     try {
                         $translator->translate($message);
                     } catch (TranslationException $e) {
                         TranslationExceptionHandler::got($e)->for($message)->handle();
                         throw new \Exception;
                     }
+
+                    // Notify reply sender that we got their reply.
+                    Mail::to($message->senderEmail())->send(new MessageReplyReceivedNotification($message));
+
                 } catch (\Exception $exception) {
                     // Some error occurred
                     // - Send notification to sender (person replying) of failure to send reply. Need new
@@ -94,8 +101,6 @@ class PostmarkController extends Controller
                     // mail notification
                 }
 
-                // Success!
-                // - TODO ::: Send notifications to sender
             };
 
         }
