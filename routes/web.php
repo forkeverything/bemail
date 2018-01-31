@@ -34,6 +34,7 @@ Route::get('/test', function (\App\Translation\Contracts\Translator $translator)
 
     $service = new \Gengo\Service;
 
+
     $arrayOfLanguagePairs = json_decode($service->getLanguagePairs('zh'))->response;
 
 
