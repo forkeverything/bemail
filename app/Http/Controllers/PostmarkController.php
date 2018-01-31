@@ -43,7 +43,7 @@ class PostmarkController extends Controller
         \Log::info(print_r($recipients));
 
         return 'done';
-        
+
         // TODO ::: Convert attachments into an array of PostMarkAttachment classes.
         $attachments = $request["Attachments"];
 
@@ -123,6 +123,8 @@ class PostmarkController extends Controller
      */
     protected function parseRecipients(Request $request)
     {
+        \Log::info($request);
+
         $recipients = [
             'standard' => [],
             'cc' => [],
@@ -138,6 +140,7 @@ class PostmarkController extends Controller
         foreach($keys as $key => $type) {
             foreach($request[$key] as $recipientJson) {
                 $email = $recipientJson["Email"];
+                \Log::info($email);
                 // skip the inbound email address or team@bemail.io (when hitting reply-all)
                 $domain = explode('@', $email)[1];
                 if($domain == 'in.bemail.io' || $domain == 'bemail.io') continue;
