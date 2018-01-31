@@ -40,6 +40,10 @@ class PostmarkController extends Controller
         // Recipients
         $recipients = $this->parseRecipients($request);
 
+        \Log::info(print_r($recipients));
+
+        return 'done';
+        
         // TODO ::: Convert attachments into an array of PostMarkAttachment classes.
         $attachments = $request["Attachments"];
 
