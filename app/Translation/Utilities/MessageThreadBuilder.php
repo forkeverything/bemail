@@ -66,7 +66,7 @@ class MessageThreadBuilder
                 // Get replies to the same Message
                ->where('original_message_id', $originalMessageId)
                 // Latest first
-               ->orderBy('created_at', 'desc')
+               ->orderBy('created_at', 'asc')
                 // Only return Message fields (ignore Reply fields).
                 // 'messages.id as id' is needed because for some
                 // reason id is replaced by replies.id
