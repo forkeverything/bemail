@@ -2,6 +2,7 @@
     <form action="compose" method="post" enctype="multipart/form-data">
         <!-- CSRF Field -->
         <input type="hidden" name="_token" :value="token">
+        <!-- Recipients -->
         <div class="form-group"
              :class="{
                 'has-error': recipientsError
@@ -11,6 +12,7 @@
             <recipients-input :recipients="recipients" :send-to-self="sendToSelf"></recipients-input>
             <field-error v-if="recipientsError" :error="recipientsError"></field-error>
         </div>
+        <!-- Message Options -->
         <div class="form-group">
             <message-options :auto-translate-reply="autoTranslateReply"
                              :send-to-self="sendToSelf"
@@ -18,10 +20,12 @@
                              @updated-auto-translate-reply="updateAutoTranslateReply"
             ></message-options>
         </div>
+        <!-- Subject -->
         <div class="form-group">
             <label for="message-form-subject">Subject</label>
             <input name="subject" type="text" id="message-form-subject" class="form-control" :value="subject">
         </div>
+        <!-- Language Picker -->
         <div class="form-group"
              :class="{
                 'has-error': hasLangError
@@ -50,6 +54,7 @@
             <field-error v-if="langSrcError" :error="langSrcError"></field-error>
             <field-error v-if="langTgtError" :error="langTgtError"></field-error>
         </div>
+        <!-- Body -->
         <div class="form-group"
              :class="{
                 'has-error': bodyError
@@ -59,10 +64,12 @@
                   style="resize: none;">{{ body }}</textarea>
             <field-error v-if="bodyError" :error="bodyError"></field-error>
         </div>
+        <!-- Attachments -->
         <div class="form-group">
             <label for="message-form-attachments">Attachments</label>
             <file-input id="message-form-attachments" name="attachments[]" :multiple="true"></file-input>
         </div>
+        <!-- Submit -->
         <button type="submit" class="btn btn-primary">Send</button>
     </form>
 </template>
