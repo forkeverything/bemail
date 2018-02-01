@@ -893,6 +893,7 @@ window.Vue = __webpack_require__(37);
  * Components
  */
 // Compose
+Vue.component('compose-form', __webpack_require__(71));
 Vue.component('language-picker', __webpack_require__(38));
 Vue.component('recipients-input', __webpack_require__(41));
 Vue.component('tag-input', __webpack_require__(44));
@@ -900,6 +901,8 @@ Vue.component('file-input', __webpack_require__(47));
 Vue.component('message-options', __webpack_require__(50));
 // Account
 Vue.component('change-password-field', __webpack_require__(53));
+// System
+Vue.component('field-error', __webpack_require__(74));
 
 // Event
 window.vueGlobalEventBus = new Vue();
@@ -42136,6 +42139,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -42144,8 +42148,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             newTag: '',
             inputPosition: 0,
             showError: false,
-            validateError: '',
-            disabled: false
+            validateError: ''
         };
     },
     computed: {
@@ -42156,10 +42159,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.tags.join(",");
         }
     },
-    props: ['old-input'],
+    props: ['recipients', 'send-to-self'],
     methods: {
         focusInput: function focusInput() {
-            if (this.disabled) return;
+            if (this.sendToSelf) return;
             $(this.$refs.container).find('.tag-input input').focus();
         },
 
@@ -42232,16 +42235,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     mounted: function mounted() {
-        var _this2 = this;
-
         this.inputPosition = this.tags.length;
-        // If we have an old input (ie. after validation error)
-        if (this.oldInput) {
-            this.tags = this.oldInput.split(',');
+        // Set tags if we have old recipients (ie. after validation error)
+        if (this.recipients) {
+            this.tags = this.recipients.split(',');
         }
-        vueGlobalEventBus.$on('send-to-self', function (val) {
-            _this2.disabled = val;
-        });
     }
 });
 
@@ -42254,7 +42252,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     ref: "container",
     staticClass: "recipients-input",
     class: {
-      'disabled': _vm.disabled
+      'disabled': _vm.sendToSelf
     },
     on: {
       "click": _vm.focusInput
@@ -42270,7 +42268,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("\n        " + _vm._s(_vm.validateError) + "\n    ")]), _vm._v(" "), _c('div', {
     staticClass: "input form-control",
     class: {
-      'disabled': _vm.disabled
+      'disabled': _vm.sendToSelf
     }
   }, [_c('input', {
     attrs: {
@@ -42287,7 +42285,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "remove-tag": _vm.removeTag,
       "focus-tag": _vm.focusTag,
       "input-position": _vm.inputPosition,
-      "is-disabled": _vm.disabled
+      "is-disabled": _vm.sendToSelf
     },
     on: {
       "add-tag": _vm.addTag
@@ -42305,7 +42303,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "single-tag btn btn-tag",
       attrs: {
         "type": "button",
-        "disabled": _vm.disabled
+        "disabled": _vm.sendToSelf
       },
       on: {
         "click": function($event) {
@@ -42336,7 +42334,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "remove-tag": _vm.removeTag,
         "focus-tag": _vm.focusTag,
-        "input-position": _vm.inputPosition
+        "input-position": _vm.inputPosition,
+        "is-disabled": _vm.sendToSelf
       },
       on: {
         "add-tag": _vm.addTag
@@ -42699,24 +42698,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
-        return {
-            disableAutoTranslate: false,
-            autoTranslateReply: 1,
-            sendToSelf: 0
-        };
+        return {};
     },
-    watch: {
-        sendToSelf: function sendToSelf(val) {
-            this.disableAutoTranslate = val;
-            this.autoTranslateReply = !val;
-            vueGlobalEventBus.$emit('send-to-self', val);
+    watch: {},
+    props: ['autoTranslateReply', 'sendToSelf'],
+    methods: {
+        changeAutoTranslateReply: function changeAutoTranslateReply() {
+            this.$emit('updated-auto-translate-reply', !this.autoTranslateReply);
+            this.$emit('updated-send-to-self', false);
+        },
+        changeSendToSelf: function changeSendToSelf() {
+            this.$emit('updated-send-to-self', !this.sendToSelf);
+            this.$emit('updated-auto-translate-reply', false);
         }
     },
-    props: ['old-auto-translate-reply', 'old-send-to-self'],
-    methods: {},
     mounted: function mounted() {}
 });
 
@@ -42728,44 +42740,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "message-options"
   }, [_c('label', {
-    staticClass: "checkbox-inline",
-    class: {
-      'disabled': _vm.disableAutoTranslate
-    }
+    staticClass: "checkbox-inline"
   }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.autoTranslateReply),
-      expression: "autoTranslateReply"
-    }],
     attrs: {
       "type": "checkbox",
-      "name": "auto_translate_reply",
-      "disabled": _vm.disableAutoTranslate
+      "name": "auto_translate_reply"
     },
     domProps: {
-      "checked": Array.isArray(_vm.autoTranslateReply) ? _vm._i(_vm.autoTranslateReply, null) > -1 : (_vm.autoTranslateReply)
+      "checked": _vm.autoTranslateReply
     },
     on: {
-      "__c": function($event) {
-        var $$a = _vm.autoTranslateReply,
-          $$el = $event.target,
-          $$c = $$el.checked ? (true) : (false);
-        if (Array.isArray($$a)) {
-          var $$v = null,
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.autoTranslateReply = $$a.concat($$v))
-          } else {
-            $$i > -1 && (_vm.autoTranslateReply = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
-          }
-        } else {
-          _vm.autoTranslateReply = $$c
-        }
-      }
+      "change": _vm.changeAutoTranslateReply
     }
-  }), _c('span', {
+  }), _vm._v(" "), _c('span', {
     attrs: {
       "data-toggle": "tooltip",
       "title": "All replies will be translated into your default language at a fee to you."
@@ -42773,38 +42760,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Auto-Translate Reply")])]), _vm._v(" "), _c('label', {
     staticClass: "checkbox-inline"
   }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.sendToSelf),
-      expression: "sendToSelf"
-    }],
     attrs: {
       "type": "checkbox",
       "name": "send_to_self"
     },
     domProps: {
-      "checked": Array.isArray(_vm.sendToSelf) ? _vm._i(_vm.sendToSelf, null) > -1 : (_vm.sendToSelf)
+      "checked": _vm.sendToSelf
     },
     on: {
-      "__c": function($event) {
-        var $$a = _vm.sendToSelf,
-          $$el = $event.target,
-          $$c = $$el.checked ? (true) : (false);
-        if (Array.isArray($$a)) {
-          var $$v = null,
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.sendToSelf = $$a.concat($$v))
-          } else {
-            $$i > -1 && (_vm.sendToSelf = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
-          }
-        } else {
-          _vm.sendToSelf = $$c
-        }
-      }
+      "change": _vm.changeSendToSelf
     }
-  }), _c('span', {
+  }), _vm._v(" "), _c('span', {
     attrs: {
       "data-toggle": "tooltip",
       "title": "Translated message will be sent back to you only."
@@ -43004,6 +42970,391 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */,
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */,
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(72),
+  /* template */
+  __webpack_require__(73),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/Mike-Personal/Dropbox/Code/bemail/resources/assets/js/components/compose/ComposeForm.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] ComposeForm.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-486c081b", Component.options)
+  } else {
+    hotAPI.reload("data-v-486c081b", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 72 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            autoTranslateReply: true,
+            sendToSelf: false
+        };
+    },
+    computed: {
+        recipientsError: function recipientsError() {
+            return this.errors.recipients ? this.errors.recipients[0] : '';
+        },
+        langSrcError: function langSrcError() {
+            return this.errors.lang_src ? this.errors.lang_src[0] : '';
+        },
+        langTgtError: function langTgtError() {
+            return this.errors.lang_tgt ? this.errors.lang_tgt[0] : '';
+        },
+        hasLangError: function hasLangError() {
+            return this.langSrcError || this.langTgtError;
+        },
+        bodyError: function bodyError() {
+            return this.errors.body ? this.errors.body[0] : '';
+        }
+    },
+    props: ['token', 'errors', 'recipients', 'subject', 'languages', 'lang-src', 'lang-tgt', 'user-lang', 'body'],
+    methods: {
+        updateSendtoSelf: function updateSendtoSelf(val) {
+            this.sendToSelf = val;
+        },
+        updateAutoTranslateReply: function updateAutoTranslateReply(val) {
+            this.autoTranslateReply = val;
+        }
+    },
+    mounted: function mounted() {}
+});
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('form', {
+    attrs: {
+      "action": "compose",
+      "method": "post",
+      "enctype": "multipart/form-data"
+    }
+  }, [_c('input', {
+    attrs: {
+      "type": "hidden",
+      "name": "_token"
+    },
+    domProps: {
+      "value": _vm.token
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "form-group",
+    class: {
+      'has-error': _vm.recipientsError
+    }
+  }, [_c('label', {
+    staticClass: "control-label",
+    attrs: {
+      "for": "message-form-recipient"
+    }
+  }, [_vm._v("Recipients")]), _vm._v(" "), _c('recipients-input', {
+    attrs: {
+      "recipients": _vm.recipients,
+      "send-to-self": _vm.sendToSelf
+    }
+  }), _vm._v(" "), (_vm.recipientsError) ? _c('field-error', {
+    attrs: {
+      "error": _vm.recipientsError
+    }
+  }) : _vm._e()], 1), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('message-options', {
+    attrs: {
+      "auto-translate-reply": _vm.autoTranslateReply,
+      "send-to-self": _vm.sendToSelf
+    },
+    on: {
+      "updated-send-to-self": _vm.updateSendtoSelf,
+      "updated-auto-translate-reply": _vm.updateAutoTranslateReply
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "message-form-subject"
+    }
+  }, [_vm._v("Subject")]), _vm._v(" "), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "name": "subject",
+      "type": "text",
+      "id": "message-form-subject"
+    },
+    domProps: {
+      "value": _vm.subject
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group",
+    class: {
+      'has-error': _vm.hasLangError
+    }
+  }, [_c('ul', {
+    staticClass: "list-inline"
+  }, [_c('li', [_c('div', {
+    staticClass: "form-inline"
+  }, [_c('language-picker', {
+    attrs: {
+      "name": "lang_src",
+      "languages": _vm.languages,
+      "default": _vm.userLang.code,
+      "old-input": _vm.langSrc
+    }
+  })], 1)]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('li', [_c('div', {
+    staticClass: "form-inline"
+  }, [_c('language-picker', {
+    attrs: {
+      "name": "lang_tgt",
+      "languages": _vm.languages,
+      "old-input": _vm.langTgt
+    }
+  })], 1)])]), _vm._v(" "), (_vm.langSrcError) ? _c('field-error', {
+    attrs: {
+      "error": _vm.langSrcError
+    }
+  }) : _vm._e(), _vm._v(" "), (_vm.langTgtError) ? _c('field-error', {
+    attrs: {
+      "error": _vm.langTgtError
+    }
+  }) : _vm._e()], 1), _vm._v(" "), _c('div', {
+    staticClass: "form-group",
+    class: {
+      'has-error': _vm.bodyError
+    }
+  }, [_c('textarea', {
+    staticClass: "form-control",
+    staticStyle: {
+      "resize": "none"
+    },
+    attrs: {
+      "name": "body",
+      "id": "message-form-body",
+      "cols": "30",
+      "rows": "10"
+    }
+  }, [_vm._v(_vm._s(_vm.body))]), _vm._v(" "), (_vm.bodyError) ? _c('field-error', {
+    attrs: {
+      "error": _vm.bodyError
+    }
+  }) : _vm._e()], 1), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "message-form-attachments"
+    }
+  }, [_vm._v("Attachments")]), _vm._v(" "), _c('file-input', {
+    attrs: {
+      "id": "message-form-attachments",
+      "name": "attachments[]",
+      "multiple": true
+    }
+  })], 1), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "submit"
+    }
+  }, [_vm._v("Send")])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', [_c('label', {
+    staticClass: "control-label"
+  }, [_vm._v("To")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-486c081b", module.exports)
+  }
+}
+
+/***/ }),
+/* 74 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(75),
+  /* template */
+  __webpack_require__(76),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/Mike-Personal/Dropbox/Code/bemail/resources/assets/js/components/layout/FieldError.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] FieldError.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-348a9a95", Component.options)
+  } else {
+    hotAPI.reload("data-v-348a9a95", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 75 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['error']
+});
+
+/***/ }),
+/* 76 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "field-error help-block"
+  }, [_c('strong', [_vm._v(_vm._s(_vm.error))])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-348a9a95", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

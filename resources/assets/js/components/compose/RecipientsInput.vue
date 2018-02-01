@@ -3,13 +3,13 @@
          @click="focusInput"
          ref="container"
          :class="{
-            'disabled': disabled
+            'disabled': sendToSelf
          }"
     >
         <div class="error" v-show="showError">
             {{ validateError }}
         </div>
-        <div class="input form-control" :class="{ 'disabled': disabled }">
+        <div class="input form-control" :class="{ 'disabled': sendToSelf }">
             <input type="hidden" name="recipients" :value="value">
             <div class="input-wrap" v-if="inputPosition === 0">
                 <tag-input v-model="newTag"
@@ -17,7 +17,7 @@
                            :remove-tag="removeTag"
                            :focus-tag="focusTag"
                            :input-position="inputPosition"
-                           :is-disabled="disabled"
+                           :is-disabled="sendToSelf"
                 >
                 </tag-input>
             </div>
@@ -31,7 +31,7 @@
                         @keydown.delete.prevent.stop="removeTag(index)"
                         @keydown.right.prevent.stop="rightTag(index)"
                         :key="index"
-                        :disabled="disabled"
+                        :disabled="sendToSelf"
                 >
                     {{ tag }}
                 </button>
@@ -41,6 +41,7 @@
                                :remove-tag="removeTag"
                                :focus-tag="focusTag"
                                :input-position="inputPosition"
+                               :is-disabled="sendToSelf"
                     >
                     </tag-input>
                 </div>
@@ -57,7 +58,6 @@
                 inputPosition: 0,
                 showError: false,
                 validateError: '',
-                disabled: false
             }
         },
         computed: {
@@ -68,10 +68,10 @@
                 return this.tags.join(",");
             }
         },
-        props: ['old-input'],
+        props: ['recipients', 'send-to-self'],
         methods: {
             focusInput() {
-                if(this.disabled) return;
+                if(this.sendToSelf) return;
                 $(this.$refs.container).find('.tag-input input').focus();
             },
             addTag: function (endAddingRecipient) {
@@ -141,13 +141,10 @@
         },
         mounted(){
             this.inputPosition = this.tags.length;
-            // If we have an old input (ie. after validation error)
-            if(this.oldInput) {
-                this.tags = this.oldInput.split(',');
+            // Set tags if we have old recipients (ie. after validation error)
+            if(this.recipients) {
+                this.tags = this.recipients.split(',');
             }
-            vueGlobalEventBus.$on('send-to-self', (val) => {
-                this.disabled = val;
-            });
         }
     }
 </script>
