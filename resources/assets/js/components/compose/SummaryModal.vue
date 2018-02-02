@@ -26,11 +26,11 @@
                         </tr>
                         <tr>
                             <td>Unit Price</td>
-                            <td>$0.03</td>
+                            <td :class="{ 'active': fetchingUnitPrice }">{{ unitPrice }}</td>
                         </tr>
                         <tr>
                             <td><strong>Total</strong></td>
-                            <td><strong>$6.75</strong></td>
+                            <td :class="{ 'active': fetchingUnitPrice }"><strong>{{ totalCost }}</strong></td>
                         </tr>
                         </tbody>
                     </table>
@@ -49,7 +49,8 @@
     export default {
         data: function () {
             return {
-                unitPrice: 0
+                unitPrice: '-',
+                fetchingUnitPrice: false
             }
         },
         computed: {
@@ -58,21 +59,38 @@
                 return chargeable > 0 ? chargeable : 0;
             },
             totalCost() {
-                return this.wordsCharged * this.unitPrice;
+                if(isNaN(this.unitPrice)) return '-';
+                return "$ " + (this.wordsCharged * this.unitPrice).toFixed(2);
             }
         },
         props: [
             'word-count',
             'word-credits',
             'lang-src',
-            'lang-tgt'
+            'lang-tgt',
+            'auto-translate-reply'
         ],
+        watch: {
+            langSrc(val) {
+                if (val && this.langTgt) this.fetchUnitPrice();
+            },
+            langTgt(val) {
+                if (val && this.langSrc) this.fetchUnitPrice();
+            }
+        },
         methods: {
             sendForm() {
                 this.$emit('send-form');
             },
             fetchUnitPrice() {
-
+                this.fetchingUnitPrice = true;
+                axios.get(`/languages/price/src/${this.langSrc}/tgt/${this.langTgt}`).then(res => {
+                    this.unitPrice = res.data;
+                    this.fetchingUnitPrice = false;
+                }).catch(err => {
+                    this.unitPrice = '-';
+                    this.fetchingUnitPrice = false;
+                });
             }
         },
         mounted() {

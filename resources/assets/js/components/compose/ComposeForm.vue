@@ -84,6 +84,7 @@
                        :word-credits="wordCredits"
                        :lang-src="langSrc"
                        :lang-tgt="langTgt"
+                       :auto-translate-reply="autoTranslateReply"
         ></summary-modal>
     </form>
 </template>

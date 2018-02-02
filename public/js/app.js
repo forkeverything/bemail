@@ -42061,6 +42061,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -42284,7 +42285,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "word-count": _vm.wordCount,
       "word-credits": _vm.wordCredits,
       "lang-src": _vm.langSrc,
-      "lang-tgt": _vm.langTgt
+      "lang-tgt": _vm.langTgt,
+      "auto-translate-reply": _vm.autoTranslateReply
     },
     on: {
       "send-form": _vm.submit
@@ -43266,7 +43268,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            unitPrice: 0
+            unitPrice: '-',
+            fetchingUnitPrice: false
         };
     },
     computed: {
@@ -43275,21 +43278,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return chargeable > 0 ? chargeable : 0;
         },
         totalCost: function totalCost() {
-            return this.wordsCharged * this.unitPrice;
+            if (isNaN(this.unitPrice)) return '-';
+            return "$ " + (this.wordsCharged * this.unitPrice).toFixed(2);
         }
     },
-    props: ['word-count', 'word-credits', 'lang-src', 'lang-tgt'],
+    props: ['word-count', 'word-credits', 'lang-src', 'lang-tgt', 'auto-translate-reply'],
+    watch: {
+        langSrc: function langSrc(val) {
+            if (val && this.langTgt) this.fetchUnitPrice();
+        },
+        langTgt: function langTgt(val) {
+            if (val && this.langSrc) this.fetchUnitPrice();
+        }
+    },
     methods: {
         sendForm: function sendForm() {
             this.$emit('send-form');
         },
-        fetchUnitPrice: function fetchUnitPrice() {}
+        fetchUnitPrice: function fetchUnitPrice() {
+            var _this = this;
+
+            this.fetchingUnitPrice = true;
+            axios.get('/languages/price/src/' + this.langSrc + '/tgt/' + this.langTgt).then(function (res) {
+                _this.unitPrice = res.data;
+                _this.fetchingUnitPrice = false;
+            }).catch(function (err) {
+                _this.unitPrice = '-';
+                _this.fetchingUnitPrice = false;
+            });
+        }
     },
     mounted: function mounted() {
-        var _this = this;
+        var _this2 = this;
 
         vueGlobalEventBus.$on('show-summary-modal', function () {
-            $(_this.$refs.modal).modal();
+            $(_this2.$refs.modal).modal();
         });
     }
 });
@@ -43317,7 +43340,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "modal-body"
   }, [_c('p', [_vm._v("Please review the costs below for your message and hit send to confirm.")]), _vm._v(" "), _c('table', {
     staticClass: "table table-responsive table-bordered table-condensed"
-  }, [_c('tbody', [_c('tr', [_c('td', [_vm._v("Word Count")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordCount))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Credits Available")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordCredits))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Words Charged")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordsCharged))])]), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2)])]), _vm._v(" "), _vm._m(3)]), _vm._v(" "), _c('div', {
+  }, [_c('tbody', [_c('tr', [_c('td', [_vm._v("Word Count")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordCount))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Credits Available")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordCredits))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Words Charged")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordsCharged))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Unit Price")]), _vm._v(" "), _c('td', {
+    class: {
+      'active': _vm.fetchingUnitPrice
+    }
+  }, [_vm._v(_vm._s(_vm.unitPrice))])]), _vm._v(" "), _c('tr', [_vm._m(1), _vm._v(" "), _c('td', {
+    class: {
+      'active': _vm.fetchingUnitPrice
+    }
+  }, [_c('strong', [_vm._v(_vm._s(_vm.totalCost))])])])])]), _vm._v(" "), _vm._m(2)]), _vm._v(" "), _c('div', {
     staticClass: "modal-footer"
   }, [_c('button', {
     staticClass: "btn btn-default",
@@ -43352,9 +43383,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "modal-title"
   }, [_vm._v("Translate and send message?")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('tr', [_c('td', [_vm._v("Unit Price")]), _vm._v(" "), _c('td', [_vm._v("$0.03")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('tr', [_c('td', [_c('strong', [_vm._v("Total")])]), _vm._v(" "), _c('td', [_c('strong', [_vm._v("$6.75")])])])
+  return _c('td', [_c('strong', [_vm._v("Total")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('p', [_c('strong', [_vm._v("'Auto-Translate Reply' is on.")]), _vm._v(" Your account will be charged for any translated\n                    replies for from any of your recipients.")])
 }]}
