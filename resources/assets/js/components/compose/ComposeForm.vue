@@ -1,5 +1,5 @@
 <template>
-    <form action="compose" method="post" enctype="multipart/form-data">
+    <form action="compose" method="post" enctype="multipart/form-data" ref="form">
         <!-- CSRF Field -->
         <input type="hidden" name="_token" :value="token">
         <!-- Recipients -->
@@ -70,7 +70,8 @@
             <file-input id="message-form-attachments" name="attachments[]" :multiple="true"></file-input>
         </div>
         <!-- Submit -->
-        <button type="submit" class="btn btn-primary">Send</button>
+        <button type="button" class="btn btn-primary" @click="showSummaryModal">Send</button>
+        <summary-modal></summary-modal>
     </form>
 </template>
 <script>
@@ -115,6 +116,12 @@
             },
             updateAutoTranslateReply(val) {
                 this.autoTranslateReply = val;
+            },
+            showSummaryModal() {
+                vueGlobalEventBus.$emit('show-summary-modal');
+            },
+            submit() {
+                this.$refs.form.submit();
             }
         },
         mounted() {
