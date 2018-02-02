@@ -27,20 +27,17 @@ Route::post('compose', 'MessagesController@postSendMessage')->name('sendMessage'
 Route::get('/account', 'AccountController@getSettings');
 Route::post('/account', 'AccountController@postUpdateSettings');
 
+// Languages
+Route::get('/languages/price/src/{langSrc}/tgt/{langTgt}', 'LanguagesController@getUnitPrice');
+
 Route::get('/test', function (\App\Translation\Contracts\Translator $translator) {
 
 //    dd(gmdate('U'));
 //    dd(hash_hmac('sha1', "1508572868429", env('GENGO_SECRET')));
 
-    $service = new \Gengo\Service;
+    $translator = new \App\Translation\Translators\GengoTranslator();
+    return $translator->getLanguagePairs('zh', 'en');
 
-
-    $arrayOfLanguagePairs = json_decode($service->getLanguagePairs('zh'))->response;
-
-
-    return array_filter($arrayOfLanguagePairs, function ($languagePair) {
-        return true;
-    });
 
 });
 

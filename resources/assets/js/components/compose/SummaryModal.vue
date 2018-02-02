@@ -14,15 +14,15 @@
                         <tbody>
                         <tr>
                             <td>Word Count</td>
-                            <td>230</td>
+                            <td>{{ wordCount }}</td>
                         </tr>
                         <tr>
-                            <td>Credits Used</td>
-                            <td>5</td>
+                            <td>Credits Available</td>
+                            <td>{{ wordCredits }}</td>
                         </tr>
                         <tr>
                             <td>Words Charged</td>
-                            <td>225</td>
+                            <td>{{ wordsCharged }}</td>
                         </tr>
                         <tr>
                             <td>Unit Price</td>
@@ -39,7 +39,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Send</button>
+                    <button type="button" class="btn btn-primary" @click="sendForm">Send</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -48,11 +48,31 @@
 <script>
     export default {
         data: function () {
-            return {}
+            return {
+                unitPrice: 0
+            }
         },
+        computed: {
+            wordsCharged() {
+                let chargeable = this.wordCount - this.wordCredits;
+                return chargeable > 0 ? chargeable : 0;
+            },
+            totalCost() {
+                return this.wordsCharged * this.unitPrice;
+            }
+        },
+        props: [
+            'word-count',
+            'word-credits',
+            'lang-src',
+            'lang-tgt'
+        ],
         methods: {
-            say() {
-                alert('hi');
+            sendForm() {
+                this.$emit('send-form');
+            },
+            fetchUnitPrice() {
+
             }
         },
         mounted() {

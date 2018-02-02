@@ -32,6 +32,6 @@ class Language extends Model
      */
     public static function findByCode($code)
     {
-        return static::where('code', $code)->first();
+        return static::where('code', $code)->firstOrFail();
     }
 }

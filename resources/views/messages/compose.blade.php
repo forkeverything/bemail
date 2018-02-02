@@ -3,14 +3,15 @@
     <div class="container">
         @include('flash::message')
         <compose-form token="{{ csrf_token() }}"
+                      word-credits="{{ Auth::user()->word_credits }}"
                       :errors="{{ $errors }}"
                       recipients="{{ old('recipients') }}"
                       subject="{{ old('subject') }}"
                       :languages="{{ $languages }}"
-                      lang-src="{{ old('lang_src') }}"
-                      lang-tgt="{{ old('lang_tgt') }}"
                       :user-lang="{{ $userLang }}"
-                      body="{{ old('body') }}"
+                      lang-src-old="{{ old('lang_src') }}"
+                      lang-tgt-old="{{ old('lang_tgt') }}"
+                      body-old="{{ old('body') }}"
         ></compose-form>
     </div>
 @endsection

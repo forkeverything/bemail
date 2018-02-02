@@ -15,7 +15,7 @@ class TranslationServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->bind(Translator::class, GengoTranslator::class);
+        $this->app->singleton(Translator::class, GengoTranslator::class);
     }
 
     /**

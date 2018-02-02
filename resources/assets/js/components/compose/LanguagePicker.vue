@@ -1,5 +1,5 @@
 <template>
-    <select :name="name" v-model="selected" class="form-control">
+    <select :name="name" v-model="selected" class="form-control" @change="broadcast">
         <option value="" selected disabled>Pick One</option>
         <option v-for="language in languages" :value="language.code">{{ language.name }}</option>
     </select>
@@ -11,13 +11,25 @@
                 selected: ''
             };
         },
-        props: ['languages', 'name', 'default', 'old-input'],
-        methods: {},
+        props: [
+            'value',
+            'languages',
+            'name'
+        ],
+        watch: {
+            value(val) {
+                if(val) this.selected = val;
+            }
+        },
+        methods: {
+            broadcast(event) {
+                // Notify parent components that a language has been picked.
+                let lang = event.target.value;
+                this.$emit('picked-language', this.name, lang);
+            }
+        },
         mounted() {
-            // set user default
-            this.selected = this.default ? this.default : '';
-            // if we have an old input - ie. form validation error redirect
-            if (this.oldInput) this.selected = this.oldInput;
+
         }
     };
 </script>

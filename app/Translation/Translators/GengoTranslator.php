@@ -33,10 +33,6 @@ class GengoTranslator implements Translator
         if(env('APP_ENV') == 'production') {
             Config::useProduction();
         }
-
-        // (?) TODO ::: Check if we're already set-up so that we're
-        //             not doing it every time we request a new
-        //             translation.
     }
 
     /**
@@ -44,9 +40,19 @@ class GengoTranslator implements Translator
      *
      * @return mixed
      */
-    public function getLanguagePairs()
+    public function getLanguagePairs($langSrc = null, $langTgt = null)
     {
-        return json_decode((new GengoService)->getLanguagePairs())->response;
+        $service = new \Gengo\Service;
+        $languagePairs = json_decode($service->getLanguagePairs($langSrc))->response;
+        return array_filter($languagePairs, function ($languagePair) use ($langTgt) {
+            // Only want to view 'standard' tier level translations on Gengo
+            $standardTier = $languagePair->tier == "standard";
+            // No target language supplied - return all language pairs
+            if(!$langTgt) return $standardTier;
+            // Find pair with target language
+            $targetPair = $languagePair->lc_tgt == $langTgt;
+            return $targetPair && $standardTier;
+        });
     }
 
     /**
@@ -161,6 +167,9 @@ class GengoTranslator implements Translator
      */
     public function unitPrice(Language $sourceLangue, Language $targetLanguage)
     {
-        // TODO ::: Implement unitPrice() method.
+        $pair = $this->getLanguagePairs($sourceLangue->code, $targetLanguage->code);
+        // Reset object key pointer to the first. Otherwise the relevant pair
+        // might have a random key - ie. 5
+        return reset($pair)->unit_price;
     }
 }

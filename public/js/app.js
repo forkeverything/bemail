@@ -42048,12 +42048,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             autoTranslateReply: true,
-            sendToSelf: false
+            sendToSelf: false,
+            langSrc: '',
+            langTgt: '',
+            body: ''
         };
     },
     computed: {
@@ -42071,9 +42087,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         bodyError: function bodyError() {
             return this.errors.body ? this.errors.body[0] : '';
+        },
+        wordCount: function wordCount() {
+            if (!this.body) return 0;
+            // Match any unicode Chinese / Japanese character or a space
+            var matches = this.body.match(/[\u00ff-\uffff]|\S+/g);
+            return matches ? matches.length : 0;
         }
     },
-    props: ['token', 'errors', 'recipients', 'subject', 'languages', 'lang-src', 'lang-tgt', 'user-lang', 'body'],
+    props: ['token', 'word-credits', 'errors', 'recipients', 'subject', 'languages', 'user-lang', 'lang-src-old', 'lang-tgt-old', 'body-old'],
     methods: {
         updateSendtoSelf: function updateSendtoSelf(val) {
             this.sendToSelf = val;
@@ -42086,9 +42108,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         submit: function submit() {
             this.$refs.form.submit();
+        },
+        updateLang: function updateLang(name, val) {
+            if (name == 'lang_tgt') this.langTgt = val;
+            if (name == 'lang_src') this.langSrc = val;
         }
     },
-    mounted: function mounted() {}
+    mounted: function mounted() {
+        this.langSrc = this.langSrcOld || this.userLang.code;
+        this.langTgt = this.langTgtOld || '';
+        this.body = this.bodyOld || '';
+    }
 });
 
 /***/ }),
@@ -42169,17 +42199,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('language-picker', {
     attrs: {
       "name": "lang_src",
-      "languages": _vm.languages,
-      "default": _vm.userLang.code,
-      "old-input": _vm.langSrc
+      "value": _vm.langSrc,
+      "languages": _vm.languages
+    },
+    on: {
+      "picked-language": _vm.updateLang
     }
   })], 1)]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('li', [_c('div', {
     staticClass: "form-inline"
   }, [_c('language-picker', {
     attrs: {
       "name": "lang_tgt",
-      "languages": _vm.languages,
-      "old-input": _vm.langTgt
+      "value": _vm.langTgt,
+      "languages": _vm.languages
+    },
+    on: {
+      "picked-language": _vm.updateLang
     }
   })], 1)])]), _vm._v(" "), (_vm.langSrcError) ? _c('field-error', {
     attrs: {
@@ -42194,7 +42229,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     class: {
       'has-error': _vm.bodyError
     }
-  }, [_c('textarea', {
+  }, [_c('p', [_vm._v("Words: " + _vm._s(_vm.wordCount))]), _vm._v(" "), _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.body),
+      expression: "body"
+    }],
     staticClass: "form-control",
     staticStyle: {
       "resize": "none"
@@ -42204,8 +42245,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "id": "message-form-body",
       "cols": "30",
       "rows": "10"
+    },
+    domProps: {
+      "value": (_vm.body)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.body = $event.target.value
+      }
     }
-  }, [_vm._v(_vm._s(_vm.body))]), _vm._v(" "), (_vm.bodyError) ? _c('field-error', {
+  }), _vm._v(" "), (_vm.bodyError) ? _c('field-error', {
     attrs: {
       "error": _vm.bodyError
     }
@@ -42229,7 +42279,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.showSummaryModal
     }
-  }, [_vm._v("Send")]), _vm._v(" "), _c('summary-modal')], 1)
+  }, [_vm._v("Send")]), _vm._v(" "), _c('summary-modal', {
+    attrs: {
+      "word-count": _vm.wordCount,
+      "word-credits": _vm.wordCredits,
+      "lang-src": _vm.langSrc,
+      "lang-tgt": _vm.langTgt
+    },
+    on: {
+      "send-form": _vm.submit
+    }
+  })], 1)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('li', [_c('label', {
     staticClass: "control-label"
@@ -42302,14 +42362,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             selected: ''
         };
     },
-    props: ['languages', 'name', 'default', 'old-input'],
-    methods: {},
-    mounted: function mounted() {
-        // set user default
-        this.selected = this.default ? this.default : '';
-        // if we have an old input - ie. form validation error redirect
-        if (this.oldInput) this.selected = this.oldInput;
-    }
+    props: ['value', 'languages', 'name'],
+    watch: {
+        value: function value(val) {
+            if (val) this.selected = val;
+        }
+    },
+    methods: {
+        broadcast: function broadcast(event) {
+            // Notify parent components that a language has been picked.
+            var lang = event.target.value;
+            this.$emit('picked-language', this.name, lang);
+        }
+    },
+    mounted: function mounted() {}
 });
 
 /***/ }),
@@ -42329,7 +42395,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": _vm.name
     },
     on: {
-      "change": function($event) {
+      "change": [function($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
           return o.selected
         }).map(function(o) {
@@ -42337,7 +42403,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           return val
         });
         _vm.selected = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
+      }, _vm.broadcast]
     }
   }, [_c('option', {
     attrs: {
@@ -43199,12 +43265,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
-        return {};
+        return {
+            unitPrice: 0
+        };
     },
-    methods: {
-        say: function say() {
-            alert('hi');
+    computed: {
+        wordsCharged: function wordsCharged() {
+            var chargeable = this.wordCount - this.wordCredits;
+            return chargeable > 0 ? chargeable : 0;
+        },
+        totalCost: function totalCost() {
+            return this.wordsCharged * this.unitPrice;
         }
+    },
+    props: ['word-count', 'word-credits', 'lang-src', 'lang-tgt'],
+    methods: {
+        sendForm: function sendForm() {
+            this.$emit('send-form');
+        },
+        fetchUnitPrice: function fetchUnitPrice() {}
     },
     mounted: function mounted() {
         var _this = this;
@@ -43227,16 +43306,36 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "tabindex": "-1",
       "role": "dialog"
     }
-  }, [_vm._m(0)])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  }, [_c('div', {
     staticClass: "modal-dialog",
     attrs: {
       "role": "document"
     }
   }, [_c('div', {
     staticClass: "modal-content"
-  }, [_c('div', {
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [_c('p', [_vm._v("Please review the costs below for your message and hit send to confirm.")]), _vm._v(" "), _c('table', {
+    staticClass: "table table-responsive table-bordered table-condensed"
+  }, [_c('tbody', [_c('tr', [_c('td', [_vm._v("Word Count")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordCount))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Credits Available")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordCredits))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Words Charged")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordsCharged))])]), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2)])]), _vm._v(" "), _vm._m(3)]), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal"
+    }
+  }, [_vm._v("Cancel")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.sendForm
+    }
+  }, [_vm._v("Send")])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
     staticClass: "modal-header"
   }, [_c('button', {
     staticClass: "close",
@@ -43251,24 +43350,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("×")])]), _vm._v(" "), _c('h4', {
     staticClass: "modal-title"
-  }, [_vm._v("Translate and send message?")])]), _vm._v(" "), _c('div', {
-    staticClass: "modal-body"
-  }, [_c('p', [_vm._v("Please review the costs below for your message and hit send to confirm.")]), _vm._v(" "), _c('table', {
-    staticClass: "table table-responsive table-bordered table-condensed"
-  }, [_c('tbody', [_c('tr', [_c('td', [_vm._v("Word Count")]), _vm._v(" "), _c('td', [_vm._v("230")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Credits Used")]), _vm._v(" "), _c('td', [_vm._v("5")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Words Charged")]), _vm._v(" "), _c('td', [_vm._v("225")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Unit Price")]), _vm._v(" "), _c('td', [_vm._v("$0.03")])]), _vm._v(" "), _c('tr', [_c('td', [_c('strong', [_vm._v("Total")])]), _vm._v(" "), _c('td', [_c('strong', [_vm._v("$6.75")])])])])]), _vm._v(" "), _c('p', [_c('strong', [_vm._v("'Auto-Translate Reply' is on.")]), _vm._v(" Your account will be charged for any translated\n                    replies for from any of your recipients.")])]), _vm._v(" "), _c('div', {
-    staticClass: "modal-footer"
-  }, [_c('button', {
-    staticClass: "btn btn-default",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal"
-    }
-  }, [_vm._v("Cancel")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-primary",
-    attrs: {
-      "type": "button"
-    }
-  }, [_vm._v("Send")])])])])
+  }, [_vm._v("Translate and send message?")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('tr', [_c('td', [_vm._v("Unit Price")]), _vm._v(" "), _c('td', [_vm._v("$0.03")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('tr', [_c('td', [_c('strong', [_vm._v("Total")])]), _vm._v(" "), _c('td', [_c('strong', [_vm._v("$6.75")])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', [_c('strong', [_vm._v("'Auto-Translate Reply' is on.")]), _vm._v(" Your account will be charged for any translated\n                    replies for from any of your recipients.")])
 }]}
 module.exports.render._withStripped = true
 if (false) {

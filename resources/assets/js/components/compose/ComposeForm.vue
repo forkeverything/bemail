@@ -35,9 +35,9 @@
                 <li>
                     <div class="form-inline">
                         <language-picker name="lang_src"
+                                         :value="langSrc"
                                          :languages="languages"
-                                         :default="userLang.code"
-                                         :old-input="langSrc"
+                                         @picked-language="updateLang"
                         ></language-picker>
                     </div>
                 </li>
@@ -45,8 +45,9 @@
                 <li>
                     <div class="form-inline">
                         <language-picker name="lang_tgt"
+                                         :value="langTgt"
                                          :languages="languages"
-                                         :old-input="langTgt"
+                                         @picked-language="updateLang"
                         ></language-picker>
                     </div>
                 </li>
@@ -60,8 +61,15 @@
                 'has-error': bodyError
              }"
         >
-        <textarea name="body" class="form-control" id="message-form-body" cols="30" rows="10"
-                  style="resize: none;">{{ body }}</textarea>
+            <p>Words: {{ wordCount }}</p>
+            <textarea name="body"
+                      class="form-control"
+                      id="message-form-body"
+                      cols="30"
+                      rows="10"
+                      v-model="body"
+                      style="resize: none;"
+            ></textarea>
             <field-error v-if="bodyError" :error="bodyError"></field-error>
         </div>
         <!-- Attachments -->
@@ -71,7 +79,12 @@
         </div>
         <!-- Submit -->
         <button type="button" class="btn btn-primary" @click="showSummaryModal">Send</button>
-        <summary-modal></summary-modal>
+        <summary-modal :word-count="wordCount"
+                       @send-form="submit"
+                       :word-credits="wordCredits"
+                       :lang-src="langSrc"
+                       :lang-tgt="langTgt"
+        ></summary-modal>
     </form>
 </template>
 <script>
@@ -79,7 +92,10 @@
         data: function () {
             return {
                 autoTranslateReply: true,
-                sendToSelf: false
+                sendToSelf: false,
+                langSrc: '',
+                langTgt: '',
+                body: ''
             }
         },
         computed: {
@@ -97,18 +113,25 @@
             },
             bodyError() {
                 return this.errors.body ? this.errors.body[0] : '';
+            },
+            wordCount() {
+                if (!this.body) return 0;
+                // Match any unicode Chinese / Japanese character or a space
+                let matches = this.body.match(/[\u00ff-\uffff]|\S+/g);
+                return matches ? matches.length : 0;
             }
         },
         props: [
             'token',
+            'word-credits',
             'errors',
             'recipients',
             'subject',
             'languages',
-            'lang-src',
-            'lang-tgt',
             'user-lang',
-            'body'
+            'lang-src-old',
+            'lang-tgt-old',
+            'body-old'
         ],
         methods: {
             updateSendtoSelf(val) {
@@ -122,10 +145,16 @@
             },
             submit() {
                 this.$refs.form.submit();
+            },
+            updateLang(name, val) {
+                if (name == 'lang_tgt') this.langTgt = val;
+                if (name == 'lang_src') this.langSrc = val;
             }
         },
         mounted() {
-
+            this.langSrc = this.langSrcOld || this.userLang.code;
+            this.langTgt = this.langTgtOld || '';
+            this.body = this.bodyOld || '';
         }
     }
 </script>
