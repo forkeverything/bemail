@@ -1,9 +1,9 @@
 <?php
 
-
 namespace App\Translation\Utilities;
 
 use App\Translation\Attachments\FormUploadedFile;
+use App\Translation\Attachments\PostmarkAttachmentFile;
 
 /**
  * AttachmentFileBuilder
@@ -27,10 +27,17 @@ class AttachmentFileBuilder
         }, $array);
     }
 
-    public static function fromPostmarkAttachments($attachments)
+    /**
+     * Creates an Array of PostmarkAttachmentFile(s) from JSON.
+     *
+     * @param $attachments
+     * @return array
+     */
+    public static function createPostmarkAttachmentFiles($attachments)
     {
-        // TODO ::: Convert Postmark attachments
-        //
+        return array_map(function ($attachmentJson) {
+            return new PostmarkAttachmentFile($attachmentJson);
+        }, $attachments);
     }
 
 }

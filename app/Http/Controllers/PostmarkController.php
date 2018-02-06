@@ -10,6 +10,7 @@ use App\Translation\Exceptions\TranslationException;
 use App\Translation\Factories\MessageFactory;
 use App\Translation\Message;
 use App\Translation\Reply;
+use App\Translation\Utilities\AttachmentFileBuilder;
 use App\Translation\Utilities\EmailReplyParser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -22,6 +23,7 @@ class PostmarkController extends Controller
      * @param Request $request
      * @param Translator $translator
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function postInboundMail(Request $request, Translator $translator)
     {
@@ -36,30 +38,20 @@ class PostmarkController extends Controller
         // this to be true.
         $body = $request["TextBody"];
         $strippedTextBody = EmailReplyParser::parse($body);
-
         // Recipients
         $recipients = $this->parseRecipients($request);
-
-        // TODO ::: Convert attachments into an array of PostMarkAttachment classes.
-        $attachments = $request["Attachments"];
-
+        // Attachments
+        $attachments = AttachmentFileBuilder::createPostmarkAttachmentFiles($request["Attachments"]);
         // Address sent to
         $inboundAddress = $request["OriginalRecipient"];
-
         // Inbound Address Convention:
         // - snake_case for incoming mail address
         // - first part specifies the type of email
         // - ie. reply_s0m3h4$h@in.bemail.io, for replies to a specific Message
-
         $inboundArray = explode("_", $inboundAddress);
-
-        // Re-write translated message email view so that it's:
-        // 1. Easily parse-able here
-        // 2. Indicate that only original sender will receive translated message.
 
         // Replying to a Message?
         if ($inboundArray[0] === "reply") {
-
             // Grab everything until '@'
             preg_match("/.*(?=@)/", $inboundArray[1], $matches);
             // First match is the message's hash ID
@@ -100,9 +92,7 @@ class PostmarkController extends Controller
                     Mail::to($fromAddress)->send(new ErrorSendingReply($originalMessage, $subject, $strippedTextBody));
                     // mail notification
                 }
-
             };
-
         }
 
         return response("Received Email", 200);

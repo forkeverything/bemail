@@ -84,6 +84,7 @@ class PostmarkAttachmentFile implements AttachmentFile
      *
      * Postmark base64 encode's attachment data and stores it in
      * a "Content" property.
+     * @throws \Exception
      */
     protected function setData()
     {
