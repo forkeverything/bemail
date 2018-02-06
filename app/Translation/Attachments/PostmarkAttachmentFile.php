@@ -50,7 +50,6 @@ class PostmarkAttachmentFile implements AttachmentFile
     public function __construct($jsonData)
     {
         $this->json = $jsonData;
-        \Log::info($jsonData);
     }
 
     /**
@@ -89,7 +88,7 @@ class PostmarkAttachmentFile implements AttachmentFile
      */
     protected function setData()
     {
-        if (! $data = base64_decode($this->json["Content"])) {
+        if ($data = base64_decode($this->json["Content"])) {
             $this->data = $data;
         } else {
             throw new \Exception("Could not decode data.");
