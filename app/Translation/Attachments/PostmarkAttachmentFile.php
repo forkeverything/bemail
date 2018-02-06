@@ -50,6 +50,7 @@ class PostmarkAttachmentFile implements AttachmentFile
     public function __construct($jsonData)
     {
         $this->json = $jsonData;
+        \Log::info($jsonData);
     }
 
     /**
