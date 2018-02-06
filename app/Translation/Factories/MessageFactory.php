@@ -5,10 +5,12 @@ namespace App\Translation\Factories;
 
 use App\Http\Requests\CreateMessageRequest;
 use App\Language;
+use App\Translation\Attachments\FormUploadedFile;
 use App\Translation\Message;
 use App\Translation\RecipientType;
 use App\Translation\Reply;
 use App\Translation\TranslationStatus;
+use App\Translation\Utilities\AttachmentFileBuilder;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -97,9 +99,7 @@ class MessageFactory
     /**
      * File attachments to the Email.
      *
-     * Array that holds either instances of UploadedFile (from
-     * form) or PostmarkAttachmentFile (from Postmark
-     * inbound email).
+     * Array that holds instances of AttachmentFile
      *
      * @var array
      */
@@ -124,7 +124,7 @@ class MessageFactory
         $factory->langSrcId = Language::findByCode($request->lang_src)->id;
         $factory->langTgtId = Language::findByCode($request->lang_tgt)->id;
         $factory->recipientEmails["standard"] = explode(',', $request->recipients);
-        $factory->attachments = $request->attachments;
+        $factory->attachments = AttachmentFileBuilder::convertArrayOfUploadedFiles($request->attachments);
 
         return $factory;
     }
@@ -277,9 +277,8 @@ class MessageFactory
      */
     protected function createAttachments()
     {
-        $method = AttachmentFactory::resolveMethodFromAttachment($this->attachments[0]);
         foreach ($this->attachments as $attachment) {
-            AttachmentFactory::$$method($attachment)->for($this->messageModel)->make();
+            AttachmentFactory::from($attachment)->for($this->messageModel)->make();
         }
     }
 

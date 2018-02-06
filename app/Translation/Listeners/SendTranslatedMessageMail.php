@@ -31,8 +31,6 @@ class SendTranslatedMessageMail
                 ->cc($this->buildMailAddresses($event->message, RecipientType::cc()))
                 ->bcc($this->buildMailAddresses($event->message, RecipientType::bcc()))
                 ->send(new TranslatedMessageForRecipient($event->message));
-            // TODO(?) ::: When the message is a reply, send a different mail to indicate
-            // a reply.
         }
     }
 

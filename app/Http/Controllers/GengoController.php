@@ -15,6 +15,7 @@ class GengoController extends Controller
      *
      * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function postCallback(Request $request)
     {

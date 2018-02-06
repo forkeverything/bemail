@@ -1,11 +1,18 @@
 <?php
 
-namespace App\Translation\Http;
+namespace App\Translation\Attachments;
 
 use App\Translation\Contracts\AttachmentFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
+/**
+ * PostmarkAttachmentFile
+ * Attached file that is sent with replies to emails to be
+ * automatically translated.
+ *
+ * @package App\Translation\Http
+ */
 class PostmarkAttachmentFile implements AttachmentFile
 {
     /**
@@ -46,7 +53,7 @@ class PostmarkAttachmentFile implements AttachmentFile
     }
 
     /**
-     * Get the extension out using original file name.
+     * Parse extension out from original file name.
      *
      * Should be considered safe, same as how Symfony does it for UploadedFile.
      * Another option would be to 'guess' the extension using mime type
@@ -118,7 +125,7 @@ class PostmarkAttachmentFile implements AttachmentFile
      *
      * @return string
      */
-    public function getHashName()
+    public function hashName()
     {
         if(! $this->hash) $this->setHash();
         return $this->hash;
@@ -129,7 +136,7 @@ class PostmarkAttachmentFile implements AttachmentFile
      *
      * @return string
      */
-    public function getOriginalName()
+    public function originalName()
     {
         return $this->json["Name"];
     }
@@ -139,7 +146,7 @@ class PostmarkAttachmentFile implements AttachmentFile
      *
      * @return int|null
      */
-    public function getFileSize()
+    public function fileSize()
     {
         return strlen($this->getData());
     }

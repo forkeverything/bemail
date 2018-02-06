@@ -9,21 +9,21 @@ interface AttachmentFile
      *
      * @return string
      */
-    public function getHashName();
+    public function hashName();
 
     /**
      * Original name.
      *
      * @return string
      */
-    public function getOriginalName();
+    public function originalName();
 
     /**
      * File size.
      *
      * @return int|null
      */
-    public function getFileSize();
+    public function fileSize();
 
     /**
      * Move file to disk.

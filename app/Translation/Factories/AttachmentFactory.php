@@ -5,10 +5,7 @@ namespace App\Translation\Factories;
 
 
 use App\Translation\Contracts\AttachmentFile;
-use App\Translation\Http\FormUploadedFile;
-use App\Translation\Http\PostmarkAttachmentFile;
 use App\Translation\Message;
-use Illuminate\Http\UploadedFile;
 
 class AttachmentFactory
 {
@@ -17,7 +14,6 @@ class AttachmentFactory
      * @var AttachmentFile
      */
     protected $attachmentFile;
-
 
     /**
      * Complete path to physical file.
@@ -52,42 +48,31 @@ class AttachmentFactory
     protected function createModel()
     {
         return $this->message->attachments()->create([
-            'file_name' => $this->attachmentFile->getHashName(),
-            'original_file_name' => $this->attachmentFile->getOriginalName(),
+            'file_name' => $this->attachmentFile->hashName(),
+            'original_file_name' => $this->attachmentFile->originalName(),
             'path' => $this->path,
-            'size' => $this->attachmentFile->getFileSize()
+            'size' => $this->attachmentFile->fileSize()
         ]);
     }
 
-    public static function makeFromPostmarkAttachment(PostmarkAttachmentFile $postmarkAttachmentFile)
-    {
+    /**
+     * AttachmentFile to create an Attachment from.
+     *
+     * @param AttachmentFile $attachmentFile
+     * @return static
+     */
+    public static function from(AttachmentFile $attachmentFile){
         $factory = new static();
-        $factory->attachmentFile = $postmarkAttachmentFile;
-        return $factory;
-    }
-
-    public static function makeFromUploadedFile(FormUploadedFile $uploadedFile)
-    {
-        $factory = new static();
-        $factory->attachmentFile = $uploadedFile;
+        $factory->attachmentFile = $attachmentFile;
         return $factory;
     }
 
     /**
-     * Name of the method to call for given attachment file.
+     * Message model the Attachment should be attached to.
      *
-     * @param $attachment array
-     * @return string
+     * @param Message $message
+     * @return $this
      */
-    public static function resolveMethodFromAttachment($attachment)
-    {
-        if($attachment instanceof UploadedFile) {
-            return "makeFromUploadedFile";
-        } else {
-            return "makeFromPostmarkAttachment";
-        }
-    }
-
     public function for(Message $message)
     {
         $this->message = $message;
@@ -104,6 +89,5 @@ class AttachmentFactory
         $this->path = $this->attachmentFile->store($directory);
         return $this->createModel();
     }
-
 
 }

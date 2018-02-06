@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Translation\Factories;
 
+use App\Translation\Contracts\AttachmentFile;
 use App\Translation\Factories\AttachmentFactory;
 use App\Translation\Message;
 use App\User;
@@ -21,7 +22,6 @@ class AttachmentFactoryTest extends TestCase
     {
         $environment = env('APP_ENV', 'local');
 
-        // Dummy attributes we expect to end up with
         $attributes = [
             'file_name' => 'foobar',
             'original_file_name' => 'some_file.txt',
@@ -30,25 +30,25 @@ class AttachmentFactoryTest extends TestCase
         ];
 
         $message = factory(Message::class)->create();
-        $uploadedFile = \Mockery::mock('App\Translation\Http\FormUploadedFile');
+        $attachmentFile = \Mockery::mock(AttachmentFile::class);
 
         // Assert that we're moving the file as well as setting the same
         // directory as we expect here.
-        $uploadedFile->shouldReceive('store')
+        $attachmentFile->shouldReceive('store')
                      ->once()
                      ->with("{$environment}/user/{$message->user_id}/messages/{$message->id}/attachments")
                      ->andReturn($attributes['path']);
-        $uploadedFile->shouldReceive('getOriginalName')
+        $attachmentFile->shouldReceive('getOriginalName')
                      ->once()
                      ->andReturn($attributes['original_file_name']);
-        $uploadedFile->shouldReceive('getHashName')
+        $attachmentFile->shouldReceive('getHashName')
                      ->once()
                      ->andReturn($attributes['file_name']);
-        $uploadedFile->shouldReceive('getFileSize')
+        $attachmentFile->shouldReceive('getFileSize')
                      ->once()
                      ->andReturn($attributes['size']);
 
-            $attachment = AttachmentFactory::makeFromUploadedFile($uploadedFile)->for($message)->make();
+            $attachment = AttachmentFactory::from($attachmentFile)->for($message)->make();
 
         foreach ($attributes as $attribute => $value) {
             $this->assertEquals($value, $attachment->{$attribute});

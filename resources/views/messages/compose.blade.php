@@ -6,7 +6,7 @@
                       word-credits="{{ Auth::user()->word_credits }}"
                       :errors="{{ $errors }}"
                       recipients="{{ old('recipients') }}"
-                      subject="{{ old('subject') }}"
+                      subject-old="{{ old('subject') }}"
                       :languages="{{ $languages }}"
                       :user-lang="{{ $userLang }}"
                       lang-src-old="{{ old('lang_src') }}"

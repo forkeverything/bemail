@@ -23,7 +23,7 @@
         <!-- Subject -->
         <div class="form-group">
             <label for="message-form-subject">Subject</label>
-            <input name="subject" type="text" id="message-form-subject" class="form-control" :value="subject">
+            <input name="subject" type="text" id="message-form-subject" class="form-control" v-model="subject">
         </div>
         <!-- Language Picker -->
         <div class="form-group"
@@ -96,6 +96,7 @@
                 sendToSelf: false,
                 langSrc: '',
                 langTgt: '',
+                subject: '',
                 body: ''
             }
         },
@@ -127,7 +128,7 @@
             'word-credits',
             'errors',
             'recipients',
-            'subject',
+            'subject-old',
             'languages',
             'user-lang',
             'lang-src-old',
@@ -155,6 +156,7 @@
         mounted() {
             this.langSrc = this.langSrcOld || this.userLang.code;
             this.langTgt = this.langTgtOld || '';
+            this.subject = this.subjectOld || '';
             this.body = this.bodyOld || '';
         }
     }

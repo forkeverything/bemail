@@ -42070,6 +42070,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             sendToSelf: false,
             langSrc: '',
             langTgt: '',
+            subject: '',
             body: ''
         };
     },
@@ -42096,7 +42097,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return matches ? matches.length : 0;
         }
     },
-    props: ['token', 'word-credits', 'errors', 'recipients', 'subject', 'languages', 'user-lang', 'lang-src-old', 'lang-tgt-old', 'body-old'],
+    props: ['token', 'word-credits', 'errors', 'recipients', 'subject-old', 'languages', 'user-lang', 'lang-src-old', 'lang-tgt-old', 'body-old'],
     methods: {
         updateSendtoSelf: function updateSendtoSelf(val) {
             this.sendToSelf = val;
@@ -42118,6 +42119,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         this.langSrc = this.langSrcOld || this.userLang.code;
         this.langTgt = this.langTgtOld || '';
+        this.subject = this.subjectOld || '';
         this.body = this.bodyOld || '';
     }
 });
@@ -42179,6 +42181,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "message-form-subject"
     }
   }, [_vm._v("Subject")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.subject),
+      expression: "subject"
+    }],
     staticClass: "form-control",
     attrs: {
       "name": "subject",
@@ -42186,7 +42194,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "id": "message-form-subject"
     },
     domProps: {
-      "value": _vm.subject
+      "value": (_vm.subject)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.subject = $event.target.value
+      }
     }
   })]), _vm._v(" "), _c('div', {
     staticClass: "form-group",
