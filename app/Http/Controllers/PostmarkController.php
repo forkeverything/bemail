@@ -13,8 +13,15 @@ use App\Translation\Reply;
 use App\Translation\Utilities\AttachmentFileBuilder;
 use App\Translation\Utilities\EmailReplyParser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 
+/**
+ * PostmarkController
+ * Handles HTTP call-backs from Postmark.
+ *
+ * @package App\Http\Controllers
+ */
 class PostmarkController extends Controller
 {
 
@@ -80,17 +87,17 @@ class PostmarkController extends Controller
                         $translator->translate($message);
                     } catch (TranslationException $e) {
                         TranslationExceptionHandler::got($e)->for($message)->handle();
-                        throw new \Exception;
+                        throw $e;
                     }
 
                     // Notify reply sender that we got their reply.
                     Mail::to($message->senderEmail())->send(new MessageReplyReceivedNotification($message));
 
                 } catch (\Exception $exception) {
-                    // Some error occurred
-                    // - Send notification to sender (person replying) of failure to send reply. Need new
+                    // Notify reply sender that their reply was not sent.
                     Mail::to($fromAddress)->send(new ErrorSendingReply($originalMessage, $subject, $strippedTextBody));
-                    // mail notification
+                    // Re-throw exception if we're in development, to debug.
+                    if (App::environment('local')) throw $exception;
                 }
             };
         }
