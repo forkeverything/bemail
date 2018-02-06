@@ -4,7 +4,7 @@
         @include('flash::message')
         <compose-form token="{{ csrf_token() }}"
                       word-credits="{{ Auth::user()->word_credits }}"
-                      :errors="{{ $errors->getBags() }}"
+                      :errors="{{ json_encode($errors->getBag('default')) }}"
                       recipients="{{ old('recipients') }}"
                       subject-old="{{ old('subject') }}"
                       :languages="{{ $languages }}"
