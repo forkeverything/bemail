@@ -63,7 +63,7 @@ class PostmarkAttachmentFile implements AttachmentFile
      */
     public function getFileExtension()
     {
-        return pathinfo($this->getOriginalName(), PATHINFO_EXTENSION);
+        return pathinfo($this->originalName(), PATHINFO_EXTENSION);
     }
 
     /**
@@ -102,6 +102,7 @@ class PostmarkAttachmentFile implements AttachmentFile
      * multiple decodes.
      *
      * @return mixed
+     * @throws \Exception
      */
     public function getData()
     {
@@ -114,10 +115,11 @@ class PostmarkAttachmentFile implements AttachmentFile
      *
      * @param $directory
      * @return bool|string
+     * @throws \Exception
      */
     public function store($directory)
     {
-        $fullPath = "{$directory}/{$this->getHashName()}";
+        $fullPath = "{$directory}/{$this->hashName()}";
         return Storage::put($fullPath, $this->getData()) ? $fullPath : false;
     }
 
@@ -146,6 +148,7 @@ class PostmarkAttachmentFile implements AttachmentFile
      * File size.
      *
      * @return int|null
+     * @throws \Exception
      */
     public function fileSize()
     {
