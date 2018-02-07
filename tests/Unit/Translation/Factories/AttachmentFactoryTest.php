@@ -48,7 +48,8 @@ class AttachmentFactoryTest extends TestCase
                      ->once()
                      ->andReturn($attributes['size']);
 
-            $attachment = AttachmentFactory::from($attachmentFile)->for($message)->make();
+        // Actual attachment model
+        $attachment = AttachmentFactory::from($attachmentFile)->for($message)->make();
 
         foreach ($attributes as $attribute => $value) {
             $this->assertEquals($value, $attachment->{$attribute});

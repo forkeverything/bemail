@@ -53,6 +53,16 @@ class PostmarkAttachmentFile implements AttachmentFile
     }
 
     /**
+     * Original name.
+     *
+     * @return string
+     */
+    public function originalName()
+    {
+        return $this->json["Name"];
+    }
+
+    /**
      * Parse extension out from original file name.
      *
      * Should be considered safe, same as how Symfony does it for UploadedFile.
@@ -78,6 +88,17 @@ class PostmarkAttachmentFile implements AttachmentFile
         $this->hash = Str::random(40) . "." . $this->getFileExtension();
     }
 
+
+    /**
+     * Hash name.
+     *
+     * @return string
+     */
+    public function hashName()
+    {
+        if(! $this->hash) $this->setHash();
+        return $this->hash;
+    }
 
     /**
      * Set file data.
@@ -111,6 +132,17 @@ class PostmarkAttachmentFile implements AttachmentFile
     }
 
     /**
+     * File size.
+     *
+     * @return int|null
+     * @throws \Exception
+     */
+    public function fileSize()
+    {
+        return strlen($this->getData());
+    }
+
+    /**
      * Store attached file on a filesystem disk.
      *
      * @param $directory
@@ -121,37 +153,5 @@ class PostmarkAttachmentFile implements AttachmentFile
     {
         $fullPath = "{$directory}/{$this->hashName()}";
         return Storage::put($fullPath, $this->getData()) ? $fullPath : false;
-    }
-
-    /**
-     * Hash name.
-     *
-     * @return string
-     */
-    public function hashName()
-    {
-        if(! $this->hash) $this->setHash();
-        return $this->hash;
-    }
-
-    /**
-     * Original name.
-     *
-     * @return string
-     */
-    public function originalName()
-    {
-        return $this->json["Name"];
-    }
-
-    /**
-     * File size.
-     *
-     * @return int|null
-     * @throws \Exception
-     */
-    public function fileSize()
-    {
-        return strlen($this->getData());
     }
 }
