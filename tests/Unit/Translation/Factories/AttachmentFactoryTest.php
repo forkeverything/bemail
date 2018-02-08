@@ -38,13 +38,13 @@ class AttachmentFactoryTest extends TestCase
                      ->once()
                      ->with("{$environment}/user/{$message->user_id}/messages/{$message->id}/attachments")
                      ->andReturn($attributes['path']);
-        $attachmentFile->shouldReceive('getOriginalName')
+        $attachmentFile->shouldReceive('originalName')
                      ->once()
                      ->andReturn($attributes['original_file_name']);
-        $attachmentFile->shouldReceive('getHashName')
+        $attachmentFile->shouldReceive('hashName')
                      ->once()
                      ->andReturn($attributes['file_name']);
-        $attachmentFile->shouldReceive('getFileSize')
+        $attachmentFile->shouldReceive('fileSize')
                      ->once()
                      ->andReturn($attributes['size']);
 

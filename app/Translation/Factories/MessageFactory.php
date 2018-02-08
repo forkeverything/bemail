@@ -124,7 +124,7 @@ class MessageFactory
         $factory->langSrcId = Language::findByCode($request->lang_src)->id;
         $factory->langTgtId = Language::findByCode($request->lang_tgt)->id;
         $factory->recipientEmails["standard"] = explode(',', $request->recipients);
-        $factory->attachments = AttachmentFileBuilder::convertArrayOfUploadedFiles($request->attachments);
+        if($request->attachments) $factory->attachments = AttachmentFileBuilder::convertArrayOfUploadedFiles($request->attachments);
 
         return $factory;
     }
