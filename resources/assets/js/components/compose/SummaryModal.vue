@@ -13,6 +13,11 @@
                     <table class="table table-responsive table-bordered table-condensed">
                         <tbody>
                         <tr>
+                            <td>Language</td>
+                            <!-- TODO ::: Localize language -->
+                            <td><span v-if="langSrc && langTgt">{{ langDescription(langSrc) }} to {{ langDescription(langTgt) }}</span><span v-else>-</span></td>
+                        </tr>
+                        <tr>
                             <td>Word Count</td>
                             <td>{{ wordCount }}</td>
                         </tr>
@@ -91,6 +96,18 @@
                     this.unitPrice = '-';
                     this.fetchingUnitPrice = false;
                 });
+            },
+            langDescription(code) {
+                switch(code) {
+                    case 'en':
+                        return 'English';
+                    case 'ja':
+                        return 'Japanese';
+                    case 'zh':
+                        return 'Chinese';
+                    default:
+                        return '-'
+                }
             }
         },
         mounted() {

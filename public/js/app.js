@@ -974,6 +974,16 @@ if (token) {
 }
 
 /**
+ * Custom Language Object
+ * Currently unimplemented - template for when methods/props
+ * increase for a Language. Also just a simple example of
+ * custom JS object.
+ *
+ * @type {Language}
+ */
+window.Language = __webpack_require__(77);
+
+/**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
  * allows your team to easily build robust real-time web applications.
@@ -42062,6 +42072,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -42280,7 +42292,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "message-form-attachments"
     }
-  }, [_vm._v("Attachments")]), _vm._v(" "), _c('file-input', {
+  }, [_vm._v("Attachments")]), _vm._v(" "), _c('br'), _vm._v(" "), _c('span', {
+    staticClass: "small"
+  }, [_vm._v("Max total size 35MB")]), _vm._v(" "), _c('file-input', {
     attrs: {
       "id": "message-form-attachments",
       "name": "attachments[]",
@@ -43278,6 +43292,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -43320,6 +43339,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.unitPrice = '-';
                 _this.fetchingUnitPrice = false;
             });
+        },
+        langDescription: function langDescription(code) {
+            switch (code) {
+                case 'en':
+                    return 'English';
+                case 'ja':
+                    return 'Japanese';
+                case 'zh':
+                    return 'Chinese';
+                default:
+                    return '-';
+            }
         }
     },
     mounted: function mounted() {
@@ -43354,7 +43385,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "modal-body"
   }, [_c('p', [_vm._v("Please review the costs below for your message and hit send to confirm.")]), _vm._v(" "), _c('table', {
     staticClass: "table table-responsive table-bordered table-condensed"
-  }, [_c('tbody', [_c('tr', [_c('td', [_vm._v("Word Count")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordCount))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Credits Available")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordCredits))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Words Charged")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordsCharged))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Unit Price")]), _vm._v(" "), _c('td', {
+  }, [_c('tbody', [_c('tr', [_c('td', [_vm._v("Language")]), _vm._v(" "), _c('td', [(_vm.langSrc && _vm.langTgt) ? _c('span', [_vm._v(_vm._s(_vm.langDescription(_vm.langSrc)) + " to " + _vm._s(_vm.langDescription(_vm.langTgt)))]) : _c('span', [_vm._v("-")])])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Word Count")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordCount))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Credits Available")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordCredits))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Words Charged")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordsCharged))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Unit Price")]), _vm._v(" "), _c('td', {
     class: {
       'active': _vm.fetchingUnitPrice
     }
@@ -43667,6 +43698,41 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */,
+/* 71 */,
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */
+/***/ (function(module, exports) {
+
+function Language(code) {
+    this.code = code;
+}
+
+Language.prototype.description = function () {
+    switch (this.code) {
+        case 'en':
+            return 'English';
+        case 'ja':
+            return 'Japanese';
+        case 'zh':
+            return 'Chinese';
+        default:
+            return '-';
+    }
+};
+
+module.exports = Language;
+
+// new Language('en').description()               English
 
 /***/ })
 /******/ ]);

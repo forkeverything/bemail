@@ -2,6 +2,7 @@
 
 namespace App\Translation\Mail;
 
+use App\Translation\Mail\Traits\TranslatedMail;
 use App\Translation\Message;
 use App\Translation\Utilities\MessageThreadBuilder;
 use Illuminate\Bus\Queueable;
@@ -18,7 +19,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  */
 class MessageHasBeenTranslatedNotification extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable, SerializesModels, TranslatedMail;
 
     /**
      * @var Message
@@ -52,6 +53,7 @@ class MessageHasBeenTranslatedNotification extends Mailable implements ShouldQue
     {
         $subject = $this->translatedMessage->subject ? 'Translated and Sent: ' . $this->translatedMessage->subject : "Translated and Sent Message";
         return $this->subject($subject)
+            ->includeAttachments()
             ->view('emails.messages.html.message-has-been-translated-notification')
             ->text('emails.messages.text.message-has-been-translated-notification');
 

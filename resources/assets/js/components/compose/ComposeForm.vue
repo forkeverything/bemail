@@ -75,6 +75,8 @@
         <!-- Attachments -->
         <div class="form-group">
             <label for="message-form-attachments">Attachments</label>
+            <br>
+            <span class="small">Max total size 35MB</span>
             <file-input id="message-form-attachments" name="attachments[]" :multiple="true"></file-input>
         </div>
         <!-- Submit -->
