@@ -20,6 +20,10 @@ class GengoTranslatorTest extends TestCase
     // Keys each language pair should return
     protected $languagePairKeys;
 
+    // Gengo error response
+    protected $errorCode = '808';
+    protected $errorMsg = 'no good';
+
     public function setUp()
     {
         parent::setup();
@@ -94,14 +98,12 @@ class GengoTranslatorTest extends TestCase
      */
     public function it_parses_out_job_error()
     {
-        $code = '808';
-        $msg = 'no good';
         $response = [
             'err' => [
                 'jobs_01' => [
                     [
-                        'code' => $code,
-                        'msg' => $msg
+                        'code' => $this->errorCode,
+                        'msg' => $this->errorMsg
                     ]
                 ]
             ]
@@ -109,8 +111,8 @@ class GengoTranslatorTest extends TestCase
 
         $error = $this->gengoTranslator->parseErrorFromResponse($response);
 
-        $this->assertEquals($code, $error['code']);
-        $this->assertEquals("Gengo Job: $msg", $error['description']);
+        $this->assertEquals($this->errorCode, $error['code']);
+        $this->assertEquals("Gengo Job: $this->errorMsg", $error['description']);
     }
 
     /**
@@ -118,18 +120,16 @@ class GengoTranslatorTest extends TestCase
      */
     public function it_parses_out_system_error()
     {
-        $code = '808';
-        $msg = 'no good';
         $response = [
             'err' => [
-                'code' => $code,
-                'msg' => $msg
+                'code' => $this->errorCode,
+                'msg' => $this->errorMsg
             ]
         ];
         $error = $this->gengoTranslator->parseErrorFromResponse($response);
 
-        $this->assertEquals($code, $error['code']);
-        $this->assertEquals("Gengo System: $msg", $error['description']);
+        $this->assertEquals($this->errorCode, $error['code']);
+        $this->assertEquals("Gengo System: $this->errorMsg", $error['description']);
     }
 
 }
