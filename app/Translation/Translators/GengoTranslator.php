@@ -6,7 +6,7 @@ use App\Translation\Contracts\Translator;
 use App\Language;
 use App\Translation\Exceptions\TranslationException;
 use App\Translation\Message;
-use Gengo\Config;
+use Gengo\Config as GengoConfig;
 use Gengo\Jobs as GengoJobs;
 use Gengo\Service as GengoService;
 
@@ -17,6 +17,18 @@ use Gengo\Service as GengoService;
  */
 class GengoTranslator implements Translator
 {
+
+    /**
+     * Test flag
+     *
+     * Set to True from GengoTranslatorTest. This ensures
+     * that tests are sent to the sandbox, regardless
+     * of app environment.
+     *
+     * @var bool
+     */
+    public $test = false;
+
     /**
      * GengoTranslator constructor.
      *
@@ -25,11 +37,11 @@ class GengoTranslator implements Translator
     public function __construct()
     {
         // Setup APP to use Gengo API
-        Config::setAPIKey(env('GENGO_API'));
-        Config::setPrivateKey(env('GENGO_SECRET'));
-        Config::setResponseFormat("json");
-        // Production vs. sandbox
-        if(env('APP_ENV') == 'production') Config::useProduction();
+        GengoConfig::setAPIKey(env('GENGO_API'));
+        GengoConfig::setPrivateKey(env('GENGO_SECRET'));
+        GengoConfig::setResponseFormat("json");
+        // Production or Sandbox
+        if(env('APP_ENV') == 'production' && !$this->test) GengoConfig::useProduction();
     }
 
     /**
@@ -65,7 +77,7 @@ class GengoTranslator implements Translator
      */
     public function unitPrice(Language $sourceLangue, Language $targetLanguage)
     {
-        // Get relevant pair        $pair = $this->getLanguagePairs($sourceLangue->code, $targetLanguage->code);
+        // Get relevant pair: $pair = $this->getLanguagePairs($sourceLangue->code, $targetLanguage->code);
         // Reset object key pointer to the first. Otherwise the relevant pair
         // might have a random key - ie. 5
         return reset($pair)->unit_price;
@@ -98,12 +110,12 @@ class GengoTranslator implements Translator
 
     /**
      * Start translating using Gengo.
+     *
      * Adds translation job to Gengo's internal
      * queue.
      *
-     *–
      * @param Message $message
-     * @return void
+     * @return String
      * @throws TranslationException
      * @throws \Gengo\Exception
      */
@@ -123,6 +135,7 @@ class GengoTranslator implements Translator
             $error = $this->parseErrorFromResponse($response);
             throw new TranslationException($error["description"], $error["code"]);
         }
+        return $status;
     }
 
     /**
@@ -131,7 +144,7 @@ class GengoTranslator implements Translator
      * @param $response
      * @return array
      */
-    protected function parseErrorFromResponse($response)
+    public function parseErrorFromResponse($response)
     {
         // Error could be due to the job (ie. unsupported language pair) or
         // gengo system (not enough Gengo credits). Either case, this
