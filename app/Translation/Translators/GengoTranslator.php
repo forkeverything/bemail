@@ -77,7 +77,8 @@ class GengoTranslator implements Translator
      */
     public function unitPrice(Language $sourceLangue, Language $targetLanguage)
     {
-        // Get relevant pair: $pair = $this->getLanguagePairs($sourceLangue->code, $targetLanguage->code);
+        // Get relevant pair
+        $pair = $this->getLanguagePairs($sourceLangue->code, $targetLanguage->code);
         // Reset object key pointer to the first. Otherwise the relevant pair
         // might have a random key - ie. 5
         return reset($pair)->unit_price;
