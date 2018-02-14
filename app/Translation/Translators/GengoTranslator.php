@@ -6,43 +6,43 @@ use App\Translation\Contracts\Translator;
 use App\Language;
 use App\Translation\Exceptions\TranslationException;
 use App\Translation\Message;
-use App\Translation\MessageError;
-use App\Translation\TranslationStatus;
 use Gengo\Config;
 use Gengo\Jobs as GengoJobs;
 use Gengo\Service as GengoService;
 
+/**
+ * GengoTranslator
+ *
+ * @package App\Translation\Translators
+ */
 class GengoTranslator implements Translator
 {
     /**
      * GengoTranslator constructor.
+     *
+     * @throws \Gengo\Exception
      */
     public function __construct()
     {
-        $this->setup();
-    }
-
-    /**
-     * Sets up our APP to use Gengo API
-     */
-    protected function setup()
-    {
+        // Setup APP to use Gengo API
         Config::setAPIKey(env('GENGO_API'));
         Config::setPrivateKey(env('GENGO_SECRET'));
         Config::setResponseFormat("json");
-        if(env('APP_ENV') == 'production') {
-            Config::useProduction();
-        }
+        // Production vs. sandbox
+        if(env('APP_ENV') == 'production') Config::useProduction();
     }
 
     /**
      * Language pairs available.
      *
+     * @param String $langSrc
+     * @param String $langTgt
      * @return mixed
+     * @throws \Gengo\Exception
      */
     public function getLanguagePairs($langSrc = null, $langTgt = null)
     {
-        $service = new \Gengo\Service;
+        $service = new GengoService;
         $languagePairs = json_decode($service->getLanguagePairs($langSrc))->response;
         return array_filter($languagePairs, function ($languagePair) use ($langTgt) {
             // Only want to view 'standard' tier level translations on Gengo
@@ -53,6 +53,22 @@ class GengoTranslator implements Translator
             $targetPair = $languagePair->lc_tgt == $langTgt;
             return $targetPair && $standardTier;
         });
+    }
+
+    /**
+     * Check the cost per word for given language pair.
+     *
+     * @param Language $sourceLangue
+     * @param Language $targetLanguage
+     * @return mixed
+     * @throws \Gengo\Exception
+     */
+    public function unitPrice(Language $sourceLangue, Language $targetLanguage)
+    {
+        // Get relevant pair        $pair = $this->getLanguagePairs($sourceLangue->code, $targetLanguage->code);
+        // Reset object key pointer to the first. Otherwise the relevant pair
+        // might have a random key - ie. 5
+        return reset($pair)->unit_price;
     }
 
     /**
@@ -89,6 +105,7 @@ class GengoTranslator implements Translator
      * @param Message $message
      * @return void
      * @throws TranslationException
+     * @throws \Gengo\Exception
      */
     public function translate(Message $message)
     {
@@ -135,41 +152,4 @@ class GengoTranslator implements Translator
         ];
     }
 
-    /**
-     * Parse error from response and record it for given Message.
-     *
-     * @param Message $message
-     * @param $response
-     * @return $this|\Illuminate\Database\Eloquent\Model
-     */
-    protected function recordError(Message $message, $response)
-    {
-        // Error could be due to the job (ie. unsupported language pair) or system (not enough Gengo credits).
-        $isJobError = array_key_exists("jobs_01", $response["err"]);
-
-        $code = $isJobError ? $response["err"]["jobs_01"][0]["code"] : $response["err"]["code"];
-        $msg = $isJobError ? $response["err"]["jobs_01"][0]["msg"] : $response["err"]["msg"];
-        $description = $isJobError ? "Gengo Job: {$msg}" : "Gengo System: {$msg}";
-
-        return MessageError::create([
-            'code' => $code,
-            'description' => $description,
-            'message_id' => $message->id
-        ]);
-    }
-
-    /**
-     * Gets the cost per word for given language pair.
-     *
-     * @param Language $sourceLangue
-     * @param Language $targetLanguage
-     * @return mixed
-     */
-    public function unitPrice(Language $sourceLangue, Language $targetLanguage)
-    {
-        $pair = $this->getLanguagePairs($sourceLangue->code, $targetLanguage->code);
-        // Reset object key pointer to the first. Otherwise the relevant pair
-        // might have a random key - ie. 5
-        return reset($pair)->unit_price;
-    }
 }
