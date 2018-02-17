@@ -17,7 +17,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  *
  * @package App\Mail\Translation\Mail
  */
-class TranslatedMessageForSendToSelf extends Mailable implements ShouldQueue
+class TranslatedMessageForSendToSelf extends Mailable
 {
     use Queueable, SerializesModels, TranslatedMail;
 

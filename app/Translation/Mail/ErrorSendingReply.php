@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ErrorSendingReply extends Mailable implements ShouldQueue
+class ErrorSendingReply extends Mailable
 {
     use Queueable, SerializesModels;
 

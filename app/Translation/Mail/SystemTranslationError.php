@@ -16,7 +16,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  * Class SystemTranslationError
  * @package App\Translation\Mail
  */
-class SystemTranslationError extends Mailable implements ShouldQueue
+class SystemTranslationError extends Mailable
 {
     use Queueable, SerializesModels;
 

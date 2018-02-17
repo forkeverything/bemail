@@ -17,7 +17,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  * Class MessageHasBeenTranslatedNotification
  * @package App\Mail\Translation\Mail
  */
-class MessageHasBeenTranslatedNotification extends Mailable implements ShouldQueue
+class MessageHasBeenTranslatedNotification extends Mailable
 {
     use Queueable, SerializesModels, TranslatedMail;
 

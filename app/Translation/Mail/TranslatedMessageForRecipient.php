@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class TranslatedMessageForRecipient extends Mailable implements ShouldQueue
+class TranslatedMessageForRecipient extends Mailable
 {
     use Queueable, SerializesModels, TranslatedMail;
 
