@@ -15,7 +15,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  * Sent for messages with recipients.
  *
  * Class MessageHasBeenTranslatedNotification
- * @package App\Mail\Translation\Mail
+ * @package App\Translation\Mail
  */
 class MessageHasBeenTranslatedNotification extends Mailable
 {

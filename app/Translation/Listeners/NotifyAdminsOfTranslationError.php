@@ -2,12 +2,13 @@
 
 namespace App\Translation\Listeners;
 
-use App\Translation\Mail\MessageHasBeenTranslatedNotification;
+use App\Translation\Mail\SystemTranslationError;
+use App\User;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 
-class SendMessageHasBeenTranslatedNotificationMail implements ShouldQueue
+class NotifyAdminsOfTranslationError implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -27,9 +28,7 @@ class SendMessageHasBeenTranslatedNotificationMail implements ShouldQueue
      */
     public function handle($event)
     {
-        if(! $event->message->send_to_self) {
-            // Send translation complete notification to sender
-            Mail::to($event->message->senderEmail())->send(new MessageHasBeenTranslatedNotification($event->message));
-        }
+        // TODO ::: Implement multiple admins
+        Mail::to(User::where('email', 'mike@bemail.io')->first())->send(new SystemTranslationError($event->message));
     }
 }

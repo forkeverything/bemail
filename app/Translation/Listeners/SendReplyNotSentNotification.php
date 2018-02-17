@@ -2,12 +2,13 @@
 
 namespace App\Translation\Listeners;
 
-use App\Translation\Mail\MessageHasBeenTranslatedNotification;
+use App\Translation\Events\ReplyErrorOccurred;
+use App\Translation\Mail\ErrorSendingReply;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 
-class SendMessageHasBeenTranslatedNotificationMail implements ShouldQueue
+class SendReplyNotSentNotification
 {
     /**
      * Create the event listener.
@@ -22,14 +23,12 @@ class SendMessageHasBeenTranslatedNotificationMail implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  object  $event
+     * @param  ReplyErrorOccurred  $event
      * @return void
      */
     public function handle($event)
     {
-        if(! $event->message->send_to_self) {
-            // Send translation complete notification to sender
-            Mail::to($event->message->senderEmail())->send(new MessageHasBeenTranslatedNotification($event->message));
-        }
+        Mail::to($event->from)
+            ->send(new ErrorSendingReply($event->originalMessage, $event->subject, $event->body));
     }
 }

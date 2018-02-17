@@ -2,19 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\Translation\Mail\MessageReplyReceivedNotification;
-use App\Translation\Mail\ErrorSendingReply;
+use App\Translation\Events\ReplyReceived;
 use App\Translation\Contracts\Translator;
-use App\Translation\Exceptions\Handlers\TranslationExceptionHandler;
-use App\Translation\Exceptions\TranslationException;
-use App\Translation\Factories\MessageFactory;
 use App\Translation\Message;
-use App\Translation\Reply;
 use App\Translation\Utilities\AttachmentFileBuilder;
 use App\Translation\Utilities\EmailReplyParser;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Mail;
 
 /**
  * PostmarkController
@@ -65,40 +58,7 @@ class PostmarkController extends Controller
             $messageHash = $matches[0];
             // Find message we're replying to
             if ($originalMessage = Message::findByHash($messageHash)) {
-
-                // TODO ::: Create event to handle when reply received.
-
-                // Try to make reply message and translate
-                try {
-                    $reply = Reply::create([
-                        'sender_email' => $fromAddress,
-                        'sender_name' => $fromName,
-                        'original_message_id' => $originalMessage->id
-                    ]);
-
-                    $message = MessageFactory::reply($reply)
-                                             ->recipientEmails($recipients)
-                                             ->subject($subject)
-                                             ->body($strippedTextBody)
-                                             ->attachments($attachments)
-                                             ->make();
-                    // Try to translate message
-                    try {
-                        $translator->translate($message);
-                    } catch (TranslationException $e) {
-                        TranslationExceptionHandler::got($e)->for($message)->handle();
-                        throw $e;
-                    }
-
-                    // Notify reply sender that we got their reply.
-                    Mail::to($message->senderEmail())->send(new MessageReplyReceivedNotification($message));
-
-                } catch (\Exception $exception) {
-                    // Notify reply sender that their reply was not sent.
-                    Mail::to($fromAddress)->send(new ErrorSendingReply($originalMessage, $subject, $strippedTextBody));
-                    // Re-throw exception if we're in development, to debug.
-                    if (App::environment('local')) throw $exception;
-                }
+                event(new ReplyReceived($fromAddress, $fromName, $originalMessage, $recipients, $subject, $strippedTextBody, $attachments));
             };
         }
 

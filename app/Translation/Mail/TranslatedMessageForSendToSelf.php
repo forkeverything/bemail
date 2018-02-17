@@ -15,7 +15,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  * This is the email that's sent when the 'send_to_self' option
  * is enabled.
  *
- * @package App\Mail\Translation\Mail
+ * @package App\Translation\Mail
  */
 class TranslatedMessageForSendToSelf extends Mailable
 {

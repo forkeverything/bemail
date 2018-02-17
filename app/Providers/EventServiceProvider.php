@@ -16,10 +16,28 @@ class EventServiceProvider extends ServiceProvider
         'Illuminate\Auth\Events\Registered' => [
             'App\Listeners\SendWelcomeMail'
         ],
+        'App\Translation\Events\NewMessageRequestReceived' => [
+            'App\Translation\Listeners\CreateNewMessageModel',
+            'App\Translation\Listeners\TranslateNewMessage',
+            'App\Translation\Listeners\SendNewMessageRequestReceivedNotification'
+        ],
         'App\Translation\Events\MessageTranslated' => [
             'App\Translation\Listeners\UpdateTranslatedMessageAttributes',
             'App\Translation\Listeners\SendTranslatedMessageMail',
             'App\Translation\Listeners\SendMessageHasBeenTranslatedNotificationMail',
+        ],
+        'App\Translation\Events\ReplyReceived' => [
+            'App\Translation\Listeners\SaveReplyToDatabase',
+            'App\Translation\Listeners\TranslateReply',
+            'App\Translation\Listeners\SendReplyReceivedNotification'
+        ],
+        'App\Translation\Events\ReplyErrorOccurred' => [
+            'App\Translation\Listeners\SendReplyNotSentNotification'
+        ],
+        'App\Translation\Events\TranslationErrorOccurred' => [
+            'App\Translation\Listeners\UpdateMessageStatusOnTranslationError',
+            'App\Translation\Listeners\RecordTranslationError',
+            'App\Translation\Listeners\NotifyAdminsOfTranslationError'
         ]
     ];
 

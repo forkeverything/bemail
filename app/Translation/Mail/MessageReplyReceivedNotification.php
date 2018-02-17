@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\Translation\Mail;
+namespace App\Translation\Mail;
 
 use App\Translation\Message;
 use App\Translation\Utilities\MessageThreadBuilder;
@@ -15,7 +15,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  * translated and sent shortly.
  *
  * Class MessageReplyReceivedNotification
- * @package App\Mail\Translation\Mail
+ * @package App\Translation\Mail
  */
 class MessageReplyReceivedNotification extends Mailable
 {
