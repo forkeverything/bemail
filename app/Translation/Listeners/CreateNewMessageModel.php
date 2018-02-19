@@ -26,8 +26,16 @@ class CreateNewMessageModel
      */
     public function handle($event)
     {
-        $event->message = MessageFactory::new($event->request)
-                                        ->owner($event->user)
-                                        ->make();
+        $event->message = MessageFactory::new(
+            $event->subject,
+            $event->body,
+            $event->autoTranslateReply,
+            $event->sendToSelf,
+            $event->langSrcId,
+            $event->langTgtId,
+            $event->recipientEmails,
+            $event->attachments
+        )->owner($event->user)
+         ->make();
     }
 }

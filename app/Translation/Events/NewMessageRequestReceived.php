@@ -17,31 +17,73 @@ class NewMessageRequestReceived
 {
     use Dispatchable, SerializesModels;
 
+
     /**
      * @var Message|null
      */
     public $message;
     /**
-     * @var CreateMessageRequest
-     */
-    public $request;
-    /**
      * @var User
      */
     public $user;
+    /**
+     * @var string
+     */
+    public $subject;
+    /**
+     * @var string
+     */
+    public $body;
+    /**
+     * @var bool
+     */
+    public $autoTranslateReply;
+    /**
+     * @var bool
+     */
+    public $sendToSelf;
+    /**
+     * @var int
+     */
+    public $langSrcId;
+    /**
+     * @var int
+     */
+    public $langTgtId;
+    /**
+     * @var array
+     */
+    public $recipientEmails;
+    /**
+     * @var array
+     */
+    public $attachments;
 
     /**
      * Create a new event instance.
      *
-     * @param CreateMessageRequest $request
+     * @param string $subject
+     * @param string $body
+     * @param bool $autoTranslateReply
+     * @param bool $sendToSelf
+     * @param int $langSrcId
+     * @param int $langTgtId
+     * @param array $recipientEmails
+     * @param array $attachments
      * @param User $user
      * @param Message $message
      */
-    public function __construct(CreateMessageRequest $request, User $user, $message = null)
+    public function __construct(string $subject, string $body, bool $autoTranslateReply, bool $sendToSelf, int $langSrcId, int $langTgtId, array $recipientEmails, array $attachments = [], User $user, $message = null)
     {
-
-        $this->request = $request;
         $this->user = $user;
         $this->message = $message;
+        $this->subject = $subject;
+        $this->body = $body;
+        $this->autoTranslateReply = $autoTranslateReply;
+        $this->sendToSelf = $sendToSelf;
+        $this->langSrcId = $langSrcId;
+        $this->langTgtId = $langTgtId;
+        $this->recipientEmails = $recipientEmails;
+        $this->attachments = $attachments;
     }
 }

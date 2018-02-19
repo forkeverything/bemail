@@ -103,28 +103,35 @@ class MessageFactory
      *
      * @var array
      */
-    protected $attachments = [];
+    protected $attachments;
 
     /**
      * Make a NEW Message.
      * New in this case meaning that the Message is NOT a reply to another
      * Message.
      *
-     * @param CreateMessageRequest $request
+     * @param string $subject
+     * @param string $body
+     * @param bool $autoTranslateReply
+     * @param bool $sendToSelf
+     * @param int $langSrcId
+     * @param int $langTgtId
+     * @param array $recipientEmails
+     * @param array $attachments
      * @return static
      */
-    public static function new(CreateMessageRequest $request)
+    public static function new(string $subject, string $body, bool $autoTranslateReply, bool $sendToSelf, int $langSrcId, int $langTgtId, array $recipientEmails, array $attachments)
     {
         $factory = new static();
 
-        $factory->subject = $request->subject;
-        $factory->body = $request->body;
-        $factory->autoTranslateReply = !!$request->auto_translate_reply;
-        $factory->sendToSelf = !!$request->send_to_self;
-        $factory->langSrcId = Language::findByCode($request->lang_src)->id;
-        $factory->langTgtId = Language::findByCode($request->lang_tgt)->id;
-        $factory->recipientEmails["standard"] = explode(',', $request->recipients);
-        if($request->attachments) $factory->attachments = AttachmentFileBuilder::convertArrayOfUploadedFiles($request->attachments);
+        $factory->subject = $subject;
+        $factory->body = $body;
+        $factory->autoTranslateReply = $autoTranslateReply;
+        $factory->sendToSelf = $sendToSelf;
+        $factory->langSrcId = $langSrcId;
+        $factory->langTgtId = $langTgtId;
+        $factory->recipientEmails["standard"] = $recipientEmails;
+        $factory->attachments = count($attachments) > 0 ? AttachmentFileBuilder::convertArrayOfUploadedFiles($attachments) : [];
 
         return $factory;
     }
