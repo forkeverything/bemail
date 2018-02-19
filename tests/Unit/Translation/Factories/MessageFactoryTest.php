@@ -26,24 +26,30 @@ class MessageFactoryTest extends TestCase
         $user = factory(User::class)->create();
         $sourceLanguage = Language::first();
         $targetLanguage = Language::find(2);
-        $formFields = [
-            'recipients' => 'sam@bemail.io,john@bemail.io',
-            'subject' => 'Super important message.',
-            'body' => 'Please translate this.',
-            'auto_translate_reply' => 'on',
-//            'send_to_self' => null,                               // Intentionally left blank (unchecked checkbox isn't sent in request)
-            'lang_src' => $sourceLanguage->code,
-            'lang_tgt' => $targetLanguage->code
-        ];
 
-        $fakeRequest = new CreateMessageRequest($formFields);
+        $subject = 'Super important message.';
+        $body = 'Please translate this.';
+        $autoTranslateReply = 'on';
+        $sendToSelf = null;     // checkbox unchecked
+        $langSrcId = $sourceLanguage->id;
+        $langTgtId = $targetLanguage->id;
+        $recipientEmails = ['sam@bemail.io', 'john@bemail.io'];
+        $attachments = [];
 
-
-        $message = MessageFactory::new($fakeRequest)->owner($user)->make();
+        $message = MessageFactory::new(
+            $subject,
+            $body,
+            !! $autoTranslateReply,
+            !! $sendToSelf,
+            $langSrcId,
+            $langTgtId,
+            $recipientEmails,
+            $attachments
+        )->owner($user)->make();
 
         // Check Message Model fields are stored correctly
-        $this->assertEquals($formFields['subject'], $message->subject);
-        $this->assertEquals($formFields['body'], $message->body);
+        $this->assertEquals($subject, $message->subject);
+        $this->assertEquals($body, $message->body);
         $this->assertEquals(1, $message->auto_translate_reply);
         $this->assertEquals(0, $message->send_to_self);
         $this->assertEquals($sourceLanguage->id, $message->lang_src_id);
