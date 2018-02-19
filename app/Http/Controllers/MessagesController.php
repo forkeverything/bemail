@@ -44,10 +44,20 @@ class MessagesController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      * @throws Exception
      */
-    public function postSendMessage(CreateMessageRequest $request, Translator $translator)
+    public function postSendMessage(CreateMessageRequest $request)
     {
         try {
-            event(new NewMessageRequestReceived($translator, $request, Auth::user()));
+            event(new NewMessageRequestReceived(
+                $request->subject,
+                $request->body,
+                !!$request->auto_translate_reply,
+                !!$request->send_to_self,
+                Language::findByCode($request->lang_src)->id,
+                Language::findByCode($request->lang_tgt)->id,
+                explode(',', $request->recipients),
+                $request->attachments ?: [],
+                Auth::user()
+            ));
             // TODO ::: Charge User
             // Implement another event listener that tries to charge user. If charging
             // fails, need to cancel translation job.
