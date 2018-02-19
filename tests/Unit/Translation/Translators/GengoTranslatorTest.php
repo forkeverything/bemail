@@ -3,8 +3,10 @@
 namespace Tests\Unit\Translation\Translators;
 
 use App\Translation\Contracts\Translator;
+use App\Translation\Exceptions\TranslationException;
 use App\Translation\Message;
 use App\Translation\Translators\GengoTranslator;
+use Gengo\Exception;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -15,6 +17,11 @@ class GengoTranslatorTest extends TestCase
 
     use DatabaseTransactions;
 
+    /**
+     * Translator Instance
+     *
+     * @var GengoTranslator
+     */
     protected $gengoTranslator;
 
     // Keys each language pair should return
@@ -49,6 +56,7 @@ class GengoTranslatorTest extends TestCase
 
     /**
      * @test
+     * @throws
      */
     public function it_fetches_all_language_pairs()
     {
@@ -61,7 +69,7 @@ class GengoTranslatorTest extends TestCase
         $testArray = array_slice($languagePairs, 0, $numPairsToTest);
 
         foreach ($testArray as $languagePair) {
-            foreach($this->languagePairKeys as $key) {
+            foreach ($this->languagePairKeys as $key) {
                 $this->assertTrue(isset($languagePair->$key));
             }
         }
@@ -69,6 +77,7 @@ class GengoTranslatorTest extends TestCase
 
     /**
      * @test
+     * @throws
      */
     public function it_fetches_filtered_language_pair()
     {
@@ -78,13 +87,14 @@ class GengoTranslatorTest extends TestCase
         // this should just return the single object.
         $resetLanguagePair = reset($filteredLanguagePair);
 
-        foreach($this->languagePairKeys as $key) {
+        foreach ($this->languagePairKeys as $key) {
             $this->assertTrue(isset($resetLanguagePair->$key));
         }
     }
 
     /**
      * @test
+     * @throws
      */
     public function it_posts_a_successful_gengo_job()
     {
