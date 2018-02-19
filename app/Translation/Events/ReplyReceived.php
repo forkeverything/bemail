@@ -49,10 +49,6 @@ class ReplyReceived
      * @var Message|null
      */
     public $message;
-    /**
-     * @var Translator
-     */
-    public $translator;
 
     /**
      * Create a new event instance.
@@ -67,7 +63,7 @@ class ReplyReceived
      * @param array $attachments
      * @param Message $message
      */
-    public function __construct(Translator $translator, $fromAddress, $fromName, $originalMessage, $recipients, $subject, $body, $attachments, $message = null)
+    public function __construct($fromAddress, $fromName, $originalMessage, $recipients, $subject, $body, $attachments, $message = null)
     {
         $this->fromAddress = $fromAddress;
         $this->fromName = $fromName;
@@ -77,7 +73,6 @@ class ReplyReceived
         $this->body = $body;
         $this->attachments = $attachments;
         $this->message = $message;
-        $this->translator = $translator;
     }
 
 }
