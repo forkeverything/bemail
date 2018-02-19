@@ -22,7 +22,7 @@ class NewMessageRequestReceived
     /**
      * @var Message|null
      */
-    public $message;
+    public $message = null;
     /**
      * @var User
      */
@@ -71,12 +71,10 @@ class NewMessageRequestReceived
      * @param array $recipientEmails
      * @param array $attachments
      * @param User $user
-     * @param null $message
      */
-    public function __construct(string $subject, string $body, bool $autoTranslateReply, bool $sendToSelf, int $langSrcId, int $langTgtId, array $recipientEmails, array $attachments = [], User $user, $message = null)
+    public function __construct(string $subject, string $body, bool $autoTranslateReply, bool $sendToSelf, int $langSrcId, int $langTgtId, array $recipientEmails, array $attachments = [], User $user)
     {
         $this->user = $user;
-        $this->message = $message;
         $this->subject = $subject;
         $this->body = $body;
         $this->autoTranslateReply = $autoTranslateReply;

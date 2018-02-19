@@ -2,7 +2,6 @@
 
 namespace App\Translation\Events;
 
-use App\Translation\Contracts\Translator;
 use App\Translation\Message;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
@@ -53,7 +52,6 @@ class ReplyReceived
     /**
      * Create a new event instance.
      *
-     * @param Translator $translator
      * @param string $fromAddress
      * @param string $fromName
      * @param Message $originalMessage
