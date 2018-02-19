@@ -10,15 +10,6 @@ use Illuminate\Support\Facades\Mail;
 
 class SendReplyNotSentNotification
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
 
     /**
      * Handle the event.
@@ -31,4 +22,5 @@ class SendReplyNotSentNotification
         Mail::to($event->from)
             ->send(new ErrorSendingReply($event->originalMessage, $event->subject, $event->body));
     }
+
 }

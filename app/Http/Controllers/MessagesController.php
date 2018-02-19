@@ -47,7 +47,7 @@ class MessagesController extends Controller
     public function postSendMessage(CreateMessageRequest $request, Translator $translator)
     {
         try {
-            event(new NewMessageRequestReceived($request, Auth::user()));
+            event(new NewMessageRequestReceived($translator, $request, Auth::user()));
             // TODO ::: Charge User
             // Implement another event listener that tries to charge user. If charging
             // fails, need to cancel translation job.

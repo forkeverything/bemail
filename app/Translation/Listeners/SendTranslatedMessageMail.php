@@ -34,6 +34,13 @@ class SendTranslatedMessageMail implements ShouldQueue
         }
     }
 
+    /**
+     * Building an array of email addresses for given type of Recipient.
+     *
+     * @param Message $message
+     * @param RecipientType $type
+     * @return array
+     */
     protected function buildMailAddresses(Message $message, RecipientType $type)
     {
         $addresses = [];

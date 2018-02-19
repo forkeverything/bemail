@@ -58,7 +58,7 @@ class PostmarkController extends Controller
             $messageHash = $matches[0];
             // Find message we're replying to
             if ($originalMessage = Message::findByHash($messageHash)) {
-                event(new ReplyReceived($fromAddress, $fromName, $originalMessage, $recipients, $subject, $strippedTextBody, $attachments));
+                event(new ReplyReceived($translator, $fromAddress, $fromName, $originalMessage, $recipients, $subject, $strippedTextBody, $attachments));
             };
         }
 

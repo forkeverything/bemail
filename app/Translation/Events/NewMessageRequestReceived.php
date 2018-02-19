@@ -3,6 +3,7 @@
 namespace App\Translation\Events;
 
 use App\Http\Requests\CreateMessageRequest;
+use App\Translation\Contracts\Translator;
 use App\Translation\Message;
 use App\User;
 use Illuminate\Broadcasting\Channel;
@@ -29,19 +30,24 @@ class NewMessageRequestReceived
      * @var User
      */
     public $user;
+    /**
+     * @var Translator
+     */
+    public $translator;
 
     /**
      * Create a new event instance.
      *
+     * @param Translator $translator
      * @param CreateMessageRequest $request
      * @param User $user
      * @param Message $message
      */
-    public function __construct(CreateMessageRequest $request, User $user, $message = null)
+    public function __construct(Translator $translator, CreateMessageRequest $request, User $user, $message = null)
     {
-
         $this->request = $request;
         $this->user = $user;
         $this->message = $message;
+        $this->translator = $translator;
     }
 }

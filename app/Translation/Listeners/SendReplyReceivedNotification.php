@@ -11,16 +11,6 @@ use Illuminate\Support\Facades\Mail;
 class SendReplyReceivedNotification implements ShouldQueue
 {
     /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      *
      * @param  ReplyReceived  $event

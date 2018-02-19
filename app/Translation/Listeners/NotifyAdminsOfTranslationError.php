@@ -10,15 +10,6 @@ use Illuminate\Support\Facades\Mail;
 
 class NotifyAdminsOfTranslationError implements ShouldQueue
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
 
     /**
      * Handle the event.

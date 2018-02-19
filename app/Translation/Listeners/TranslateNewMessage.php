@@ -11,18 +11,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class TranslateNewMessage
 {
 
-    private $translator;
-
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->translator = resolve(Translator::class);
-    }
-
     /**
      * Handle the event.
      *
@@ -33,7 +21,7 @@ class TranslateNewMessage
     public function handle($event)
     {
         try {
-            $this->translator->translate($event->message);
+            $event->translator->translate($event->message);
         } catch (TranslationException $e) {
             event(new TranslationErrorOccurred($event->message, $e));
             throw $e;
