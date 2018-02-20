@@ -18,7 +18,7 @@
 				</p>
 			@endif
 			<!-- Original Body -->
-			<p style="color: #EEEEEE; font-family: Avenir, Helvetica, sans-serif; font-size: 14px; line-height: 22px; margin: 15px 0;">
+			<p style="color: #aaaaaa; font-family: Avenir, Helvetica, sans-serif; font-size: 14px; line-height: 22px; margin: 15px 0;">
 				{{ $message->body }}
 			</p>
 		</td>
