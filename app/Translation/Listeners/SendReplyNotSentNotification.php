@@ -8,7 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 
-class SendReplyNotSentNotification
+class SendReplyNotSentNotification implements ShouldQueue
 {
 
     /**
@@ -19,8 +19,7 @@ class SendReplyNotSentNotification
      */
     public function handle($event)
     {
-        Mail::to($event->from)
-            ->send(new ErrorSendingReply($event->originalMessage, $event->subject, $event->body));
+        Mail::to($event->from)->send(new ErrorSendingReply($event->originalMessage, $event->subject, $event->body));
     }
 
 }

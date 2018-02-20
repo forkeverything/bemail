@@ -16,7 +16,7 @@
 <body>
 	<div style="padding: 10px; line-height: 18px; font-family: Avenir, Helvetica, sans-serif; font-size: 14color: #444444;">
 		<!-- Reply Line -->
-		<div style="color: #b5b5b5; font-size: 12px;">
+		<div style="color: #EEEEEE; font-size: 12px;">
 			--- Please type your reply above this line ---
 		</div>
 		<!-- Content Wrap -->

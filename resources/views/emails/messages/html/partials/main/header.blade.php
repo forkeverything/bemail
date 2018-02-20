@@ -1,5 +1,5 @@
 @if(isset($hash))
-	<p style="font-family: Avenir, Helvetica, sans-serif; font-size: 13px; line-height: 22px; margin-bottom: 0; padding: 0; color: #bbbbbb">
+	<p style="font-family: Avenir, Helvetica, sans-serif; font-size: 13px; line-height: 22px; margin-bottom: 0; padding: 0; color: #EEEEEE">
 		Message: {{  $hash }}
 	</p>
 @endif

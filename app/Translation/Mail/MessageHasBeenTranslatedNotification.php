@@ -51,7 +51,7 @@ class MessageHasBeenTranslatedNotification extends Mailable
      */
     public function build()
     {
-        $subject = $this->translatedMessage->subject ? 'Translated and Sent: ' . $this->translatedMessage->subject : "Translated and Sent Message";
+        $subject = $this->translatedMessage->subject ? 'SENT : ' . $this->translatedMessage->subject : "MESSAGE SENT";
         return $this->subject($subject)
             ->includeAttachments()
             ->view('emails.messages.html.message-has-been-translated-notification')
