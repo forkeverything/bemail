@@ -15,7 +15,7 @@ class PaymentServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->bind(Accountant::class, LaravelCashierAccountant::class);
+        $this->app->singleton(Accountant::class, LaravelCashierAccountant::class);
     }
 
     /**
