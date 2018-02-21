@@ -29,7 +29,6 @@ class CreditTransactionType extends Model
      * @var array
      */
     protected $fillable = [
-        'add',              // bool - adding or subtracting credit?
         'name',
         'description'
     ];
@@ -37,51 +36,51 @@ class CreditTransactionType extends Model
     /**
      * For accepting an invitation to join.
      *
-     * @return Model|null|static
+     * @return Model|static
      */
     public static function invite()
     {
-        return CreditTransactionType::where('name', 'invite')->first();
+        return CreditTransactionType::where('name', 'invite')->firstOrFail();
     }
 
     /**
      * For inviting a friend to join.
      *
-     * @return Model|null|static
+     * @return Model|static
      */
     public static function host()
     {
-        return CreditTransactionType::where('name', 'host')->first();
+        return CreditTransactionType::where('name', 'host')->firstOrFail();
     }
 
     /**
      * Paying for a Message.
      *
-     * @return Model|null|static
+     * @return Model|static
      */
     public static function payment()
     {
-        return CreditTransactionType::where('name', 'payment')->first();
+        return CreditTransactionType::where('name', 'payment')->firstOrFail();
     }
 
     /**
-     * Manually added credit.
+     * Manually updated credits.
      *
-     * @return Model|null|static
+     * @return Model|static
      */
-    public static function manualAdd()
+    public static function manual()
     {
-        return CreditTransactionType::where('name', 'manual')->where('add', 1)->first();
+        return CreditTransactionType::where('name', 'manual')->firstOrFail();
     }
 
     /**
-     * Manually added credit.
+     * CreditTransaction(s) that are of this type.
      *
-     * @return Model|null|static
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public static function manualDeduct()
+    public function transactions()
     {
-        return CreditTransactionType::where('name', 'manual')->where('add', 0)->first();
+        return $this->hasMany(CreditTransaction::class, 'credit_transaction_type_id');
     }
 
 }

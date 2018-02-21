@@ -38,18 +38,8 @@ class CreditTransactionTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_finds_the_manual_add_type_record_using_static_method()
+    public function it_finds_the_manual_type_using_static_method()
     {
-        $this->assertEquals(CreditTransactionType::manualAdd()->name, 'manual');
-        $this->assertEquals(CreditTransactionType::manualAdd()->add, 1);
-    }
-
-    /**
-     * @test
-     */
-    public function it_finds_the_manual_deduct_type_record_using_static_method()
-    {
-        $this->assertEquals(CreditTransactionType::manualDeduct()->name, 'manual');
-        $this->assertEquals(CreditTransactionType::manualDeduct()->add, 0);
+        $this->assertEquals(CreditTransactionType::manual()->name, 'manual');
     }
 }

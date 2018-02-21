@@ -13,35 +13,17 @@ use App\User;
 class LaravelCashierAccountant implements Accountant
 {
 
-    /**
-     * User that's we're charging.
-     *
-     * @var User
-     */
-    private  $user;
-
-    /**
-     * Accountant constructor.
-     * Need to know the User who we will be calculating
-     * payment for.
-     *
-     * @param User $user
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
 
     /**
      * Change the amount of word credits a User has.
      * Should only be done here so changes are recorded.
      *
+     * @param User $user
      * @param CreditTransactionType $creditTransactionType
      * @param $amount
      * @return mixed
      */
-    function adjustCredits(CreditTransactionType $creditTransactionType, $amount)
+    function adjustCredits(User $user, CreditTransactionType $creditTransactionType, $amount)
     {
         // TODO: Implement adjustCredits() method.
     }
@@ -62,14 +44,19 @@ class LaravelCashierAccountant implements Accountant
         $chargeAmount = $this->calculateChargeAmount($wordCount, $creditsToUse, $costPerWord);
 
         // Charge the actual amount to User
-        $this->charge($chargeAmount);
+        $this->charge($message->owner, $chargeAmount);
 
         // Successfully charged
             // Deduct credits
-            $this->adjustCredits(CreditTransactionType::payment(), $creditsToUse);
+            $this->adjustCredits($message->owner, CreditTransactionType::payment(), $creditsToUse);
             // Make receipt
             return $this->createMessageReceipt($message, $costPerWord, $chargeAmount);
 
+    }
+
+    protected function charge(User $user, $amount)
+    {
+        // TODO ::: Implement function that charges User
     }
 
     /**
@@ -98,7 +85,7 @@ class LaravelCashierAccountant implements Accountant
      * @param $costPerWord
      * @return mixed
      */
-    private function calculateChargeAmount($wordCount, $creditsToUse, $costPerWord)
+    protected function calculateChargeAmount($wordCount, $creditsToUse, $costPerWord)
     {
         $chargeableWordCount = max( $wordCount - $creditsToUse, 0 );
         return $chargeableWordCount * $costPerWord;
@@ -113,7 +100,7 @@ class LaravelCashierAccountant implements Accountant
      * @param $amountCharged
      * @return \Illuminate\Database\Eloquent\Model
      */
-    private function createMessageReceipt(Message $message, $costPerWord, $amountCharged)
+    protected function createMessageReceipt(Message $message, $costPerWord, $amountCharged)
     {
         return $message->receipt()->create([
             'cost_per_word' => $costPerWord,
@@ -121,14 +108,4 @@ class LaravelCashierAccountant implements Accountant
         ]);
     }
 
-    /**
-     * Charge the User given amount.
-     *
-     * @param $amount
-     * @return mixed
-     */
-    function charge($amount)
-    {
-        // TODO: Implement charge() method.
-    }
 }

@@ -26,7 +26,6 @@ class CreateCreditTransactionTypesTable extends Migration
              * Type
              */
 
-            $table->boolean('add');
             $table->string('name');
             $table->string('description');
 

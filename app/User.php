@@ -109,4 +109,16 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough('App\Translation\Recipient', 'App\Translation\Message', 'user_id', 'message_id');
     }
+
+    /**
+     * Updates word credits by given amount.
+     *
+     * @param $amount
+     * @return bool
+     */
+    public function updateCredits($amount)
+    {
+        $this->word_credits += $amount;
+        return $this->save();
+    }
 }

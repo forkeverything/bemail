@@ -15,6 +15,9 @@ class UserTest extends TestCase
 
     use DatabaseTransactions;
 
+    /**
+     * @var User
+     */
     private static $user;
 
     /**
@@ -94,6 +97,20 @@ class UserTest extends TestCase
 
         $this->assertCount(5, static::$user->recipients);
 
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_word_credits()
+    {
+        static::$user->update([
+            'word_credits' => 10
+        ]);
+        static::$user->updateCredits(5);
+        $this->assertEquals(15, static::$user->fresh()->word_credits);
+        static::$user->updateCredits(-15);
+        $this->assertEquals(0, static::$user->fresh()->word_credits);
     }
 }
 
