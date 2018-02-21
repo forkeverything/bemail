@@ -12,13 +12,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property int $add
- * @property string $slug
+ * @property string $name
  * @property string $description
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransactionType whereAdd($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransactionType whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransactionType whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransactionType whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransactionType whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransactionType whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransactionType whereUpdatedAt($value)
  */
 class CreditTransactionType extends Model
@@ -29,8 +29,8 @@ class CreditTransactionType extends Model
      * @var array
      */
     protected $fillable = [
-        'add',
-        'slug',
+        'add',              // bool - adding or subtracting credit?
+        'name',
         'description'
     ];
 
@@ -41,7 +41,7 @@ class CreditTransactionType extends Model
      */
     public static function invite()
     {
-        return CreditTransactionType::where('slug', 'invite')->first();
+        return CreditTransactionType::where('name', 'invite')->first();
     }
 
     /**
@@ -51,7 +51,7 @@ class CreditTransactionType extends Model
      */
     public static function host()
     {
-        return CreditTransactionType::where('slug', 'host')->first();
+        return CreditTransactionType::where('name', 'host')->first();
     }
 
     /**
@@ -61,7 +61,7 @@ class CreditTransactionType extends Model
      */
     public static function payment()
     {
-        return CreditTransactionType::where('slug', 'payment')->first();
+        return CreditTransactionType::where('name', 'payment')->first();
     }
 
     /**
@@ -71,7 +71,7 @@ class CreditTransactionType extends Model
      */
     public static function manualAdd()
     {
-        return CreditTransactionType::where('slug', 'manual')->where('add', 1)->first();
+        return CreditTransactionType::where('name', 'manual')->where('add', 1)->first();
     }
 
     /**
@@ -81,7 +81,7 @@ class CreditTransactionType extends Model
      */
     public static function manualDeduct()
     {
-        return CreditTransactionType::where('slug', 'manual')->where('add', 0)->first();
+        return CreditTransactionType::where('name', 'manual')->where('add', 0)->first();
     }
 
 }

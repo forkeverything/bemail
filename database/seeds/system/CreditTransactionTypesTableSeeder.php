@@ -14,27 +14,27 @@ class CreditTransactionTypesTableSeeder extends Seeder
     protected $types = [
         [
             'add' => 1,
-            'slug' => 'invite',
+            'name' => 'invite',
             'description' => 'Accepted invitation to join.'
         ],
         [
             'add' => 1,
-            'slug' => 'host',
+            'name' => 'host',
             'description' => 'Invited a friend to join.'
         ],
         [
             'add' => 1,
-            'slug' => 'manual',
+            'name' => 'manual',
             'description' => 'Manually added credit.'
         ],
         [
             'add' => 0,
-            'slug' => 'manual',
+            'name' => 'manual',
             'description' => 'Manually deducted credit.'
         ],
         [
             'add' => 0,
-            'slug' => "payment",
+            'name' => "payment",
             'description' => 'Paid for translated message.'
         ]
     ];
@@ -49,7 +49,7 @@ class CreditTransactionTypesTableSeeder extends Seeder
         foreach ($this->types as $type) {
             CreditTransactionType::create([
                 'add' => $type['add'],
-                'slug' => $type['slug'],
+                'name' => $type['name'],
                 'description' => $type['description']
             ]);
         }
