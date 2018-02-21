@@ -31,20 +31,6 @@ class MessageReceiptTest extends TestCase
             $this->assertEquals($receipt->{$key}, $value);
         }
     }
-    
-    /**
-     * @test
-     */
-    public function it_appends_these_dynamic_properties()
-    {
-        $dynamicProperties = [
-            'credits_used'
-        ];
-        $receipt = factory(MessageReceipt::class)->create();
-        foreach($dynamicProperties as $property) {
-            $this->assertContains($property, array_keys($receipt->toArray()));
-        }
-    }
 
     /**
      * @test
@@ -69,19 +55,5 @@ class MessageReceiptTest extends TestCase
             'message_receipt_id' => $receipt->id
         ]);
         $this->assertEquals($receipt->creditTransaction->id, $transaction->id);
-    }
-
-    /**
-     * @test
-     */
-    public function it_retrieves_how_much_credit_was_used()
-    {
-        $receipt = factory(MessageReceipt::class)->create();
-        $transaction = factory(CreditTransaction::class)->create([
-            'amount' => 13,
-            'credit_transaction_type_id' => CreditTransactionType::payment()->id,
-            'message_receipt_id' => $receipt->id
-        ]);
-        $this->assertEquals($receipt->credits_used, 13);
     }
 }

@@ -42,6 +42,7 @@ class CreditTransaction extends Model
 
     /**
      * Type of transaction.
+     *
      * What was the transaction for? These are pre-defined and seeded
      * to minimize potential errors and make changes easier in
      * the future.
@@ -55,6 +56,7 @@ class CreditTransaction extends Model
 
     /**
      * MessageReceipt this transaction was for.
+     *
      * Could be null, when the transaction wasn't for the
      * payment of a message.
      *
