@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Payment\CreditTransaction;
+use App\Payment\CreditTransactionType;
 use App\Translation\Message;
 use App\Translation\Recipient;
 use Illuminate\Notifications\Notifiable;
@@ -45,6 +47,7 @@ use Laravel\Cashier\Billable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereWordCredits($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Payment\CreditTransaction[] $creditTransactions
  */
 class User extends Authenticatable
 {
@@ -111,14 +114,30 @@ class User extends Authenticatable
     }
 
     /**
-     * Updates word credits by given amount.
+     * Every credit transaction that adjusted User credits.
      *
-     * @param $amount
-     * @return bool
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function updateCredits($amount)
+    public function creditTransactions()
+    {
+        return $this->hasMany(CreditTransaction::class);
+    }
+
+    /**
+     * Adjust User credits.
+     *
+     * @param CreditTransactionType $type
+     * @param int $amount
+     * @return CreditTransaction|\Illuminate\Database\Eloquent\Model
+     */
+    public function adjustCredits(CreditTransactionType $type, $amount)
     {
         $this->word_credits += $amount;
-        return $this->save();
+        $this->save();
+
+        $this->creditTransactions()->create([
+            'amount' => $amount,
+            'credit_transaction_type_id' => $type->id
+        ]);
     }
 }

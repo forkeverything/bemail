@@ -4,11 +4,13 @@ namespace App\Translation\Translators;
 
 use App\Translation\Contracts\Translator;
 use App\Language;
+use App\Translation\Exceptions\CouldNotCancelTranslationException;
 use App\Translation\Exceptions\TranslationException;
 use App\Translation\Message;
 use Gengo\Config as GengoConfig;
 use Gengo\Jobs as GengoJobs;
 use Gengo\Service as GengoService;
+use Gengo\Order as GengoOrder;
 
 /**
  * GengoTranslator
@@ -19,7 +21,7 @@ class GengoTranslator implements Translator
 {
 
     /**
-     * Test flag
+     * Testing?
      *
      * Set to True from GengoTranslatorTest. This ensures
      * that tests are sent to the sandbox, regardless
@@ -55,14 +57,14 @@ class GengoTranslator implements Translator
     public function getLanguagePairs($langSrc = null, $langTgt = null)
     {
         $service = new GengoService;
-        $languagePairs = json_decode($service->getLanguagePairs($langSrc))->response;
+        $languagePairs = json_decode($service->getLanguagePairs($langSrc), true)["response"];
         return array_filter($languagePairs, function ($languagePair) use ($langTgt) {
             // Only want to view 'standard' tier level translations on Gengo
-            $standardTier = $languagePair->tier == "standard";
+            $standardTier = $languagePair["tier"] == "standard";
             // No target language supplied - return all language pairs
             if(!$langTgt) return $standardTier;
             // Find pair with target language
-            $targetPair = $languagePair->lc_tgt == $langTgt;
+            $targetPair = $languagePair["lc_tgt"] == $langTgt;
             return $targetPair && $standardTier;
         });
     }
@@ -116,7 +118,6 @@ class GengoTranslator implements Translator
      * queue.
      *
      * @param Message $message
-     * @return String
      * @throws TranslationException
      * @throws \Gengo\Exception
      */
@@ -129,14 +130,11 @@ class GengoTranslator implements Translator
         $jobsAPI = new GengoJobs;
         $jobsAPI->postJobs($jobs);
         $response = json_decode($jobsAPI->getResponseBody(), true);
-        // Get response status
-        $status = $response["opstat"];
-        // Some 'system' error (ie. our fault)
-        if ($status == "error") {
+        if(! $this->operationWasSuccessful($response)) {
+            // Some 'system' error (ie. our fault)
             $error = $this->parseErrorFromResponse($response);
             throw new TranslationException($error["description"], $error["code"]);
         }
-        return $status;
     }
 
     /**
@@ -164,6 +162,31 @@ class GengoTranslator implements Translator
             "code" => $code,
             "description" => $description
         ];
+    }
+
+    /**
+     * Cancels the translation of a Message.
+     *
+     * @param Message $message
+     * @throws CouldNotCancelTranslationException
+     * @throws \Gengo\Exception
+     */
+    public function cancelTranslating(Message $message)
+    {
+        $order = new GengoOrder();
+        $response = json_decode($order->cancel($message->gengo_order_id), true);
+        if( ! $this->operationWasSuccessful($response)) throw new CouldNotCancelTranslationException();
+    }
+
+    /**
+     * Gengo API successful
+     *
+     * @param array $response
+     * @return bool
+     */
+    protected function operationWasSuccessful(array $response)
+    {
+        return $response["opstat"] == "ok";
     }
 
 }

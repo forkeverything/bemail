@@ -3,7 +3,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2017-12-18.
+    * Generated on 2018-03-03.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -46,7 +46,6 @@ namespace PHPSTORM_META {
         'hashids.connection' => \Hashids\Hashids::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'App\Translation\Contracts\Translator' => \App\Translation\Translators\GengoTranslator::class,
-        'App\Payments\Contracts\Accountant' => \App\Payments\Accountants\LaravelCashierAccountant::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
         'cache' => \Illuminate\Cache\CacheManager::class,
         'cache.store' => \Illuminate\Cache\Repository::class,
@@ -139,10 +138,10 @@ namespace PHPSTORM_META {
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
         'validation.presence' => \Illuminate\Validation\DatabasePresenceVerifier::class,
-        'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
         'command.ide-helper.generate' => \Barryvdh\LaravelIdeHelper\Console\GeneratorCommand::class,
         'command.ide-helper.models' => \Barryvdh\LaravelIdeHelper\Console\ModelsCommand::class,
         'command.ide-helper.meta' => \Barryvdh\LaravelIdeHelper\Console\MetaCommand::class,
+        'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
     ]));
     override(\Illuminate\Contracts\Container\Container::make(0), map([
         '' => '@',
@@ -182,7 +181,6 @@ namespace PHPSTORM_META {
         'hashids.connection' => \Hashids\Hashids::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'App\Translation\Contracts\Translator' => \App\Translation\Translators\GengoTranslator::class,
-        'App\Payments\Contracts\Accountant' => \App\Payments\Accountants\LaravelCashierAccountant::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
         'cache' => \Illuminate\Cache\CacheManager::class,
         'cache.store' => \Illuminate\Cache\Repository::class,
@@ -275,10 +273,10 @@ namespace PHPSTORM_META {
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
         'validation.presence' => \Illuminate\Validation\DatabasePresenceVerifier::class,
-        'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
         'command.ide-helper.generate' => \Barryvdh\LaravelIdeHelper\Console\GeneratorCommand::class,
         'command.ide-helper.models' => \Barryvdh\LaravelIdeHelper\Console\ModelsCommand::class,
         'command.ide-helper.meta' => \Barryvdh\LaravelIdeHelper\Console\MetaCommand::class,
+        'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
     ]));
     override(\Illuminate\Contracts\Container\Container::makeWith(0), map([
         '' => '@',
@@ -318,7 +316,6 @@ namespace PHPSTORM_META {
         'hashids.connection' => \Hashids\Hashids::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'App\Translation\Contracts\Translator' => \App\Translation\Translators\GengoTranslator::class,
-        'App\Payments\Contracts\Accountant' => \App\Payments\Accountants\LaravelCashierAccountant::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
         'cache' => \Illuminate\Cache\CacheManager::class,
         'cache.store' => \Illuminate\Cache\Repository::class,
@@ -411,10 +408,10 @@ namespace PHPSTORM_META {
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
         'validation.presence' => \Illuminate\Validation\DatabasePresenceVerifier::class,
-        'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
         'command.ide-helper.generate' => \Barryvdh\LaravelIdeHelper\Console\GeneratorCommand::class,
         'command.ide-helper.models' => \Barryvdh\LaravelIdeHelper\Console\ModelsCommand::class,
         'command.ide-helper.meta' => \Barryvdh\LaravelIdeHelper\Console\MetaCommand::class,
+        'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
     ]));
     override(\App::make(0), map([
         '' => '@',
@@ -454,7 +451,6 @@ namespace PHPSTORM_META {
         'hashids.connection' => \Hashids\Hashids::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'App\Translation\Contracts\Translator' => \App\Translation\Translators\GengoTranslator::class,
-        'App\Payments\Contracts\Accountant' => \App\Payments\Accountants\LaravelCashierAccountant::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
         'cache' => \Illuminate\Cache\CacheManager::class,
         'cache.store' => \Illuminate\Cache\Repository::class,
@@ -547,10 +543,10 @@ namespace PHPSTORM_META {
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
         'validation.presence' => \Illuminate\Validation\DatabasePresenceVerifier::class,
-        'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
         'command.ide-helper.generate' => \Barryvdh\LaravelIdeHelper\Console\GeneratorCommand::class,
         'command.ide-helper.models' => \Barryvdh\LaravelIdeHelper\Console\ModelsCommand::class,
         'command.ide-helper.meta' => \Barryvdh\LaravelIdeHelper\Console\MetaCommand::class,
+        'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
     ]));
     override(\App::makeWith(0), map([
         '' => '@',
@@ -590,7 +586,6 @@ namespace PHPSTORM_META {
         'hashids.connection' => \Hashids\Hashids::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'App\Translation\Contracts\Translator' => \App\Translation\Translators\GengoTranslator::class,
-        'App\Payments\Contracts\Accountant' => \App\Payments\Accountants\LaravelCashierAccountant::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
         'cache' => \Illuminate\Cache\CacheManager::class,
         'cache.store' => \Illuminate\Cache\Repository::class,
@@ -683,10 +678,10 @@ namespace PHPSTORM_META {
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
         'validation.presence' => \Illuminate\Validation\DatabasePresenceVerifier::class,
-        'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
         'command.ide-helper.generate' => \Barryvdh\LaravelIdeHelper\Console\GeneratorCommand::class,
         'command.ide-helper.models' => \Barryvdh\LaravelIdeHelper\Console\ModelsCommand::class,
         'command.ide-helper.meta' => \Barryvdh\LaravelIdeHelper\Console\MetaCommand::class,
+        'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
     ]));
     override(\app(0), map([
         '' => '@',
@@ -726,7 +721,6 @@ namespace PHPSTORM_META {
         'hashids.connection' => \Hashids\Hashids::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'App\Translation\Contracts\Translator' => \App\Translation\Translators\GengoTranslator::class,
-        'App\Payments\Contracts\Accountant' => \App\Payments\Accountants\LaravelCashierAccountant::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
         'cache' => \Illuminate\Cache\CacheManager::class,
         'cache.store' => \Illuminate\Cache\Repository::class,
@@ -819,10 +813,10 @@ namespace PHPSTORM_META {
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
         'validation.presence' => \Illuminate\Validation\DatabasePresenceVerifier::class,
-        'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
         'command.ide-helper.generate' => \Barryvdh\LaravelIdeHelper\Console\GeneratorCommand::class,
         'command.ide-helper.models' => \Barryvdh\LaravelIdeHelper\Console\ModelsCommand::class,
         'command.ide-helper.meta' => \Barryvdh\LaravelIdeHelper\Console\MetaCommand::class,
+        'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
     ]));
     override(\resolve(0), map([
         '' => '@',
@@ -862,7 +856,6 @@ namespace PHPSTORM_META {
         'hashids.connection' => \Hashids\Hashids::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'App\Translation\Contracts\Translator' => \App\Translation\Translators\GengoTranslator::class,
-        'App\Payments\Contracts\Accountant' => \App\Payments\Accountants\LaravelCashierAccountant::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
         'cache' => \Illuminate\Cache\CacheManager::class,
         'cache.store' => \Illuminate\Cache\Repository::class,
@@ -955,10 +948,10 @@ namespace PHPSTORM_META {
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
         'validation.presence' => \Illuminate\Validation\DatabasePresenceVerifier::class,
-        'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
         'command.ide-helper.generate' => \Barryvdh\LaravelIdeHelper\Console\GeneratorCommand::class,
         'command.ide-helper.models' => \Barryvdh\LaravelIdeHelper\Console\ModelsCommand::class,
         'command.ide-helper.meta' => \Barryvdh\LaravelIdeHelper\Console\MetaCommand::class,
+        'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
     ]));
 
     override(\Illuminate\Support\Arr::add(0), type(0));

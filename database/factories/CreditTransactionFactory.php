@@ -1,8 +1,8 @@
 <?php
 
-use App\Payments\CreditTransaction;
-use App\Payments\CreditTransactionType;
-use App\Payments\MessageReceipt;
+use App\Payment\CreditTransaction;
+use App\Payment\CreditTransactionType;
+use App\Payment\MessageReceipt;
 use Faker\Generator as Faker;
 
 $factory->define(CreditTransaction::class, function (Faker $faker) {

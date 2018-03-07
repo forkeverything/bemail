@@ -23,6 +23,15 @@ interface Translator
      * @param Language $sourceLangue
      * @param Language $targetLanguage
      * @return mixed
+     * @throws \Exception
      */
     public function unitPrice(Language $sourceLangue, Language $targetLanguage);
+
+    /**
+     * Cancels the translation of a Message.
+     *
+     * @param Message $message
+     * @return mixed
+     */
+    public function cancelTranslating(Message $message);
 }

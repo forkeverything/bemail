@@ -70,7 +70,7 @@ class GengoTranslatorTest extends TestCase
 
         foreach ($testArray as $languagePair) {
             foreach ($this->languagePairKeys as $key) {
-                $this->assertTrue(isset($languagePair->$key));
+                $this->assertTrue(isset($languagePair[$key]));
             }
         }
     }

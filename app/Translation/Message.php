@@ -3,11 +3,56 @@
 namespace App\Translation;
 
 use App\Language;
-use App\Payments\MessageReceipt;
+use App\Payment\MessageReceipt;
 use App\Traits\Hashable;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Translation\Message
+ *
+ * @property int $id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property string|null $subject
+ * @property string $body
+ * @property string|null $translated_body
+ * @property int $auto_translate_reply
+ * @property int $send_to_self
+ * @property int $user_id
+ * @property int|null $reply_id
+ * @property int $lang_src_id
+ * @property int $lang_tgt_id
+ * @property int $translation_status_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Attachment[] $attachments
+ * @property-read \App\Translation\MessageError $error
+ * @property-read bool $has_recipients
+ * @property-read mixed $hash
+ * @property-read string $readable_created_at
+ * @property-read mixed $word_count
+ * @property-read \App\User $owner
+ * @property-read \App\Translation\Reply|null $parentReplyClass
+ * @property-read \App\Payment\MessageReceipt $receipt
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Recipient[] $recipients
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Reply[] $replies
+ * @property-read \App\Language $sourceLanguage
+ * @property-read \App\Translation\TranslationStatus $status
+ * @property-read \App\Language $targetLanguage
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereAutoTranslateReply($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereBody($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereLangSrcId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereLangTgtId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereReplyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereSendToSelf($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereSubject($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereTranslatedBody($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereTranslationStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Message extends Model
 {
 
@@ -29,6 +74,7 @@ class Message extends Model
         'translation_status_id',
         'lang_src_id',
         'lang_tgt_id',
+        'gengo_order_id'
     ];
 
     /**

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Payments\CreditTransactionType;
+use App\Payment\CreditTransactionType;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;

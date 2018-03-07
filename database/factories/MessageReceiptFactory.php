@@ -1,6 +1,6 @@
 <?php
 
-use App\Payments\MessageReceipt;
+use App\Payment\MessageReceipt;
 use App\Translation\Message;
 use Faker\Generator as Faker;
 

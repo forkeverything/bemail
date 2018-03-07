@@ -44,7 +44,7 @@ class MessagesController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      * @throws Exception
      */
-    public function postSendMessage(CreateMessageRequest $request)
+    public function postSendMessage(CreateMessageRequest $request, Translator $translator)
     {
         try {
             event(new NewMessageRequestReceived(
@@ -56,7 +56,8 @@ class MessagesController extends Controller
                 Language::findByCode($request->lang_tgt)->id,
                 explode(',', $request->recipients),
                 $request->attachments ?: [],
-                Auth::user()
+                Auth::user(),
+                $translator
             ));
             // TODO ::: Charge User
             // Implement another event listener that tries to charge user. If charging

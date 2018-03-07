@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Language;
-use App\Payments\MessageReceipt;
+use App\Payment\MessageReceipt;
 use App\Translation\Attachment;
 use App\Translation\Message;
 use App\Translation\MessageError;
@@ -45,7 +45,8 @@ class MessageTest extends TestCase
             'reply_id' => factory(Reply::class)->create()->id,
             'translation_status_id' => TranslationStatus::available()->id,
             'lang_src_id' => 1,
-            'lang_tgt_id' => 2
+            'lang_tgt_id' => 2,
+            'gengo_order_id' => 888
         ];
 
         $message = Message::create($fields);

@@ -19,6 +19,7 @@ class EventServiceProvider extends ServiceProvider
         'App\Translation\Events\NewMessageRequestReceived' => [
             'App\Translation\Listeners\CreateNewMessageModel',
             'App\Translation\Listeners\TranslateNewMessage',
+            'App\Payment\Listeners\ProcessMessagePayment',
             'App\Translation\Listeners\SendNewMessageRequestReceivedNotification'
         ],
         'App\Translation\Events\MessageTranslated' => [
@@ -29,6 +30,7 @@ class EventServiceProvider extends ServiceProvider
         'App\Translation\Events\ReplyReceived' => [
             'App\Translation\Listeners\SaveReplyToDatabase',
             'App\Translation\Listeners\TranslateReply',
+            'App\Payment\Listeners\ProcessMessagePayment',
             'App\Translation\Listeners\SendReplyReceivedNotification'
         ],
         'App\Translation\Events\ReplyErrorOccurred' => [

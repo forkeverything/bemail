@@ -2,6 +2,7 @@
 
 namespace App\Translation\Events;
 
+use App\Translation\Contracts\Translator;
 use App\Translation\Message;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
@@ -48,6 +49,10 @@ class ReplyReceived
      * @var Message|null
      */
     public $message;
+    /**
+     * @var Translator
+     */
+    public $translator;
 
     /**
      * Create a new event instance.
@@ -59,9 +64,9 @@ class ReplyReceived
      * @param string $subject
      * @param string $body
      * @param array $attachments
-     * @param Message $message
+     * @param $translator
      */
-    public function __construct($fromAddress, $fromName, $originalMessage, $recipients, $subject, $body, $attachments, $message = null)
+    public function __construct($fromAddress, $fromName, $originalMessage, $recipients, $subject, $body, $attachments, Translator $translator)
     {
         $this->fromAddress = $fromAddress;
         $this->fromName = $fromName;
@@ -70,7 +75,7 @@ class ReplyReceived
         $this->subject = $subject;
         $this->body = $body;
         $this->attachments = $attachments;
-        $this->message = $message;
+        $this->translator = $translator;
     }
 
 }

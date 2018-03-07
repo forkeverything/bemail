@@ -16,16 +16,6 @@ class TranslateReply
 {
 
     /**
-     * @var Translator
-     */
-    private $translator;
-
-    public function __construct()
-    {
-        $this->translator = resolve(Translator::class);
-    }
-
-    /**
      * Handle the event.
      *
      * @param  ReplyReceived $event
@@ -35,7 +25,7 @@ class TranslateReply
     public function handle($event)
     {
         try {
-            $this->translator->translate($event->message);
+            $event->translator->translate($event->message);
         } catch (TranslationException $e) {
             event(new TranslationErrorOccurred($event->message, $e));
             event(new ReplyErrorOccurred($event->fromAddress, $event->originalMessage, $event->subject, $event->body));
