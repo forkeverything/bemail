@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Language;
-use App\Payment\CreditTransactionType;
+use App\Payments\CreditTransactionType;
 use App\Translation\Message;
 use App\Translation\Recipient;
 use App\User;
@@ -108,21 +108,11 @@ class UserTest extends TestCase
         static::$user->update([
             'word_credits' => 10
         ]);
-
-        $type = CreditTransactionType::all()->random();
-
-        $this->assertEmpty(static::$user->creditTransactions);
-
-        static::$user->adjustCredits($type, 5);
-
-        $this->assertEquals(15, static::$user->fresh()->word_credits);
-        $this->assertEquals(1, static::$user->fresh()->creditTransactions);
-        $this->assertEquals(static::$user->fresh()->creditTransactions->first()->id, $type->id);
-
-        static::$user->adjustCredits( $type, -15);
-        $this->assertEquals(0, static::$user->fresh()->word_credits);
-        $this->assertEquals(2, static::$user->fresh()->creditTransactions);
-
+        $this->assertEquals(10, static::$user->credits());
+        static::$user->credits(static::$user->credits() + 5);
+        $this->assertEquals(15, static::$user->credits());
+        static::$user->credits(static::$user->credits() + -15);
+        $this->assertEquals(0, static::$user->credits());
     }
 }
 

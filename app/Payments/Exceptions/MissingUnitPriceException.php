@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Payment\Exceptions;
+namespace App\Payments\Exceptions;
 
 
 class MissingUnitPriceException extends \Exception

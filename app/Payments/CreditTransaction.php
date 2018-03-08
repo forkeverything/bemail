@@ -3,6 +3,7 @@
 namespace App\Payments;
 
 use App\Translation\Message;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -37,7 +38,8 @@ class CreditTransaction extends Model
     protected $fillable = [
         'amount',
         'credit_transaction_type_id',
-        'message_receipt_id'
+        'message_receipt_id',
+        'user_id'
     ];
 
     /**
@@ -65,5 +67,32 @@ class CreditTransaction extends Model
     public function messageReceipt()
     {
         return $this->belongsTo(MessageReceipt::class, 'message_receipt_id');
+    }
+
+    /**
+     * Records credit transaction.
+     *
+     * @param User $user
+     * @param CreditTransactionType $type
+     * @param $amount
+     * @return $this|Model
+     */
+    public static function record(User $user, CreditTransactionType $type, $amount)
+    {
+        return static::create(([
+            'user_id' => $user->id,
+            'credit_transaction_type_id' => $type->id,
+            'amount' => $amount
+        ]));
+    }
+
+    /**
+     * User that this transaction was for.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

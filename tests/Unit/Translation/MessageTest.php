@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Language;
-use App\Payment\MessageReceipt;
+use App\Payments\MessageReceipt;
 use App\Translation\Attachment;
 use App\Translation\Message;
 use App\Translation\MessageError;

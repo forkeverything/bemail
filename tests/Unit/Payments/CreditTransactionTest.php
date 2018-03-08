@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use App\Payment\CreditTransaction;
-use App\Payment\CreditTransactionType;
-use App\Payment\MessageReceipt;
+use App\Payments\CreditTransaction;
+use App\Payments\CreditTransactionType;
+use App\Payments\MessageReceipt;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -52,7 +52,7 @@ class CreditTransactionTest extends TestCase
      */
     public function it_fetches_the_user_whose_credit_was_adjusted()
     {
-        $this->assertInstanceOf('App\Payments\CreditTransactionType', static::$transaction->user);
+        $this->assertInstanceOf('App\User', static::$transaction->user);
     }
     
     /**
@@ -61,5 +61,17 @@ class CreditTransactionTest extends TestCase
     public function it_fetches_the_message_receipt()
     {
         $this->assertInstanceOf('App\Payments\MessageReceipt', static::$transaction->messageReceipt);
+    }
+
+    /**
+     * @test
+     */
+    public function it_records_a_transaction()
+    {
+        $user = factory(User::class)->create();
+        $type = CreditTransactionType::all()->random();
+        $amount = 18;
+        $transaction = CreditTransaction::record($user, $type, $amount);
+        $this->assertEquals(18, $transaction->amount);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-use App\Payment\CreditTransactionType;
+use App\Payments\CreditTransactionType;
 use Illuminate\Database\Seeder;
 
 class CreditTransactionTypesTableSeeder extends Seeder

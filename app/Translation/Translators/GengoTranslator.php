@@ -124,7 +124,8 @@ class GengoTranslator implements Translator
     {
         $api = new GengoOrder();
         try {
-            sleep(5);   // Gengo needs time to process brand new jobs
+            // Gengo needs time to process brand new jobs
+            sleep(5);
             // TODO(?) ::: Finding a better way to do this instead of guessing
             // the amount of time Gengo takes to process a job.
             $response = new GengoResponse($api->cancel($message->gengoOrderId()));

@@ -3,7 +3,7 @@
 namespace App\Translation;
 
 use App\Language;
-use App\Payment\MessageReceipt;
+use App\Payments\MessageReceipt;
 use App\Traits\Hashable;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
@@ -32,7 +32,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read mixed $word_count
  * @property-read \App\User $owner
  * @property-read \App\Translation\Reply|null $parentReplyClass
- * @property-read \App\Payment\MessageReceipt $receipt
+ * @property-read \App\Payments\MessageReceipt $receipt
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Recipient[] $recipients
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Reply[] $replies
  * @property-read \App\Language $sourceLanguage
@@ -282,13 +282,13 @@ class Message extends Model
      */
     public function gengoOrderId($id = null)
     {
-        if ($id) {
-            return $this->update([
-                'gengo_order_id' => $id
-            ]);
+        if (is_null($id)) {
+            return $this->gengo_order_id;
         }
 
-        return $this->gengo_order_id;
+        return $this->update([
+            'gengo_order_id' => $id
+        ]);
     }
 
 }

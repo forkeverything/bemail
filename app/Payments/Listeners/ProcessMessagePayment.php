@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Payment\Listeners;
+namespace App\Payments\Listeners;
 
-use App\Payment\CreditTransactionType;
-use App\Payment\Exceptions\ChargeFailedException;
-use App\Payment\Exceptions\MissingUnitPriceException;
+use App\Payments\CreditTransaction;
+use App\Payments\CreditTransactionType;
+use App\Payments\Exceptions\ChargeFailedException;
+use App\Payments\Exceptions\MissingUnitPriceException;
 use App\Translation\Contracts\Translator;
 use App\Translation\Events\NewMessageRequestReceived;
 use App\Translation\Events\ReplyReceived;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\App;
 
 /**
  * Class ProcessMessagePayment
- * @package App\Payment\Listeners
+ * @package App\Payments\Listeners
  */
 class ProcessMessagePayment
 {
@@ -66,6 +67,7 @@ class ProcessMessagePayment
              ->setChargeAmount()
              ->chargeUser()
              ->adjustUserCredits()
+             ->recordUserCreditTransaction()
              ->createReceipt();
     }
 
@@ -140,13 +142,38 @@ class ProcessMessagePayment
     }
 
     /**
+     * Any part of payment using credits?
+     *
+     * @return bool
+     */
+    protected function isUsingCredits()
+    {
+        return $this->credits > 0;
+    }
+
+    /**
      * Adjust User word credits amount.
      *
      * @return $this
      */
     protected function adjustUserCredits()
     {
-        $this->message->owner->adjustCredits(CreditTransactionType::payment(), $this->credits);
+        if ($this->isUsingCredits()) {
+            $this->message->owner->credits($this->message->owner->credits() + $this->credits);
+        }
+        return $this;
+    }
+
+    /**
+     * Record the credit payment.
+     *
+     * @return $this
+     */
+    protected function recordUserCreditTransaction()
+    {
+        if ($this->isUsingCredits()) {
+            CreditTransaction::record($this->message->owner, CreditTransactionType::payment(), $this->credits);
+        }
         return $this;
     }
 

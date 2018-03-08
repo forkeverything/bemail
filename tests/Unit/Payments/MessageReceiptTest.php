@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use App\Payment\CreditTransaction;
-use App\Payment\CreditTransactionType;
-use App\Payment\MessageReceipt;
+use App\Payments\CreditTransaction;
+use App\Payments\CreditTransactionType;
+use App\Payments\MessageReceipt;
 use App\Translation\Message;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
