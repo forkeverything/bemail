@@ -84,7 +84,6 @@ class GengoTranslatorTest extends TestCase
     public function it_fetches_filtered_language_pair()
     {
         $filteredLanguagePair = $this->gengoTranslator->languagePair('en', 'zh');
-
         // Reset to remove original language pair index from Gengo,
         // this should just return the single object.
         $resetLanguagePair = reset($filteredLanguagePair);

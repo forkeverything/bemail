@@ -105,8 +105,7 @@ class GengoTranslator implements Translator
         $response = new GengoResponse($api->postJobs($job));
         if ($response->wasSuccessful()) {
             // Store Gengo order id on message
-            $orderId = $response->body()["order_id"];
-            $message->gengoOrderId($orderId);
+            $message->gengoOrderId($response->orderId());
         } else {
             $error = new GengoErrorResponse($response->error());
             throw new TranslationException($error->description(), $error->code());
@@ -126,8 +125,8 @@ class GengoTranslator implements Translator
         $api = new GengoOrder();
         try {
             sleep(5);   // Gengo needs time to process brand new jobs
-            // TODO(?) ::: Recursively check gengo order status instead of guessing
-            // a random sleep interval.
+            // TODO(?) ::: Finding a better way to do this instead of guessing
+            // the amount of time Gengo takes to process a job.
             $response = new GengoResponse($api->cancel($message->gengoOrderId()));
             if ($response->wasSuccessful()) {
                 return true;

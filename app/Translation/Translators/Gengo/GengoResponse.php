@@ -60,4 +60,14 @@ class GengoResponse
         return $this->response["err"];
     }
 
+    /**
+     * Gengo order id from response.
+     *
+     * @return mixed
+     */
+    public function orderId()
+    {
+        return $this->body()["order_id"];
+    }
+
 }

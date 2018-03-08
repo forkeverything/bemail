@@ -35,7 +35,6 @@ class GengoLanguagePair
         $this->pairs = array_filter($this->pairs, function ($pair) use ($tier) {
             return $pair["tier"] == $tier;
         });
-
         return $this;
     }
 
@@ -48,7 +47,7 @@ class GengoLanguagePair
     public function filterTargetLanguage($langTgt = null)
     {
         if ($langTgt) {
-            $this->pairs =  array_filter($this->pairs, function ($pair) use ($langTgt) {
+            $this->pairs = array_filter($this->pairs, function ($pair) use ($langTgt) {
                 return $pair["lc_tgt"] == $langTgt;
             });
         }
@@ -56,7 +55,7 @@ class GengoLanguagePair
     }
 
     /**
-     * Returns language pairs.
+     * Returns language pairs array.
      *
      * @return array
      */
