@@ -75,7 +75,7 @@ class GengoTranslator implements Translator
      *
      * @param Language $sourceLangue
      * @param Language $targetLanguage
-     * @return mixed
+     * @return float
      * @throws \Gengo\Exception
      */
     public function unitPrice(Language $sourceLangue, Language $targetLanguage)
@@ -84,7 +84,7 @@ class GengoTranslator implements Translator
         $pair = $this->languagePair($sourceLangue->code, $targetLanguage->code);
         // Manually reset object key pointer to the first index. Otherwise
         // the relevant pair might still have a previous key - ie. 5
-        return reset($pair)->unit_price;
+        return floatval(reset($pair)["unit_price"]);
     }
 
     /**
@@ -124,10 +124,17 @@ class GengoTranslator implements Translator
     public function cancelTranslating(Message $message)
     {
         $api = new GengoOrder();
-        $response = new GengoResponse($api->cancel($message->gengoOrderId()));
-        if ($response->wasSuccessful()) {
-            return true;
-        } else {
+        try {
+            sleep(5);   // Gengo needs time to process brand new jobs
+            // TODO(?) ::: Recursively check gengo order status instead of guessing
+            // a random sleep interval.
+            $response = new GengoResponse($api->cancel($message->gengoOrderId()));
+            if ($response->wasSuccessful()) {
+                return true;
+            } else {
+                throw new \Exception();
+            }
+        } catch (\Exception $e) {
             throw new CouldNotCancelTranslationException();
         }
     }

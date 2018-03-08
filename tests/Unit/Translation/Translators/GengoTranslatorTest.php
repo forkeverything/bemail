@@ -2,7 +2,9 @@
 
 namespace Tests\Unit\Translation\Translators;
 
+use App\Language;
 use App\Translation\Contracts\Translator;
+use App\Translation\Exceptions\CouldNotCancelTranslationException;
 use App\Translation\Exceptions\TranslationException;
 use App\Translation\Message;
 use App\Translation\Translators\GengoTranslator;
@@ -101,6 +103,39 @@ class GengoTranslatorTest extends TestCase
         $this->assertNull($message->gengoOrderId());
         $this->gengoTranslator->translate($message);
         $this->assertNotNull($message->fresh()->gengoOrderId());
+    }
+
+    /**
+     * @test
+     * @throws Exception
+     */
+    public function it_determines_unit_price_for_languages()
+    {
+        $languageIDs = Language::all()->pluck('id')->toArray();
+        $sourceLanguage = Language::find(array_splice($languageIDs, array_rand($languageIDs), 1)[0]);
+        $targetLanguage = Language::find(array_splice($languageIDs, array_rand($languageIDs), 1)[0]);
+        $unitPrice = $this->gengoTranslator->unitPrice($sourceLanguage, $targetLanguage);
+        $this->assertTrue(is_float($unitPrice));
+    }
+
+    /**
+     * @test
+     * @expectedException \App\Translation\Exceptions\CouldNotCancelTranslationException
+     */
+    public function it_fails_to_cancel_message_in_translation()
+    {
+        $message = factory(Message::class)->create();
+        $this->gengoTranslator->cancelTranslating($message);
+    }
+
+    /**
+     * @test
+     */
+    public function it_cancels_a_message_in_translation()
+    {
+        $message = factory(Message::class)->create();
+        $this->gengoTranslator->translate($message);
+        $this->assertTrue($this->gengoTranslator->cancelTranslating($message));
     }
 
 }

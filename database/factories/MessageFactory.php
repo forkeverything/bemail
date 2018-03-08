@@ -9,6 +9,8 @@ use Faker\Generator as Faker;
 $factory->define(Message::class, function (Faker $faker) {
 
     $languageIDs = Language::all()->pluck('id')->toArray();
+    $sourceLanguageId = array_splice($languageIDs, array_rand($languageIDs), 1)[0];
+    $targetLanguageId = array_splice($languageIDs, array_rand($languageIDs), 1)[0];
 
     return [
         'subject' => $faker->sentence(5, true),
@@ -21,12 +23,8 @@ $factory->define(Message::class, function (Faker $faker) {
         'user_id' => function() {
             return factory(User::class)->create()->id;
         },
-        'lang_src_id' => function() use ($faker, $languageIDs) {
-            return array_splice($languageIDs, array_rand($languageIDs), 1)[0];
-        },
-        'lang_tgt_id' => function() use ($faker, $languageIDs) {
-            return array_splice($languageIDs, array_rand($languageIDs), 1)[0];
-        },
+        'lang_src_id' => $sourceLanguageId,
+        'lang_tgt_id' => $targetLanguageId,
         'translation_status_id' => function(array $message) {
             if($message["translated_body"]) {
                 return TranslationStatus::approved()->id;
