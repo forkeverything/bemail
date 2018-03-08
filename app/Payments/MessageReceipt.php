@@ -70,4 +70,21 @@ class MessageReceipt extends Model
         return $this->hasOne(CreditTransaction::class, 'message_receipt_id');
     }
 
+    /**
+     * Make a new MessageReceipt.
+     *
+     * @param Message $message
+     * @param $unitPrice
+     * @param $amount
+     * @return $this|Model
+     */
+    public static function makeFor(Message $message, $unitPrice, $amount)
+    {
+        return static::create([
+            'cost_per_word' => $unitPrice,
+            'amount_charged' => $amount,
+            'message_id' => $message->id
+        ]);
+    }
+
 }

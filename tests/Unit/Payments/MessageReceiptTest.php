@@ -56,4 +56,16 @@ class MessageReceiptTest extends TestCase
         ]);
         $this->assertEquals($receipt->creditTransaction->id, $transaction->id);
     }
+
+    /**
+     * @test
+     */
+    public function it_makes_a_receipt()
+    {
+        $message = factory(Message::class)->create();
+        $unitPrice = 0.05;
+        $amount = 20;
+        $receipt = MessageReceipt::makeFor($message, $unitPrice, $amount);
+        $this->assertEquals($message->id, $receipt->message_id);
+    }
 }

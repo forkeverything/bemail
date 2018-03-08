@@ -6,6 +6,7 @@ use App\Payments\CreditTransaction;
 use App\Payments\CreditTransactionType;
 use App\Payments\Exceptions\ChargeFailedException;
 use App\Payments\Exceptions\MissingUnitPriceException;
+use App\Payments\MessageReceipt;
 use App\Translation\Contracts\Translator;
 use App\Translation\Events\NewMessageRequestReceived;
 use App\Translation\Events\ReplyReceived;
@@ -179,15 +180,10 @@ class ProcessMessagePayment
 
     /**
      * Creates and stores a Message Receipt.
-     *
-     * @return \Illuminate\Database\Eloquent\Model
      */
     protected function createReceipt()
     {
-        return $this->message->receipt()->create([
-            'cost_per_word' => $this->unitPrice,
-            'amount_charged' => $this->chargeAmount
-        ]);
+        MessageReceipt::makeFor($this->message, $this->unitPrice, $this->chargeAmount);
     }
 
     /**
