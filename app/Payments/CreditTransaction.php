@@ -26,6 +26,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $credit_transaction_type_id
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransaction whereAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransaction whereCreditTransactionTypeId($value)
+ * @property int $user_id
+ * @property-read \App\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransaction whereUserId($value)
  */
 class CreditTransaction extends Model
 {

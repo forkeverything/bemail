@@ -52,6 +52,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereUserId($value)
  * @mixin \Eloquent
+ * @property int|null $gengo_order_id
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereGengoOrderId($value)
  */
 class Message extends Model
 {

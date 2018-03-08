@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * App\Payments\MessageReceipt
- *
+ * 
  * Transaction receipt for a Message that contains the breakdown of
  * the cost of sending the Message.
  *

@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransactionType whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransactionType whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransactionType whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Payments\CreditTransaction[] $transactions
  */
 class CreditTransactionType extends Model
 {
