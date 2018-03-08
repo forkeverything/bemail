@@ -293,4 +293,20 @@ class Message extends Model
         ]);
     }
 
+    /**
+     * Translated body text.
+     *
+     * @param null $text
+     * @return bool|null|string
+     */
+    public function translatedBody($text = null)
+    {
+        if (is_null($text)) {
+            return $this->translated_body;
+        }
+        return $this->update([
+            'translated_body' => $text
+        ]);
+    }
+
 }

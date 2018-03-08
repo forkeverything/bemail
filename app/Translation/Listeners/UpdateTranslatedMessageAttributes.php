@@ -18,7 +18,8 @@ class UpdateTranslatedMessageAttributes
     public function handle(MessageTranslated $event)
     {
         // Store translated Body
-        $event->message->update(['translated_body' => $event->translatedText]);
+        $event->message->translatedBody($event->translatedText);
+
         // Update message status
         $event->message->updateStatus(TranslationStatus::approved());
     }

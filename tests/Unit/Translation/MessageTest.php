@@ -290,14 +290,19 @@ class MessageTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_gengo_order_id()
+    public function it_returns_gengo_order_id()
     {
-        static::$message->update([
-            'gengo_order_id' => 999,
-        ]);
-        $this->assertEquals(999, static::$message->gengoOrderId());
         static::$message->gengoOrderId(123);
         $this->assertEquals(123, static::$message->gengoOrderId());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_translated_body()
+    {
+        static::$message->translatedBody('foobar');
+        $this->assertEquals('foobar', static::$message->translatedBody());
     }
 
 }
