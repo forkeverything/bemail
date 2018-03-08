@@ -20,6 +20,9 @@ class MessageTest extends TestCase
 
     use DatabaseTransactions;
 
+    /**
+     * @var Message
+     */
     private static $message;
 
     public function setUp()
@@ -282,6 +285,19 @@ class MessageTest extends TestCase
             static::$message->updateStatus($status);
             $this->assertEquals(static::$message->translation_status_id, $status->id);
         }
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_gengo_order_id()
+    {
+        static::$message->update([
+            'gengo_order_id' => 999,
+        ]);
+        $this->assertEquals(999, static::$message->gengoOrderId());
+        static::$message->gengoOrderId(123);
+        $this->assertEquals(123, static::$message->gengoOrderId());
     }
 
 }

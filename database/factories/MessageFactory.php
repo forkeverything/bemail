@@ -22,12 +22,10 @@ $factory->define(Message::class, function (Faker $faker) {
             return factory(User::class)->create()->id;
         },
         'lang_src_id' => function() use ($faker, $languageIDs) {
-            $numLanguages = count($languageIDs);
-            $randomIndex = $faker->numberBetween(0, $numLanguages - 1);
-            return array_splice($languageIDs, $randomIndex, 1)[0];
+            return array_splice($languageIDs, array_rand($languageIDs), 1)[0];
         },
         'lang_tgt_id' => function() use ($faker, $languageIDs) {
-            return 2;
+            return array_splice($languageIDs, array_rand($languageIDs), 1)[0];
         },
         'translation_status_id' => function(array $message) {
             if($message["translated_body"]) {

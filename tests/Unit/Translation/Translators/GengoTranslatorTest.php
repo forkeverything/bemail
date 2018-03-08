@@ -60,7 +60,7 @@ class GengoTranslatorTest extends TestCase
      */
     public function it_fetches_all_language_pairs()
     {
-        $languagePairs = $this->gengoTranslator->getLanguagePairs();
+        $languagePairs = $this->gengoTranslator->languagePair();
         $numLanguages = count($languagePairs);
         $numPairsToTest = 5;
 
@@ -81,14 +81,13 @@ class GengoTranslatorTest extends TestCase
      */
     public function it_fetches_filtered_language_pair()
     {
-        $filteredLanguagePair = $this->gengoTranslator->getLanguagePairs('en', 'zh');
+        $filteredLanguagePair = $this->gengoTranslator->languagePair('en', 'zh');
 
         // Reset to remove original language pair index from Gengo,
         // this should just return the single object.
         $resetLanguagePair = reset($filteredLanguagePair);
-
         foreach ($this->languagePairKeys as $key) {
-            $this->assertTrue(isset($resetLanguagePair->$key));
+            $this->assertTrue(isset($resetLanguagePair[$key]));
         }
     }
 
@@ -96,50 +95,12 @@ class GengoTranslatorTest extends TestCase
      * @test
      * @throws
      */
-    public function it_posts_a_successful_gengo_job()
+    public function it_translates_a_message()
     {
         $message = factory(Message::class)->create();
-        $status = $this->gengoTranslator->translate($message);
-        $this->assertEquals("ok", $status);
-    }
-
-    /**
-     * @test
-     */
-    public function it_parses_out_job_error()
-    {
-        $response = [
-            'err' => [
-                'jobs_01' => [
-                    [
-                        'code' => $this->errorCode,
-                        'msg' => $this->errorMsg
-                    ]
-                ]
-            ]
-        ];
-
-        $error = $this->gengoTranslator->parseErrorFromResponse($response);
-
-        $this->assertEquals($this->errorCode, $error['code']);
-        $this->assertEquals("Gengo Job: $this->errorMsg", $error['description']);
-    }
-
-    /**
-     * @test
-     */
-    public function it_parses_out_system_error()
-    {
-        $response = [
-            'err' => [
-                'code' => $this->errorCode,
-                'msg' => $this->errorMsg
-            ]
-        ];
-        $error = $this->gengoTranslator->parseErrorFromResponse($response);
-
-        $this->assertEquals($this->errorCode, $error['code']);
-        $this->assertEquals("Gengo System: $this->errorMsg", $error['description']);
+        $this->assertNull($message->gengoOrderId());
+        $this->gengoTranslator->translate($message);
+        $this->assertNotNull($message->fresh()->gengoOrderId());
     }
 
 }

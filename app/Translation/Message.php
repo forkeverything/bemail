@@ -273,4 +273,22 @@ class Message extends Model
         ]);
     }
 
+    /**
+     * Gengo Order ID that identifies the job
+     * in Gengo's system.
+     *
+     * @param $id
+     * @return bool
+     */
+    public function gengoOrderId($id = null)
+    {
+        if ($id) {
+            return $this->update([
+                'gengo_order_id' => $id
+            ]);
+        }
+
+        return $this->gengo_order_id;
+    }
+
 }

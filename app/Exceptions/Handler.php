@@ -48,10 +48,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        // TODO ::: Handle custom exceptions, specifically
-        //          TranslationException, which should
-        //          redirect to separate page.
-
         return parent::render($request, $exception);
     }
 }

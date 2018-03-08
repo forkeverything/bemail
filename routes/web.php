@@ -36,7 +36,7 @@ Route::get('/test', function (\App\Translation\Contracts\Translator $translator)
 //    dd(hash_hmac('sha1', "1508572868429", env('GENGO_SECRET')));
 
     $translator = new \App\Translation\Translators\GengoTranslator();
-    return $translator->getLanguagePairs('zh', 'en');
+    return $translator->languagePair('zh', 'en');
 
 
 });
