@@ -42,7 +42,7 @@
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
                             <li><a href="/compose">New Message</a></li>
-                            <li><a href="#" data-toggle="tooltip" title="Free word credits" data-placement="bottom">{{ Auth::user()->word_credits }} Words</a></li>
+                            <li><a href="#" data-toggle="tooltip" title="Free word credits" data-placement="bottom">{{ Auth::user()->credits }} Words</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>

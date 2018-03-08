@@ -22,7 +22,7 @@ use Laravel\Cashier\Billable;
  * @property string $name
  * @property string $email
  * @property string $password
- * @property int $word_credits
+ * @property int $credits
  * @property string|null $stripe_id
  * @property string|null $card_brand
  * @property string|null $card_last_four
@@ -48,6 +48,7 @@ use Laravel\Cashier\Billable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereWordCredits($value)
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Payments\CreditTransaction[] $creditTransactions
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCredits($value)
  */
 class User extends Authenticatable
 {
@@ -62,7 +63,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'word_credits',
+        'credits',
         'language_id'
     ];
 
@@ -132,9 +133,9 @@ class User extends Authenticatable
     public function credits($amount = null)
     {
         if (is_null($amount)) {
-            return $this->word_credits;
+            return $this->credits;
         }
-        $this->word_credits = $amount;
+        $this->credits = $amount;
         $this->save();
     }
 }

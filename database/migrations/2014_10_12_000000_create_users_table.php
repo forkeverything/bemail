@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('word_credits')->default(0);
+            $table->integer('credits')->default(0);
 
             // Billing & Subscription
             $table->string('stripe_id')->nullable();

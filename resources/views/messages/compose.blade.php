@@ -3,7 +3,7 @@
     <div class="container">
         @include('flash::message')
         <compose-form token="{{ csrf_token() }}"
-                      word-credits="{{ Auth::user()->word_credits }}"
+                      word-credits="{{ Auth::user()->credits }}"
                       :errors="{{ json_encode($errors->getBag('default')) }}"
                       recipients="{{ old('recipients') }}"
                       subject-old="{{ old('subject') }}"

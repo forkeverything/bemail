@@ -39,7 +39,7 @@ class UserTest extends TestCase
             'name' => 'John',
             'email' => 'John@example.com',
             'password' => bcrypt('secret'),
-            'word_credits' => 10,
+            'credits' => 10,
             'language_id' => 1
         ];
 
@@ -103,10 +103,10 @@ class UserTest extends TestCase
     /**
      * @test
      */
-    public function it_adjusts_word_credits()
+    public function it_adjusts_credits()
     {
         static::$user->update([
-            'word_credits' => 10
+            'credits' => 10
         ]);
         $this->assertEquals(10, static::$user->credits());
         static::$user->credits(static::$user->credits() + 5);

@@ -101,7 +101,7 @@ class ProcessMessagePayment
     protected function setCredits()
     {
         // Can't use more credits than we have
-        $this->credits = min($this->message->word_count, $this->message->owner->word_credits);
+        $this->credits = min($this->message->word_count, $this->message->owner->credits);
         return $this;
     }
 
