@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCreditTransactionTypesTable extends Migration
+class CreatePlansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateCreditTransactionTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('credit_transaction_types', function (Blueprint $table) {
+        Schema::create('plans', function (Blueprint $table) {
 
             /**
              * Auto
              */
-
             $table->increments('id');
 
             /**
@@ -26,7 +25,6 @@ class CreateCreditTransactionTypesTable extends Migration
              */
 
             $table->string('name');
-            $table->string('description');
 
         });
     }
@@ -38,6 +36,6 @@ class CreateCreditTransactionTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('credit_transaction_types');
+        Schema::dropIfExists('plans');
     }
 }
