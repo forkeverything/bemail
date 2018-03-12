@@ -64,5 +64,16 @@ class SubscriptionsController extends Controller
         return $user->subscription();
     }
 
+    /**
+     * Resumes a previously cancelled subscription.
+     *
+     * @return Subscription
+     */
+    public function putResumePlan()
+    {
+        $user = Auth::user();
+        return $user->subscription('main')->resume();
+    }
+
 
 }

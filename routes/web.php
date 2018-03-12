@@ -35,6 +35,7 @@ Route::post('/subscriptions/plan/{plan}', 'SubscriptionsController@postNewSubscr
 Route::put('/subscriptions/plan/{plan}', 'SubscriptionsController@putChangePlan');
 Route::put('/subscriptions/credit_card', 'SubscriptionsController@putUpdateCard');
 Route::delete('/subscriptions/plan', 'SubscriptionsController@deleteCancelPlan');
+Route::put('/subscriptions/plan', 'SubscriptionsController@putResumePlan');
 
 
 Route::get('/test', function () {
