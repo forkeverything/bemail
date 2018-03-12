@@ -114,7 +114,7 @@ class GengoTranslatorTest extends TestCase
         $sourceLanguage = Language::find(array_splice($languageIDs, array_rand($languageIDs), 1)[0]);
         $targetLanguage = Language::find(array_splice($languageIDs, array_rand($languageIDs), 1)[0]);
         $unitPrice = $this->gengoTranslator->unitPrice($sourceLanguage, $targetLanguage);
-        $this->assertTrue(is_float($unitPrice));
+        $this->assertTrue(is_int($unitPrice));
     }
 
     /**

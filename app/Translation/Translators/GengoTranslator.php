@@ -82,9 +82,15 @@ class GengoTranslator implements Translator
     {
         // Get relevant pair
         $pair = $this->languagePair($sourceLangue->code, $targetLanguage->code);
-        // Manually reset object key pointer to the first index. Otherwise
-        // the relevant pair might still have a previous key - ie. 5
-        return floatval(reset($pair)["unit_price"]);
+
+        // Manually reset object key pointer to the first index and removes old
+        // key.
+        $pair = reset($pair);
+
+        // Multiply by 100 to work in cents.
+        $unitPrice = $pair["unit_price"] * 100;
+
+        return (int)$unitPrice;
     }
 
     /**

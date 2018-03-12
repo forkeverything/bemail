@@ -83,7 +83,6 @@ class ProcessMessagePayment
     {
         try {
             $this->unitPrice = $this->translator->unitPrice($this->message->sourceLanguage, $this->message->targetLanguage);
-            // TODO ::: Adjust unit price according to subscription plan
         } catch (\Exception $e) {
             $this->cancelTranslation();
             throw new MissingUnitPriceException();
@@ -106,16 +105,28 @@ class ProcessMessagePayment
     }
 
     /**
+     * Number of words to charge for.
+     *
+     * @return mixed
+     */
+    protected function chargeableWordCount()
+    {
+        // Subtract the amount of credits but can't charge for less
+        // words than 0.
+        return max($this->message->word_count - $this->credits, 0);
+    }
+
+    /**
      * How much to charge User.
      *
      * @return ProcessMessagePayment
      */
     protected function setChargeAmount()
     {
-        $wordCount = $this->message->word_count;
-        // Can't charge less words than 0
-        $chargeableWordCount = max($wordCount - $this->credits, 0);
-        $this->chargeAmount = $chargeableWordCount * $this->unitPrice * 100;     // x 100 because Stripe accepts charge amount in cents
+        $wordCount = $this->chargeableWordCount();
+        $translator = $wordCount * $this->unitPrice;
+        $service = $wordCount * $this->message->owner->subscription()->plan->surcharge;
+        $this->chargeAmount = $translator + $service;
         return $this;
     }
 

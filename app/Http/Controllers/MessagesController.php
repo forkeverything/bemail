@@ -59,9 +59,6 @@ class MessagesController extends Controller
                 Auth::user(),
                 $translator
             ));
-            // TODO ::: Charge User
-            // Implement another event listener that tries to charge user. If charging
-            // fails, need to cancel translation job.
         } catch (Exception $e) {
             if (App::environment('production')) {
                 flash()->error('System Error - Your message was not sent and you have not been charged. Please try again or contact us for help.');

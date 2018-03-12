@@ -30,7 +30,6 @@ trait Billable
         return new SubscriptionBuilder($this, $subscription, $plan);
     }
 
-
     /**
      * Use our custom Subscription(s) model.
      *
@@ -41,7 +40,19 @@ trait Billable
         return $this->hasMany(Subscription::class, $this->getForeignKey())->orderBy('created_at', 'desc');
     }
 
+    /**
+     * The one and only subscription that a User has.
+     *
+     * @return mixed
+     */
+    public function subscription()
+    {
 
+        // Laravel Cashier allows for multiple subscriptions but
+        // since we only have one subscription, we'll use this
+        // method to automatically return the first one.
 
+        return $this->subscriptions()->first();
+    }
 
 }
