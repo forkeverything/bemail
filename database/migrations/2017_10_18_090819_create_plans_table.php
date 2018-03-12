@@ -25,6 +25,8 @@ class CreatePlansTable extends Migration
              */
 
             $table->string('name');
+            $table->integer('cost');
+            $table->integer('surcharge');
 
         });
     }

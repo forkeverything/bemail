@@ -28,7 +28,6 @@ class CreateSubscriptionsTable extends Migration
 
             $table->string('name');
             $table->string('stripe_id');
-            $table->string('stripe_plan');
             $table->integer('quantity');
             $table->timestamp('trial_ends_at')->nullable();
             $table->timestamp('ends_at')->nullable();
@@ -39,6 +38,10 @@ class CreateSubscriptionsTable extends Migration
 
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
+
+            $table->integer('plan_id')->unsigned();
+            $table->foreign('plan_id')->references('id')->on('plans');
+
 
         });
     }

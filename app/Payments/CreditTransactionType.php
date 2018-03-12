@@ -24,6 +24,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CreditTransactionType extends Model
 {
+
+    /**
+     * No created_at/updated_at.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
     /**\
      * Mass fillable fields.
      *

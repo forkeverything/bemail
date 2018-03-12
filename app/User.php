@@ -8,9 +8,7 @@ use App\Translation\Message;
 use App\Translation\Recipient;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Cashier\Billable;
-
-
+use App\Payments\Traits\Billable;
 
 /**
  * App\User
