@@ -41,7 +41,7 @@ class Plan extends Model
      * @param $name
      * @return Model|static
      */
-    public static function name($name)
+    public static function hasName($name)
     {
         return static::where('name', $name)->firstOrFail();
     }

@@ -76,7 +76,7 @@ class Subscription extends LaravelSubscription
         $this->fill([
             'stripe_plan' => $plan,
             'ends_at' => null,
-            'plan_id' => Plan::name($plan)->id                  // Updated with new plan id
+            'plan_id' => Plan::hasName($plan)->id                  // Updated with new plan id
         ])->save();
 
         return $this;
