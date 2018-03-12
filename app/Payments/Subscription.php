@@ -36,7 +36,6 @@ use Laravel\Cashier\Subscription as LaravelSubscription;
  */
 class Subscription extends LaravelSubscription
 {
-
     /**
      * The name of the only subscription.
      */
@@ -49,6 +48,6 @@ class Subscription extends LaravelSubscription
      */
     public function plan()
     {
-        return new Plan($this->stripe_plan);
+        return new Plan($this->user, $this->stripe_plan);
     }
 }

@@ -14,13 +14,11 @@ class UserMike extends Seeder
      */
     public function run()
     {
-        $user = User::create([
+        User::create([
             'name' => 'Mike Wu',
             'email' => 'mail@wumike.com',
             'password' => bcrypt('password'),
             'language_id' => 1
         ]);
-
-        $user->newSubscription(Subscription::MAIN, Plan::FREE)->create();
     }
 }

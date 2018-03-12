@@ -2,6 +2,7 @@
 
 namespace App\Payments;
 
+use App\User;
 use InvalidArgumentException;
 
 /**
@@ -70,18 +71,35 @@ class Plan
     /**
      * Create new Plan instance.
      *
+     * @param User $user
      * @param $name
      */
-    public function __construct($name)
+    public function __construct(User $user, $name)
     {
         if (!in_array($name, self::AVAILABLE_PLANS)) {
             throw new InvalidArgumentException('Invalid plan provided.');
         }
 
+        if(! $this->activeSubscription($user, $name)) {
+            $name = Plan::FREE;
+        };
+
         $this->name = $name;
 
         $this->setCost()
              ->setSurcharge();
+    }
+
+    /**
+     * Check if plan subscription is active.
+     *
+     * @param User $user
+     * @param $name
+     * @return bool
+     */
+    public function activeSubscription(User $user, $name)
+    {
+        return $user->subscribed(Subscription::MAIN, $name);
     }
 
     /**

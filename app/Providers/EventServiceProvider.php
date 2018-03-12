@@ -14,7 +14,6 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'Illuminate\Auth\Events\Registered' => [
-            'App\Listeners\SubscribeUserToFreePlan',
             'App\Listeners\SendWelcomeMail'
         ],
         'App\Translation\Events\NewMessageRequestReceived' => [

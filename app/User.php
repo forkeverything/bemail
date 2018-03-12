@@ -135,4 +135,9 @@ class User extends Authenticatable
         $this->credits = $amount;
         $this->save();
     }
+
+    public function plan()
+    {
+        return new Plan($this);
+    }
 }
