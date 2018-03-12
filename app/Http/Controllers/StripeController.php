@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Payments\Events\CustomerSubscriptionDeleted;
-use App\Payments\Traits\Billable;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

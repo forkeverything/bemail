@@ -83,7 +83,7 @@ class MessageReceipt extends Model
     public static function makeFor(Message $message, $unitPrice, $amount)
     {
         return static::create([
-            'plan' => $message->owner->subscription()->plan()->name(),
+            'plan' => $message->owner->plan()->name(),
             'cost_per_word' => $unitPrice,
             'amount_charged' => $amount,
             'message_id' => $message->id

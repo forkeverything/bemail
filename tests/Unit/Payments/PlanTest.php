@@ -3,6 +3,8 @@
 namespace Tests\Unit\Payments;
 
 use App\Payments\Plan;
+use App\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use InvalidArgumentException;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -10,6 +12,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PlanTest extends TestCase
 {
+    use DatabaseTransactions;
+
     /**
      * @var array
      */
@@ -24,6 +28,15 @@ class PlanTest extends TestCase
             new Plan(Plan::REGULAR),
             new Plan(Plan::PROFESSIONAL),
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_determines_the_plan_for_given_user()
+    {
+        $user = factory(User::class)->create();
+        $this->assertInstanceOf(Plan::class, Plan::forUser($user));
     }
 
     /**

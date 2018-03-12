@@ -3,12 +3,11 @@
 namespace App;
 
 use App\Payments\CreditTransaction;
-use App\Payments\CreditTransactionType;
+use App\Payments\Plan;
 use App\Translation\Message;
-use App\Translation\Recipient;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Payments\Traits\Billable;
+use Laravel\Cashier\Billable;
 
 /**
  * App\User
@@ -122,6 +121,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Payment plan.
+     *
+     * @return Plan
+     */
+    public function plan()
+    {
+        return Plan::forUser($this);
+    }
+
+    /**
      * Credits that can be used for payment.
      *
      * @param null $amount
@@ -134,10 +143,5 @@ class User extends Authenticatable
         }
         $this->credits = $amount;
         $this->save();
-    }
-
-    public function plan()
-    {
-        return new Plan($this);
     }
 }

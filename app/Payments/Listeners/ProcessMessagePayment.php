@@ -125,7 +125,7 @@ class ProcessMessagePayment
     {
         $wordCount = $this->chargeableWordCount();
         $translator = $wordCount * $this->unitPrice;
-        $bemail = $wordCount * $this->message->owner->subscription()->plan()->surcharge();
+        $bemail = $wordCount * $this->message->owner->plan()->surcharge();
         $this->chargeAmount = $translator + $bemail;
         return $this;
     }

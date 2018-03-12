@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Language;
 use App\Payments\CreditTransactionType;
+use App\Payments\Plan;
 use App\Translation\Message;
 use App\Translation\Recipient;
 use App\User;
@@ -114,5 +115,14 @@ class UserTest extends TestCase
         static::$user->credits(static::$user->credits() + -15);
         $this->assertEquals(0, static::$user->credits());
     }
+
+    /**
+     * @test
+     */
+    public function it_gets_the_users_plan()
+    {
+        $this->assertInstanceOf(Plan::class, static::$user->plan());
+    }
+
 }
 

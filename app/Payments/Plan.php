@@ -35,11 +35,8 @@ class Plan
      * Professional Plan
      */
     const PROFESSIONAL = 'professional';
-
     /**
-     * Available plan names.
-     *
-     * This is the same as the plan id for Stripe.
+     * Available Plans
      */
     const AVAILABLE_PLANS = [
         self::FREE,
@@ -71,18 +68,14 @@ class Plan
     /**
      * Create new Plan instance.
      *
-     * @param User $user
      * @param $name
      */
-    public function __construct(User $user, $name)
+    public function __construct($name)
     {
+
         if (!in_array($name, self::AVAILABLE_PLANS)) {
             throw new InvalidArgumentException('Invalid plan provided.');
         }
-
-        if(! $this->activeSubscription($user, $name)) {
-            $name = Plan::FREE;
-        };
 
         $this->name = $name;
 
@@ -91,15 +84,22 @@ class Plan
     }
 
     /**
-     * Check if plan subscription is active.
+     * Insantiate Plan using User.
      *
      * @param User $user
-     * @param $name
-     * @return bool
+     * @return Plan
      */
-    public function activeSubscription(User $user, $name)
+    public static function forUser(User $user)
     {
-        return $user->subscribed(Subscription::MAIN, $name);
+        $subscription = $user->subscription();
+        if(! $subscription || ! $user->subscribed()) {
+            // Default to using free plan when User hasn't subscribed
+            // or subscription has been cancelled.
+            $name = self::FREE;
+        } else {
+            $name = $user->subscription()->name;
+        }
+        return new Plan($name);
     }
 
     /**
@@ -178,5 +178,7 @@ class Plan
     {
         return $this->surcharge;
     }
+
+    // TODO ::: write function that returns all users for given plan
 
 }
