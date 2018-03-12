@@ -26,6 +26,7 @@ class CreateMessageReceiptsTable extends Migration
              * Main
              */
 
+            $table->string('plan');
             $table->integer('cost_per_word');
             $table->integer('amount_charged');
             $table->boolean('reversed')->default(0);

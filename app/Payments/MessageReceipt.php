@@ -44,8 +44,10 @@ class MessageReceipt extends Model
      * @var array
      */
     protected $fillable = [
+        'plan',
         'cost_per_word',
         'amount_charged',
+        'reversed',
         'message_id'
     ];
 
@@ -81,6 +83,7 @@ class MessageReceipt extends Model
     public static function makeFor(Message $message, $unitPrice, $amount)
     {
         return static::create([
+            'plan' => $message->owner->subscription()->plan()->name(),
             'cost_per_word' => $unitPrice,
             'amount_charged' => $amount,
             'message_id' => $message->id

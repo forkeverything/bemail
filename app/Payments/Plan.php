@@ -40,7 +40,7 @@ class Plan
      *
      * This is the same as the plan id for Stripe.
      */
-    const PLANS = [
+    const AVAILABLE_PLANS = [
         self::FREE,
         self::REGULAR,
         self::PROFESSIONAL
@@ -74,7 +74,7 @@ class Plan
      */
     public function __construct($name)
     {
-        if (!in_array($name, self::PLANS)) {
+        if (!in_array($name, self::AVAILABLE_PLANS)) {
             throw new InvalidArgumentException('Invalid plan provided.');
         }
 
