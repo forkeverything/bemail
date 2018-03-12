@@ -20,6 +20,7 @@ class PostmarkController extends Controller
 
     /**
      * Handle inbound mail callback from Postmark.
+     *
      * @param Request $request
      * @param Translator $translator
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
@@ -27,42 +28,66 @@ class PostmarkController extends Controller
      */
     public function postInboundMail(Request $request, Translator $translator)
     {
-
-        // Name of person who sent email
         $fromName = $request["FromName"];
-        // Address sent from
         $fromAddress = $request["From"];
-        // Email Main
         $subject = $request["Subject"];
-        // Only get the reply in plain-text. Already checked (manually)
-        // this to be true.
-        $body = $request["TextBody"];
-        $strippedTextBody = EmailReplyParser::parse($body);
-        // Recipients
+        $strippedTextBody = EmailReplyParser::parse($request["TextBody"]);
         $recipients = $this->parseRecipients($request);
-        // Attachments
         $attachments = AttachmentFileBuilder::createPostmarkAttachmentFiles($request["Attachments"]);
-        // Address sent to
-        $inboundAddress = $request["OriginalRecipient"];
-        // Inbound Address Convention:
-        // - snake_case for incoming mail address
-        // - first part specifies the type of email
-        // - ie. reply_s0m3h4$h@in.bemail.io, for replies to a specific Message
-        $inboundArray = explode("_", $inboundAddress);
+        $action = $this->action($request["OriginalRecipient"]);
+        $target = $this->target($request["OriginalRecipient"]);
 
-        // Replying to a Message?
-        if ($inboundArray[0] === "reply") {
-            // Grab everything until '@'
-            preg_match("/.*(?=@)/", $inboundArray[1], $matches);
-            // First match is the message's hash ID
-            $messageHash = $matches[0];
-            // Find message we're replying to
-            if ($originalMessage = Message::findByHash($messageHash)) {
-                event(new ReplyReceived($fromAddress, $fromName, $originalMessage, $recipients, $subject, $strippedTextBody, $attachments, $translator));
-            };
+        switch ($action) {
+            case 'reply':
+                // Find message the reply is intended for.
+                if ($originalMessage = Message::findByHash($target)) {
+                    event(new ReplyReceived($fromAddress, $fromName, $originalMessage, $recipients, $subject, $strippedTextBody, $attachments, $translator));
+                };
+                break;
+            default:
+                break;
         }
 
         return response("Received Email", 200);
+    }
+
+    /**
+     * The action that this inbound email is doing.
+     *
+     * @param $inboundAddress
+     * @return mixed
+     */
+    protected function action($inboundAddress)
+    {
+        return $this->inboundAddressArray($inboundAddress)[0];
+    }
+
+    /**
+     * The target that this email is intended for.
+     *
+     * @param $inboundAddress
+     * @return mixed
+     */
+    protected function target($inboundAddress)
+    {
+        preg_match("/.*(?=@)/", $this->inboundAddressArray($inboundAddress)[1], $matches);
+        return $matches[0];
+    }
+
+    /**
+     * Turns the inbound address into an array.
+     *
+     * Inbound Address Convention:
+     * - snake_case for incoming mail address
+     * - first part specifies the type of email
+     * - ie. reply_s0m3h4$h@in.bemail.io, for replies to a specific Message
+     *
+     * @param $inboundAddress
+     * @return array
+     */
+    protected function inboundAddressArray($inboundAddress)
+    {
+        return explode("_", $inboundAddress);
     }
 
     /**
