@@ -30,6 +30,11 @@ Route::post('/account', 'AccountController@postUpdateSettings');
 // Languages
 Route::get('/languages/price/src/{langSrc}/tgt/{langTgt}', 'LanguagesController@getUnitPrice');
 
+// Subscriptions
+Route::put('/subscriptions/plan/{plan}', 'SubscriptionsController@putChangePlan');
+Route::delete('/subscriptions/plan', 'SubscriptionsController@deleteCancelPlan');
+
+
 Route::get('/test', function () {
     $plan = new \App\Payments\Plan('free');
     return $plan->surcharge = 19;

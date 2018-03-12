@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Payments\CreditTransaction;
 use App\Payments\CreditTransactionType;
 use App\Payments\MessageReceipt;
+use App\Payments\Plan;
 use App\Translation\Message;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -20,6 +21,7 @@ class MessageReceiptTest extends TestCase
     public function it_can_mass_assign_these_fields()
     {
         $fields = [
+            'plan' => Plan::FREE,
             'cost_per_word' => 7,
             'amount_charged' => 150,
             'message_id' => factory(Message::class)->create()->id
