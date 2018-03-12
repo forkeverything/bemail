@@ -15,6 +15,5 @@ class SysDataSeeder extends Seeder
         $this->call(TranslationStatusesTableSeeder::class);
         $this->call(RecipientTypesTableSeeder::class);
         $this->call(CreditTransactionTypesTableSeeder::class);
-        $this->call(PlansTableSeeder::class);
     }
 }

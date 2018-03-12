@@ -2,10 +2,14 @@
 
 namespace App\Payments;
 
-use Illuminate\Database\Eloquent\Model;
+use InvalidArgumentException;
 
 /**
  * App\Payments\Plan
+ *
+ * Plan class is NOT an Eloquent Model. By using a custom class,
+ * only have to override Subscription class instead of all
+ * classes where the 'plan_id' needed to be changed.
  *
  * @property int $id
  * @property string $name
@@ -15,69 +19,120 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\Plan whereSurcharge($value)
  * @mixin \Eloquent
  */
-class Plan extends Model
+class Plan
 {
-    /**
-     * No created_at/updated_at.
-     *
-     * @var bool
-     */
-    public $timestamps = false;
-
-    /**
-     * Mass fillable fields.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name',
-        'cost',
-        'surchage'
-    ];
-
-    /**
-     * Get a Plan using it's name.
-     *
-     * @param $name
-     * @return Model|static
-     */
-    public static function hasName($name)
-    {
-        return static::where('name', $name)->firstOrFail();
-    }
 
     /**
      * Free Plan
-     *
-     * @return Model|static
      */
-    public static function free()
-    {
-        return Plan::where('name', 'free')->firstOrFail();
-    }
-
+    const FREE = 'free';
     /**
      * Regular Plan
-     *
-     * @return Model|static
      */
-    public static function regular()
-    {
-        return Plan::where('name', 'regular')->firstOrFail();
-    }
-
+    const REGULAR = 'regular';
     /**
      * Professional Plan
-     *
-     * @return Model|static
      */
-    public static function professional()
+    const PROFESSIONAL = 'professional';
+
+    /**
+     * Available plan names.
+     *
+     * This is the same as the plan id for Stripe.
+     */
+    const PLANS = [
+        self::FREE,
+        self::REGULAR,
+        self::PROFESSIONAL
+    ];
+
+    /**
+     * Plan name.
+     *
+     * @var string
+     */
+    private $name;
+
+    /**
+     * Monthly cost for plan (US cents).
+     *
+     * @var int
+     */
+    private $cost;
+
+    /**
+     * Service cost surcharge added to translator unit price (US cents).
+     *
+     * @var int
+     */
+    private $surcharge;
+
+    /**
+     * Create new Plan instance.
+     *
+     * @param $name
+     */
+    public function __construct($name)
     {
-        return Plan::where('name', 'professional')->firstOrFail();
+        if (!in_array($name, self::PLANS)) {
+            throw new InvalidArgumentException('Invalid plan provided.');
+        }
+
+        $this->name = $name;
+
+        $this->setCost()
+             ->setSurcharge();
     }
 
     /**
-     * Name of the Plan.
+     * Set cost property value.
+     *
+     * @return $this
+     */
+    private function setCost()
+    {
+        switch ($this->name) {
+            case 'free':
+                $this->cost = 0;
+                break;
+            case 'regular':
+                $this->cost = 1500;
+                break;
+            case 'professional':
+                $this->cost = 4000;
+                break;
+            default:
+                break;
+        }
+        return $this;
+    }
+
+    /**
+     * Set surchage property value.
+     *
+     * @return $this
+     */
+    private function setSurcharge()
+    {
+        switch ($this->name) {
+            case 'free':
+                $this->surcharge = 7;
+                break;
+            case 'regular':
+                $this->surcharge = 2;
+                break;
+            case 'professional':
+                $this->surcharge = 0;
+                break;
+            default:
+                break;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get name.
      *
      * @return string
      */
@@ -87,9 +142,9 @@ class Plan extends Model
     }
 
     /**
-     * Monthly recurring cost.
+     * Get cost.
      *
-     * @return mixed
+     * @return int
      */
     public function cost()
     {
@@ -97,7 +152,7 @@ class Plan extends Model
     }
 
     /**
-     * How much is added on top of unit price.
+     * Get surcharge.
      *
      * @return int
      */
