@@ -3,12 +3,10 @@
 namespace App\Payments\Listeners;
 
 use App\Payments\Events\CustomerSubscriptionDeleted;
-use App\Payments\Mail\PlanDowngradedMail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Mail;
 
-class SendDowngradedToFreePlanNotification implements ShouldQueue
+class CancelSubscription
 {
 
     /**
@@ -19,6 +17,6 @@ class SendDowngradedToFreePlanNotification implements ShouldQueue
      */
     public function handle($event)
     {
-        Mail::to($event->user)->send(new PlanDowngradedMail($event->user));
+        $event->user->subscription()->markAsCancelled();
     }
 }

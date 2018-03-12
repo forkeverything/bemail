@@ -42,8 +42,8 @@ class EventServiceProvider extends ServiceProvider
             'App\Translation\Listeners\NotifyAdminsOfTranslationError'
         ],
         'App\Payments\Events\CustomerSubscriptionDeleted' => [
-            'App\Payments\Listeners\DowngradeSubscriptionToFreePlan',
-            'App\Payments\Listeners\SendDowngradedToFreePlanNotification'
+            'App\Payments\Listeners\CancelSubscription',
+            'App\Payments\Listeners\SendSubscriptionCancelledNotification'
         ]
     ];
 
