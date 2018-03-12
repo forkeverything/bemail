@@ -31,7 +31,9 @@ Route::post('/account', 'AccountController@postUpdateSettings');
 Route::get('/languages/price/src/{langSrc}/tgt/{langTgt}', 'LanguagesController@getUnitPrice');
 
 // Subscriptions
+Route::post('/subscriptions/plan/{plan}', 'SubscriptionsController@postNewSubscription');
 Route::put('/subscriptions/plan/{plan}', 'SubscriptionsController@putChangePlan');
+Route::put('/subscriptions/credit_card', 'SubscriptionsController@putUpdateCard');
 Route::delete('/subscriptions/plan', 'SubscriptionsController@deleteCancelPlan');
 
 

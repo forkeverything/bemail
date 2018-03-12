@@ -84,7 +84,7 @@ class Plan
     }
 
     /**
-     * Insantiate Plan using User.
+     * Gets the Plan for given user.
      *
      * @param User $user
      * @return Plan

@@ -17,6 +17,6 @@ class CancelSubscription
      */
     public function handle($event)
     {
-        $event->user->subscription()->markAsCancelled();
+        $event->user->subscription()->cancel();
     }
 }
