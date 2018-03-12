@@ -31,9 +31,8 @@ Route::post('/account', 'AccountController@postUpdateSettings');
 Route::get('/languages/price/src/{langSrc}/tgt/{langTgt}', 'LanguagesController@getUnitPrice');
 
 Route::get('/test', function () {
-
     $plan = new \App\Payments\Plan('free');
-
-
     return $plan->surcharge = 19;
 });
+
+

@@ -26,14 +26,16 @@ use App\Payments\Traits\Billable;
  * @property string|null $card_last_four
  * @property string|null $trial_ends_at
  * @property int $language_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Payments\CreditTransaction[] $creditTransactions
  * @property-read \App\Language $defaultLanguage
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Message[] $messages
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Recipient[] $recipients
- * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Cashier\Subscription[] $subscriptions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Payments\Subscription[] $subscriptions
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCardBrand($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCardLastFour($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCredits($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereLanguageId($value)
@@ -43,10 +45,7 @@ use App\Payments\Traits\Billable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereStripeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereTrialEndsAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereWordCredits($value)
  * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Payments\CreditTransaction[] $creditTransactions
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCredits($value)
  */
 class User extends Authenticatable
 {

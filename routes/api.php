@@ -13,13 +13,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Routes here are under the /api/*.
 
 // Gengo Callback Route
 Route::post('gengo', 'GengoController@postCallback');
 
 // Postmark Incoming Mail Web-hook
 Route::post('postmark', 'PostmarkController@postInboundMail');
+
+// Stripe Web-Hook Controller
+Route::post('stripe',  '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook');
 
