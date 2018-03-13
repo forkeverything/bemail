@@ -9989,3 +9989,516 @@ a.text-dark:focus {
   }
 }
 
+body {
+  background: #01A3EF;
+  color: #4F617B;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+#hero {
+  color: #FFFFFF;
+}
+
+#hero .hero_logo {
+  width: 125px;
+}
+
+#hero h1 {
+  font-weight: 600;
+  font-size: 2.5em;
+  line-height: 1.25em;
+}
+
+#hero h3 {
+  line-height: 1.75em;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  margin-top: 10px;
+  font-size: 1.125em;
+}
+
+#hero .container {
+  position: relative;
+}
+
+#hero #hero-content #hero-text {
+  padding-top: 2em;
+  padding-bottom: 2em;
+  text-align: center;
+}
+
+#hero #hero-content #hero-text #btn-hero-sign-up {
+  font-size: 0.875em;
+}
+
+#hero #hero-content #hero-image {
+  padding-bottom: 2em;
+  text-align: center;
+}
+
+#hero #hero-content #hero-image img {
+  width: 80%;
+}
+
+@media (min-width: 768px) {
+  #hero #hero-content #hero-text {
+    padding-top: 8em;
+    padding-bottom: 8em;
+    text-align: left;
+  }
+
+  #hero #hero-content #hero-text #btn-hero-sign-up {
+    font-size: 1.125em;
+  }
+
+  #hero #hero-content #hero-image {
+    padding-top: 8em;
+    padding-bottom: 0;
+  }
+
+  #hero #hero-content #hero-image img {
+    width: 100%;
+  }
+}
+
+@media (min-width: 992px) {
+  #hero #hero-content #hero-image {
+    padding-top: 4em;
+  }
+}
+
+#hero #animated-mails img {
+  position: absolute;
+  top: 0;
+  z-index: -1;
+}
+
+#hero #animated-mails .mail1 {
+  top: 30px;
+  -webkit-animation: mail1 45s linear 1s infinite;
+  animation: mail1 45s linear 1s infinite;
+  opacity: 0;
+}
+
+@-webkit-keyframes mail1 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+@keyframes mail1 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+#hero #animated-mails .mail2 {
+  top: 25px;
+  -webkit-animation: mail2 35s linear 6s infinite;
+  animation: mail2 35s linear 6s infinite;
+  opacity: 0;
+}
+
+@-webkit-keyframes mail2 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+@keyframes mail2 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+#hero #animated-mails .mail3 {
+  top: 115px;
+  -webkit-animation: mail3 30s linear 11s infinite;
+  animation: mail3 30s linear 11s infinite;
+  opacity: 0;
+}
+
+@-webkit-keyframes mail3 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+@keyframes mail3 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+#hero #animated-mails .mail4 {
+  top: 70px;
+  -webkit-animation: mail4 55s linear 16s infinite;
+  animation: mail4 55s linear 16s infinite;
+  opacity: 0;
+}
+
+@-webkit-keyframes mail4 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+@keyframes mail4 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+#hero #animated-mails .mail5 {
+  top: 200px;
+  -webkit-animation: mail5 25s linear 20s infinite;
+  animation: mail5 25s linear 20s infinite;
+  opacity: 0;
+}
+
+@-webkit-keyframes mail5 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+@keyframes mail5 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+#email-area {
+  background-color: #263345;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23485c74' fill-opacity='0.26'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  color: #fff;
+  padding: 3em 0;
+  text-align: center;
+}
+
+#email-area .heading,
+#email-area #example-email {
+  font-weight: bold;
+}
+
+#email-area #example-email {
+  color: #4D637E;
+}
+
+@media (min-width: 576px) {
+  #email-area #example-email {
+    padding-top: 0.5em;
+  }
+}
+
+.highlight {
+  padding: 3em 0;
+  background: #FFFFFF;
+}
+
+.highlight img {
+  width: 100%;
+}
+
+.highlight .image {
+  text-align: center;
+}
+
+.highlight .image img {
+  max-width: 250px;
+}
+
+.highlight .text {
+  text-align: center;
+}
+
+.highlight .text h3 {
+  font-weight: bold;
+}
+
+@media (min-width: 576px) {
+  .highlight .text {
+    text-align: left;
+  }
+
+  .highlight#professional {
+    padding-top: 6em;
+  }
+
+  .highlight#simple {
+    padding-bottom: 6em;
+  }
+}
+
+@media (min-width: 768px) {
+  .highlight .text {
+    padding-top: 1em;
+  }
+}
+
+#how-it-works {
+  position: relative;
+  color: #FFFFFF;
+  padding: 3em 0;
+  overflow: hidden;
+}
+
+#how-it-works .background {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#how-it-works h1 {
+  text-align: center;
+  font-weight: bold;
+  color: #FFFFFF;
+}
+
+#how-it-works hr {
+  width: 50px;
+  height: 2px;
+  margin: 40px auto;
+  background-color: #FFFFFF;
+}
+
+#how-it-works .description {
+  text-align: center;
+}
+
+#how-it-works #how-steps {
+  padding: 3em 0;
+}
+
+#how-it-works #how-steps .step {
+  text-align: center;
+  margin: 0 0 2em;
+}
+
+#how-it-works #how-steps .step img {
+  vertical-align: middle;
+  width: 75px;
+}
+
+#how-it-works #how-steps .step h4 {
+  font-size: 15px;
+  line-height: 15px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  display: inline-block;
+  background: #6fc754;
+  padding: 8px 20px;
+  border-radius: 30px;
+  color: #FFFFFF;
+}
+
+#how-it-works #how-steps .step p {
+  font-weight: bold;
+  line-height: 160%;
+}
+
+#how-it-works #how-steps .second.row .step:last-child {
+  margin: 0;
+}
+
+@media (min-width: 576px) {
+  #how-it-works {
+    background: #FFFFFF;
+    padding: 9em 0 6em 0;
+  }
+
+  #how-it-works .background {
+    display: block;
+  }
+
+  #how-it-works #how-steps .first.row {
+    margin-bottom: 2em;
+  }
+
+  #how-it-works #how-steps .step {
+    margin: 0;
+  }
+}
+
+#sign-up {
+  background: #FFFFFF;
+  padding: 6em 0;
+}
+
+#sign-up h3 {
+  line-height: 1.45em;
+  text-align: center;
+  font-size: 1.25em;
+}
+
+@media (min-width: 576px) {
+  #sign-up h3 {
+    font-size: 1.5em;
+    text-align: left;
+  }
+}
+
