@@ -8355,6 +8355,14 @@ button.close {
   width: auto;
 }
 
+.navbar .navbar-right .subscription .badge.regular {
+  background-color: #2ab27b;
+}
+
+.navbar .navbar-right .subscription .badge.professional {
+  background-color: #3097D1;
+}
+
 .recipients-input > .input {
   position: relative;
   cursor: text;

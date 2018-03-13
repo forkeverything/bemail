@@ -43,6 +43,9 @@
                         @else
                             <li><a href="/compose">New Message</a></li>
                             <li><a href="#" data-toggle="tooltip" title="Free word credits" data-placement="bottom">{{ Auth::user()->credits }} Words</a></li>
+                            <li>
+                                <a href="/subscription" class="subscription"><span class="badge {{ Auth::user()->plan()->name() }}">{{ Auth::user()->plan()->name() }}</span></a>
+                            </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>

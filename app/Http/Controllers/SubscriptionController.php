@@ -9,8 +9,13 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Cashier\Subscription;
 
-class SubscriptionsController extends Controller
+class SubscriptionController extends Controller
 {
+
+    public function getSubscriptionsPage()
+    {
+        return view('subscriptions');
+    }
 
     /**
      * Sign up for a new subscription.

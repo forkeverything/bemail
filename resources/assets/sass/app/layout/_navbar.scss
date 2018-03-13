@@ -5,4 +5,18 @@
       width: auto;
     }
   }
+
+  .navbar-right {
+    .subscription {
+      .badge {
+        &.regular {
+          background-color: $brand-success;
+        }
+
+        &.professional {
+          background-color: $brand-primary;
+        }
+      }
+    }
+  }
 }

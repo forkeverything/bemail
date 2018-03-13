@@ -31,16 +31,13 @@ Route::post('/account', 'AccountController@postUpdateSettings');
 Route::get('/languages/price/src/{langSrc}/tgt/{langTgt}', 'LanguagesController@getUnitPrice');
 
 // Subscriptions
-Route::post('/subscriptions/plan/{plan}', 'SubscriptionsController@postNewSubscription');
-Route::put('/subscriptions/plan/{plan}', 'SubscriptionsController@putChangePlan');
-Route::put('/subscriptions/credit_card', 'SubscriptionsController@putUpdateCard');
-Route::delete('/subscriptions/plan', 'SubscriptionsController@deleteCancelPlan');
-Route::put('/subscriptions/plan', 'SubscriptionsController@putResumePlan');
+Route::get('/subscription', 'SubscriptionController@getSubscriptionsPage');
+Route::post('/subscription/plan/{plan}', 'SubscriptionController@postNewSubscription');
+Route::put('/subscription/plan/{plan}', 'SubscriptionController@putChangePlan');
+Route::put('/subscription/credit_card', 'SubscriptionController@putUpdateCard');
+Route::delete('/subscription/plan', 'SubscriptionController@deleteCancelPlan');
+Route::put('/subscription/plan', 'SubscriptionController@putResumePlan');
 
 
-Route::get('/test', function () {
-    $plan = new \App\Payments\Plan('free');
-    return $plan->surcharge = 19;
-});
 
 
