@@ -1,16 +1,16 @@
 // Fonts
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
 
-// Variables
-@import "variables";
-
 // Bootstrap
-@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import "~bootstrap/scss/bootstrap";
+
+// Variables
+//@import "variables";
 
 // Layout
-@import "app/layout";
+//@import "app/layout";
 
 // Pages
 
 // Components
-@import "app/components/recipients-input";
+//@import "app/components/recipients-input";

@@ -14,8 +14,8 @@ require('./helpers.js');
 
 try {
     window.$ = window.jQuery = require('jquery');
-
-    require('bootstrap-sass');
+    require('popper.js');
+    require('bootstrap');
 } catch (e) {}
 
 /**
@@ -58,7 +58,7 @@ if (token) {
  *
  * @type {Language}
  */
-window.Language = require('./Language');
+// window.Language = require('./Language');
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
