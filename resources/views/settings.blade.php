@@ -11,14 +11,14 @@
             <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
                 <label class="control-label">Name</label>
                 <input name="name" type="text" value="{{ $user->name }}" class="form-control">
-                @include('layouts.single-error', ['errorField' => 'name'])
+                @include('layouts.errors.single', ['errorField' => 'name'])
             </div>
 
             <!-- Email -->
             <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
                 <label class="control-label">Email</label>
                 <input type="text" name="email" value="{{ $user->email }}" class="form-control">
-                @include('layouts.single-error', ['errorField' => 'email'])
+                @include('layouts.errors.single', ['errorField' => 'email'])
             </div>
 
             <!-- Password -->
@@ -36,7 +36,7 @@
                     Your Default Language
                 </label>
                 <language-picker name="lang_default" default="{{ $user->defaultLanguage->code }}" :languages="{{ $languages }}"></language-picker>
-                @include('layouts.single-error', ['errorField' => 'lang_default'])
+                @include('layouts.errors.single', ['errorField' => 'lang_default'])
             </div>
 
 
