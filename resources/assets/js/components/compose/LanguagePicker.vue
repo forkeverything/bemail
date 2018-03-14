@@ -1,5 +1,5 @@
 <template>
-    <select :name="name" v-model="selected" class="form-control" @change="broadcast">
+    <select :name="name" v-model="selected" class="form-control" :class="classProp" @change="broadcast">
         <option value="" selected disabled>Pick One</option>
         <option v-for="language in languages" :value="language.code">{{ language.name }}</option>
     </select>
@@ -13,6 +13,7 @@
         },
         props: [
             'value',
+            'class-prop',
             'languages',
             'name'
         ],

@@ -46429,7 +46429,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             selected: ''
         };
     },
-    props: ['value', 'languages', 'name'],
+    props: ['value', 'class-prop', 'languages', 'name'],
     watch: {
         value: function value(val) {
             if (val) this.selected = val;
@@ -46458,6 +46458,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "selected"
     }],
     staticClass: "form-control",
+    class: _vm.classProp,
     attrs: {
       "name": _vm.name
     },

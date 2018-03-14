@@ -1,91 +1,94 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Register</div>
 
-                <div class="panel-body">
 
-                    <form class="form-horizontal" method="POST" action="{{ route('register') }}">
-                        {{ csrf_field() }}
+	<div class="row justify-content-center">
+		<div class="col-lg-8">
+			<div class="card mt-5 border-primary">
+				<div class="card-header bg-primary text-white">
+					Register
+				</div>
+				<div class="card-body p-5">
+					<form class="form-horizontal" method="POST" action="{{ route('register') }}">
+						{{ csrf_field() }}
+						<!-- Name -->
+						@component('auth.register.field', [
+							'shouldValidate' => true,
+							'fieldName' => 'name',
+							'title' => 'Name'
+						])
+							<input id="register-name"
+							       type="text"
+							       class="form-control {{ $errors->has('name') ? 'border-danger' : '' }}"
+							       name="name"
+							       value="{{ old('name') }}"
+							       required
+							       autofocus
+							>
+						@endcomponent
+						<!-- Email -->
+						@component('auth.register.field', [
+							'shouldValidate' => true,
+							'fieldName' => 'email',
+							'title' => 'E-mail Address'
+						])
+							<input id="register-email"
+							       type="email"
+							       class="form-control {{ $errors->has('email') ? 'border-danger' : '' }}"
+							       name="email"
+							       value="{{ old('email') }}"
+							       required
+							>
+						@endcomponent
+						<!-- Password -->
+						@component('auth.register.field', [
+							'shouldValidate' => true,
+							'fieldName' => 'password',
+							'title' => 'Password'
+						])
+							<input id="register-password"
+							       type="password"
+							       class="form-control {{ $errors->has('password') ? 'border-danger' : '' }}"
+							       name="password"
+							       required
+							>
+						@endcomponent
+						<!-- Password Confirm -->
+						@component('auth.register.field', [
+						'fieldName' => 'password_confirmation',
+						'title' => 'Confirm Password'
+						])
+							<input id="password-confirm"
+							       type="password"
+							       class="form-control"
+							       name="password_confirmation"
+							       required
+							>
+						@endcomponent
+						<!-- Default Language -->
+						@component('auth.register.field', [
+							'shouldValidate' => true,
+							'fieldName' => 'lang_default',
+							'title' => 'Language'
+						])
+								<language-picker name="lang_default"
+								                 :languages="{{ $languages }}"
+								                 old-input="{{ old('lang_default') }}"
+								                 class-prop="{{ $errors->has('lang_default') ? 'border-danger' : '' }}"
+								></language-picker>
+						@endcomponent
 
-                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Name</label>
-
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
-
-                                @if ($errors->has('name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group {{ $errors->has('lang_default') ? ' has-error' : '' }}">
-                            <label for="register-default-language" class="col-md-4 control-label">Your Language</label>
-
-                            <div class="col-md-6">
-                                <language-picker name="lang_default" :languages="{{ $languages }}" old-input="{{ old('lang_default') }}"></language-picker>
-                                @if ($errors->has('lang_default'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('lang_default') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Register
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+						<div class="form-group row">
+							<div class="offset-md-3 col-md-8">
+								<button type="submit" class="btn btn-primary">
+									Register
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 @endsection

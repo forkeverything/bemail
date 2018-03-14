@@ -3,47 +3,60 @@
 @section('content')
 
 	<div class="row justify-content-center">
-		<div class="col-lg-6">
-			<div class="card mt-5">
-				<div class="card-body">
-					<div class="card-title"><h4 class="text-center">Login</h4></div>
+		<div class="col-lg-8">
+			<div class="card mt-5 border-primary">
+				<div class="card-header bg-primary text-white">
+					Login
+				</div>
+				<div class="card-body p-5">
 					<form method="POST" action="{{ route('login') }}">
 						{{ csrf_field() }}
-						<div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-							<label for="email" class="control-label">E-Mail Address</label>
-							<input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required
+						<!-- Email -->
+						@component('auth.login.field', [
+							'shouldValidate' => true,
+							'fieldName' => 'email',
+							'title' => 'E-mail Address'
+						])
+							<input id="login-email"
+							       type="email"
+							       class="form-control {{ $errors->has('email') ? 'border-danger' : '' }}"
+							       name="email"
+							       value="{{ old('email') }}" required
 							       autofocus>
-							@if ($errors->has('email'))
-								<span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-							@endif
-						</div>
-						<div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-							<label for="password" class="control-label">Password</label>
-							<input id="password" type="password" class="form-control" name="password" required>
-							@if ($errors->has('password'))
-								<span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-							@endif
-						</div>
-						<div class="form-group">
-							<div class="checkbox">
+						@endcomponent
+						<!-- Password -->
+						@component('auth.login.field', [
+							'shouldValidate' => true,
+							'fieldName' => 'password',
+							'title' => 'Password'
+						])
+							<input id="login-password"
+							       type="password"
+							       class="form-control {{ $errors->has('password') ? 'border-danger' : '' }}"
+							       name="password"
+							       required
+							>
+						@endcomponent
+						<!-- Remember -->
+						<div class="form-group row">
+							<div class="checkbox offset-md-3 col-md-9">
 								<label>
-									<input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember
+									<input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
+									Remember
 									Me
 								</label>
 							</div>
 						</div>
-
-						<div class="form-group">
-							<button type="submit" class="btn btn-primary">
-								Login
-							</button>
-							<a class="btn btn-link" href="{{ route('password.request') }}">
-								Forgot Your Password?
-							</a>
+						<!-- Submit -->
+						<div class="form-group row">
+							<div class="offset-md-3 col-md-9">
+								<button type="submit" class="btn btn-primary">
+									Login
+								</button>
+								<a class="btn btn-link" href="{{ route('password.request') }}">
+									Forgot Your Password?
+								</a>
+							</div>
 						</div>
 					</form>
 				</div>

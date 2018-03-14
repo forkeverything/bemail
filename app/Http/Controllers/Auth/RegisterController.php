@@ -54,8 +54,11 @@ class RegisterController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'lang_default' => ['required', new LanguageCode]
+        ], [
+            'lang_default.required' => 'Default Language is required.'
         ]);
     }
+
 
     /**
      * Create a new user instance after a valid registration.
