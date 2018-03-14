@@ -46095,18 +46095,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -46245,14 +46233,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   })]), _vm._v(" "), _c('div', {
-    staticClass: "form-group",
-    class: {
-      'has-error': _vm.hasLangError
-    }
-  }, [_c('ul', {
-    staticClass: "list-inline"
-  }, [_c('li', [_c('div', {
-    staticClass: "form-inline"
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("Translate From")]), _vm._v(" "), _c('div', {
+    staticClass: "row align-items-center"
+  }, [_c('div', {
+    staticClass: "col-5 col-md-4 col-lg-3 col-xl-2"
   }, [_c('language-picker', {
     attrs: {
       "name": "lang_src",
@@ -46262,8 +46247,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "picked-language": _vm.updateLang
     }
-  })], 1)]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('li', [_c('div', {
-    staticClass: "form-inline"
+  })], 1), _vm._v(" "), _c('label', {
+    staticClass: "control-label mb-0"
+  }, [_vm._v("To")]), _vm._v(" "), _c('div', {
+    staticClass: "col-5 col-md-4 col-lg-3 col-xl-2"
   }, [_c('language-picker', {
     attrs: {
       "name": "lang_tgt",
@@ -46273,7 +46260,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "picked-language": _vm.updateLang
     }
-  })], 1)])]), _vm._v(" "), (_vm.langSrcError) ? _c('field-error', {
+  })], 1)]), _vm._v(" "), (_vm.langSrcError) ? _c('field-error', {
     attrs: {
       "error": _vm.langSrcError
     }
@@ -46282,11 +46269,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "error": _vm.langTgtError
     }
   }) : _vm._e()], 1), _vm._v(" "), _c('div', {
-    staticClass: "form-group",
-    class: {
-      'has-error': _vm.bodyError
-    }
-  }, [_c('p', [_vm._v("Words: " + _vm._s(_vm.wordCount))]), _vm._v(" "), _c('textarea', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "d-flex justify-content-between align-items-center"
+  }, [_vm._v("Message "), _c('small', [_vm._v(_vm._s(_vm.wordCount))])]), _vm._v(" "), _c('textarea', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -46317,21 +46303,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "error": _vm.bodyError
     }
   }) : _vm._e()], 1), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "message-form-attachments"
-    }
-  }, [_vm._v("Attachments")]), _vm._v(" "), _c('br'), _vm._v(" "), _c('span', {
-    staticClass: "small"
-  }, [_vm._v("Max total size 35MB")]), _vm._v(" "), _c('file-input', {
+    staticClass: "form-group mb-5"
+  }, [_vm._m(0), _vm._v(" "), _c('file-input', {
     attrs: {
       "id": "message-form-attachments",
       "name": "attachments[]",
       "multiple": true
     }
   })], 1), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-primary",
+    staticClass: "btn btn-block btn-lg btn-primary",
     attrs: {
       "type": "button"
     },
@@ -46351,9 +46331,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('li', [_c('label', {
-    staticClass: "control-label"
-  }, [_vm._v("To")])])
+  return _c('label', {
+    staticClass: "d-flex justify-content-between align-items-center",
+    attrs: {
+      "for": "message-form-attachments"
+    }
+  }, [_vm._v("Attachments "), _c('small', [_vm._v("Max total size 35MB")])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -46580,9 +46563,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -46694,9 +46674,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     ref: "container",
     staticClass: "recipients-input",
-    class: {
-      'disabled': _vm.sendToSelf
-    },
     on: {
       "click": _vm.focusInput
     }
@@ -47023,6 +47000,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -47054,9 +47032,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "file-input"
+    staticClass: "file-input custom-file"
   }, [_c('input', {
     ref: "input",
+    staticClass: "custom-file-input",
     attrs: {
       "id": _vm.id,
       "type": "file",
@@ -47066,7 +47045,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "change": _vm.updateList
     }
-  }), _vm._v(" "), _c('ul', {
+  }), _vm._v(" "), _c('label', {
+    staticClass: "custom-file-label",
+    attrs: {
+      "for": _vm.id
+    }
+  }, [_vm._v("Choose file")]), _vm._v(" "), _c('ul', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -47152,6 +47136,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -47178,10 +47170,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "message-options"
-  }, [_c('label', {
-    staticClass: "checkbox-inline"
+    staticClass: "message-options form-check form-check-inline"
+  }, [_c('div', {
+    staticClass: "form-check form-check-inline"
   }, [_c('input', {
+    staticClass: "form-check-input",
     attrs: {
       "type": "checkbox",
       "name": "auto_translate_reply"
@@ -47192,14 +47185,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "change": _vm.changeAutoTranslateReply
     }
-  }), _vm._v(" "), _c('span', {
+  }), _vm._v(" "), _c('label', {
+    staticClass: "form-check-label",
     attrs: {
       "data-toggle": "tooltip",
       "title": "All replies will be translated into your default language at a fee to you."
     }
-  }, [_vm._v("Auto-Translate Reply")])]), _vm._v(" "), _c('label', {
-    staticClass: "checkbox-inline"
+  }, [_vm._v("Auto-Translate Reply")])]), _vm._v(" "), _c('div', {
+    staticClass: "form-check form-check-inline"
   }, [_c('input', {
+    staticClass: "form-check-input",
     attrs: {
       "type": "checkbox",
       "name": "send_to_self"
@@ -47210,7 +47205,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "change": _vm.changeSendToSelf
     }
-  }), _vm._v(" "), _c('span', {
+  }), _vm._v(" "), _c('label', {
+    staticClass: "form-check-label",
     attrs: {
       "data-toggle": "tooltip",
       "title": "Translated message will be sent back to you only."

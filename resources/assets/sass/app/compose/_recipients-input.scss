@@ -6,7 +6,14 @@
     min-height: 3.125rem;
 
     &.disabled {
+      background: $light;
       cursor: not-allowed;
+      input {
+        background: $light;
+      }
+      .single-tag {
+        cursor: not-allowed;
+      }
     }
 
     .tag-input {

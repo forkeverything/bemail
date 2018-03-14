@@ -22,42 +22,32 @@
             <input name="subject" type="text" id="message-form-subject" class="form-control" v-model="subject">
         </div>
         <!-- Language Picker -->
-        <div class="form-group"
-             :class="{
-                'has-error': hasLangError
-            }"
-        >
-            <ul class="list-inline">
-                <li>
-                    <div class="form-inline">
-                        <language-picker name="lang_src"
-                                         :value="langSrc"
-                                         :languages="languages"
-                                         @picked-language="updateLang"
-                        ></language-picker>
-                    </div>
-                </li>
-                <li><label class="control-label">To</label></li>
-                <li>
-                    <div class="form-inline">
-                        <language-picker name="lang_tgt"
-                                         :value="langTgt"
-                                         :languages="languages"
-                                         @picked-language="updateLang"
-                        ></language-picker>
-                    </div>
-                </li>
-            </ul>
+        <div class="form-group">
+            <label>Translate From</label>
+            <div class="row align-items-center">
+                <div class="col-5 col-md-4 col-lg-3 col-xl-2">
+                    <language-picker name="lang_src"
+                                     :value="langSrc"
+                                     :languages="languages"
+                                     @picked-language="updateLang"
+                    ></language-picker>
+                </div>
+                    <label class="control-label mb-0">To</label>
+                <div class="col-5 col-md-4 col-lg-3 col-xl-2">
+                    <language-picker name="lang_tgt"
+                                     :value="langTgt"
+                                     :languages="languages"
+                                     @picked-language="updateLang"
+                    ></language-picker>
+                </div>
+            </div>
             <field-error v-if="langSrcError" :error="langSrcError"></field-error>
             <field-error v-if="langTgtError" :error="langTgtError"></field-error>
         </div>
         <!-- Body -->
         <div class="form-group"
-             :class="{
-                'has-error': bodyError
-             }"
         >
-            <p>Words: {{ wordCount }}</p>
+            <label class="d-flex justify-content-between align-items-center">Message <small>{{ wordCount }}</small></label>
             <textarea name="body"
                       class="form-control"
                       id="message-form-body"
@@ -69,14 +59,12 @@
             <field-error v-if="bodyError" :error="bodyError"></field-error>
         </div>
         <!-- Attachments -->
-        <div class="form-group">
-            <label for="message-form-attachments">Attachments</label>
-            <br>
-            <span class="small">Max total size 35MB</span>
+        <div class="form-group mb-5">
+            <label for="message-form-attachments" class="d-flex justify-content-between align-items-center">Attachments <small>Max total size 35MB</small></label>
             <file-input id="message-form-attachments" name="attachments[]" :multiple="true"></file-input>
         </div>
         <!-- Submit -->
-        <button type="button" class="btn btn-primary" @click="showSummaryModal">Send</button>
+        <button type="button" class="btn btn-block btn-lg btn-primary" @click="showSummaryModal">Send</button>
         <summary-modal :word-count="wordCount"
                        @send-form="submit"
                        :word-credits="wordCredits"

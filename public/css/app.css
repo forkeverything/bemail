@@ -9996,6 +9996,15 @@ a.text-dark:focus {
 }
 
 .recipients-input .field.disabled {
+  background: #f8f9fa;
+  cursor: not-allowed;
+}
+
+.recipients-input .field.disabled input {
+  background: #f8f9fa;
+}
+
+.recipients-input .field.disabled .single-tag {
   cursor: not-allowed;
 }
 

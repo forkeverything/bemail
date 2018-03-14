@@ -1,6 +1,7 @@
 <template>
-    <div class="file-input">
-        <input :id="id" type="file" :name="name" :multiple="multiple" ref="input" @change="updateList">
+    <div class="file-input custom-file">
+        <input :id="id" class="custom-file-input" type="file" :name="name" :multiple="multiple" ref="input" @change="updateList">
+        <label class="custom-file-label" :for="id">Choose file</label>
         <ul class="files-list list-unstyled list-inline" v-show="multipleFiles">
             <li v-for="file in files">{{ file }}</li>
         </ul>

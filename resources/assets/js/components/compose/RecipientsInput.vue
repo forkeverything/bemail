@@ -2,9 +2,6 @@
     <div class="recipients-input"
          @click="focusInput"
          ref="container"
-         :class="{
-            'disabled': sendToSelf
-         }"
     >
         <div class="field form-control d-flex align-items-center flex-wrap" :class="{ 'disabled': sendToSelf }">
             <input type="hidden" name="recipients" :value="value">
