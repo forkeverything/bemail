@@ -1,16 +1,16 @@
 // Fonts
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
 
+// BS4 Variable Overrides
+@import "variables";
+
 // Bootstrap
 @import "~bootstrap/scss/bootstrap";
-
-// Variables
-//@import "variables";
 
 // Layout
 //@import "app/layout";
 
 // Pages
 
-// Components
-//@import "app/components/recipients-input";
+// Compose
+@import "app/compose/recipients-input";

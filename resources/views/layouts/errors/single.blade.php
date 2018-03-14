@@ -1,5 +1,5 @@
 @if($errors->first($errorField))
-	<span class="help-block text-danger">
+	<span class="field-error text-danger">
         <small>{{ $errors->first($errorField) }}</small>
     </span>
 @endif

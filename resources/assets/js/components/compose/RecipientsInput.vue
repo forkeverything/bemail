@@ -6,26 +6,22 @@
             'disabled': sendToSelf
          }"
     >
-        <div class="error" v-show="showError">
-            {{ validateError }}
-        </div>
-        <div class="input form-control" :class="{ 'disabled': sendToSelf }">
+        <div class="field form-control d-flex align-items-center flex-wrap" :class="{ 'disabled': sendToSelf }">
             <input type="hidden" name="recipients" :value="value">
-            <div class="input-wrap" v-if="inputPosition === 0">
-                <tag-input v-model="newTag"
-                           @add-tag="addTag"
-                           :remove-tag="removeTag"
-                           :focus-tag="focusTag"
-                           :input-position="inputPosition"
-                           :is-disabled="sendToSelf"
-                >
-                </tag-input>
-            </div>
+            <tag-input v-if="inputPosition === 0"
+                       v-model="newTag"
+                       @add-tag="addTag"
+                       :remove-tag="removeTag"
+                       :focus-tag="focusTag"
+                       :input-position="inputPosition"
+                       :is-disabled="sendToSelf"
+            >
+            </tag-input>
             <template v-for="(tag, index) in tags"
                       v-if="! emptyContainer"
             >
                 <button type="button"
-                        class="single-tag btn btn-tag"
+                        class="single-tag btn btn-sm btn-primary mr-1"
                         @click.stop=""
                         @keydown.left.prevent.stop="leftTag(index)"
                         @keydown.delete.prevent.stop="removeTag(index)"
@@ -35,17 +31,19 @@
                 >
                     {{ tag }}
                 </button>
-                <div class="input-wrap" v-if="inputPosition === (index + 1)">
-                    <tag-input v-model="newTag"
-                               @add-tag="addTag"
-                               :remove-tag="removeTag"
-                               :focus-tag="focusTag"
-                               :input-position="inputPosition"
-                               :is-disabled="sendToSelf"
-                    >
-                    </tag-input>
-                </div>
+                <tag-input v-if="inputPosition === (index + 1)"
+                           v-model="newTag"
+                           @add-tag="addTag"
+                           :remove-tag="removeTag"
+                           :focus-tag="focusTag"
+                           :input-position="inputPosition"
+                           :is-disabled="sendToSelf"
+                >
+                </tag-input>
             </template>
+        </div>
+        <div class="error text-danger" v-show="showError">
+            <small>{{ validateError }}</small>
         </div>
     </div>
 </template>
@@ -71,14 +69,14 @@
         props: ['recipients', 'send-to-self'],
         methods: {
             focusInput() {
-                if(this.sendToSelf) return;
+                if (this.sendToSelf) return;
                 $(this.$refs.container).find('.tag-input input').focus();
             },
             addTag: function (endAddingRecipient) {
 
-                if(! this.newTag) return;
+                if (!this.newTag) return;
 
-                if(! isValidEmail(this.newTag)) {
+                if (!isValidEmail(this.newTag)) {
                     this.displayError("Please enter a valid email.");
                     return
                 }
@@ -139,10 +137,10 @@
                 return false;
             }
         },
-        mounted(){
+        mounted() {
             this.inputPosition = this.tags.length;
             // Set tags if we have old recipients (ie. after validation error)
-            if(this.recipients) {
+            if (this.recipients) {
                 this.tags = this.recipients.split(',');
             }
         }

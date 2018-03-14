@@ -1,7 +1,6 @@
 <template>
     <div class="tag-input">
-            <pre ref="sizer"
-                 class="sizer">{{ value }}</pre>
+        <pre ref="sizer" class="sizer">{{ value }}</pre>
         <input ref="input"
                :value="value"
                :style="{ width: inputWidth }"
@@ -21,15 +20,17 @@
     export default {
         data: function () {
             return {
-                inputWidth: '20px'
+                inputWidth: '0.50rem'
             }
         },
         props: ['value', 'remove-tag', 'input-position', 'focus-tag', 'is-disabled'],
         watch: {
             value() {
                 this.$nextTick(() => {
-                    // 20px runway for calculating width time, needed to kill the flicker.
-                    this.inputWidth = Math.round($(this.$refs.sizer).width()) + 20 + 'px';
+                    // 0.25rem runway for calculating width time, needed to kill the flicker.
+                    let remWidth = $(this.$refs.sizer).width() / parseFloat($("body").css("font-size"));
+                    this.inputWidth = remWidth + 0.50 + "rem";
+                    console.log(this.inputWidth);
                 });
             }
         },

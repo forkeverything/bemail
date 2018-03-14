@@ -1,6 +1,6 @@
 <template>
-    <span class="field-error help-block">
-        <strong>{{ error }}</strong>
+    <span class="field-error text-danger">
+        <small>{{ error }}</small>
     </span>
 </template>
 <script>

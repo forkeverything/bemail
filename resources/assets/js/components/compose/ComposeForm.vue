@@ -3,11 +3,7 @@
         <!-- CSRF Field -->
         <input type="hidden" name="_token" :value="token">
         <!-- Recipients -->
-        <div class="form-group"
-             :class="{
-                'has-error': recipientsError
-            }"
-        >
+        <div class="form-group">
             <label for="message-form-recipient" class="control-label">Recipients</label>
             <recipients-input :recipients="recipients" :send-to-self="sendToSelf"></recipients-input>
             <field-error v-if="recipientsError" :error="recipientsError"></field-error>

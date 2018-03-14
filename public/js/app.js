@@ -46107,10 +46107,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -46194,10 +46190,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": _vm.token
     }
   }), _vm._v(" "), _c('div', {
-    staticClass: "form-group",
-    class: {
-      'has-error': _vm.recipientsError
-    }
+    staticClass: "form-group"
   }, [_c('label', {
     staticClass: "control-label",
     attrs: {
@@ -46590,8 +46583,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -46710,15 +46701,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "click": _vm.focusInput
     }
   }, [_c('div', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.showError),
-      expression: "showError"
-    }],
-    staticClass: "error"
-  }, [_vm._v("\n        " + _vm._s(_vm.validateError) + "\n    ")]), _vm._v(" "), _c('div', {
-    staticClass: "input form-control",
+    staticClass: "field form-control d-flex align-items-center flex-wrap",
     class: {
       'disabled': _vm.sendToSelf
     }
@@ -46730,9 +46713,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     domProps: {
       "value": _vm.value
     }
-  }), _vm._v(" "), (_vm.inputPosition === 0) ? _c('div', {
-    staticClass: "input-wrap"
-  }, [_c('tag-input', {
+  }), _vm._v(" "), (_vm.inputPosition === 0) ? _c('tag-input', {
     attrs: {
       "remove-tag": _vm.removeTag,
       "focus-tag": _vm.focusTag,
@@ -46749,10 +46730,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "newTag"
     }
-  })], 1) : _vm._e(), _vm._v(" "), _vm._l((_vm.tags), function(tag, index) {
+  }) : _vm._e(), _vm._v(" "), _vm._l((_vm.tags), function(tag, index) {
     return (!_vm.emptyContainer) ? [_c('button', {
       key: index,
-      staticClass: "single-tag btn btn-tag",
+      staticClass: "single-tag btn btn-sm btn-primary mr-1",
       attrs: {
         "type": "button",
         "disabled": _vm.sendToSelf
@@ -46780,9 +46761,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.rightTag(index)
         }]
       }
-    }, [_vm._v("\n                " + _vm._s(tag) + "\n            ")]), _vm._v(" "), (_vm.inputPosition === (index + 1)) ? _c('div', {
-      staticClass: "input-wrap"
-    }, [_c('tag-input', {
+    }, [_vm._v("\n                " + _vm._s(tag) + "\n            ")]), _vm._v(" "), (_vm.inputPosition === (index + 1)) ? _c('tag-input', {
       attrs: {
         "remove-tag": _vm.removeTag,
         "focus-tag": _vm.focusTag,
@@ -46799,8 +46778,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         },
         expression: "newTag"
       }
-    })], 1) : _vm._e()] : _vm._e()
-  })], 2)])
+    }) : _vm._e()] : _vm._e()
+  })], 2), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.showError),
+      expression: "showError"
+    }],
+    staticClass: "error text-danger"
+  }, [_c('small', [_vm._v(_vm._s(_vm.validateError))])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -46874,12 +46861,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            inputWidth: '20px'
+            inputWidth: '0.50rem'
         };
     },
     props: ['value', 'remove-tag', 'input-position', 'focus-tag', 'is-disabled'],
@@ -46888,8 +46874,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             this.$nextTick(function () {
-                // 20px runway for calculating width time, needed to kill the flicker.
-                _this.inputWidth = Math.round($(_this.$refs.sizer).width()) + 20 + 'px';
+                // 0.25rem runway for calculating width time, needed to kill the flicker.
+                var remWidth = $(_this.$refs.sizer).width() / parseFloat($("body").css("font-size"));
+                _this.inputWidth = remWidth + 0.50 + "rem";
+                console.log(_this.inputWidth);
             });
         }
     },
@@ -47714,8 +47702,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', {
-    staticClass: "field-error help-block"
-  }, [_c('strong', [_vm._v(_vm._s(_vm.error))])])
+    staticClass: "field-error text-danger"
+  }, [_c('small', [_vm._v(_vm._s(_vm.error))])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
