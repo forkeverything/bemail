@@ -14,7 +14,9 @@
 <body>
     <div id="app">
         @include('layouts.app.navbar')
-        @yield('content')
+        <div class="container">
+            @yield('content')
+        </div>
     </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
