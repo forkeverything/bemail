@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light mb-3 border-bottom box-shadow">
 
 	<div class="container">
 		<!-- Logo -->
