@@ -9990,17 +9990,20 @@ a.text-dark:focus {
 }
 
 #landing-hero {
-  position: relative;
-  overflow: hidden;
   background: #01A3EF;
 }
 
-#landing-hero img.rocket-mail {
+#landing-hero .container {
+  position: relative;
+  overflow: hidden;
+}
+
+#landing-hero .container img.rocket-mail {
   position: relative;
   z-index: 2;
 }
 
-#landing-hero #animated-mails {
+#landing-hero .container #animated-mails {
   width: 100%;
   height: 100%;
   z-index: 1;
@@ -10009,13 +10012,13 @@ a.text-dark:focus {
   right: 0;
 }
 
-#landing-hero #animated-mails img {
+#landing-hero .container #animated-mails img {
   position: absolute;
   top: 0;
   z-index: -1;
 }
 
-#landing-hero #animated-mails .mail1 {
+#landing-hero .container #animated-mails .mail1 {
   top: 30px;
   -webkit-animation: mail1 45s linear 1s infinite;
   animation: mail1 45s linear 1s infinite;
@@ -10066,7 +10069,7 @@ a.text-dark:focus {
   }
 }
 
-#landing-hero #animated-mails .mail2 {
+#landing-hero .container #animated-mails .mail2 {
   top: 25px;
   -webkit-animation: mail2 35s linear 6s infinite;
   animation: mail2 35s linear 6s infinite;
@@ -10117,7 +10120,7 @@ a.text-dark:focus {
   }
 }
 
-#landing-hero #animated-mails .mail3 {
+#landing-hero .container #animated-mails .mail3 {
   top: 115px;
   -webkit-animation: mail3 30s linear 11s infinite;
   animation: mail3 30s linear 11s infinite;
@@ -10168,7 +10171,7 @@ a.text-dark:focus {
   }
 }
 
-#landing-hero #animated-mails .mail4 {
+#landing-hero .container #animated-mails .mail4 {
   top: 70px;
   -webkit-animation: mail4 55s linear 16s infinite;
   animation: mail4 55s linear 16s infinite;
@@ -10219,7 +10222,7 @@ a.text-dark:focus {
   }
 }
 
-#landing-hero #animated-mails .mail5 {
+#landing-hero .container #animated-mails .mail5 {
   top: 200px;
   -webkit-animation: mail5 25s linear 20s infinite;
   animation: mail5 25s linear 20s infinite;

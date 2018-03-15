@@ -6,29 +6,32 @@
 
 
 #landing-hero {
-  position: relative;
-  overflow: hidden;
   background: #01A3EF;
 
-  img.rocket-mail {
+  .container {
     position: relative;
-    z-index: 2;
-  }
+    overflow: hidden;
 
-  #animated-mails {
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    right: 0;
+    img.rocket-mail {
+      position: relative;
+      z-index: 2;
+    }
 
-    img {
+    #animated-mails {
+      width: 100%;
+      height: 100%;
+      z-index: 1;
       position: absolute;
       top: 0;
-      z-index: -1;
+      right: 0;
+
+      img {
+        position: absolute;
+        top: 0;
+        z-index: -1;
+      }
+      @import "landing/mail-animation";
     }
-    @import "landing/mail-animation";
   }
 }
 
