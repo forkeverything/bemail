@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
         @include('flash::message')
 
         <form action="account" method="POST">
@@ -43,5 +42,4 @@
             <!-- Submit -->
             <button type="submit" class="btn btn-primary">Update</button>
         </form>
-    </div>
 @endsection
