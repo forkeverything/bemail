@@ -47019,6 +47019,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -47081,14 +47083,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, _vm._l((_vm.files), function(file, index) {
     return _c('li', {
       staticClass: "list-inline-item"
-    }, [_c('span', {
-      staticClass: "badge badge-secondary",
+    }, [_c('button', {
+      staticClass: "btn btn-sm btn-secondary",
+      attrs: {
+        "type": "button"
+      },
       on: {
         "click": function($event) {
           _vm.$refs.input.click()
         }
       }
-    }, [_vm._v(_vm._s(file.name))])])
+    }, [_vm._v("\n                " + _vm._s(file.name) + "\n            ")])])
   }))])
 },staticRenderFns: []}
 module.exports.render._withStripped = true

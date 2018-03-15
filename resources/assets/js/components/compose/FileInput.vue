@@ -12,7 +12,9 @@
         </div>
         <ul class="files-list list-unstyled list-inline" v-show="hasFiles">
             <li v-for="(file, index) in files" class="list-inline-item">
-                <span class="badge badge-secondary" @click="$refs.input.click()">{{ file.name }}</span>
+                <button type="button" class="btn btn-sm btn-secondary" @click="$refs.input.click()">
+                    {{ file.name }}
+                </button>
             </li>
         </ul>
     </div>
