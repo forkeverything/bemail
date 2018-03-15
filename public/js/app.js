@@ -47426,7 +47426,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "role": "dialog"
     }
   }, [_c('div', {
-    staticClass: "modal-dialog",
+    staticClass: "modal-dialog modal-dialog-centered modal-lg",
     attrs: {
       "role": "document"
     }
@@ -47435,7 +47435,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "modal-body"
   }, [_c('p', [_vm._v("Please review the costs below for your message and hit send to confirm.")]), _vm._v(" "), _c('table', {
-    staticClass: "table table-responsive table-bordered table-condensed"
+    staticClass: "table table-bordered"
   }, [_c('tbody', [_c('tr', [_c('td', [_vm._v("Language")]), _vm._v(" "), _c('td', [(_vm.langSrc && _vm.langTgt) ? _c('span', [_vm._v(_vm._s(_vm.langDescription(_vm.langSrc)) + " to " + _vm._s(_vm.langDescription(_vm.langTgt)))]) : _c('span', [_vm._v("-")])])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Word Count")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordCount))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Credits Available")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordCredits))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Words Charged")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordsCharged))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Unit Price")]), _vm._v(" "), _c('td', {
     class: {
       'active': _vm.fetchingUnitPrice
@@ -47464,7 +47464,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "modal-header"
-  }, [_c('button', {
+  }, [_c('h4', {
+    staticClass: "modal-title"
+  }, [_vm._v("Translate and send message?")]), _vm._v(" "), _c('button', {
     staticClass: "close",
     attrs: {
       "type": "button",
@@ -47475,9 +47477,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "aria-hidden": "true"
     }
-  }, [_vm._v("×")])]), _vm._v(" "), _c('h4', {
-    staticClass: "modal-title"
-  }, [_vm._v("Translate and send message?")])])
+  }, [_vm._v("×")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('td', [_c('strong', [_vm._v("Total")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;

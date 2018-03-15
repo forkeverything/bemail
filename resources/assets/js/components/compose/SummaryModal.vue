@@ -1,16 +1,16 @@
 <template>
     <div class="modal" tabindex="-1" role="dialog" ref="modal">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
+                    <h4 class="modal-title">Translate and send message?</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Translate and send message?</h4>
                 </div>
                 <div class="modal-body">
                     <p>Please review the costs below for your message and hit send to confirm.</p>
 
-                    <table class="table table-responsive table-bordered table-condensed">
+                    <table class="table table-bordered">
                         <tbody>
                         <tr>
                             <td>Language</td>
