@@ -14,7 +14,10 @@ class RecipientFactoryTest extends TestCase
 {
     use DatabaseTransactions;
 
-    private static $message;
+    /**
+     * @var Message
+     */
+    protected $message;
 
     public function setUp()
     {
@@ -22,7 +25,7 @@ class RecipientFactoryTest extends TestCase
         // factory undefined for [default] error.
         parent::setUp();
 
-        static::$message = factory(Message::class)->create();
+        $this->message = factory(Message::class)->create();
     }
 
     /**
@@ -34,15 +37,13 @@ class RecipientFactoryTest extends TestCase
      */
     public function it_make_a_recipient_for_given_message_with_given_type_and_email()
     {
-        $this->assertCount(0, static::$message->recipients);
+        $this->assertCount(0, $this->message->recipients);
+        $type = RecipientType::cc();
         $email = 'somebody@example.com';
-        RecipientFactory::for (static::$message)
-                        ->type(RecipientType::cc())
-                        ->to($email)
-                        ->make();
-        $this->assertCount(1, static::$message->fresh()->recipients);
-        $this->assertEquals(RecipientType::cc()->id, static::$message->fresh()->recipients->first()->recipient_type_id);
-        $this->assertEquals('somebody@example.com', static::$message->fresh()->recipients->first()->email);
+        $this->message->newRecipient($type, $email)->make();
+        $this->assertCount(1, $this->message->fresh()->recipients);
+        $this->assertEquals(RecipientType::cc()->id, $this->message->fresh()->recipients->first()->recipient_type_id);
+        $this->assertEquals('somebody@example.com', $this->message->fresh()->recipients->first()->email);
     }
 
 }

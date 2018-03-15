@@ -6,6 +6,7 @@ namespace App\Translation\Factories;
 use App\Http\Requests\CreateMessageRequest;
 use App\Language;
 use App\Translation\Attachments\FormUploadedFile;
+use App\Translation\Contracts\AttachmentFile;
 use App\Translation\Message;
 use App\Translation\RecipientType;
 use App\Translation\Reply;
@@ -106,60 +107,52 @@ class MessageFactory
     protected $attachments;
 
     /**
-     * Make a NEW Message.
-     * New in this case meaning that the Message is NOT a reply to another
-     * Message.
+     * Set fields from a new message request.
      *
-     * @param string $subject
-     * @param string $body
-     * @param bool $autoTranslateReply
-     * @param bool $sendToSelf
-     * @param int $langSrcId
-     * @param int $langTgtId
-     * @param array $recipientEmails
-     * @param array $attachments
-     * @return static
+     * @param CreateMessageRequest $request
+     * @return $this
      */
-    public static function new(string $subject, string $body, bool $autoTranslateReply, bool $sendToSelf, int $langSrcId, int $langTgtId, array $recipientEmails, array $attachments)
+    public function setNewMessageRequest(CreateMessageRequest $request)
     {
-        $factory = new static();
+        $this->subject = $request->subject;
+        $this->body = $request->body;
+        $this->autoTranslateReply = !!$request->auto_translate_reply;
+        $this->sendToSelf = !!$request->send_to_self;
+        $this->langSrcId = Language::findByCode($request->lang_src)->id;
+        $this->langTgtId = Language::findByCode($request->lang_tgt)->id;
+        $this->recipientEmails["standard"] = explode(',', $request->recipients);
+        $attachments = $request->attachments ?: [];
+        if(count($attachments) > 0) {
+            $this->attachments = AttachmentFileBuilder::convertArrayOfUploadedFiles($attachments);
+        } else {
+            $this->attachments = [];
+        }
 
-        $factory->subject = $subject;
-        $factory->body = $body;
-        $factory->autoTranslateReply = $autoTranslateReply;
-        $factory->sendToSelf = $sendToSelf;
-        $factory->langSrcId = $langSrcId;
-        $factory->langTgtId = $langTgtId;
-        $factory->recipientEmails["standard"] = $recipientEmails;
-        $factory->attachments = count($attachments) > 0 ? AttachmentFileBuilder::convertArrayOfUploadedFiles($attachments) : [];
-
-        return $factory;
+        return $this;
     }
 
     /**
-     * Make a REPLY Message.
+     * Set fields from a Reply.
      *
      * @param Reply $reply
-     * @return static
+     * @return $this
      */
-    public static function reply(Reply $reply)
+    public function setReply(Reply $reply)
     {
-        $factory = new static();
-
         // set reply id
-        $factory->replyId = $reply->id;
+        $this->replyId = $reply->id;
         // Replies mean that original message had auto-translate 'on'
         // and consequently send-to-self 'off'.
-        $factory->autoTranslateReply = 1;
-        $factory->sendToSelf = 0;
+        $this->autoTranslateReply = 1;
+        $this->sendToSelf = 0;
         // Reply message share same owner as original.
-        $factory->owner = $reply->originalMessage->owner;
+        $this->owner = $reply->originalMessage->owner;
         // a reply message will have flipped language pairs to the
         // original message.
-        $factory->langSrcId = $reply->originalMessage->lang_tgt_id;
-        $factory->langTgtId = $reply->originalMessage->lang_src_id;
+        $this->langSrcId = $reply->originalMessage->lang_tgt_id;
+        $this->langTgtId = $reply->originalMessage->lang_src_id;
 
-        return $factory;
+        return $this;
     }
 
     /**
@@ -253,7 +246,7 @@ class MessageFactory
         foreach ($this->recipientEmails as $type => $emails) {
             $recipientType = RecipientType::findType($type);
             foreach ($emails as $email) {
-                RecipientFactory::for ($this->messageModel)->type($recipientType)->to($email)->make();
+                $this->messageModel->newRecipient($recipientType, $email)->make();
             }
         }
 
@@ -262,7 +255,7 @@ class MessageFactory
         // address.
         if ($this->messageModel->isReply()) {
             $originalMessageSenderEmail = $this->messageModel->parentReplyClass->originalMessage->senderEmail();
-            RecipientFactory::for($this->messageModel)->type(RecipientType::standard())->to($originalMessageSenderEmail)->make();
+            $this->messageModel->newRecipient(RecipientType::standard(), $originalMessageSenderEmail)->make();
         }
 
         return $this;
@@ -285,7 +278,7 @@ class MessageFactory
     protected function createAttachments()
     {
         foreach ($this->attachments as $attachment) {
-            AttachmentFactory::from($attachment)->for($this->messageModel)->make();
+            $this->messageModel->newAttachment($attachment)->make();
         }
     }
 

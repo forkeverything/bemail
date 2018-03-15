@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Translation\Events\ReplyReceived;
 use App\Translation\Contracts\Translator;
 use App\Translation\Message;
+use App\Translation\Reply;
 use App\Translation\Utilities\AttachmentFileBuilder;
 use App\Translation\Utilities\EmailReplyParser;
 use Illuminate\Http\Request;
@@ -41,7 +42,9 @@ class PostmarkController extends Controller
             case 'reply':
                 // Find message the reply is intended for.
                 if ($originalMessage = Message::findByHash($target)) {
-                    event(new ReplyReceived($fromAddress, $fromName, $originalMessage, $recipients, $subject, $strippedTextBody, $attachments, $translator));
+                    $reply = $this->createReplyModel($fromAddress, $fromName, $originalMessage->id);
+                    $message = $reply->createMessage($recipients, $subject, $strippedTextBody, $attachments)->make();
+                    event(new ReplyReceived($message, $translator));
                 };
                 break;
             default:
@@ -93,7 +96,7 @@ class PostmarkController extends Controller
     /**
      * Parses recipient emails out of Postmark's POST request.
      * Store the recipient emails by the recipient types within an array. This is
-     * the same format as 'recipientEmails' prop in RecipientFactory.
+     * the same format as 'recipientEmails' prop in MessageFactory.
      * Currently BccFull always returns empty [].
      *
      * @param Request $request
@@ -125,5 +128,14 @@ class PostmarkController extends Controller
         }
 
         return $recipients;
+    }
+
+    protected function createReplyModel($fromAddress, $fromName, $originalMessageId)
+    {
+        return Reply::create([
+            'sender_email' => $fromAddress,
+            'sender_name' => $fromName,
+            'original_message_id' => $originalMessageId
+        ]);
     }
 }

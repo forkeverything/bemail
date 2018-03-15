@@ -47,18 +47,8 @@ class MessagesController extends Controller
     public function postSendMessage(CreateMessageRequest $request, Translator $translator)
     {
         try {
-            event(new NewMessageRequestReceived(
-                $request->subject,
-                $request->body,
-                !!$request->auto_translate_reply,
-                !!$request->send_to_self,
-                Language::findByCode($request->lang_src)->id,
-                Language::findByCode($request->lang_tgt)->id,
-                explode(',', $request->recipients),
-                $request->attachments ?: [],
-                Auth::user(),
-                $translator
-            ));
+            $message = Auth::user()->newMessage($request)->make();
+            event(new NewMessageRequestReceived($message, $translator));
         } catch (Exception $e) {
             if (App::environment('production')) {
                 flash()->error('System Error - Your message was not sent and you have not been charged. Please try again or contact us for help.');
@@ -69,7 +59,6 @@ class MessagesController extends Controller
         }
 
         flash()->success('Success! Your message will be translated shortly.');
-
         // Return to compose screen
         return redirect()->back();
     }

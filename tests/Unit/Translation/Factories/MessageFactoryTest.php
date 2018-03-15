@@ -23,37 +23,34 @@ class MessageFactoryTest extends TestCase
      */
     public function it_makes_a_new_message()
     {
-        $user = factory(User::class)->create();
-        $sourceLanguage = Language::first();
-        $targetLanguage = Language::find(2);
 
         $subject = 'Super important message.';
         $body = 'Please translate this.';
         $autoTranslateReply = 'on';
-        $sendToSelf = null;     // checkbox unchecked
-        $langSrcId = $sourceLanguage->id;
-        $langTgtId = $targetLanguage->id;
-        $recipientEmails = ['sam@bemail.io', 'john@bemail.io'];
-        $attachments = [];
+        $sendToSelf = null;
+        $langSrc = Language::findByCode('en');
+        $langTgt = Language::findByCode('ja');
 
-        $message = MessageFactory::new(
-            $subject,
-            $body,
-            !! $autoTranslateReply,
-            !! $sendToSelf,
-            $langSrcId,
-            $langTgtId,
-            $recipientEmails,
-            $attachments
-        )->owner($user)->make();
+        $request = new CreateMessageRequest();
+        $request->subject = $subject;
+        $request->body = $body;
+        $request->auto_translate_reply = $autoTranslateReply;
+        $request->send_to_self = $sendToSelf;
+        $request->lang_src = $langSrc->code;
+        $request->lang_tgt = $langTgt->code;
+        $request->recipients = 'sam@bemail.io,john@bemail.io';
+
+        $user = factory(User::class)->create();
+
+        $message = $user->newMessage($request)->make();
 
         // Check Message Model fields are stored correctly
         $this->assertEquals($subject, $message->subject);
         $this->assertEquals($body, $message->body);
         $this->assertEquals(1, $message->auto_translate_reply);
         $this->assertEquals(0, $message->send_to_self);
-        $this->assertEquals($sourceLanguage->id, $message->lang_src_id);
-        $this->assertEquals($targetLanguage->id, $message->lang_tgt_id);
+        $this->assertEquals($langSrc->id, $message->lang_src_id);
+        $this->assertEquals($langTgt->id, $message->lang_tgt_id);
         $this->assertEquals(TranslationStatus::available()->id, $message->translation_status_id);
 
         // Not a reply
@@ -80,12 +77,10 @@ class MessageFactoryTest extends TestCase
             'cc' => ['stan@example.com'],
             'bcc' => ['sarah@example.com']
         ];
+
         $reply = factory(Reply::class)->create();
-        $message = MessageFactory::reply($reply)
-                                 ->recipientEmails($recipients)
-                                 ->subject($subject)
-                                 ->body($body)
-                                 ->make();
+        $message = $reply->createMessage($recipients, $subject, $body)->make();
+
         $this->assertEquals($reply->id, $message->reply_id);
         $this->assertInstanceOf(Message::class, $message);
         $this->assertEquals($subject, $message->subject);

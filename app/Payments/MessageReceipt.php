@@ -35,6 +35,8 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property int $amount_charged
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\MessageReceipt whereAmountCharged($value)
+ * @property string $plan
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\MessageReceipt wherePlan($value)
  */
 class MessageReceipt extends Model
 {

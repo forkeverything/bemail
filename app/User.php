@@ -2,8 +2,10 @@
 
 namespace App;
 
+use App\Http\Requests\CreateMessageRequest;
 use App\Payments\CreditTransaction;
 use App\Payments\Plan;
+use App\Translation\Factories\MessageFactory;
 use App\Translation\Message;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -143,5 +145,19 @@ class User extends Authenticatable
         }
         $this->credits = $amount;
         $this->save();
+    }
+
+    /**
+     * Start a new (not a reply) Message.
+     *
+     * @param CreateMessageRequest $request
+     * @return MessageFactory
+     */
+    public function newMessage(CreateMessageRequest $request)
+    {
+        $factory = new MessageFactory();
+        $factory->setNewMessageRequest($request);
+        $factory->owner($this);
+        return $factory;
     }
 }

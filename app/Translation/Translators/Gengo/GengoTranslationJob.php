@@ -68,7 +68,7 @@ class GengoTranslationJob
      */
     protected function setSlug()
     {
-        $this->slug = "{$this->message->senderName()} :: {$this->message->subject} :: Message ID: {$this->message->hash}";
+        $this->slug = $this->message->hash;
         return $this;
     }
 

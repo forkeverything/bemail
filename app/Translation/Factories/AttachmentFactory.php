@@ -30,6 +30,18 @@ class AttachmentFactory
     protected $message;
 
     /**
+     * Create AttachmentFactory instance.
+     *
+     * @param Message $message
+     * @param AttachmentFile $attachmentFile
+     */
+    public function __construct(Message $message, AttachmentFile $attachmentFile)
+    {
+        $this->attachmentFile = $attachmentFile;
+        $this->message = $message;
+    }
+
+    /**
      * File storage directory path.
      *
      * @return string
@@ -53,30 +65,6 @@ class AttachmentFactory
             'path' => $this->path,
             'size' => $this->attachmentFile->fileSize()
         ]);
-    }
-
-    /**
-     * AttachmentFile to create an Attachment from.
-     *
-     * @param AttachmentFile $attachmentFile
-     * @return static
-     */
-    public static function from(AttachmentFile $attachmentFile){
-        $factory = new static();
-        $factory->attachmentFile = $attachmentFile;
-        return $factory;
-    }
-
-    /**
-     * Message model the Attachment should be attached to.
-     *
-     * @param Message $message
-     * @return $this
-     */
-    public function for(Message $message)
-    {
-        $this->message = $message;
-        return $this;
     }
 
     /**

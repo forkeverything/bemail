@@ -5,6 +5,9 @@ namespace App\Translation;
 use App\Language;
 use App\Payments\MessageReceipt;
 use App\Traits\Hashable;
+use App\Translation\Contracts\AttachmentFile;
+use App\Translation\Factories\AttachmentFactory;
+use App\Translation\Factories\RecipientFactory;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -149,7 +152,7 @@ class Message extends Model
      */
     public function isReply()
     {
-        return !! $this->reply_id;
+        return !!$this->reply_id;
     }
 
     /**
@@ -307,6 +310,24 @@ class Message extends Model
         return $this->update([
             'translated_body' => $text
         ]);
+    }
+
+    public function newRecipient(RecipientType $type, $email)
+    {
+        $factory = new RecipientFactory($this, $type, $email);
+        return $factory;
+    }
+
+    /**
+     * Create an attachment for this message.
+     *
+     * @param AttachmentFile $attachment
+     * @return AttachmentFactory
+     */
+    public function newAttachment(AttachmentFile $attachment)
+    {
+        $factory = new AttachmentFactory($this, $attachment);
+        return $factory;
     }
 
 }

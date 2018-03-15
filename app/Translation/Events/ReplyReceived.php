@@ -17,36 +17,7 @@ class ReplyReceived
     use Dispatchable, SerializesModels;
 
     /**
-     * @var string
-     */
-    public $fromAddress;
-    /**
-     * @var string
-     */
-    public $fromName;
-    /**
      * @var Message
-     */
-    public $originalMessage;
-    /**
-     * @var array
-     */
-    public $recipients;
-    /**
-     * @var string
-     */
-    public $subject;
-    /**
-     * @var string
-     */
-    public $body;
-    /**
-     * @var array
-     */
-    public $attachments;
-    /**
-     * Message model once created.
-     * @var Message|null
      */
     public $message;
     /**
@@ -57,25 +28,13 @@ class ReplyReceived
     /**
      * Create a new event instance.
      *
-     * @param string $fromAddress
-     * @param string $fromName
-     * @param Message $originalMessage
-     * @param array $recipients
-     * @param string $subject
-     * @param string $body
-     * @param array $attachments
-     * @param $translator
+     * @param Message $message
+     * @param Translator $translator
      */
-    public function __construct($fromAddress, $fromName, $originalMessage, $recipients, $subject, $body, $attachments, Translator $translator)
+    public function __construct(Message $message, Translator $translator)
     {
-        $this->fromAddress = $fromAddress;
-        $this->fromName = $fromName;
-        $this->originalMessage = $originalMessage;
-        $this->recipients = $recipients;
-        $this->subject = $subject;
-        $this->body = $body;
-        $this->attachments = $attachments;
         $this->translator = $translator;
+        $this->message = $message;
     }
 
 }

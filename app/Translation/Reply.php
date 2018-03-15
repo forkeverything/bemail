@@ -2,6 +2,7 @@
 
 namespace App\Translation;
 
+use App\Translation\Factories\MessageFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -60,5 +61,25 @@ class Reply extends Model
     public function originalMessage()
     {
         return $this->belongsTo(Message::class, 'original_message_id');
+    }
+
+    /**
+     * Create a Message for this Reply.
+     *
+     * @param $recipients
+     * @param $subject
+     * @param $body
+     * @param $attachments
+     * @return MessageFactory
+     */
+    public function createMessage($recipients, $subject, $body, $attachments = [])
+    {
+        $factory = new MessageFactory();
+        $factory->setReply($this)
+                ->recipientEmails($recipients)
+                ->subject($subject)
+                ->body($body)
+                ->attachments($attachments);
+        return $factory;
     }
 }

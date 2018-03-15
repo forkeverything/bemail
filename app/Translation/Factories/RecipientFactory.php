@@ -35,40 +35,32 @@ class RecipientFactory
     private $email;
 
     /**
-     * Message the Recipient is receiving.
+     * Create new RecipientFactory instance.
      *
      * @param Message $message
-     * @return static
-     */
-    public static function for(Message $message)
-    {
-        $factory = new static();
-        $factory->message = $message;
-        return $factory;
-    }
-
-    /**
-     * Set type.
-     *
      * @param RecipientType $type
-     * @return $this
+     * @param $email
      */
-    public function type(RecipientType $type) {
+    public function __construct(Message $message, RecipientType $type, $email)
+    {
+        $this->message = $message;
         $this->type = $type;
-        return $this;
+        $this->email = $email;
     }
 
-
     /**
-     * Recipient email.
+     * Store Recipient info in db.
      *
-     * @param $email
-     * @return $this
+     * @return $this|\Illuminate\Database\Eloquent\Model
      */
-    public function to($email)
+    protected function createModel()
     {
-        $this->email = $email;
-        return $this;
+        // TODO ::: Store recipient names too.
+        return Recipient::create([
+            'recipient_type_id' => $this->type ? $this->type->id : RecipientType::standard()->id,
+            'message_id' => $this->message->id,
+            'email' => $this->email
+        ]);
     }
 
     /**
@@ -78,14 +70,7 @@ class RecipientFactory
      */
     public function make()
     {
-
-        // TODO ::: Store recipient names too.
-
-        return Recipient::create([
-            'recipient_type_id' => $this->type ? $this->type->id : RecipientType::standard()->id,
-            'message_id' => $this->message->id,
-            'email' => $this->email
-        ]);
+        return $this->createModel();
     }
 
 }

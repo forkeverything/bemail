@@ -27,7 +27,7 @@ class GengoController extends Controller
         // Gengo posts the response inside a 'job' parameter
         $body = json_decode($request->all()["job"], true);
         // Parse out our message identifier that we originally sent over
-        $messageHash = json_decode($body["custom_data"], true)["message_id"];
+        $messageHash = json_decode($body["custom_data"], true)["message_hash"];
         // Get the status
         $status = $body["status"];
         // Which Message is this callback for?
