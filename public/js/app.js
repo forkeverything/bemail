@@ -47352,11 +47352,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            unitPrice: '-',
-            fetchingUnitPrice: false
+            unitPrice: 0
         };
     },
     computed: {
+        receivedUnitPrice: function receivedUnitPrice() {
+            return this.unitPrice !== 0;
+        },
         wordsCharged: function wordsCharged() {
             var chargeable = this.wordCount - this.wordCredits;
             return chargeable > 0 ? chargeable : 0;
@@ -47382,13 +47384,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         fetchUnitPrice: function fetchUnitPrice() {
             var _this = this;
 
-            this.fetchingUnitPrice = true;
+            this.unitPrice = 0;
             axios.get('/languages/price/src/' + this.langSrc + '/tgt/' + this.langTgt).then(function (res) {
-                _this.unitPrice = res.data;
-                _this.fetchingUnitPrice = false;
+                _this.unitPrice = res.data / 100;
             }).catch(function (err) {
-                _this.unitPrice = '-';
-                _this.fetchingUnitPrice = false;
+                _this.unitPrice = 0;
             });
         },
         langDescription: function langDescription(code) {
@@ -47436,15 +47436,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "modal-body"
   }, [_c('p', [_vm._v("Please review the costs below for your message and hit send to confirm.")]), _vm._v(" "), _c('table', {
     staticClass: "table table-bordered"
-  }, [_c('tbody', [_c('tr', [_c('td', [_vm._v("Language")]), _vm._v(" "), _c('td', [(_vm.langSrc && _vm.langTgt) ? _c('span', [_vm._v(_vm._s(_vm.langDescription(_vm.langSrc)) + " to " + _vm._s(_vm.langDescription(_vm.langTgt)))]) : _c('span', [_vm._v("-")])])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Word Count")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordCount))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Credits Available")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordCredits))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Words Charged")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordsCharged))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Unit Price")]), _vm._v(" "), _c('td', {
+  }, [_c('tbody', [_c('tr', [_c('td', [_vm._v("Language")]), _vm._v(" "), _c('td', [(_vm.langSrc && _vm.langTgt) ? _c('span', [_vm._v(_vm._s(_vm.langDescription(_vm.langSrc)) + " to " + _vm._s(_vm.langDescription(_vm.langTgt)))]) : _c('span', [_vm._v("-")])])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Word Count")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordCount))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Credits Available")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordCredits))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Words Charged")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.wordsCharged))])]), _vm._v(" "), _c('tr', {
     class: {
-      'active': _vm.fetchingUnitPrice
+      'bg-light': !_vm.receivedUnitPrice
     }
-  }, [_vm._v(_vm._s(_vm.unitPrice))])]), _vm._v(" "), _c('tr', [_vm._m(1), _vm._v(" "), _c('td', {
+  }, [_c('td', [_vm._v("Unit Price")]), _vm._v(" "), _c('td', [(_vm.receivedUnitPrice) ? _c('span', [_vm._v("$ " + _vm._s(_vm.unitPrice))]) : _c('span', [_vm._v("-")])])]), _vm._v(" "), _c('tr', {
     class: {
-      'active': _vm.fetchingUnitPrice
+      'bg-light': !_vm.receivedUnitPrice
     }
-  }, [_c('strong', [_vm._v(_vm._s(_vm.totalCost))])])])])]), _vm._v(" "), _vm._m(2)]), _vm._v(" "), _c('div', {
+  }, [_vm._m(1), _vm._v(" "), _c('td', [_c('strong', [_vm._v(_vm._s(_vm.totalCost))])])])])]), _vm._v(" "), _vm._m(2)]), _vm._v(" "), _c('div', {
     staticClass: "modal-footer"
   }, [_c('button', {
     staticClass: "btn btn-default",

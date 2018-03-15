@@ -29,13 +29,13 @@
                             <td>Words Charged</td>
                             <td>{{ wordsCharged }}</td>
                         </tr>
-                        <tr>
+                        <tr :class="{ 'bg-light': !receivedUnitPrice }">
                             <td>Unit Price</td>
-                            <td :class="{ 'active': fetchingUnitPrice }">{{ unitPrice }}</td>
+                            <td><span v-if="receivedUnitPrice">$ {{ unitPrice }}</span><span v-else>-</span></td>
                         </tr>
-                        <tr>
+                        <tr :class="{ 'bg-light': !receivedUnitPrice }">
                             <td><strong>Total</strong></td>
-                            <td :class="{ 'active': fetchingUnitPrice }"><strong>{{ totalCost }}</strong></td>
+                            <td><strong>{{ totalCost }}</strong></td>
                         </tr>
                         </tbody>
                     </table>
@@ -54,11 +54,13 @@
     export default {
         data: function () {
             return {
-                unitPrice: '-',
-                fetchingUnitPrice: false
+                unitPrice: 0,
             }
         },
         computed: {
+            receivedUnitPrice() {
+                return this.unitPrice !== 0;
+            },
             wordsCharged() {
                 let chargeable = this.wordCount - this.wordCredits;
                 return chargeable > 0 ? chargeable : 0;
@@ -88,13 +90,11 @@
                 this.$emit('send-form');
             },
             fetchUnitPrice() {
-                this.fetchingUnitPrice = true;
+                this.unitPrice = 0;
                 axios.get(`/languages/price/src/${this.langSrc}/tgt/${this.langTgt}`).then(res => {
-                    this.unitPrice = res.data;
-                    this.fetchingUnitPrice = false;
+                    this.unitPrice = res.data / 100;
                 }).catch(err => {
-                    this.unitPrice = '-';
-                    this.fetchingUnitPrice = false;
+                    this.unitPrice = 0;
                 });
             },
             langDescription(code) {
