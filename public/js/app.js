@@ -46095,6 +46095,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -46128,6 +46129,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // Match any unicode Chinese / Japanese character or a space
             var matches = this.body.match(/[\u00ff-\uffff]|\S+/g);
             return matches ? matches.length : 0;
+        },
+        attachmentsError: function attachmentsError() {
+            return this.errors.attachments ? this.errors.attachments[0] : '';
         }
     },
     props: ['token', 'word-credits', 'errors', 'recipients', 'subject-old', 'languages', 'user-lang', 'lang-src-old', 'lang-tgt-old', 'body-old'],
@@ -46310,7 +46314,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "attachments[]",
       "multiple": true
     }
-  })], 1), _vm._v(" "), _c('button', {
+  }), _vm._v(" "), (_vm.attachmentsError) ? _c('field-error', {
+    attrs: {
+      "error": _vm.attachmentsError
+    }
+  }) : _vm._e()], 1), _vm._v(" "), _c('button', {
     staticClass: "btn btn-block btn-lg btn-primary",
     attrs: {
       "type": "button"
@@ -47001,6 +47009,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -47009,8 +47027,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     computed: {
-        multipleFiles: function multipleFiles() {
-            return this.files.length > 1;
+        hasFiles: function hasFiles() {
+            return this.files.length > 0;
         }
     },
     props: ['name', 'id', 'multiple'],
@@ -47019,7 +47037,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.files = [];
             var input = this.$refs.input;
             for (var i = 0; i < input.files.length; i++) {
-                this.files.push(input.files.item(i).name);
+                this.files.push(input.files.item(i));
             }
         }
     },
@@ -47033,6 +47051,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "file-input custom-file"
+  }, [_c('div', {
+    staticClass: "form-group"
   }, [_c('input', {
     ref: "input",
     staticClass: "custom-file-input",
@@ -47050,16 +47070,25 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": _vm.id
     }
-  }, [_vm._v("Choose file")]), _vm._v(" "), _c('ul', {
+  }, [_vm._v("Choose file")])]), _vm._v(" "), _c('ul', {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: (_vm.multipleFiles),
-      expression: "multipleFiles"
+      value: (_vm.hasFiles),
+      expression: "hasFiles"
     }],
     staticClass: "files-list list-unstyled list-inline"
-  }, _vm._l((_vm.files), function(file) {
-    return _c('li', [_vm._v(_vm._s(file))])
+  }, _vm._l((_vm.files), function(file, index) {
+    return _c('li', {
+      staticClass: "list-inline-item"
+    }, [_c('span', {
+      staticClass: "badge badge-secondary",
+      on: {
+        "click": function($event) {
+          _vm.$refs.input.click()
+        }
+      }
+    }, [_vm._v(_vm._s(file.name))])])
   }))])
 },staticRenderFns: []}
 module.exports.render._withStripped = true

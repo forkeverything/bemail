@@ -62,6 +62,7 @@
         <div class="form-group mb-5">
             <label for="message-form-attachments" class="d-flex justify-content-between align-items-center">Attachments <small>Max total size 35MB</small></label>
             <file-input id="message-form-attachments" name="attachments[]" :multiple="true"></file-input>
+            <field-error v-if="attachmentsError" :error="attachmentsError"></field-error>
         </div>
         <!-- Submit -->
         <button type="button" class="btn btn-block btn-lg btn-primary" @click="showSummaryModal">Send</button>
@@ -107,6 +108,9 @@
                 // Match any unicode Chinese / Japanese character or a space
                 let matches = this.body.match(/[\u00ff-\uffff]|\S+/g);
                 return matches ? matches.length : 0;
+            },
+            attachmentsError() {
+                return this.errors.attachments ? this.errors.attachments[0] : '';
             }
         },
         props: [

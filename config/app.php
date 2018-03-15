@@ -186,6 +186,7 @@ return [
          * Custom Application Service Providers
          */
 
+        App\Providers\MultipleFileUploadProvider::class,
         App\Translation\Providers\TranslationServiceProvider::class
 
     ],
