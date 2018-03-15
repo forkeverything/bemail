@@ -9989,3 +9989,310 @@ a.text-dark:focus {
   }
 }
 
+#landing-hero {
+  position: relative;
+  overflow: hidden;
+  background: #01A3EF;
+}
+
+#landing-hero img.rocket-mail {
+  position: relative;
+  z-index: 2;
+}
+
+#landing-hero #animated-mails {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+#landing-hero #animated-mails img {
+  position: absolute;
+  top: 0;
+  z-index: -1;
+}
+
+#landing-hero #animated-mails .mail1 {
+  top: 30px;
+  -webkit-animation: mail1 45s linear 1s infinite;
+  animation: mail1 45s linear 1s infinite;
+  opacity: 0;
+}
+
+@-webkit-keyframes mail1 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+@keyframes mail1 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+#landing-hero #animated-mails .mail2 {
+  top: 25px;
+  -webkit-animation: mail2 35s linear 6s infinite;
+  animation: mail2 35s linear 6s infinite;
+  opacity: 0;
+}
+
+@-webkit-keyframes mail2 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+@keyframes mail2 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+#landing-hero #animated-mails .mail3 {
+  top: 115px;
+  -webkit-animation: mail3 30s linear 11s infinite;
+  animation: mail3 30s linear 11s infinite;
+  opacity: 0;
+}
+
+@-webkit-keyframes mail3 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+@keyframes mail3 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+#landing-hero #animated-mails .mail4 {
+  top: 70px;
+  -webkit-animation: mail4 55s linear 16s infinite;
+  animation: mail4 55s linear 16s infinite;
+  opacity: 0;
+}
+
+@-webkit-keyframes mail4 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+@keyframes mail4 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+#landing-hero #animated-mails .mail5 {
+  top: 200px;
+  -webkit-animation: mail5 25s linear 20s infinite;
+  animation: mail5 25s linear 20s infinite;
+  opacity: 0;
+}
+
+@-webkit-keyframes mail5 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+@keyframes mail5 {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+
+  10% {
+    opacity: 1;
+    right: 70px;
+  }
+
+  90% {
+    opacity: 1;
+    right: 1000px;
+  }
+
+  100% {
+    opacity: 0;
+    right: 1088px;
+  }
+}
+
+#how-it-works {
+  overflow: hidden;
+  position: relative;
+  padding: 3rem 0;
+  background: #007bff;
+}
+
+@media (min-width: 576px) {
+  #how-it-works {
+    background: transparent;
+    padding: 8rem 0;
+  }
+}
+
+#how-it-works img.background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+}
+
+#how-it-works .content {
+  position: relative;
+  z-index: 1;
+}
+
