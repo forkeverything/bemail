@@ -22,5 +22,5 @@ Route::post('gengo', 'GengoController@postCallback');
 Route::post('postmark', 'PostmarkController@postInboundMail');
 
 // Stripe Web-Hook Controller
-Route::post('stripe',  '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook');
+Route::post('stripe',  'StripeController@handleWebhook');
 
