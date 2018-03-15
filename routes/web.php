@@ -27,8 +27,8 @@ Route::post('compose', 'MessagesController@postSendMessage')->name('sendMessage'
 Route::get('/account', 'AccountController@getSettings');
 Route::post('/account', 'AccountController@postUpdateSettings');
 
-// Languages
-Route::get('/languages/price/src/{langSrc}/tgt/{langTgt}', 'LanguagesController@getUnitPrice');
+// Translator
+Route::post('/translator/unit_price', 'TranslatorController@postUnitPrice');
 
 // Subscriptions
 Route::get('/subscription', 'SubscriptionController@getSubscriptionsPage');

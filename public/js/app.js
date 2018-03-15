@@ -47348,6 +47348,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -47385,7 +47386,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             this.unitPrice = 0;
-            axios.get('/languages/price/src/' + this.langSrc + '/tgt/' + this.langTgt).then(function (res) {
+            axios.post('/translator/unit_price', {
+                lang_src: this.langSrc,
+                lang_tgt: this.langTgt
+            }).then(function (res) {
                 _this.unitPrice = res.data / 100;
             }).catch(function (err) {
                 _this.unitPrice = 0;

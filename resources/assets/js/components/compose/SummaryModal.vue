@@ -15,7 +15,8 @@
                         <tr>
                             <td>Language</td>
                             <!-- TODO ::: Localize language -->
-                            <td><span v-if="langSrc && langTgt">{{ langDescription(langSrc) }} to {{ langDescription(langTgt) }}</span><span v-else>-</span></td>
+                            <td><span v-if="langSrc && langTgt">{{ langDescription(langSrc) }} to {{ langDescription(langTgt) }}</span><span
+                                    v-else>-</span></td>
                         </tr>
                         <tr>
                             <td>Word Count</td>
@@ -66,7 +67,7 @@
                 return chargeable > 0 ? chargeable : 0;
             },
             totalCost() {
-                if(isNaN(this.unitPrice)) return '-';
+                if (isNaN(this.unitPrice)) return '-';
                 return "$ " + (this.wordsCharged * this.unitPrice).toFixed(2);
             }
         },
@@ -91,14 +92,17 @@
             },
             fetchUnitPrice() {
                 this.unitPrice = 0;
-                axios.get(`/languages/price/src/${this.langSrc}/tgt/${this.langTgt}`).then(res => {
+                axios.post('/translator/unit_price', {
+                    lang_src: this.langSrc,
+                    lang_tgt: this.langTgt
+                }).then(res => {
                     this.unitPrice = res.data / 100;
                 }).catch(err => {
                     this.unitPrice = 0;
                 });
             },
             langDescription(code) {
-                switch(code) {
+                switch (code) {
                     case 'en':
                         return 'English';
                     case 'ja':
