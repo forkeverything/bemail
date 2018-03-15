@@ -13,6 +13,17 @@
     <link rel="stylesheet" href="/css/landing.css">
 </head>
 <body>
+
+
+<div class="jumbotron jumbotron-fluid bg-primary text-white">
+    <div class="container">
+        <img src="/images/logo/svg/logo_white.svg" alt="Bemail logo" width="100px" class="mb-3">
+        <h1 class="display-5">The e-mail translation service you've been looking for.</h1>
+        <p class="lead">You write English. Your recipient
+            writes Japanese. And we keep everybody on the same page.</p>
+    </div>
+</div>
+
 <section id="hero">
     <div class="container">
         <div id="hero-content" class="row">
@@ -22,8 +33,7 @@
                     <h1>
                         We Translate Your Emails, Awesomely.
                     </h1>
-                    <h3>You write English. Your recipient
-                        writes Japanese. And we keep everybody on the same page.</h3>
+                    <h3></h3>
                     <a href="#sign-up">
                         <button id="btn-hero-sign-up" type="button" class="btn btn-success btn-lg">I want perfect
                             English
