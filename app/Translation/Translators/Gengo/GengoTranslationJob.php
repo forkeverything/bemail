@@ -4,127 +4,128 @@
 namespace App\Translation\Translators\Gengo;
 
 
+use App\Language;
 use App\Translation\Message;
 
 class GengoTranslationJob
 {
-
     /**
-     * Message to be translated.
+     * Custom identifier from Gengo dashboard.
      *
-     * @var Message
-     */
-    protected $message;
-    /**
-     * @var string
+     * @var null|string
      */
     protected $slug;
     /**
+     * Text to be translated.
+     *
      * @var string
      */
     protected $body;
     /**
+     * Language to translate from.
+     *
      * @var int
      */
     protected $sourceLanguage;
     /**
+     * Language to translate to.
+     *
      * @var int
      */
     protected $targetLanguage;
     /**
-     * @var string
+     * JSON data that will be included with the job (max 1KB).
+     *
+     * @var null|string
      */
-    protected $tier;
+    protected $customData;
     /**
-     * @var string
+     * Job data array to be returned.
+     *
+     * @var array
      */
-    protected $callbackUrl;
-    /**
-     * @var string
-     */
-    protected $messageHash;
+    protected $job = [];
 
     /**
-     * GengoTranslationJob constructor.
+     * Create a Gengo Job for given Message.
      *
      * @param Message $message
+     * @return $this
      */
-    public function __construct(Message $message)
+    public static function forMessage(Message $message)
     {
-        $this->message = $message;
+        $job = new static();
 
-        $this->setSlug()
-             ->setBody()
-             ->setLanguages()
-             ->setTier()
-             ->setCallbackUrl()
-             ->setMessageHash();
+        $job->slug($message->hash)
+            ->body($message->body)
+            ->languages($message->sourceLanguage->code, $message->targetLanguage->code)
+            ->customData("{\"message_hash\": \"{$message->hash}\"}");
+        return $job;
+    }
+
+    /**
+     * Create a new Gengo Job to get a quote from Gengo.
+     *
+     * @param Language $sourceLanguage
+     * @param Language $targetLanguage
+     * @param $text
+     * @return static
+     */
+    public static function forQuote(Language $sourceLanguage, Language $targetLanguage, $text)
+    {
+        $job = new static();
+        $job->languages($sourceLanguage->code, $targetLanguage->code)
+            ->body($text);
+        return $job;
     }
 
     /**
      * Slug that makes jobs identifiable from Gengo dashboard.
      *
+     * @param string $identifier
      * @return $this
      */
-    protected function setSlug()
+    protected function slug($identifier)
     {
-        $this->slug = $this->message->hash;
+        $this->slug = $identifier;
         return $this;
     }
 
     /**
      * Message body to be translated.
      *
+     * @param $text
      * @return $this
      */
-    protected function setBody()
+    protected function body($text)
     {
-        $this->body = $this->message->body;
+        $this->body = $text;
         return $this;
     }
 
     /**
-     * Set the language to translate from and to.
+     * Language to translate from and to.
      *
+     * @param $srcLangCode
+     * @param $tgtLangCode
      * @return $this
      */
-    protected function setLanguages()
+    protected function languages($srcLangCode, $tgtLangCode)
     {
-        $this->sourceLanguage = $this->message->sourceLanguage->code;
-        $this->targetLanguage = $this->message->targetLanguage->code;
+        $this->sourceLanguage = $srcLangCode;
+        $this->targetLanguage = $tgtLangCode;
         return $this;
     }
 
     /**
-     * Gengo tier (translation quality level).
+     * Set custom data field.
      *
+     * @param $string
      * @return $this
      */
-    protected function setTier()
+    protected function customData($string)
     {
-        $this->tier = "standard";
-        return $this;
-    }
-
-    /**
-     * Callback URL that Gengo will use.
-     *
-     * @return $this
-     */
-    protected function setCallbackUrl()
-    {
-        $this->callbackUrl = env('GENGO_CALLBACK_URL');
-        return $this;
-    }
-
-    /**
-     * Message hash.
-     *
-     * @return $this
-     */
-    protected function setMessageHash()
-    {
-        $this->messageHash = $this->message->hash;
+        $this->customData = $string;
         return $this;
     }
 
@@ -135,23 +136,82 @@ class GengoTranslationJob
      */
     public function build()
     {
+
+        $this->addDefaultFields()
+             ->addSlug()
+             ->addBody()
+             ->addLanguages()
+             ->addCustomData();
+
         return [
-            "jobs_01" => [
-                'type' => 'text',
-                'slug' => $this->slug,
-                'body_src' => $this->body,
-                'lc_src' => $this->sourceLanguage,
-                'lc_tgt' => $this->targetLanguage,
-                'tier' => $this->tier,
-                'auto_approve' => 1,
-                'force' => 0,
-                'callback_url' => $this->callbackUrl,
-                'custom_data' => "{
-                    \"message_hash\": \"{$this->messageHash}\"
-                }",
-                'use_preferred' => 0
-            ]
+            "job_01" => $this->job
         ];
+    }
+
+    /**
+     * Fields that are the same for each job.
+     *
+     * @return $this
+     */
+    protected function addDefaultFields()
+    {
+        $this->job['type'] = 'text';
+        // Gengo's defined 'level / quality' of translation.
+        $this->job['tier'] = 'standard';
+        $this->job['callback_url'] = env('GENGO_CALLBACK_URL');
+        $this->job['auto_approve'] = 1;
+        $this->job['force'] = 0;
+        $this->job['use_preferred'] = 0;
+        return $this;
+    }
+
+    /**
+     * Add slug to job data.
+     *
+     * @return $this
+     */
+    protected function addSlug()
+    {
+        if (isset($this->slug)) {
+            $this->job['slug'] = $this->slug;
+        }
+        return $this;
+    }
+
+    /**
+     * Add body to job data.
+     *
+     * @return $this
+     */
+    protected function addBody()
+    {
+        $this->job['body_src'] = $this->body;
+        return $this;
+    }
+
+    /**
+     * Add language codes to job data.
+     *
+     * @return $this
+     */
+    protected function addLanguages()
+    {
+        $this->job['lc_src'] = $this->sourceLanguage;
+        $this->job['lc_tgt'] = $this->targetLanguage;
+        return $this;
+    }
+
+    /**
+     * Add custom data to job data.
+     *
+     * @return $this
+     */
+    protected function addCustomData()
+    {
+        if(isset($this->customData)) {
+            $this->job['custom_data'] = $this->customData;
+        }
+        return $this;
     }
 
 }

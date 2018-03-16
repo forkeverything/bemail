@@ -34,4 +34,35 @@ class Language extends Model
     {
         return static::where('code', $code)->firstOrFail();
     }
+
+    /**
+     * The English instance.
+     *
+     * @return Model|static
+     */
+    public static function english()
+    {
+        return static::where('code', 'en')->firstOrFail();
+    }
+
+    /**
+     * The Japanese instance.
+     *
+     * @return Model|static
+     */
+    public static function japanese()
+    {
+        return static::where('code', 'ja')->firstOrFail();
+    }
+
+    /**
+     * The Chinese record.
+     *
+     * @return Model|static
+     */
+    public static function chinese()
+    {
+        return static::where('code', 'zh')->firstOrFail();
+    }
+
 }

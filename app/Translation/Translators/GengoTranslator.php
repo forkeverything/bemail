@@ -107,9 +107,9 @@ class GengoTranslator implements Translator
      */
     public function translate(Message $message)
     {
-        // Create and post job according to Gengo's API
-        $job = (new GengoTranslationJob($message))->build();
         $api = new GengoJobs;
+        // Create and post job according to Gengo's API
+        $job = GengoTranslationJob::forMessage($message)->build();
         $response = new GengoResponse($api->postJobs($job));
         if ($response->wasSuccessful()) {
             // Create order using Gengo's order id.
@@ -147,5 +147,26 @@ class GengoTranslator implements Translator
         } catch (\Exception $e) {
             throw new CouldNotCancelTranslationException();
         }
+    }
+
+    /**
+     * The amount of units (words) the translator will charge for.
+     *
+     * This is different for various languages because for
+     * certain languages, multiple characters make up
+     * one single word.
+     *
+     * @param Language $sourceLangue
+     * @param Language $targetLanguage
+     * @param $text
+     * @return mixed
+     * @throws \Gengo\Exception
+     */
+    public function unitCount(Language $sourceLangue, Language $targetLanguage, $text)
+    {
+        $api = new GengoService();
+        $job = GengoTranslationJob::forQuote($sourceLangue, $targetLanguage, $text)->build();
+        $quote = (new GengoResponse($api->quote($job)))->body()["jobs"]["job_01"]["unit_count"];
+        return $quote;
     }
 }

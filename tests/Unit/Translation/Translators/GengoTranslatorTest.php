@@ -130,4 +130,17 @@ class GengoTranslatorTest extends TestCase
         $this->assertTrue($message->fresh()->order->status->is(OrderStatus::cancelled()));
     }
 
+    /**
+     * @test
+     * @throws Exception
+     */
+    public function it_retrieves_unit_count_for_text()
+    {
+        $japanese = Language::japanese();
+        $english = Language::english();
+        $body = '焼肉　食べたい。';
+        $count = $this->gengoTranslator->unitCount($japanese, $english, $body);
+        $this->assertEquals(6, $count);
+    }
+
 }

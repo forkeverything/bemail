@@ -34,7 +34,7 @@ class GengoErrorResponse
      */
     protected function isJobError()
     {
-        return array_key_exists("jobs_01", $this->error);
+        return array_key_exists("job_01", $this->error);
     }
 
     /**
@@ -45,7 +45,7 @@ class GengoErrorResponse
     public function code()
     {
         if ($this->isJobError()) {
-            return $this->error["jobs_01"][0]["code"];
+            return $this->error["job_01"][0]["code"];
         }
         return $this->error["code"];
     }
@@ -58,7 +58,7 @@ class GengoErrorResponse
     public function description()
     {
         if($this->isJobError()) {
-            return $this->error["jobs_01"][0]["msg"];
+            return $this->error["job_01"][0]["msg"];
         }
         return $this->error["msg"];
     }
