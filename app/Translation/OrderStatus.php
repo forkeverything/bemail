@@ -13,6 +13,13 @@ class OrderStatus extends Model
 {
 
     /**
+     * No created_at / updated_at.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
      * Available.
      *
      * Waiting for translator to take the order.
