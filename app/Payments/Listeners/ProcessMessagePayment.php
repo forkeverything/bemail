@@ -127,6 +127,12 @@ class ProcessMessagePayment
         $translator = $wordCount * $this->unitPrice;
         $bemail = $wordCount * $this->message->owner->plan()->surcharge();
         $this->chargeAmount = $translator + $bemail;
+        \Log::info('Charge Amount', [
+            'word_count' => $wordCount,
+            'translator_fee' => $translator,
+            'bemail_fee' => $bemail,
+            'charge_amount' => $this->chargeAmount
+        ]);
         return $this;
     }
 
