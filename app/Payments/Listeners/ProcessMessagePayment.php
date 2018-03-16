@@ -63,11 +63,6 @@ class ProcessMessagePayment
         $this->translator = $event->translator;
         $this->message = $event->message;
 
-        \Log::info('Check properties', [
-            'translator' => $this->translator,
-            'message' => $this->message
-        ]);
-
         $this->setUnitPrice()
              ->setCredits()
              ->setChargeAmount()
@@ -132,12 +127,6 @@ class ProcessMessagePayment
         $translator = $wordCount * $this->unitPrice;
         $bemail = $wordCount * $this->message->owner->plan()->surcharge();
         $this->chargeAmount = $translator + $bemail;
-        \Log::info('Charge Amount', [
-            'word_count' => $wordCount,
-            'translator_fee' => $translator,
-            'bemail_fee' => $bemail,
-            'charge_amount' => $this->chargeAmount
-        ]);
         return $this;
     }
 
@@ -158,9 +147,8 @@ class ProcessMessagePayment
             // Failed charging user...
 
             $this->cancelTranslation();
-            throw $e;
             
-//            throw new ChargeFailedException(); // Don't go to next event listener
+            throw new ChargeFailedException(); // Don't go to next event listener
             // TODO ::: Implement handling ChargeFailedException to tell User that message won't be sent
             // because we couldn't charge him.
         }
