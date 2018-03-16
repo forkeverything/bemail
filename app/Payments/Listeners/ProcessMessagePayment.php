@@ -143,9 +143,12 @@ class ProcessMessagePayment
         try {
             $this->message->owner->charge($this->chargeAmount);
         } catch (\Exception $e) {
+
             // Failed charging user...
+
             $this->cancelTranslation();
-            throw new ChargeFailedException(); // Don't go to next event listener
+            throw $e;
+//            throw new ChargeFailedException(); // Don't go to next event listener
             // TODO ::: Implement handling ChargeFailedException to tell User that message won't be sent
             // because we couldn't charge him.
         }
