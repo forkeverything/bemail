@@ -7,6 +7,7 @@ use App\Language;
 use App\Translation\Exceptions\CouldNotCancelTranslationException;
 use App\Translation\Exceptions\TranslationException;
 use App\Translation\Message;
+use App\Translation\Order;
 use App\Translation\OrderStatus;
 use App\Translation\Translators\Gengo\GengoErrorResponse;
 use App\Translation\Translators\Gengo\GengoLanguagePair;
@@ -120,14 +121,14 @@ class GengoTranslator implements Translator
     }
 
     /**
-     * Cancels the translation of a Message.
+     * Cancels the translation Order.
      *
-     * @param Message $message
+     * @param Order $order
      * @return bool|mixed
      * @throws CouldNotCancelTranslationException
      * @throws \Gengo\Exception
      */
-    public function cancelTranslating(Message $message)
+    public function cancelTranslating(Order $order)
     {
         $api = new GengoOrder();
         try {
@@ -135,10 +136,10 @@ class GengoTranslator implements Translator
             sleep(5);
             // TODO(?) ::: Finding a better way to do this instead of guessing
             // the amount of time Gengo takes to process a job.
-            $response = new GengoResponse($api->cancel($message->order->id));
+            $response = new GengoResponse($api->cancel($order->id));
 
             if ($response->wasSuccessful()) {
-                $message->order->updateStatus(OrderStatus::cancelled());
+                $order->updateStatus(OrderStatus::cancelled());
                 return true;
             } else {
                 throw new \Exception();

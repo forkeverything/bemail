@@ -27,15 +27,12 @@ class Order extends Model
     /**
      * Non-incrementing ID.
      *
+     * Allows order id to be explicitly set after receiving
+     * from another service - ie. Gengo.
+     *
      * @var bool
      */
     public $incrementing = false;
-
-    /**
-     * Unlike other models, Order's id is not auto-incrementing.
-     * This is because the id is the same as the Gengo order
-     * id so we need to explicitly provide it per Order.
-     */
 
     /**
      * Mass-fillable fields.

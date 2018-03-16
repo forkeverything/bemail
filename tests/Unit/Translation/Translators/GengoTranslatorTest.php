@@ -120,24 +120,13 @@ class GengoTranslatorTest extends TestCase
 
     /**
      * @test
-     * @expectedException \App\Translation\Exceptions\CouldNotCancelTranslationException
-     * @throws Exception
-     */
-    public function it_fails_to_cancel_message_in_translation()
-    {
-        $message = factory(Message::class)->create();
-        $this->gengoTranslator->cancelTranslating($message);
-    }
-
-    /**
-     * @test
      * @throws
      */
     public function it_cancels_a_message_in_translation()
     {
         $message = factory(Message::class)->create();
         $this->gengoTranslator->translate($message);
-        $this->gengoTranslator->cancelTranslating($message);
+        $this->gengoTranslator->cancelTranslating($message->order);
         $this->assertTrue($message->fresh()->order->status->is(OrderStatus::cancelled()));
     }
 

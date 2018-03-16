@@ -205,7 +205,7 @@ class ProcessMessagePayment
     protected function cancelTranslation()
     {
         try {
-            $this->translator->cancelTranslating($this->message);
+            $this->translator->cancelTranslating($this->message->order);
         } catch (\Exception $e) {
             if (App::environment('local')) throw $e;
         }

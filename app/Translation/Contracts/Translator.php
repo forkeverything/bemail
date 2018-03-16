@@ -5,6 +5,7 @@ namespace App\Translation\Contracts;
 use App\Language;
 use App\Translation\Exceptions\TranslationException;
 use App\Translation\Message;
+use App\Translation\Order;
 
 interface Translator
 {
@@ -28,10 +29,10 @@ interface Translator
     public function unitPrice(Language $sourceLangue, Language $targetLanguage);
 
     /**
-     * Cancels the translation of a Message.
+     * Cancels the translation Order.
      *
-     * @param Message $message
+     * @param Order $order
      * @return mixed
      */
-    public function cancelTranslating(Message $message);
+    public function cancelTranslating(Order $order);
 }
