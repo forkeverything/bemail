@@ -2,7 +2,6 @@
 
 use App\Language;
 use App\Translation\Message;
-use App\Translation\TranslationStatus;
 use App\User;
 use Faker\Generator as Faker;
 
@@ -24,12 +23,6 @@ $factory->define(Message::class, function (Faker $faker) {
             return factory(User::class)->create()->id;
         },
         'lang_src_id' => $sourceLanguageId,
-        'lang_tgt_id' => $targetLanguageId,
-        'translation_status_id' => function(array $message) {
-            if($message["translated_body"]) {
-                return TranslationStatus::approved()->id;
-            }
-            return TranslationStatus::available()->id;
-        }
+        'lang_tgt_id' => $targetLanguageId
     ];
 });

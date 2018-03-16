@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
  * App\Translation\OrderStatus
  *
  * @mixin \Eloquent
+ * @property int $id
+ * @property string $description
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\OrderStatus whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\OrderStatus whereId($value)
  */
 class OrderStatus extends Model
 {
@@ -53,6 +57,18 @@ class OrderStatus extends Model
     public static function complete()
     {
         return static::where('description', 'complete')->first();
+    }
+
+    /**
+     * Cancelled.
+     *
+     * Translation is cancelled before being completed.
+     *
+     * @return mixed
+     */
+    public static function cancelled()
+    {
+        return static::where('description', 'cancelled')->first();
     }
 
     /**

@@ -7,9 +7,10 @@ use App\Payments\MessageReceipt;
 use App\Translation\Attachment;
 use App\Translation\Message;
 use App\Translation\MessageError;
+use App\Translation\Order;
+use App\Translation\OrderStatus;
 use App\Translation\Recipient;
 use App\Translation\Reply;
-use App\Translation\TranslationStatus;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -46,10 +47,8 @@ class MessageTest extends TestCase
             'send_to_self' => 1,
             'user_id' => factory(User::class)->create()->id,
             'reply_id' => factory(Reply::class)->create()->id,
-            'translation_status_id' => TranslationStatus::available()->id,
             'lang_src_id' => 1,
-            'lang_tgt_id' => 2,
-            'gengo_order_id' => 888
+            'lang_tgt_id' => 2
         ];
 
         $message = Message::create($fields);
@@ -211,14 +210,6 @@ class MessageTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_translation_status()
-    {
-        $this->assertInstanceOf('App\Translation\TranslationStatus', static::$message->status);
-    }
-
-    /**
-     * @test
-     */
     public function it_has_a_source_language()
     {
         $this->assertInstanceOf('App\Language', static::$message->sourceLanguage);
@@ -243,6 +234,8 @@ class MessageTest extends TestCase
         ]);
         $this->assertEquals($receipt->id, static::$message->fresh()->receipt->id);
     }
+
+
 
     /**
      * @test
@@ -275,25 +268,27 @@ class MessageTest extends TestCase
     }
 
     /**
-     *
      * @test
      */
-    public function it_updates_message_translation_status()
+    public function it_fetches_the_translation_order()
     {
-        $translationStatuses = TranslationStatus::all();
-        foreach ($translationStatuses as $status) {
-            static::$message->updateStatus($status);
-            $this->assertEquals(static::$message->translation_status_id, $status->id);
-        }
+        $this->assertNull(static::$message->order);
+        $order = Order::create([
+            'id' => random_int(90000000, 100000000),
+            'message_id' => static::$message->id,
+            'order_status_id' => OrderStatus::available()->id
+        ]);
+        $this->assertNotNull(static::$message->fresh()->order);
     }
 
     /**
      * @test
      */
-    public function it_returns_gengo_order_id()
+    public function it_creates_a_new_order()
     {
-        static::$message->gengoOrderId(123);
-        $this->assertEquals(123, static::$message->gengoOrderId());
+        $this->assertNull(static::$message->order);
+        $order = static::$message->createOrder(random_int(90000000, 100000000));
+        $this->assertInstanceOf(Order::class, $order);
     }
 
     /**

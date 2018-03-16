@@ -7,6 +7,7 @@ use App\Translation\Contracts\Translator;
 use App\Translation\Exceptions\CouldNotCancelTranslationException;
 use App\Translation\Exceptions\TranslationException;
 use App\Translation\Message;
+use App\Translation\OrderStatus;
 use App\Translation\Translators\GengoTranslator;
 use Gengo\Exception;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -99,9 +100,9 @@ class GengoTranslatorTest extends TestCase
     public function it_translates_a_message()
     {
         $message = factory(Message::class)->create();
-        $this->assertNull($message->gengoOrderId());
+        $this->assertNull($message->order);
         $this->gengoTranslator->translate($message);
-        $this->assertNotNull($message->fresh()->gengoOrderId());
+        $this->assertNotNull($message->fresh()->order);
     }
 
     /**
@@ -120,6 +121,7 @@ class GengoTranslatorTest extends TestCase
     /**
      * @test
      * @expectedException \App\Translation\Exceptions\CouldNotCancelTranslationException
+     * @throws Exception
      */
     public function it_fails_to_cancel_message_in_translation()
     {
@@ -129,12 +131,14 @@ class GengoTranslatorTest extends TestCase
 
     /**
      * @test
+     * @throws
      */
     public function it_cancels_a_message_in_translation()
     {
         $message = factory(Message::class)->create();
         $this->gengoTranslator->translate($message);
-        $this->assertTrue($this->gengoTranslator->cancelTranslating($message));
+        $this->gengoTranslator->cancelTranslating($message);
+        $this->assertTrue($message->fresh()->order->status->is(OrderStatus::cancelled()));
     }
 
 }

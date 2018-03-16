@@ -1,12 +1,13 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Translation;
 
-use App\Translation\TranslationStatus;
+use App\Translation\OrderStatus;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class TranslationStatusTest extends TestCase
+class OrderStatusTest extends TestCase
 {
     /**
      * Use static methods to fetch the right
@@ -19,11 +20,12 @@ class TranslationStatusTest extends TestCase
         $statuses = [
             'available',
             'pending',
-            'approved',
+            'complete',
+            'cancelled',
             'error'
         ];
         foreach($statuses as $status) {
-            $this->assertEquals(TranslationStatus::$status()->description, $status);
+            $this->assertEquals(OrderStatus::$status()->description, $status);
         }
     }
 }

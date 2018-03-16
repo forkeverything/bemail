@@ -7,7 +7,6 @@ use App\Language;
 use App\Translation\Factories\MessageFactory;
 use App\Translation\Message;
 use App\Translation\Reply;
-use App\Translation\TranslationStatus;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Mockery;
@@ -51,7 +50,6 @@ class MessageFactoryTest extends TestCase
         $this->assertEquals(0, $message->send_to_self);
         $this->assertEquals($langSrc->id, $message->lang_src_id);
         $this->assertEquals($langTgt->id, $message->lang_tgt_id);
-        $this->assertEquals(TranslationStatus::available()->id, $message->translation_status_id);
 
         // Not a reply
         $this->assertNull($message->reply_id);

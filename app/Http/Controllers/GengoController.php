@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Translation\Events\MessageTranslated;
 use App\Translation\Message;
-use App\Translation\TranslationStatus;
+use App\Translation\OrderStatus;
 use Illuminate\Http\Request;
 
 
@@ -36,8 +36,7 @@ class GengoController extends Controller
         switch ($status) {
             // Pending: Translator has begun work.
             case "pending":
-                // Update message status
-                $message->updateStatus(TranslationStatus::pending());
+                $message->order->updateStatus(OrderStatus::pending());
                 break;
             // Approved: Job (completed translation)
             case "approved":

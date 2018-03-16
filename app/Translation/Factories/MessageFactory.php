@@ -10,8 +10,6 @@ use App\Translation\Contracts\AttachmentFile;
 use App\Translation\Message;
 use App\Translation\RecipientType;
 use App\Translation\Reply;
-use App\Translation\TranslationStatus;
-use App\Translation\Utilities\AttachmentFileBuilder;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -288,7 +286,6 @@ class MessageFactory
             'send_to_self' => $this->sendToSelf,
             'user_id' => $this->owner->id,
             'reply_id' => $this->replyId,
-            'translation_status_id' => TranslationStatus::available()->id,
             'lang_src_id' => $this->langSrcId,
             'lang_tgt_id' => $this->langTgtId
         ]);

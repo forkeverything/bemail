@@ -31,7 +31,6 @@ class CreateMessagesTable extends Migration
             $table->text('translated_body')->nullable();
             $table->boolean('auto_translate_reply')->default(1);
             $table->boolean('send_to_self')->default(0);
-            $table->unsignedInteger('gengo_order_id')->nullable();
 
             /**
              * Relationships
@@ -47,9 +46,6 @@ class CreateMessagesTable extends Migration
 
             $table->integer('lang_tgt_id')->unsigned();
             $table->foreign('lang_tgt_id')->references('id')->on('languages');
-
-            $table->integer('translation_status_id')->unsigned();
-            $table->foreign('translation_status_id')->references('id')->on('translation_statuses');
 
         });
     }

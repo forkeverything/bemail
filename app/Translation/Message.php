@@ -26,7 +26,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $reply_id
  * @property int $lang_src_id
  * @property int $lang_tgt_id
- * @property int $translation_status_id
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Attachment[] $attachments
  * @property-read \App\Translation\MessageError $error
  * @property-read bool $has_recipients
@@ -39,7 +38,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Recipient[] $recipients
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Reply[] $replies
  * @property-read \App\Language $sourceLanguage
- * @property-read \App\Translation\TranslationStatus $status
  * @property-read \App\Language $targetLanguage
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereAutoTranslateReply($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereBody($value)
@@ -51,12 +49,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereSendToSelf($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereSubject($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereTranslatedBody($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereTranslationStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereUserId($value)
  * @mixin \Eloquent
  * @property int|null $gengo_order_id
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereGengoOrderId($value)
+ * @property-read \App\Translation\Order $order
  */
 class Message extends Model
 {
@@ -76,10 +74,8 @@ class Message extends Model
         'send_to_self',
         'user_id',
         'reply_id',
-        'translation_status_id',
         'lang_src_id',
-        'lang_tgt_id',
-        'gengo_order_id'
+        'lang_tgt_id'
     ];
 
     /**
@@ -186,16 +182,6 @@ class Message extends Model
     }
 
     /**
-     * Status of Message translation.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function status()
-    {
-        return $this->belongsTo(TranslationStatus::class, 'translation_status_id');
-    }
-
-    /**
      * Language originally written in.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -223,6 +209,16 @@ class Message extends Model
     public function receipt()
     {
         return $this->hasOne(MessageReceipt::class, 'message_id');
+    }
+
+    /**
+     * The translation Order for this message.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function order()
+    {
+        return $this->hasOne(Order::class, 'message_id');
     }
 
     /**
@@ -264,36 +260,6 @@ class Message extends Model
     public function error()
     {
         return $this->hasOne(MessageError::class, 'message_id');
-    }
-
-    /**
-     * Updates the Message Status.
-     *
-     * @param TranslationStatus $status
-     */
-    public function updateStatus(TranslationStatus $status)
-    {
-        $this->update([
-            'translation_status_id' => $status->id
-        ]);
-    }
-
-    /**
-     * Gengo Order ID that identifies the job
-     * in Gengo's system.
-     *
-     * @param $id
-     * @return bool
-     */
-    public function gengoOrderId($id = null)
-    {
-        if (is_null($id)) {
-            return $this->gengo_order_id;
-        }
-
-        return $this->update([
-            'gengo_order_id' => $id
-        ]);
     }
 
     /**
@@ -347,6 +313,17 @@ class Message extends Model
     {
         $thread = new MessageThread($this);
         return $thread->get();
+    }
+
+    /**
+     * Create a new translation Order.
+     *
+     * @param $orderId
+     * @return $this|Model
+     */
+    public function createOrder($orderId)
+    {
+        return Order::createForMessage($this, $orderId);
     }
 
 }

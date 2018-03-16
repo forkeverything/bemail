@@ -12,7 +12,6 @@ class SysDataSeeder extends Seeder
     public function run()
     {
         $this->call(LanguagesTableSeeder::class);
-        $this->call(TranslationStatusesTableSeeder::class);
         $this->call(OrderStatusesTableSeeder::class);
         $this->call(RecipientTypesTableSeeder::class);
         $this->call(CreditTransactionTypesTableSeeder::class);
