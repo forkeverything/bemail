@@ -107,6 +107,65 @@ class MessageFactory
     protected $attachments;
 
     /**
+     * Converts an array of UploadedFile(s).
+     *
+     * @param $attachments
+     * @return array
+     */
+    protected function convertUploadedFiles($attachments)
+    {
+        return array_map(function ($uploadedFile) {
+            return new FormUploadedFile($uploadedFile);
+        }, $attachments);
+    }
+
+    /**
+     * Create Message Recipient(s).
+     *
+     * @return $this
+     */
+    protected function createRecipients()
+    {
+        foreach ($this->recipientEmails as $type => $emails) {
+            $recipientType = RecipientType::findType($type);
+            foreach ($emails as $email) {
+                $this->messageModel->newRecipient($recipientType, $email)->make();
+            }
+        }
+
+        // Manually create Recipient (original sender) when message is
+        // a reply because the reply address is bemail's inbound
+        // address.
+        if ($this->messageModel->isReply()) {
+            $originalMessageSenderEmail = $this->messageModel->parentReplyClass->originalMessage->senderEmail();
+            $this->messageModel->newRecipient(RecipientType::standard(), $originalMessageSenderEmail)->make();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Check whether Message has attachments.
+     *
+     * @return bool
+     */
+    protected function hasAttachments()
+    {
+        return $this->attachments && count($this->attachments) > 0;
+    }
+
+    /**
+     * Create the Attachment(s) to this Message.
+     *
+     */
+    protected function createAttachments()
+    {
+        foreach ($this->attachments as $attachment) {
+            $this->messageModel->newAttachment($attachment)->make();
+        }
+    }
+
+    /**
      * Set fields from a new message request.
      *
      * @param CreateMessageRequest $request
@@ -122,8 +181,8 @@ class MessageFactory
         $this->langTgtId = Language::findByCode($request->lang_tgt)->id;
         $this->recipientEmails["standard"] = explode(',', $request->recipients);
         $attachments = $request->attachments ?: [];
-        if(count($attachments) > 0) {
-            $this->attachments = AttachmentFileBuilder::convertArrayOfUploadedFiles($attachments);
+        if (count($attachments) > 0) {
+            $this->attachments = $this->convertUploadedFiles($attachments);
         } else {
             $this->attachments = [];
         }
@@ -234,52 +293,6 @@ class MessageFactory
             'lang_tgt_id' => $this->langTgtId
         ]);
         return $this;
-    }
-
-    /**
-     * Create Message Recipient(s).
-     *
-     * @return $this
-     */
-    protected function createRecipients()
-    {
-        foreach ($this->recipientEmails as $type => $emails) {
-            $recipientType = RecipientType::findType($type);
-            foreach ($emails as $email) {
-                $this->messageModel->newRecipient($recipientType, $email)->make();
-            }
-        }
-
-        // Manually create Recipient (original sender) when message is
-        // a reply because the reply address is bemail's inbound
-        // address.
-        if ($this->messageModel->isReply()) {
-            $originalMessageSenderEmail = $this->messageModel->parentReplyClass->originalMessage->senderEmail();
-            $this->messageModel->newRecipient(RecipientType::standard(), $originalMessageSenderEmail)->make();
-        }
-
-        return $this;
-    }
-
-    /**
-     * Check whether Message has attachments.
-     *
-     * @return bool
-     */
-    protected function hasAttachments()
-    {
-        return $this->attachments && count($this->attachments) > 0;
-    }
-
-    /**
-     * Create the Attachment(s) to this Message.
-     *
-     */
-    protected function createAttachments()
-    {
-        foreach ($this->attachments as $attachment) {
-            $this->messageModel->newAttachment($attachment)->make();
-        }
     }
 
     /**

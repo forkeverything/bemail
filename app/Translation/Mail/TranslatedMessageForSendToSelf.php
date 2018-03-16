@@ -4,7 +4,6 @@ namespace App\Translation\Mail;
 
 use App\Translation\Mail\Traits\TranslatedMail;
 use App\Translation\Message;
-use App\Translation\Utilities\MessageThreadBuilder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -36,7 +35,7 @@ class TranslatedMessageForSendToSelf extends Mailable
     public function __construct(Message $translatedMessage)
     {
         $this->translatedMessage = $translatedMessage;
-        $this->messages = MessageThreadBuilder::startingFrom($this->translatedMessage);
+        $this->messages = $this->translatedMessage->thread();
     }
 
     /**

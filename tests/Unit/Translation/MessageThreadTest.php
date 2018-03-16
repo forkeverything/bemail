@@ -1,17 +1,16 @@
 <?php
 
-namespace Tests\Unit\Translation\Utilities;
+namespace Tests\Unit\Translation;
 
 use App\Translation\Message;
 use App\Translation\Reply;
-use App\Translation\Utilities\MessageThreadBuilder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class MessageThreadBuilderTest extends TestCase
+class MessageThreadTest extends TestCase
 {
-
     use DatabaseTransactions;
 
     /**
@@ -79,7 +78,7 @@ class MessageThreadBuilderTest extends TestCase
             0 => 5
         ];
 
-        $thread = MessageThreadBuilder::startingFrom($targetMessage);
+        $thread = $targetMessage->thread();
 
         $this->assertEquals(count($messageIds), $thread->count());
 

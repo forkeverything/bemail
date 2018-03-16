@@ -330,4 +330,16 @@ class Message extends Model
         return $factory;
     }
 
+    /**
+     * Thread of Message(s) in a collection, starting with
+     * this Message.
+     *
+     * @return MessageThread
+     */
+    public function thread()
+    {
+        $thread = new MessageThread($this);
+        return $thread->get();
+    }
+
 }

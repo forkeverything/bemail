@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Translation\Attachments\PostmarkAttachmentFile;
 use App\Translation\Events\ReplyReceived;
 use App\Translation\Contracts\Translator;
 use App\Translation\Message;
@@ -34,7 +35,7 @@ class PostmarkController extends Controller
         $subject = $request["Subject"];
         $strippedTextBody = EmailReplyParser::parse($request["TextBody"]);
         $recipients = $this->parseRecipients($request);
-        $attachments = AttachmentFileBuilder::createPostmarkAttachmentFiles($request["Attachments"]);
+        $attachments = $this->createPostmarkAttachmentFiles($request["Attachments"]);
         $action = $this->action($request["OriginalRecipient"]);
         $target = $this->target($request["OriginalRecipient"]);
 
@@ -130,6 +131,14 @@ class PostmarkController extends Controller
         return $recipients;
     }
 
+    /**
+     * Store Reply info in db.
+     *
+     * @param $fromAddress
+     * @param $fromName
+     * @param $originalMessageId
+     * @return $this|\Illuminate\Database\Eloquent\Model
+     */
     protected function createReplyModel($fromAddress, $fromName, $originalMessageId)
     {
         return Reply::create([
@@ -137,5 +146,18 @@ class PostmarkController extends Controller
             'sender_name' => $fromName,
             'original_message_id' => $originalMessageId
         ]);
+    }
+
+    /**
+     * Converts an array of attachment JSON(s) and creates PostmarkAttachmentFile(s).
+     *
+     * @param $attachments
+     * @return array
+     */
+    protected function createPostmarkAttachmentFiles($attachments)
+    {
+        return array_map(function ($attachmentJson) {
+            return new PostmarkAttachmentFile($attachmentJson);
+        }, $attachments);
     }
 }

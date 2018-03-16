@@ -10,9 +10,9 @@ use Illuminate\Http\UploadedFile;
 /**
  * Uploaded file from compose form.
  *
- * Just a sub-class of Laravel/Symfony's UploadedFiles
- * so that our AttachmentFactory can rely on the
- * AttachmentFile interface.
+ * Custom class that defers to UploadedFile instance methods.
+ * Created to be able to implement AttachmentFile without
+ * modifying UploadedFile directly.
  *
  * @package App\Translation
  */
