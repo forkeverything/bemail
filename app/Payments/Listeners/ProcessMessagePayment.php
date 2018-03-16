@@ -63,6 +63,11 @@ class ProcessMessagePayment
         $this->translator = $event->translator;
         $this->message = $event->message;
 
+        \Log::info('Check properties', [
+            'translator' => $this->translator,
+            'message' => $this->message
+        ]);
+
         $this->setUnitPrice()
              ->setCredits()
              ->setChargeAmount()
