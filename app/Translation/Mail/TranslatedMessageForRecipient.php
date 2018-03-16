@@ -33,7 +33,7 @@ class TranslatedMessageForRecipient extends Mailable
         ]);
 
         // Build thread
-        $this->messages = $this->translatedMessage->thread();
+        $this->messages = $this->translatedMessage->thread()->get();
     }
 
     /**

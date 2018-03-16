@@ -25,6 +25,13 @@ class Order extends Model
 {
 
     /**
+     * Non-incrementing ID.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
      * Unlike other models, Order's id is not auto-incrementing.
      * This is because the id is the same as the Gengo order
      * id so we need to explicitly provide it per Order.

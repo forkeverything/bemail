@@ -40,7 +40,7 @@ class MessageHasBeenTranslatedNotification extends Mailable
     public function __construct(Message $message)
     {
         $this->translatedMessage = $message->load(['recipients', 'sourceLanguage', 'targetLanguage']);
-        $this->messages = $this->translatedMessage->thread();
+        $this->messages = $this->translatedMessage->thread()->get();
     }
 
     /**

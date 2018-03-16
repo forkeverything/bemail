@@ -35,7 +35,7 @@ class TranslatedMessageForSendToSelf extends Mailable
     public function __construct(Message $translatedMessage)
     {
         $this->translatedMessage = $translatedMessage;
-        $this->messages = $this->translatedMessage->thread();
+        $this->messages = $this->translatedMessage->thread()->get();
     }
 
     /**

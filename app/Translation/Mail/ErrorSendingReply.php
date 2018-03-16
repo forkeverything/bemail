@@ -62,7 +62,7 @@ class ErrorSendingReply extends Mailable
 
         $this->originalMessage = $originalMessage;
 
-        $this->messages = $this->originalMessage->thread();
+        $this->messages = $this->originalMessage->thread()->get();
     }
 
     /**

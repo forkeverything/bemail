@@ -7,6 +7,7 @@ use App\Payments\MessageReceipt;
 use App\Translation\Attachment;
 use App\Translation\Message;
 use App\Translation\MessageError;
+use App\Translation\MessageThread;
 use App\Translation\Order;
 use App\Translation\OrderStatus;
 use App\Translation\Recipient;
@@ -284,20 +285,28 @@ class MessageTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_a_new_order()
+    public function it_returns_translated_body()
     {
-        $this->assertNull(static::$message->order);
-        $order = static::$message->createOrder(random_int(90000000, 100000000));
-        $this->assertInstanceOf(Order::class, $order);
+        static::$message->translatedBody('foobar');
+        $this->assertEquals('foobar', static::$message->translatedBody());
     }
 
     /**
      * @test
      */
-    public function it_returns_translated_body()
+    public function it_gets_the_message_thread()
     {
-        static::$message->translatedBody('foobar');
-        $this->assertEquals('foobar', static::$message->translatedBody());
+        $this->assertInstanceOf(MessageThread::class, static::$message->thread());
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_a_new_order()
+    {
+        $this->assertNull(static::$message->order);
+        $order = static::$message->createOrder(random_int(90000000, 100000000));
+        $this->assertInstanceOf(Order::class, $order);
     }
 
 }

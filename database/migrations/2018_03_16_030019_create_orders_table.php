@@ -24,7 +24,7 @@ class CreateOrdersTable extends Migration
              * Main
              */
 
-            $table->unsignedInteger('id')->unique();
+            $table->integer('id')->unsigned()->unique();
 
             /**
              * Relationship

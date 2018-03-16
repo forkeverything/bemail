@@ -311,8 +311,7 @@ class Message extends Model
      */
     public function thread()
     {
-        $thread = new MessageThread($this);
-        return $thread->get();
+        return new MessageThread($this);
     }
 
     /**

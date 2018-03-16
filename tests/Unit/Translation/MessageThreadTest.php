@@ -78,7 +78,7 @@ class MessageThreadTest extends TestCase
             0 => 5
         ];
 
-        $thread = $targetMessage->thread();
+        $thread = $targetMessage->thread()->get();
 
         $this->assertEquals(count($messageIds), $thread->count());
 

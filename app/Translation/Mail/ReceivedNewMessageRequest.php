@@ -43,7 +43,7 @@ class ReceivedNewMessageRequest extends Mailable
             'targetLanguage',
             'receipt.creditTransaction'
         ]);
-        $this->messages = $this->translationMessage->thread();
+        $this->messages = $this->translationMessage->thread()->get();
     }
 
     /**

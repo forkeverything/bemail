@@ -47,7 +47,7 @@ class MessageReplyReceivedNotification extends Mailable
             'targetLanguage'
         ]);
 
-        $this->messages = $this->translationMessage->thread();
+        $this->messages = $this->translationMessage->thread()->get();
     }
 
     /**
