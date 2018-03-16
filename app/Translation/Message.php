@@ -312,6 +312,13 @@ class Message extends Model
         ]);
     }
 
+    /**
+     * Create new recipient for this Message.
+     *
+     * @param RecipientType $type
+     * @param $email
+     * @return RecipientFactory
+     */
     public function newRecipient(RecipientType $type, $email)
     {
         $factory = new RecipientFactory($this, $type, $email);
@@ -319,7 +326,7 @@ class Message extends Model
     }
 
     /**
-     * Create an attachment for this message.
+     * Create an attachment for this Message.
      *
      * @param AttachmentFile $attachment
      * @return AttachmentFactory
