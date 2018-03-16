@@ -148,6 +148,7 @@ class ProcessMessagePayment
 
             $this->cancelTranslation();
             throw $e;
+            
 //            throw new ChargeFailedException(); // Don't go to next event listener
             // TODO ::: Implement handling ChargeFailedException to tell User that message won't be sent
             // because we couldn't charge him.
