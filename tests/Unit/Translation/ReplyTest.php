@@ -63,4 +63,26 @@ class ReplyTest extends TestCase
         $this->assertInstanceOf(Message::class, $reply->originalMessage);
     }
 
+    /**
+     * @test
+     */
+    public function it_creates_a_new_message()
+    {
+        $recipients = [
+            'standard' => [
+                'john@test.bemail.io'
+            ],
+            'cc' => [],
+            'bcc' => []
+        ];
+        $subject = 'Important Message';
+        $body = 'This is the message body';
+
+        $reply = factory(Reply::class)->create();
+        $message = $reply->createMessage($recipients, $subject, $body)->make();
+
+        $this->assertInstanceOf(Message::class, $message);
+        $this->assertEquals($subject, $message->subject);
+    }
+
 }
