@@ -39,8 +39,8 @@ class CreateCreditTransactionsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->integer('message_receipt_id')->unsigned()->nullable();
-            $table->foreign('message_receipt_id')->references('id')->on('message_receipts');
+            $table->integer('receipt_id')->unsigned()->nullable();
+            $table->foreign('receipt_id')->references('id')->on('receipts');
 
         });
     }

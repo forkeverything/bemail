@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use App\Payments\CreditTransaction;
 use App\Payments\CreditTransactionType;
-use App\Payments\MessageReceipt;
+use App\Payments\Receipt;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -31,7 +31,7 @@ class CreditTransactionTest extends TestCase
             'amount' => 80,
             'credit_transaction_type_id' => CreditTransactionType::payment()->id,
             'user_id' => factory(User::class)->create()->id,
-            'message_receipt_id' => factory(MessageReceipt::class)->create()->id
+            'receipt_id' => factory(Receipt::class)->create()->id
         ];
         $transaction = CreditTransaction::create($fields);
         foreach ($fields as $key => $value) {
@@ -60,7 +60,7 @@ class CreditTransactionTest extends TestCase
      */
     public function it_fetches_the_message_receipt()
     {
-        $this->assertInstanceOf('App\Payments\MessageReceipt', static::$transaction->messageReceipt);
+        $this->assertInstanceOf(Receipt::class, static::$transaction->receipt);
     }
 
     /**

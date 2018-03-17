@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMessageReceiptsTable extends Migration
+class CreateReceiptsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateMessageReceiptsTable extends Migration
      */
     public function up()
     {
-        Schema::create('message_receipts', function (Blueprint $table) {
+        Schema::create('receipts', function (Blueprint $table) {
 
             /**
              * Auto
@@ -27,7 +27,6 @@ class CreateMessageReceiptsTable extends Migration
              */
 
             $table->string('plan');
-            $table->integer('cost_per_word');
             $table->integer('amount_charged');
             $table->boolean('reversed')->default(0);
 
@@ -47,6 +46,6 @@ class CreateMessageReceiptsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('message_receipts');
+        Schema::dropIfExists('receipts');
     }
 }

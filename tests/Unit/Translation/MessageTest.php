@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Language;
-use App\Payments\MessageReceipt;
+use App\Payments\Receipt;
 use App\Translation\Attachment;
 use App\Translation\Message;
 use App\Translation\MessageError;
@@ -229,7 +229,7 @@ class MessageTest extends TestCase
     public function it_fetches_a_receipt()
     {
         $this->assertNull($this->message->receipt);
-        $receipt = factory(MessageReceipt::class)->create([
+        $receipt = factory(Receipt::class)->create([
             'message_id' => $this->message
         ]);
         $this->assertEquals($receipt->id, $this->message->fresh()->receipt->id);
@@ -289,9 +289,17 @@ class MessageTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_a_new_order()
+    public function it_instantiates_a_new_order()
     {
         $this->assertInstanceOf(Order::class, $this->message->newOrder());
+    }
+
+    /**
+     * @test
+     */
+    public function it_instantiates_a_new_receipt()
+    {
+        $this->assertInstanceOf(Receipt::class, $this->message->newReceipt());
     }
 
 }
