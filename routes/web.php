@@ -28,6 +28,7 @@ Route::get('/account', 'AccountController@getSettings');
 Route::post('/account', 'AccountController@postUpdateSettings');
 
 // Translator
+
 Route::post('/translator/unit_price', 'TranslatorController@postUnitPrice');
 
 // Subscriptions

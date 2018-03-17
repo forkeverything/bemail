@@ -25,22 +25,21 @@ interface Translator
      * certain languages, multiple characters make up
      * one single word.
      *
-     * @param Language $sourceLangue
+     * @param Language $sourceLanguage
      * @param Language $targetLanguage
      * @param $text
-     * @return mixed
+     * @return int
      */
-    public function unitCount(Language $sourceLangue, Language $targetLanguage, $text);
+    public function unitCount(Language $sourceLanguage, Language $targetLanguage, $text);
 
     /**
      * Gets the cost per word for given language pair.
      *
-     * @param Language $sourceLangue
+     * @param Language $sourceLanguage
      * @param Language $targetLanguage
-     * @return mixed
-     * @throws \Exception
+     * @return int
      */
-    public function unitPrice(Language $sourceLangue, Language $targetLanguage);
+    public function unitPrice(Language $sourceLanguage, Language $targetLanguage);
 
     /**
      * Cancels the translation Order.

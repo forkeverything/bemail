@@ -73,17 +73,37 @@ class GengoTranslator implements Translator
     }
 
     /**
-     * Check the cost per word for given language pair.
+     * The amount of units (words) the translator will charge for.
      *
-     * @param Language $sourceLangue
+     * This is different for various languages because for
+     * certain languages, multiple characters make up
+     * one single word.
+     *
+     * @param Language $sourceLanguage
      * @param Language $targetLanguage
-     * @return float
+     * @param $text
+     * @return int
      * @throws \Gengo\Exception
      */
-    public function unitPrice(Language $sourceLangue, Language $targetLanguage)
+    public function unitCount(Language $sourceLanguage, Language $targetLanguage, $text)
+    {
+        $api = new GengoService();
+        $job = GengoTranslationJob::forQuote($sourceLanguage, $targetLanguage, $text)->build();
+        return (new GengoResponse($api->quote($job)))->body()["jobs"]["job_01"]["unit_count"];
+    }
+
+    /**
+     * Check the cost per word for given language pair.
+     *
+     * @param Language $sourceLanguage
+     * @param Language $targetLanguage
+     * @return int
+     * @throws \Gengo\Exception
+     */
+    public function unitPrice(Language $sourceLanguage, Language $targetLanguage)
     {
         // Get relevant pair
-        $pair = $this->languagePair($sourceLangue->code, $targetLanguage->code);
+        $pair = $this->languagePair($sourceLanguage->code, $targetLanguage->code);
 
         // Manually reset object key pointer to the first index and removes old
         // key.
@@ -154,26 +174,5 @@ class GengoTranslator implements Translator
         } catch (\Exception $e) {
             throw new CouldNotCancelTranslationException();
         }
-    }
-
-    /**
-     * The amount of units (words) the translator will charge for.
-     *
-     * This is different for various languages because for
-     * certain languages, multiple characters make up
-     * one single word.
-     *
-     * @param Language $sourceLangue
-     * @param Language $targetLanguage
-     * @param $text
-     * @return mixed
-     * @throws \Gengo\Exception
-     */
-    public function unitCount(Language $sourceLangue, Language $targetLanguage, $text)
-    {
-        $api = new GengoService();
-        $job = GengoTranslationJob::forQuote($sourceLangue, $targetLanguage, $text)->build();
-        $quote = (new GengoResponse($api->quote($job)))->body()["jobs"]["job_01"]["unit_count"];
-        return $quote;
     }
 }
