@@ -139,6 +139,12 @@ class ProcessMessagePayment
      */
     protected function chargeUser()
     {
+
+        // Stripe will error on attempt to charge 0.
+        if(! $this->chargeAmount) {
+            return $this;
+        }
+
         try {
             $this->message->owner->charge($this->chargeAmount);
         } catch (\Exception $e) {
