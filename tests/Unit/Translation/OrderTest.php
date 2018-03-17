@@ -30,6 +30,8 @@ class OrderTest extends TestCase
     {
         $fields = [
             'id' => 898989,
+            'unit_count' => 10,
+            'unit_price' => 3,
             'message_id' => $this->message->id,
             'order_status_id' => OrderStatus::available()->id,
         ];
