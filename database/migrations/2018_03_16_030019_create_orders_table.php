@@ -32,7 +32,7 @@ class CreateOrdersTable extends Migration
              * Relationship
              */
 
-            $table->integer('message_id')->unsigned();
+            $table->integer('message_id')->unsigned()->unique();
             $table->foreign('message_id')->references('id')->on('messages');
 
             $table->integer('order_status_id')->unsigned();

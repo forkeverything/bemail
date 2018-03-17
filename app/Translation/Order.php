@@ -20,6 +20,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Order whereMessageId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Order whereOrderStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Order whereUpdatedAt($value)
+ * @property int $unit_count
+ * @property int $unit_price
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Order whereUnitCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Order whereUnitPrice($value)
  */
 class Order extends Model
 {
@@ -48,22 +52,6 @@ class Order extends Model
     ];
 
     /**
-     * Creates an Order for given Message and 'id'.
-     *
-     * @param Message $message
-     * @param $id
-     * @return $this|Model
-     */
-    public static function createForMessage(Message $message, $id)
-    {
-        return static::create([
-            'id' => $id,
-            'message_id' => $message->id,
-            'order_status_id' => OrderStatus::available()->id
-        ]);
-    }
-
-    /**
      * The Message to be translated.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -81,6 +69,65 @@ class Order extends Model
     public function status()
     {
         return $this->belongsTo(OrderStatus::class, 'order_status_id');
+    }
+
+    /**
+     * New Order for given Message'.
+     *
+     * @param Message $message
+     * @return $this|Model
+     */
+    public static function newForMessage(Message $message)
+    {
+        return new static([
+            'message_id' => $message->id,
+            'order_status_id' => OrderStatus::available()->id
+        ]);
+    }
+
+    /**
+     * Order ID.
+     *
+     * @param null $id
+     * @return $this|int
+     */
+    public function id($id = null)
+    {
+        if (is_null($id)) {
+            return $this->id;
+        }
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * Number of units to translate.
+     *
+     * @param null $unitCount
+     * @return $this|int
+     */
+    public function unitCount($unitCount = null )
+    {
+        if (is_null($unitCount)) {
+            return $this->unit_count;
+        }
+        $this->unit_count = $unitCount;
+        return $this;
+    }
+
+    /**
+     * Price in cents per unit.
+     *
+     * @param null $unitPrice
+     * @return $this|int
+     */
+    public function unitPrice($unitPrice = null )
+    {
+        if (is_null($unitPrice)) {
+            return $this->unit_price;
+        }
+        $this->unit_price = $unitPrice;
+        return $this;
     }
 
     /**

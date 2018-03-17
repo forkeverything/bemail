@@ -112,8 +112,15 @@ class GengoTranslator implements Translator
         $job = GengoTranslationJob::forMessage($message)->build();
         $response = new GengoResponse($api->postJobs($job));
         if ($response->wasSuccessful()) {
+            // Get unit count and price to store with Order.
+            $unitCount = $this->unitCount($message->sourceLanguage, $message->targetLanguage, $message->body);
+            $unitPrice = $this->unitPrice($message->sourceLanguage, $message->targetLanguage);
             // Create order using Gengo's order id.
-            $message->createOrder($response->orderId());
+            $message->newOrder()
+                    ->id($response->orderId())
+                    ->unitCount($unitCount)
+                    ->unitPrice($unitPrice)
+                    ->save();
         } else {
             $error = new GengoErrorResponse($response->error());
             throw new TranslationException($error->description(), $error->code());

@@ -33,6 +33,12 @@ class ProcessMessagePayment
      */
     protected $message;
     /**
+     * How many units to charge for.
+     *
+     * @var
+     */
+    protected $unitCount;
+    /**
      * Unit Price
      *
      * @var int
@@ -63,8 +69,9 @@ class ProcessMessagePayment
         $this->translator = $event->translator;
         $this->message = $event->message;
 
-        $this->setUnitPrice()
-             ->setCredits()
+        $this->setCredits()
+             ->setUnitCount()
+             ->setUnitPrice()
              ->setChargeAmount()
              ->chargeUser()
              ->adjustUserCredits()
@@ -72,67 +79,59 @@ class ProcessMessagePayment
              ->createReceipt();
     }
 
-    /**
-     * Determine price per word for the Message.
-     *
-     * @return ProcessMessagePayment
-     * @throws MissingUnitPriceException
-     * @throws \Exception
-     */
-    protected function setUnitPrice()
-    {
-        try {
-            $this->unitPrice = $this->translator->unitPrice($this->message->sourceLanguage, $this->message->targetLanguage);
-        } catch (\Exception $e) {
-            $this->cancelTranslation();
-            throw new MissingUnitPriceException();
-            // TODO ::: Implement exception handler to redirect user and notify of failure
-        }
-
-        return $this;
-    }
 
     /**
-     * How many credits to use for Message.
+     * Set amount of User word credits to use.
      *
      * @return ProcessMessagePayment
      */
     protected function setCredits()
     {
-        // Can't use more credits than we have
-        $this->credits = min($this->message->word_count, $this->message->owner->credits);
+        // Can't use more credits than the User has.
+        $this->credits = min($this->message->order->unit_count, $this->message->owner->credits);
         return $this;
     }
 
     /**
-     * Number of words to charge for.
+     * Set how many units to charge User for.
      *
-     * @return mixed
+     * @return $this
      */
-    protected function chargeableWordCount()
+    protected function setUnitCount()
     {
-        // Subtract the amount of credits but can't charge for less
-        // words than 0.
-        return max($this->message->word_count - $this->credits, 0);
+        // Chargeable units = total message units - user credits
+        // Can't charge less than 0 units.
+        $this->unitCount = max($this->message->order->unit_count - $this->credits, 0);
+        return $this;
     }
 
     /**
-     * How much to charge User.
+     * Set unit price from Message's Order.
+     *
+     * @return ProcessMessagePayment
+     */
+    protected function setUnitPrice()
+    {
+        $this->unitPrice = $this->message->order->unit_price;
+        return $this;
+    }
+
+    /**
+     * Set how much to charge User.
      *
      * @return ProcessMessagePayment
      */
     protected function setChargeAmount()
     {
-        $wordCount = $this->chargeableWordCount();
-        $translator = $wordCount * $this->unitPrice;
-        $bemail = $wordCount * $this->message->owner->plan()->surcharge();
+        $translator = $this->unitCount * $this->unitPrice;
+        $bemail = $this->unitCount * $this->message->owner->plan()->surcharge();
         $this->chargeAmount = $translator + $bemail;
         return $this;
     }
 
 
     /**
-     * Charge User.
+     * Actually charge the User.
      *
      * @return ProcessMessagePayment
      * @throws ChargeFailedException
@@ -143,12 +142,8 @@ class ProcessMessagePayment
         try {
             $this->message->owner->charge($this->chargeAmount);
         } catch (\Exception $e) {
-
-            // Failed charging user...
-
             $this->cancelTranslation();
-            
-            throw new ChargeFailedException(); // Don't go to next event listener
+            throw new ChargeFailedException();
             // TODO ::: Implement handling ChargeFailedException to tell User that message won't be sent
             // because we couldn't charge him.
         }
@@ -174,7 +169,7 @@ class ProcessMessagePayment
     protected function adjustUserCredits()
     {
         if ($this->isUsingCredits()) {
-            $this->message->owner->credits($this->message->owner->credits() + $this->credits);
+            $this->message->owner->credits($this->message->owner->credits() - $this->credits);
         }
         return $this;
     }
@@ -201,7 +196,7 @@ class ProcessMessagePayment
     }
 
     /**
-     * Cancel Translation job.
+     * Cancel the translation for an Order.
      *
      * @throws \Exception
      */

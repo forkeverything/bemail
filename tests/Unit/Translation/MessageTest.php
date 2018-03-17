@@ -25,12 +25,12 @@ class MessageTest extends TestCase
     /**
      * @var Message
      */
-    private static $message;
+    private $message;
 
     public function setUp()
     {
         parent::setUp();
-        static::$message = factory(Message::class)->create([
+        $this->message = factory(Message::class)->create([
             'reply_id' => factory(Reply::class)->create()->id
         ]);
     }
@@ -71,7 +71,7 @@ class MessageTest extends TestCase
             'readable_created_at'
         ];
         foreach ($dynamicProperties as $property) {
-            $this->assertContains($property, array_keys(static::$message->toArray()));
+            $this->assertContains($property, array_keys($this->message->toArray()));
         }
     }
 
@@ -84,7 +84,7 @@ class MessageTest extends TestCase
             'created_at'
         ];
         foreach ($fields as $field) {
-            $this->assertInstanceOf('Illuminate\Support\Carbon', static::$message->{$field});
+            $this->assertInstanceOf('Illuminate\Support\Carbon', $this->message->{$field});
         }
     }
 
@@ -93,7 +93,7 @@ class MessageTest extends TestCase
      */
     public function it_fetches_the_message_owner()
     {
-        $this->assertInstanceOf('App\User', static::$message->owner);
+        $this->assertInstanceOf('App\User', $this->message->owner);
     }
 
     /**
@@ -101,9 +101,9 @@ class MessageTest extends TestCase
      */
     public function it_fetches_recipients_for_the_message()
     {
-        $this->assertCount(0, static::$message->recipients);
-        factory(Recipient::class, 5)->create(['message_id' => static::$message->id]);
-        $this->assertCount(5, static::$message->fresh()->recipients);
+        $this->assertCount(0, $this->message->recipients);
+        factory(Recipient::class, 5)->create(['message_id' => $this->message->id]);
+        $this->assertCount(5, $this->message->fresh()->recipients);
     }
 
     /**
@@ -111,7 +111,7 @@ class MessageTest extends TestCase
      */
     public function it_fetches_reply_that_message_is_intended_for()
     {
-        $this->assertInstanceOf(Reply::class, static::$message->parentReplyClass);
+        $this->assertInstanceOf(Reply::class, $this->message->parentReplyClass);
     }
 
     /**
@@ -130,7 +130,7 @@ class MessageTest extends TestCase
      */
     public function it_checks_whether_message_is_for_a_reply()
     {
-        $this->assertTrue(static::$message->isReply());
+        $this->assertTrue($this->message->isReply());
     }
 
     /**
@@ -190,9 +190,9 @@ class MessageTest extends TestCase
      */
     public function it_checks_whether_message_has_recipients()
     {
-        $this->assertFalse(static::$message->has_recipients);
-        factory(Recipient::class, 1)->create(['message_id' => static::$message->id]);
-        $this->assertTrue(static::$message->fresh()->has_recipients);
+        $this->assertFalse($this->message->has_recipients);
+        factory(Recipient::class, 1)->create(['message_id' => $this->message->id]);
+        $this->assertTrue($this->message->fresh()->has_recipients);
     }
 
     /**
@@ -200,11 +200,11 @@ class MessageTest extends TestCase
      */
     public function it_fetches_message_attachments()
     {
-        $this->assertCount(0, static::$message->attachments);
+        $this->assertCount(0, $this->message->attachments);
         factory(Attachment::class, 3)->create([
-            'message_id' => static::$message->id
+            'message_id' => $this->message->id
         ]);
-        $this->assertCount(3, static::$message->fresh()->attachments);
+        $this->assertCount(3, $this->message->fresh()->attachments);
     }
 
     /**
@@ -212,7 +212,7 @@ class MessageTest extends TestCase
      */
     public function it_has_a_source_language()
     {
-        $this->assertInstanceOf('App\Language', static::$message->sourceLanguage);
+        $this->assertInstanceOf('App\Language', $this->message->sourceLanguage);
     }
 
     /**
@@ -220,7 +220,7 @@ class MessageTest extends TestCase
      */
     public function it_has_a_target_language()
     {
-        $this->assertInstanceOf('App\Language', static::$message->targetLanguage);
+        $this->assertInstanceOf('App\Language', $this->message->targetLanguage);
     }
 
     /**
@@ -228,11 +228,11 @@ class MessageTest extends TestCase
      */
     public function it_fetches_a_receipt()
     {
-        $this->assertNull(static::$message->receipt);
+        $this->assertNull($this->message->receipt);
         $receipt = factory(MessageReceipt::class)->create([
-            'message_id' => static::$message
+            'message_id' => $this->message
         ]);
-        $this->assertEquals($receipt->id, static::$message->fresh()->receipt->id);
+        $this->assertEquals($receipt->id, $this->message->fresh()->receipt->id);
     }
 
     /**
@@ -240,9 +240,9 @@ class MessageTest extends TestCase
      */
     public function it_checks_whether_there_are_recipients()
     {
-        $this->assertFalse(static::$message->has_recipients);
-        factory(Recipient::class)->create(['message_id' => static::$message->id]);
-        $this->assertTrue(static::$message->fresh()->has_recipients);
+        $this->assertFalse($this->message->has_recipients);
+        factory(Recipient::class)->create(['message_id' => $this->message->id]);
+        $this->assertTrue($this->message->fresh()->has_recipients);
     }
     
     /**
@@ -250,11 +250,11 @@ class MessageTest extends TestCase
      */
     public function it_fetches_message_error()
     {
-        $this->assertNull(static::$message->error);
+        $this->assertNull($this->message->error);
         factory(MessageError::class)->create([
-            'message_id' => static::$message->id
+            'message_id' => $this->message->id
         ]);
-        $this->assertNotNull(static::$message->fresh()->error);
+        $this->assertNotNull($this->message->fresh()->error);
     }
 
     /**
@@ -262,13 +262,11 @@ class MessageTest extends TestCase
      */
     public function it_fetches_the_translation_order()
     {
-        $this->assertNull(static::$message->order);
-        $order = Order::create([
-            'id' => random_int(90000000, 100000000),
-            'message_id' => static::$message->id,
-            'order_status_id' => OrderStatus::available()->id
+        $this->assertNull($this->message->order);
+        factory(Order::class)->create([
+            'message_id' => $this->message->id
         ]);
-        $this->assertNotNull(static::$message->fresh()->order);
+        $this->assertNotNull($this->message->fresh()->order);
     }
 
     /**
@@ -276,8 +274,8 @@ class MessageTest extends TestCase
      */
     public function it_returns_translated_body()
     {
-        static::$message->translatedBody('foobar');
-        $this->assertEquals('foobar', static::$message->translatedBody());
+        $this->message->translatedBody('foobar');
+        $this->assertEquals('foobar', $this->message->translatedBody());
     }
 
     /**
@@ -285,7 +283,7 @@ class MessageTest extends TestCase
      */
     public function it_gets_the_message_thread()
     {
-        $this->assertInstanceOf(MessageThread::class, static::$message->thread());
+        $this->assertInstanceOf(MessageThread::class, $this->message->thread());
     }
 
     /**
@@ -293,9 +291,7 @@ class MessageTest extends TestCase
      */
     public function it_creates_a_new_order()
     {
-        $this->assertNull(static::$message->order);
-        $order = static::$message->createOrder(random_int(90000000, 100000000));
-        $this->assertInstanceOf(Order::class, $order);
+        $this->assertInstanceOf(Order::class, $this->message->newOrder());
     }
 
 }

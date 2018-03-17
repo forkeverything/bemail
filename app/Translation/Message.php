@@ -304,14 +304,13 @@ class Message extends Model
     }
 
     /**
-     * Create a new translation Order.
+     * Instantiate a new translation Order.
      *
-     * @param $orderId
-     * @return $this|Model
+     * @return Order
      */
-    public function createOrder($orderId)
+    public function newOrder()
     {
-        return Order::createForMessage($this, $orderId);
+        return Order::newForMessage($this);
     }
 
 }
