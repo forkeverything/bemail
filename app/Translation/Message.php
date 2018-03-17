@@ -31,7 +31,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read bool $has_recipients
  * @property-read mixed $hash
  * @property-read string $readable_created_at
- * @property-read mixed $word_count
  * @property-read \App\User $owner
  * @property-read \App\Translation\Reply|null $parentReplyClass
  * @property-read \App\Payments\MessageReceipt $receipt
@@ -85,7 +84,6 @@ class Message extends Model
      */
     protected $appends = [
         'hash',
-        'word_count',
         'has_recipients',
         'readable_created_at'
     ];
@@ -221,15 +219,6 @@ class Message extends Model
         return $this->hasOne(Order::class, 'message_id');
     }
 
-    /**
-     * How many words to translate?
-     *
-     * @return mixed
-     */
-    public function getWordCountAttribute()
-    {
-        return str_word_count($this->body);
-    }
 
     /**
      * Has Recipient(s) attached?

@@ -67,7 +67,6 @@ class MessageTest extends TestCase
     {
         $dynamicProperties = [
             'hash',
-            'word_count',
             'has_recipients',
             'readable_created_at'
         ];
@@ -234,16 +233,6 @@ class MessageTest extends TestCase
             'message_id' => static::$message
         ]);
         $this->assertEquals($receipt->id, static::$message->fresh()->receipt->id);
-    }
-
-
-
-    /**
-     * @test
-     */
-    public function it_gets_the_right_word_count()
-    {
-        $this->assertEquals(str_word_count(static::$message->body), static::$message->word_count);
     }
 
     /**
