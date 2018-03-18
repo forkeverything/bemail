@@ -24,21 +24,21 @@ class GengoController extends Controller
         $response = response("Got it", 200);
         // Ignore if call-back not for job (ie. comments are ignored at the moment)
         if(! array_key_exists("job", $request->all())) return $response;
-        // Gengo posts the response inside a 'job' parameter
+        // Gengo posts the response inside a 'job' key
         $body = json_decode($request->all()["job"], true);
-        // Parse out our message identifier that we originally sent over
+        // The message identifier that was sent with translation job.
         $messageHash = json_decode($body["custom_data"], true)["message_hash"];
-        // Get the status
+        // Message status
         $status = $body["status"];
-        // Which Message is this callback for?
+        // The Message this callback was for.
         $message = Message::findByHash($messageHash);
-        // Switch on status - what was the callback for?
+
         switch ($status) {
             // Pending: Translator has begun work.
             case "pending":
                 $message->order->updateStatus(OrderStatus::pending());
                 break;
-            // Approved: Job (completed translation)
+            // Approved: Completed translation job.
             case "approved":
                 event(new MessageTranslated($message, $body["body_tgt"]));
                 break;
