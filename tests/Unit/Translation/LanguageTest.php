@@ -15,11 +15,37 @@ class LanguageTest extends TestCase
     /**
      * @test
      */
-    public function it_finds_the_right_record_by_code()
+    public function it_finds_a_language_by_code()
     {
         $languages = Language::all()->toArray();
         foreach ($languages as $language) {
             $this->assertEquals(Language::findByCode($language["code"])->name, $language["name"]);
         }
     }
+
+    /**
+     * @test
+     */
+    public function it_finds_english()
+    {
+        $this->assertEquals('en', Language::english()->code);
+    }
+
+    /**
+     * @test
+     */
+    public function it_finds_japanese()
+    {
+        $this->assertEquals('ja', Language::japanese()->code);
+    }
+
+
+    /**
+     * @test
+     */
+    public function it_finds_chinese()
+    {
+        $this->assertEquals('zh', Language::chinese()->code);
+    }
+
 }
