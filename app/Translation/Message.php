@@ -7,6 +7,7 @@ use App\Payments\Receipt;
 use App\Traits\Hashable;
 use App\Translation\Contracts\AttachmentFile;
 use App\Translation\Factories\AttachmentFactory;
+use App\Translation\Factories\MessageFactory;
 use App\Translation\Factories\RecipientFactory;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
@@ -29,6 +30,31 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Language $sourceLanguage
  * @property-read \App\Language $targetLanguage
  * @mixin \Eloquent
+ * @property int $id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property string|null $subject
+ * @property string $body
+ * @property string|null $translated_body
+ * @property int $auto_translate_reply
+ * @property int $send_to_self
+ * @property int $user_id
+ * @property int|null $reply_id
+ * @property int $lang_src_id
+ * @property int $lang_tgt_id
+ * @property-read \App\Translation\Message $originalMessage
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereAutoTranslateReply($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereBody($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereLangSrcId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereLangTgtId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereReplyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereSendToSelf($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereSubject($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereTranslatedBody($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereUserId($value)
  */
 class Message extends Model
 {
@@ -46,7 +72,10 @@ class Message extends Model
         'translated_body',
         'auto_translate_reply',
         'send_to_self',
+        'sender_email',
+        'sender_name',
         'user_id',
+        'message_id',
         'reply_id',
         'lang_src_id',
         'lang_tgt_id'
@@ -95,23 +124,23 @@ class Message extends Model
     }
 
     /**
-     * Reply that this Message is for.
+     * The Message that this was replying to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function parentReplyClass()
+    public function originalMessage()
     {
-        return $this->belongsTo(Reply::class, 'reply_id');
+        return $this->belongsTo(Message::class, 'message_id');
     }
 
     /**
-     * Message could have many replies each with their own Message.
+     * All the Message(s) that are replies to this Message.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function replies()
     {
-        return $this->hasMany(Reply::class, 'original_message_id');
+        return $this->hasMany(Message::class, 'message_id');
     }
 
     /**
@@ -121,27 +150,7 @@ class Message extends Model
      */
     public function isReply()
     {
-        return !!$this->reply_id;
-    }
-
-    /**
-     * Sender email.
-     *
-     * @return mixed
-     */
-    public function senderEmail()
-    {
-        return $this->isReply() ? $this->parentReplyClass->sender_email : $this->owner->email;
-    }
-
-    /**
-     * Sender Name
-     *
-     * @return mixed
-     */
-    public function senderName()
-    {
-        return $this->isReply() ? $this->parentReplyClass->sender_name : $this->owner->name;
+        return !!$this->message_id;
     }
 
     /**
@@ -296,6 +305,16 @@ class Message extends Model
     public function newReceipt()
     {
         return Receipt::newForMessage($this);
+    }
+
+    /**
+     * Make a new reply Message.
+     *
+     * @return MessageFactory
+     */
+    public function newReply()
+    {
+        return MessageFactory::newReplyToMessage($this);
     }
 
 }

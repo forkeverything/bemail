@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Language;
+use App\Translation\Attachments\FormUploadedFile;
 use App\Translation\Events\NewMessageRequestReceived;
 use App\Translation\Contracts\Translator;
+use App\Translation\Factories\AttachmentFactory;
 use App\Translation\Factories\MessageFactory;
 use App\Http\Requests\CreateMessageRequest;
 use App\Translation\Exceptions\TranslationException;
+use App\Translation\Factories\MessageFactory\RecipientEmails;
 use App\Translation\Mail\ReceivedNewMessageRequest;
+use App\Translation\RecipientType;
 use Exception;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -47,7 +51,18 @@ class MessagesController extends Controller
     public function postSendMessage(CreateMessageRequest $request, Translator $translator)
     {
         try {
-            $message = Auth::user()->newMessage($request)->make();
+
+            $message = Auth::user()->newMessage()
+                ->setSubject($request->subject)
+                ->setBody($request->body)
+                ->setAutoTranslateReply(!!$request->auto_translate_reply)
+                ->setSendToSelf(!!$request->send_to_self)
+                ->setLangSrcId(Language::findByCode($request->lang_src)->id)
+                ->setLangTgtId(Language::findByCode($request->lang_tgt)->id)
+                ->setRecipientEmails(RecipientEmails::new()->addListToType($request->recipients, RecipientType::standard()))
+                ->setAttachments(FormUploadedFile::convertArray($request->attachments))
+                                   ->make();
+
             event(new NewMessageRequestReceived($message, $translator));
         } catch (Exception $e) {
             if (App::environment('production')) {
@@ -62,4 +77,5 @@ class MessagesController extends Controller
         // Return to compose screen
         return redirect()->back();
     }
+
 }

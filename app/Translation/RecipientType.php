@@ -37,7 +37,7 @@ class RecipientType extends Model
      * @param $string
      * @return mixed
      */
-    public static function findType($string) {
+    public static function findByName($string) {
         return static::where('name', $string)->firstOrFail();
     }
 

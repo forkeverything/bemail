@@ -5,7 +5,7 @@
 				{{ $message->readable_created_at }}
 			</p>
 			<p style="font-family: Avenir, Helvetica, sans-serif; font-size: 15px; line-height: 22px; margin-bottom: 0; margin-top: 0; padding: 0; color: #1b1d1e">
-				<strong>{{ $message->senderName() }}</strong> ({{ $message->senderEmail() }})
+				<strong>{{ $message->sender_name }}</strong> ({{ $message->sender_email }})
 			</p>
 			<!-- Recipients -->
 			<p style="color: #2b2e2f; font-family: Avenir, Helvetica, sans-serif; font-size: 14px; line-height: 18px; margin: 0;">

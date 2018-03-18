@@ -13,6 +13,20 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Payments\CreditTransactionType $type
  * @property-read \App\User $user
  * @mixin \Eloquent
+ * @property int $id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property int $amount
+ * @property int $credit_transaction_type_id
+ * @property int $user_id
+ * @property int|null $receipt_id
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransaction whereAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransaction whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransaction whereCreditTransactionTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransaction whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransaction whereReceiptId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransaction whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransaction whereUserId($value)
  */
 class CreditTransaction extends Model
 {

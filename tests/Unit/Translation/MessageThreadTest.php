@@ -3,8 +3,10 @@
 namespace Tests\Unit\Translation;
 
 use App\Translation\Message;
+use App\Translation\MessageThread;
 use App\Translation\Reply;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Stripe\Collection;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -13,80 +15,97 @@ class MessageThreadTest extends TestCase
 {
     use DatabaseTransactions;
 
+    protected $message;
+
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->message = factory(Message::class)->create();
+    }
+
     /**
      * @test
      */
-    public function it_build_a_messages_thread()
+    public function it_instantiates_with_a_message()
+    {
+        $this->assertInstanceOf(MessageThread::class, new MessageThread($this->message));
+    }
+
+    /**
+     * @test
+     */
+    public function it_adds_current_message_to_thread()
+    {
+        $thread = $this->message->thread()->get();
+        $this->assertEquals($this->message->id, $thread->first()->id);
+    }
+
+    /**
+     * @test
+     */
+    public function it_adds_the_original_message()
+    {
+        $replyMessage = factory(Message::class)->create([
+            'message_id' => $this->message->id
+        ]);
+        $ids = $replyMessage->thread()->get()->pluck('id')->toArray();
+        $this->assertCount(2, $replyMessage->thread()->get());
+        $this->assertEquals($replyMessage->id, $ids[0]);
+        $this->assertEquals($this->message->id, $ids[1]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_adds_siblings_to_the_thread()
+    {
+        $targetMessage = null;
+        $messages = factory(Message::class, 3)->create([
+            'message_id' => $this->message->id
+        ]);
+        $threadIds = $messages[1]->thread()->get()->pluck('id')->toArray();
+        $this->assertEquals($messages[1]->id, $threadIds[0]);
+        $this->assertEquals($messages[0]->id, $threadIds[1]);
+        $this->assertEquals($messages[2]->id, $threadIds[2]);
+        $this->assertEquals($this->message->id, $threadIds[3]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_a_nested_message_thread()
     {
 
-        $messageIds = [];
-        $targetMessage = null;
+        $originalMessage = factory(Message::class)->create();
 
-        // Starting message
-        $firstMessage = factory(Message::class)->create();
-        $messageIds[] = $firstMessage->id;
-
-        $firstReplies = factory(Reply::class, 3)->create([
-            'original_message_id' => $firstMessage->id
+        $firstReplies = factory(Message::class, 3)->create([
+            'message_id' => $originalMessage->id
         ]);
 
-        foreach ($firstReplies as $i => $firstReply) {
-            $message = factory(Message::class)->create([
-                'reply_id' => $firstReply->id
-            ]);
-            $messageIds[] = $message->id;
+        $secondReplies = factory(Message::class, 3)->create([
+            'message_id' => $firstReplies[1]->id
+        ]);
 
-            if ($i == 1) {
-                $secondReplies = factory(Reply::class, 2)->create([
-                    'original_message_id' => $message->id
-                ]);
-                foreach ($secondReplies as $v => $secondReply) {
-                    $message = factory(Message::class)->create([
-                        'reply_id' => $secondReply->id
-                    ]);
-                    $messageIds[] = $message->id;
+        $thirdReplies = new \Illuminate\Database\Eloquent\Collection();
 
-                    if($v == 0) {
-                        $targetMessage = $message;
-                    }
-                }
-            }
+        foreach ($secondReplies as $secondReply) {
+            $thirdReplies->push(factory(Message::class)->create([
+                'message_id' => $secondReply->id
+            ]));
         }
 
-        /**
-         * Messages Heirarchy
-         * M = message created order and order of messageIds
-         * T = Expected position in thread
-         *
-         * M0T5 => [
-         *     M1T3,
-         *     M2T2 => [
-         *              M3T0,
-         *              M4T1
-         *          ],
-         *     M5T4
-         * ]
-         */
+        $threadIds = $thirdReplies[1]->thread()->get()->pluck('id')->toArray();
 
-        // message ids index => thread ids index
-        $correspondingMessages = [
-            3 => 0,
-            4 => 1,
-            2 => 2,
-            1 => 3,
-            5 => 4,
-            0 => 5
-        ];
+        $this->assertCount(8, $threadIds);
 
-        $thread = $targetMessage->thread()->get();
-
-        $this->assertEquals(count($messageIds), $thread->count());
-
-        $threadIds = $thread->pluck('id')->toArray();
-
-        // Test the order
-        foreach($correspondingMessages as $messageIdIndex => $threadIdIndex) {
-            $this->assertEquals($messageIds[$messageIdIndex], $threadIds[$threadIdIndex]);
-        }
+        $this->assertEquals($thirdReplies[1]->id, $threadIds[0]);
+        $this->assertEquals($secondReplies[1]->id, $threadIds[1]);
+        $this->assertEquals($secondReplies[0]->id, $threadIds[2]);
+        $this->assertEquals($secondReplies[2]->id, $threadIds[3]);
+        $this->assertEquals($firstReplies[1]->id, $threadIds[4]);
+        $this->assertEquals($firstReplies[0]->id, $threadIds[5]);
+        $this->assertEquals($firstReplies[2]->id, $threadIds[6]);
+        $this->assertEquals($originalMessage->id, $threadIds[7]);
     }
+
 }

@@ -1,7 +1,7 @@
 @component('emails.messages.html.partials.layout')
 	@component('emails.messages.html.partials.main')
 		@component('emails.messages.html.partials.main.header', ['hash' => $translatedMessage->hash])
-			Translated message from {{ $translatedMessage->senderName() }} ({{ $translatedMessage->senderEmail() }})
+			Translated message from {{ $translatedMessage->sender_name }} ({{ $translatedMessage->sender_email }})
 		@endcomponent
 		@component('emails.messages.html.partials.main.body')
 			<strong>How to reply</strong>

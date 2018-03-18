@@ -3,7 +3,6 @@
 
 namespace App\Translation\Factories;
 
-
 use App\Translation\Contracts\AttachmentFile;
 use App\Translation\Message;
 
@@ -77,5 +76,7 @@ class AttachmentFactory
         $this->path = $this->attachmentFile->store($directory);
         return $this->createModel();
     }
+
+
 
 }

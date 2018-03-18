@@ -76,8 +76,6 @@ class Reply extends Model
     {
         $factory = new MessageFactory();
         $factory->setReply($this)
-                ->recipientEmails($recipients)
-                ->subject($subject)
                 ->body($body)
                 ->attachments($attachments);
         return $factory;

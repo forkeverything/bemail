@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Translation\Attachments\PostmarkAttachmentFile;
 use App\Translation\Events\ReplyReceived;
 use App\Translation\Contracts\Translator;
+use App\Translation\Factories\MessageFactory\RecipientEmails;
 use App\Translation\Message;
+use App\Translation\RecipientType;
 use App\Translation\Reply;
 use App\Translation\Utilities\AttachmentFileBuilder;
 use App\Translation\Utilities\EmailReplyParser;
@@ -34,8 +36,7 @@ class PostmarkController extends Controller
         $fromAddress = $request["From"];
         $subject = $request["Subject"];
         $strippedTextBody = EmailReplyParser::parse($request["TextBody"]);
-        $recipients = $this->parseRecipients($request);
-        $attachments = $this->createPostmarkAttachmentFiles($request["Attachments"]);
+        $attachments = PostmarkAttachmentFile::convertArray($request["Attachments"]);
         $action = $this->action($request["OriginalRecipient"]);
         $target = $this->target($request["OriginalRecipient"]);
 
@@ -43,8 +44,17 @@ class PostmarkController extends Controller
             case 'reply':
                 // Find message the reply is intended for.
                 if ($originalMessage = Message::findByHash($target)) {
-                    $reply = $this->createReplyModel($fromAddress, $fromName, $originalMessage->id);
-                    $message = $reply->createMessage($recipients, $subject, $strippedTextBody, $attachments)->make();
+
+                    $recipients = $this->recipientEmails($request, $originalMessage);
+
+                    $message = $originalMessage->newReply()
+                                               ->setSenderEmail($fromAddress)
+                                               ->setSenderName($fromName)
+                                               ->setRecipientEmails($recipients)
+                                               ->setSubject($subject)
+                                               ->setBody($strippedTextBody)
+                                               ->setAttachments($attachments)
+                                               ->make();
                     event(new ReplyReceived($message, $translator));
                 };
                 break;
@@ -95,69 +105,34 @@ class PostmarkController extends Controller
     }
 
     /**
-     * Parses recipient emails out of Postmark's POST request.
-     * Store the recipient emails by the recipient types within an array. This is
-     * the same format as 'recipientEmails' prop in MessageFactory.
-     * Currently BccFull always returns empty [].
+     * Creates RecipientEmails from a Postmark inbound email POST request.
      *
      * @param Request $request
-     * @return array
+     * @param Message $originalMessage
+     * @return RecipientEmails
      */
-    protected function parseRecipients(Request $request)
+    protected function recipientEmails(Request $request, Message $originalMessage)
     {
 
-        $recipients = [
-            'standard' => [],
-            'cc' => [],
-            'bcc' => []
-        ];
+        $recipientEmails = RecipientEmails::new();
 
         $keys = [
-            'ToFull' => 'standard',
-            'CcFull' => 'cc',
-            'BccFull' => 'bcc'
+            'ToFull' => RecipientType::standard(),
+            'CcFull' => RecipientType::cc(),
+            'BccFull' => RecipientType::bcc()
         ];
 
-        foreach($keys as $key => $type) {
-            foreach($request[$key] as $recipientJson) {
-                $email = $recipientJson["Email"];
-                // skip the inbound email address or team@bemail.io (when hitting reply-all)
-                $domain = explode('@', $email)[1];
-                if($domain == 'in.bemail.io' || $domain == 'bemail.io') continue;
-                array_push($recipients[$type], $email);
+        foreach ($keys as $key => $type) {
+            foreach ($request[$key] as $recipientJson) {
+                $recipientEmails->addEmailToType($recipientJson["Email"], $type);
             }
         }
 
-        return $recipients;
-    }
+        // Manually add original Message sender email as recipient because
+        // the reply address is bemail's inbound address.
+        $recipientEmails->addEmailToType($originalMessage->sender_email, RecipientType::standard());
 
-    /**
-     * Store Reply info in db.
-     *
-     * @param $fromAddress
-     * @param $fromName
-     * @param $originalMessageId
-     * @return $this|\Illuminate\Database\Eloquent\Model
-     */
-    protected function createReplyModel($fromAddress, $fromName, $originalMessageId)
-    {
-        return Reply::create([
-            'sender_email' => $fromAddress,
-            'sender_name' => $fromName,
-            'original_message_id' => $originalMessageId
-        ]);
-    }
-
-    /**
-     * Converts an array of attachment JSON(s) and creates PostmarkAttachmentFile(s).
-     *
-     * @param $attachments
-     * @return array
-     */
-    protected function createPostmarkAttachmentFiles($attachments)
-    {
-        return array_map(function ($attachmentJson) {
-            return new PostmarkAttachmentFile($attachmentJson);
-        }, $attachments);
+        return $recipientEmails;
     }
 }
+

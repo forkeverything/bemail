@@ -18,6 +18,6 @@ class SendReplyReceivedNotification implements ShouldQueue
      */
     public function handle($event)
     {
-        Mail::to($event->message->senderEmail())->send(new MessageReplyReceivedNotification($event->message));
+        Mail::to($event->message->sender_email)->send(new MessageReplyReceivedNotification($event->message));
     }
 }

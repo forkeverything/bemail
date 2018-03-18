@@ -148,16 +148,12 @@ class User extends Authenticatable
     }
 
     /**
-     * Start a new (not a reply) Message.
+     * Make a new Message.
      *
-     * @param CreateMessageRequest $request
      * @return MessageFactory
      */
-    public function newMessage(CreateMessageRequest $request)
+    public function newMessage()
     {
-        $factory = new MessageFactory();
-        $factory->setNewMessageRequest($request);
-        $factory->owner($this);
-        return $factory;
+        return MessageFactory::newMessageFromUser($this);
     }
 }

@@ -11,6 +11,20 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Payments\CreditTransaction $creditTransaction
  * @property-read \App\Translation\Message $message
  * @mixin \Eloquent
+ * @property int $id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property string $plan
+ * @property int $amount_charged
+ * @property int $reversed
+ * @property int $message_id
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\Receipt whereAmountCharged($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\Receipt whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\Receipt whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\Receipt whereMessageId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\Receipt wherePlan($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\Receipt whereReversed($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\Receipt whereUpdatedAt($value)
  */
 class Receipt extends Model
 {

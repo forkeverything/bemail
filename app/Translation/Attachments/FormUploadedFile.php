@@ -71,4 +71,25 @@ class FormUploadedFile implements AttachmentFile
     {
         return $this->uploadedFile->store($directory);
     }
+
+
+    /**
+     * Creates an array of FormUploadedFile(s) from UploadedFile(s).
+     *
+     * @param array $uploadedFiles
+     * @return array
+     */
+    public static function convertArray($uploadedFiles = [])
+    {
+
+        if (count($uploadedFiles) == 0) {
+            return $uploadedFiles;
+        }
+
+        return array_map(function ($uploadedFile) {
+            return new static($uploadedFile);
+        }, $uploadedFiles);
+
+    }
+
 }

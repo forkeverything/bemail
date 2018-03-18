@@ -1,5 +1,5 @@
 {{ $message->readable_created_at }}
-{{ $message->senderName() }} ({{ $message->senderEmail() }})
+{{ $message->sender_name }} ({{ $message->sender_email }})
 
 @include('emails.messages.text.partials.thread.single.recipients')
 

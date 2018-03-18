@@ -31,7 +31,7 @@ class MessageTest extends TestCase
     {
         parent::setUp();
         $this->message = factory(Message::class)->create([
-            'reply_id' => factory(Reply::class)->create()->id
+            'message_id' => factory(Message::class)->create()->id
         ]);
     }
 
@@ -46,8 +46,10 @@ class MessageTest extends TestCase
             'translated_body' => 'Some translated text',
             'auto_translate_reply' => 0,
             'send_to_self' => 1,
+            'sender_email' => 'foo@example.com',
+            'sender_name' => 'John Dough',
             'user_id' => factory(User::class)->create()->id,
-            'reply_id' => factory(Reply::class)->create()->id,
+            'message_id' => factory(Message::class)->create()->id,
             'lang_src_id' => 1,
             'lang_tgt_id' => 2
         ];
@@ -109,19 +111,19 @@ class MessageTest extends TestCase
     /**
      * @test
      */
-    public function it_fetches_reply_that_message_is_intended_for()
+    public function it_fetches_the_original_message()
     {
-        $this->assertInstanceOf(Reply::class, $this->message->parentReplyClass);
+        $this->assertInstanceOf(Message::class, $this->message->originalMessage);
     }
 
     /**
      * @test
      */
-    public function it_fetches_replies_to_target_message()
+    public function it_fetches_all_replies()
     {
         $message = factory(Message::class)->create();
         $this->assertCount(0, $message->replies);
-        $reply = factory(Reply::class, 5)->create(['original_message_id' => $message->id]);
+        $reply = factory(Message::class, 5)->create(['message_id' => $message->id]);
         $this->assertCount(5, $message->fresh()->replies);
     }
 
@@ -131,58 +133,6 @@ class MessageTest extends TestCase
     public function it_checks_whether_message_is_for_a_reply()
     {
         $this->assertTrue($this->message->isReply());
-    }
-
-    /**
-     * @test
-     */
-    public function it_gets_the_right_sender_email_for_original_messages()
-    {
-        $user = factory(User::class)->create();
-        $originalMessage = factory(Message::class)->create([
-            'user_id' => $user->id
-        ]);
-        $this->assertEquals($user->email, $originalMessage->senderEmail());
-    }
-
-    /**
-     * @test
-     */
-    public function it_gets_the_right_sender_email_for_reply_messages()
-    {
-        $user = factory(User::class)->create();
-        $reply = factory(Reply::class)->create();
-        $originalMessage = factory(Message::class)->create([
-            'user_id' => $user->id,
-            'reply_id' => $reply->id
-        ]);
-        $this->assertEquals($reply->sender_email, $originalMessage->senderEmail());
-    }
-
-    /**
-     * @test
-     */
-    public function it_gets_the_right_sender_name_for_original_messages()
-    {
-        $user = factory(User::class)->create();
-        $originalMessage = factory(Message::class)->create([
-            'user_id' => $user->id
-        ]);
-        $this->assertEquals($user->name, $originalMessage->senderName());
-    }
-
-    /**
-     * @test
-     */
-    public function it_gets_the_right_sender_name_for_reply_messages()
-    {
-        $user = factory(User::class)->create();
-        $reply = factory(Reply::class)->create();
-        $originalMessage = factory(Message::class)->create([
-            'user_id' => $user->id,
-            'reply_id' => $reply->id
-        ]);
-        $this->assertEquals($reply->sender_name, $originalMessage->senderName());
     }
 
     /**

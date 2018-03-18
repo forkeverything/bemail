@@ -2,7 +2,7 @@
 
 Your reply was not sent.
 
-We're sorry to say that the following reply to {{ $originalMessage->senderName() }} ({{$originalMessage->senderEmail() }}) was unable to be sent due to a system error.
+We're sorry to say that the following reply to {{ $originalMessage->sender_name }} ({{$originalMessage->sender_email }}) was unable to be sent due to a system error.
 
 "{{ $body  }}"
 

@@ -17,6 +17,8 @@ $factory->define(Message::class, function (Faker $faker) {
         'translated_body' => function() use ($faker){
             return $faker->boolean(40) ? $faker->paragraph(2) : '';
         },
+        'sender_email' => $faker->email,
+        'sender_name' => $faker->name,
         'auto_translate_reply' => $faker->boolean(80),
         'send_to_self' => $faker->boolean(30),
         'user_id' => function() {

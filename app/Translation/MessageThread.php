@@ -50,18 +50,12 @@ class MessageThread
      */
     private function currentMessageSiblings()
     {
-        $originalMessageId = $this->currentMessage->parentReplyClass->original_message_id;
-        return Message::join('replies', 'messages.reply_id', '=', 'replies.id')
-            // Ignore current message (already added to thread)
-                      ->where('messages.id', '!=', $this->currentMessage->id)
-            // Get replies to the same Message
-                      ->where('original_message_id', $originalMessageId)
-            // Latest first
+        // Get replies to the same Message
+        return Message::where('message_id', $this->currentMessage->message_id)
+                      // Ignore current message (already added to thread)
+                      ->where('id', '!=', $this->currentMessage->id)
+                      // Latest first
                       ->orderBy('created_at', 'desc')
-            // Only return Message fields (ignore Reply fields).
-            // 'messages.id as id' is needed because for some
-            // reason id is replaced by replies.id
-                      ->select('messages.*', 'messages.id as id')
                       ->get();
     }
 
@@ -82,7 +76,7 @@ class MessageThread
      */
     private function setNextMessage()
     {
-        $this->currentMessage = $this->currentMessage->parentReplyClass->originalMessage;
+        $this->currentMessage = $this->currentMessage->originalMessage;
     }
 
     /**

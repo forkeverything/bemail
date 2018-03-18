@@ -154,4 +154,22 @@ class PostmarkAttachmentFile implements AttachmentFile
         $fullPath = "{$directory}/{$this->hashName()}";
         return Storage::put($fullPath, $this->getData()) ? $fullPath : false;
     }
+
+    /**
+     * Converts an array of Postmark Attachment JSON data into an array of PostmarkAttachmentFile.
+     *
+     * @param array $attachments
+     * @return array
+     */
+    public static function convertArray($attachments = [])
+    {
+
+        if(count($attachments) == 0 ) {
+            return $attachments;
+        }
+
+        return array_map(function ($attachmentJson) {
+            return new static($attachmentJson);
+        }, $attachments);
+    }
 }

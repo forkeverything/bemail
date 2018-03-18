@@ -7,6 +7,7 @@ use App\Http\Requests\CreateMessageRequest;
 use App\Language;
 use App\Translation\Attachments\FormUploadedFile;
 use App\Translation\Contracts\AttachmentFile;
+use App\Translation\Factories\MessageFactory\RecipientEmails;
 use App\Translation\Message;
 use App\Translation\RecipientType;
 use App\Translation\Reply;
@@ -25,11 +26,11 @@ class MessageFactory
     /**
      * User that this Message belongs to.
      *
-     * If this is a new message, then this User is also the
-     * sender. Otherwise, if it's a reply, this User is
-     * the one that owns (pays for) the messages.
+     * This User is the same for every Message on the Message
+     * chain and will also be the User that is charged
+     * for each reply.
      *
-     * @var
+     * @var User
      */
     protected $owner;
     /**
@@ -38,8 +39,12 @@ class MessageFactory
      * @var
      */
     protected $formRequest;
-    /** Id of reply if Message is a reply */
-    protected $replyId;
+    /**
+     * Original Message ID for a reply Message.
+     *
+     * @var int|null
+     */
+    protected $messageId;
     /**
      * Newly created Message model.
      *
@@ -47,15 +52,11 @@ class MessageFactory
      */
     protected $messageModel;
     /**
-     * Recipient emails (string).
+     * Recipient emails
      *
-     * @var array
+     * @var RecipientEmails
      */
-    protected $recipientEmails = [
-        'standard' => [],
-        'cc' => [],
-        'bcc' => []
-    ];
+    protected $recipientEmails;
     /**
      * Email Subject
      *
@@ -80,9 +81,20 @@ class MessageFactory
      * For when the client wants to review the translated message
      * before manually sending it himself.
      *
-     * @var
+     * @var bool
      */
     protected $sendToSelf;
+    /**
+     * Email address of sender.
+     *
+     * @var string
+     */
+    protected $senderEmail;
+    /**
+     * Name of sender.
+     * @var string|null
+     */
+    protected $senderName;
     /**
      * Source Language ID
      *
@@ -105,16 +117,41 @@ class MessageFactory
     protected $attachments;
 
     /**
-     * Converts an array of UploadedFile(s).
+     * New MessageFactory for a new Message from given User.
      *
-     * @param $attachments
-     * @return array
+     * @param User $user
+     * @return static
      */
-    protected function convertUploadedFiles($attachments)
+    public static function newMessageFromUser(User $user)
     {
-        return array_map(function ($uploadedFile) {
-            return new FormUploadedFile($uploadedFile);
-        }, $attachments);
+        $factory = new static();
+        $factory->senderEmail = $user->email;
+        $factory->senderName = $user->name;
+        $factory->owner = $user;
+        return $factory;
+    }
+
+    /**
+     * New MessageFactory to make a reply Message.
+     *
+     * @param Message $originalMessage
+     * @return static
+     */
+    public static function newReplyToMessage(Message $originalMessage)
+    {
+        $factory = new static();
+        $factory->messageId = $originalMessage->id;
+        // Replies mean that original message had auto-translate 'on'
+        // and consequently send-to-self 'off'.
+        $factory->autoTranslateReply = 1;
+        $factory->sendToSelf = 0;
+        // Reply message share same owner as original.
+        $factory->owner = $originalMessage->owner;
+        // a reply message will have flipped language pairs to the
+        // original message.
+        $factory->langSrcId = $originalMessage->lang_tgt_id;
+        $factory->langTgtId = $originalMessage->lang_src_id;
+        return $factory;
     }
 
     /**
@@ -124,19 +161,11 @@ class MessageFactory
      */
     protected function createRecipients()
     {
-        foreach ($this->recipientEmails as $type => $emails) {
-            $recipientType = RecipientType::findType($type);
+        foreach ($this->recipientEmails->all() as $type => $emails) {
+            $recipientType = RecipientType::findByName($type);
             foreach ($emails as $email) {
                 $this->messageModel->newRecipient($recipientType, $email)->make();
             }
-        }
-
-        // Manually create Recipient (original sender) when message is
-        // a reply because the reply address is bemail's inbound
-        // address.
-        if ($this->messageModel->isReply()) {
-            $originalMessageSenderEmail = $this->messageModel->parentReplyClass->originalMessage->senderEmail();
-            $this->messageModel->newRecipient(RecipientType::standard(), $originalMessageSenderEmail)->make();
         }
 
         return $this;
@@ -164,51 +193,38 @@ class MessageFactory
     }
 
     /**
-     * Set fields from a new message request.
+     * Set sender email property.
      *
-     * @param CreateMessageRequest $request
+     * @param $email
      * @return $this
      */
-    public function setNewMessageRequest(CreateMessageRequest $request)
+    public function setSenderEmail($email)
     {
-        $this->subject = $request->subject;
-        $this->body = $request->body;
-        $this->autoTranslateReply = !!$request->auto_translate_reply;
-        $this->sendToSelf = !!$request->send_to_self;
-        $this->langSrcId = Language::findByCode($request->lang_src)->id;
-        $this->langTgtId = Language::findByCode($request->lang_tgt)->id;
-        $this->recipientEmails["standard"] = explode(',', $request->recipients);
-        $attachments = $request->attachments ?: [];
-        if (count($attachments) > 0) {
-            $this->attachments = $this->convertUploadedFiles($attachments);
-        } else {
-            $this->attachments = [];
-        }
-
+        $this->senderEmail = $email;
         return $this;
     }
 
     /**
-     * Set fields from a Reply.
+     * Set sender name property.
      *
-     * @param Reply $reply
+     * @param $name
      * @return $this
      */
-    public function setReply(Reply $reply)
+    public function setSenderName($name)
     {
-        // set reply id
-        $this->replyId = $reply->id;
-        // Replies mean that original message had auto-translate 'on'
-        // and consequently send-to-self 'off'.
-        $this->autoTranslateReply = 1;
-        $this->sendToSelf = 0;
-        // Reply message share same owner as original.
-        $this->owner = $reply->originalMessage->owner;
-        // a reply message will have flipped language pairs to the
-        // original message.
-        $this->langSrcId = $reply->originalMessage->lang_tgt_id;
-        $this->langTgtId = $reply->originalMessage->lang_src_id;
+        $this->senderName = $name;
+        return $this;
+    }
 
+    /**
+     * Set recipientEmails.
+     *
+     * @param RecipientEmails $recipientEmails
+     * @return $this
+     */
+    public function setRecipientEmails($recipientEmails)
+    {
+        $this->recipientEmails = $recipientEmails;
         return $this;
     }
 
@@ -218,7 +234,7 @@ class MessageFactory
      * @param null $subject
      * @return $this
      */
-    public function subject($subject)
+    public function setSubject($subject)
     {
         $this->subject = $subject;
         return $this;
@@ -230,21 +246,57 @@ class MessageFactory
      * @param $body
      * @return $this
      */
-    public function body($body)
+    public function setBody($body)
     {
         $this->body = $body;
         return $this;
     }
 
     /**
-     * Set recipientEmails.
+     * Set autoTranslateReply.
      *
-     * @param $recipientEmails
+     * @param bool $autoTranslate
      * @return $this
      */
-    public function recipientEmails($recipientEmails)
+    public function setAutoTranslateReply($autoTranslate)
     {
-        $this->recipientEmails = $recipientEmails;
+        $this->autoTranslateReply = $autoTranslate;
+        return $this;
+    }
+
+    /**
+     * Set sendToSelf.
+     * 
+     * @param $sendToSelf
+     * @return $this
+     */
+    public function setSendToSelf($sendToSelf)
+    {
+        $this->sendToSelf = $sendToSelf;
+        return $this;
+    }
+
+    /**
+     * Set source language id.
+     * 
+     * @param $id
+     * @return $this
+     */
+    public function setLangSrcId($id)
+    {
+        $this->langSrcId = $id;
+        return $this;
+    }
+
+    /**
+     * Set target language id.
+     *
+     * @param $id
+     * @return $this
+     */
+    public function setLangTgtId($id)
+    {
+        $this->langTgtId = $id;
         return $this;
     }
 
@@ -254,21 +306,9 @@ class MessageFactory
      * @param $attachments
      * @return $this
      */
-    public function attachments($attachments)
+    public function setAttachments($attachments)
     {
         $this->attachments = $attachments;
-        return $this;
-    }
-
-    /**
-     * Set Message owner.
-     *
-     * @param User $user
-     * @return $this
-     */
-    public function owner(User $user)
-    {
-        $this->owner = $user;
         return $this;
     }
 
@@ -285,7 +325,7 @@ class MessageFactory
             'auto_translate_reply' => $this->autoTranslateReply,
             'send_to_self' => $this->sendToSelf,
             'user_id' => $this->owner->id,
-            'reply_id' => $this->replyId,
+            'message_id' => $this->messageId,
             'lang_src_id' => $this->langSrcId,
             'lang_tgt_id' => $this->langTgtId
         ]);

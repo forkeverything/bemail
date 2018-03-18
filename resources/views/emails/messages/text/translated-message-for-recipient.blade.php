@@ -1,7 +1,7 @@
 @component('emails.messages.text.partials.layout')
 
 	Message: {{ $translatedMessage->hash }}
-	Translated message from {{ $translatedMessage->senderName() }} ({{ $translatedMessage->senderEmail() }})
+	Translated message from {{ $translatedMessage->sender_name }} ({{ $translatedMessage->sender_email }})
 
 	# How to reply
 	1. Translate - Reply to this email as usual. Your message will automatically be translated into {{ $translatedMessage->sourceLanguage->name }} at no cost to you.

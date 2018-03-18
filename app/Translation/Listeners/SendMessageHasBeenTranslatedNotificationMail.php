@@ -20,7 +20,7 @@ class SendMessageHasBeenTranslatedNotificationMail implements ShouldQueue
     {
         if(! $event->message->send_to_self) {
             // Send translation complete notification to sender
-            Mail::to($event->message->senderEmail())->send(new MessageHasBeenTranslatedNotification($event->message));
+            Mail::to($event->message->sender_email)->send(new MessageHasBeenTranslatedNotification($event->message));
         }
     }
 }
