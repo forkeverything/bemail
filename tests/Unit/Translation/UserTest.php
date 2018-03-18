@@ -3,8 +3,10 @@
 namespace Tests\Unit;
 
 use App\Language;
+use App\Payments\CreditTransaction;
 use App\Payments\CreditTransactionType;
 use App\Payments\Plan;
+use App\Translation\Factories\MessageFactory;
 use App\Translation\Message;
 use App\Translation\Recipient;
 use App\User;
@@ -20,7 +22,7 @@ class UserTest extends TestCase
     /**
      * @var User
      */
-    private static $user;
+    private $user;
 
     /**
      * Set / run these before each test
@@ -28,7 +30,7 @@ class UserTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        static::$user = factory(User::class)->create();
+        $this->user = factory(User::class)->create();
     }
 
     /**
@@ -56,7 +58,7 @@ class UserTest extends TestCase
      */
     public function it_hides_these_fields()
     {
-        $fields = array_keys(static::$user->toArray());
+        $fields = array_keys($this->user->toArray());
         $this->assertNotContains('password', $fields);
         $this->assertNotContains('remember_token', $fields);
     }
@@ -66,7 +68,7 @@ class UserTest extends TestCase
      */
     public function it_has_a_default_language()
     {
-        $this->assertInstanceOf('App\Language', static::$user->defaultLanguage);
+        $this->assertInstanceOf(Language::class, static::$user->defaultLanguage);
     }
     
     /**
@@ -74,12 +76,12 @@ class UserTest extends TestCase
      */
     public function it_fetches_user_messages()
     {
-        $this->assertCount(0, static::$user->messages);
+        $this->assertCount(0, $this->user->messages);
         factory(Message::class, 3)->create([
-            'user_id' => static::$user->id
+            'user_id' => $this->user->id
         ]);
 
-        $this->assertCount(3, static::$user->fresh()->messages);
+        $this->assertCount(3, $this->user->fresh()->messages);
     }
 
     /**
@@ -88,40 +90,70 @@ class UserTest extends TestCase
     public function it_fetches_recipients_for_messages_sent_by_user()
     {
         $message1 = factory(Message::class)->create([
-            'user_id' => static::$user->id
+            'user_id' => $this->user->id
         ]);
         factory(Recipient::class, 3)->create(['message_id' => $message1->id]);
 
         $message2 = factory(Message::class)->create([
-            'user_id' => static::$user->id
+            'user_id' => $this->user->id
         ]);
         factory(Recipient::class, 2)->create(['message_id' => $message2->id]);
 
-        $this->assertCount(5, static::$user->recipients);
+        $this->assertCount(5, $this->user->recipients);
 
     }
 
     /**
      * @test
      */
-    public function it_adjusts_credits()
+    public function it_has_many_credit_transactions()
     {
-        static::$user->update([
-            'credits' => 10
+        factory(CreditTransaction::class, 3)->create([
+            'user_id' => $this->user->id
         ]);
-        $this->assertEquals(10, static::$user->credits());
-        static::$user->credits(static::$user->credits() + 5);
-        $this->assertEquals(15, static::$user->credits());
-        static::$user->credits(static::$user->credits() + -15);
-        $this->assertEquals(0, static::$user->credits());
+        $this->assertCount(3, $this->user->fresh()->creditTransactions);
     }
+
 
     /**
      * @test
      */
     public function it_gets_the_users_plan()
     {
-        $this->assertInstanceOf(Plan::class, static::$user->plan());
+        $this->assertInstanceOf(Plan::class, $this->user->plan());
+    }
+
+    /**
+     * @test
+     */
+    public function it_gets_the_amount_of_user_credits()
+    {
+        $this->user->update([
+            'credits' => 10
+        ]);
+        $this->assertEquals(10, $this->user->credits());
+    }
+
+    /**
+     * @test
+     */
+    public function it_sets_the_amount_of_user_credits()
+    {
+        $this->user->update([
+            'credits' => 10
+        ]);
+        $this->user->credits($this->user->credits() - 5);
+        $this->assertEquals(5, $this->user->credits);
+        $this->user->credits($this->user->credits() + 15);
+        $this->assertEquals(20, $this->user->credits);
+    }
+
+    /**
+     * @test
+     */
+    public function it_starts_a_new_message()
+    {
+        $this->assertInstanceOf(MessageFactory::class, $this->user->newMessage());
     }
 
 }
