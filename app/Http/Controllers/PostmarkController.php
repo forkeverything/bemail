@@ -8,6 +8,8 @@ use App\Translation\Contracts\Translator;
 use App\Translation\Factories\MessageFactory;
 use App\Translation\Factories\RecipientFactory\RecipientEmails;
 use App\Translation\Message;
+use App\Translation\PostmarkInboundMailRequest;
+use App\Translation\PostmarkInboundRecipient;
 use App\Translation\RecipientType;
 use App\Translation\Utilities\EmailReplyParser;
 use Illuminate\Http\Request;
@@ -31,37 +33,32 @@ class PostmarkController extends Controller
      */
     public function postInboundMail(Request $request, Translator $translator)
     {
-        $fromName = $request["FromName"];
-        $fromAddress = $request["From"];
-        $subject = $request["Subject"];
-        $strippedTextBody = EmailReplyParser::parse($request["TextBody"]);
-        $attachmentsData = $request["Attachments"];
-        $action = $this->action($request["OriginalRecipient"]);
-        $target = $this->target($request["OriginalRecipient"]);
 
-        switch ($action) {
+        $postmarkRequest = new PostmarkInboundMailRequest($request);
+
+        switch ($postmarkRequest->action()) {
             case 'reply':
                 // Find message the reply is intended for.
-                if ($originalMessage = Message::findByHash($target)) {
+                if ($originalMessage = Message::findByHash($postmarkRequest->target())) {
 
                     /**
                      * @var Message $originalMessage
                      */
                     $message = $originalMessage->newReply()
-                                               ->senderEmail($fromAddress)
-                                               ->senderName($fromName)
-                                               ->subject($subject)
-                                               ->body($strippedTextBody)
+                                               ->senderEmail($postmarkRequest->fromAddress())
+                                               ->senderName($postmarkRequest->fromName())
+                                               ->subject($postmarkRequest->subject())
+                                               ->body($postmarkRequest->strippedTextBody())
                                                ->make();
 
                     // Create Recipient(s).
                     $message->newRecipients()
-                            ->recipientEmails($this->recipientEmails($request, $originalMessage))
+                            ->recipientEmails($this->recipientEmails($postmarkRequest, $originalMessage))
                             ->make();
 
                     // Create Attachment(s).
                     $message->newAttachments()
-                            ->attachmentFiles(PostmarkAttachmentFile::convertArray($attachmentsData))
+                            ->attachmentFiles(PostmarkAttachmentFile::convertArray($postmarkRequest->attachments()))
                             ->make();
 
                     event(new ReplyReceived($message, $translator));
@@ -75,65 +72,30 @@ class PostmarkController extends Controller
     }
 
     /**
-     * The action that this inbound email is doing.
+     * Creates RecipientEmails.
      *
-     * @param $inboundAddress
-     * @return mixed
-     */
-    protected function action($inboundAddress)
-    {
-        return $this->inboundAddressArray($inboundAddress)[0];
-    }
-
-    /**
-     * The target that this email is intended for.
-     *
-     * @param $inboundAddress
-     * @return mixed
-     */
-    protected function target($inboundAddress)
-    {
-        preg_match("/.*(?=@)/", $this->inboundAddressArray($inboundAddress)[1], $matches);
-        return $matches[0];
-    }
-
-    /**
-     * Turns the inbound address into an array.
-     *
-     * Inbound Address Convention:
-     * - snake_case for incoming mail address
-     * - first part specifies the type of email
-     * - ie. reply_s0m3h4$h@in.bemail.io, for replies to a specific Message
-     *
-     * @param $inboundAddress
-     * @return array
-     */
-    protected function inboundAddressArray($inboundAddress)
-    {
-        return explode("_", $inboundAddress);
-    }
-
-    /**
-     * Creates RecipientEmails from a Postmark inbound email POST request.
-     *
-     * @param Request $request
+     * @param PostmarkInboundMailRequest $postmarkRequest
      * @param Message $originalMessage
      * @return RecipientEmails
      */
-    protected function recipientEmails(Request $request, Message $originalMessage)
+    protected function recipientEmails(PostmarkInboundMailRequest $postmarkRequest, Message $originalMessage)
     {
 
         $recipientEmails = RecipientEmails::new();
 
-        $keys = [
-            'ToFull' => RecipientType::standard(),
-            'CcFull' => RecipientType::cc(),
-            'BccFull' => RecipientType::bcc()
+        $types = [
+            'standard',
+            'cc',
+            'bcc'
         ];
 
-        foreach ($keys as $key => $type) {
-            foreach ($request[$key] as $recipientJson) {
-                $recipientEmails->addEmailToType($recipientJson["Email"], $type);
+        /**
+         * @var $postmarkRecipient PostmarkInboundRecipient
+         */
+        foreach ($types as $type) {
+            $recipients = call_user_func([$postmarkRequest, "{$type}Recipients"]);
+            foreach ($recipients as $postmarkRecipient) {
+                $recipientEmails->addEmailToType($postmarkRecipient->email(), call_user_func("RecipientType::{$type}"));
             }
         }
 
