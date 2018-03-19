@@ -67,7 +67,7 @@ class UserTest extends TestCase
      */
     public function it_has_a_default_language()
     {
-        $this->assertInstanceOf(Language::class, static::$user->defaultLanguage);
+        $this->assertInstanceOf(Language::class, $this->user->defaultLanguage);
     }
     
     /**
