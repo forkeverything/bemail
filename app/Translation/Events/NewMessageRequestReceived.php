@@ -19,22 +19,29 @@ class NewMessageRequestReceived
     use Dispatchable, SerializesModels;
 
     /**
-     * @var Message
+     * @var CreateMessageRequest
      */
-    public $message;
+    public $request;
     /**
      * @var Translator
      */
     public $translator;
+    /**
+     * Message model after being created.
+     *
+     * @var Message
+     */
+    public $message;
 
     /**
      * NewMessageRequestReceived constructor.
-     * @param Message $message
+     *
+     * @param CreateMessageRequest $request
      * @param Translator $translator
      */
-    public function __construct(Message $message, Translator $translator)
+    public function __construct(CreateMessageRequest $request, Translator $translator)
     {
+        $this->request = $request;
         $this->translator = $translator;
-        $this->message = $message;
     }
 }

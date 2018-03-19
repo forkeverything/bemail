@@ -17,6 +17,9 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\SendWelcomeMail'
         ],
         'App\Translation\Events\NewMessageRequestReceived' => [
+            'App\Translation\Listeners\CreateNewMessageModel',
+            'App\Translation\Listeners\CreateRecipientsForNewMessage',
+            'App\Translation\Listeners\CreateAttachmentsForNewMessage',
             'App\Translation\Listeners\TranslateNewMessage',
             'App\Payments\Listeners\ProcessMessagePayment',
             'App\Translation\Listeners\SendNewMessageRequestReceivedNotification'
