@@ -41,4 +41,5 @@ class AttachmentTest extends TestCase
         ]);
         $this->assertEquals($attachment->message->id, $message->id);
     }
+
 }
