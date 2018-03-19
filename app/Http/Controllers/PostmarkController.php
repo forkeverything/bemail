@@ -52,12 +52,16 @@ class PostmarkController extends Controller
                                                ->senderName($fromName)
                                                ->subject($subject)
                                                ->body($strippedTextBody)
-                                               ->attachments(PostmarkAttachmentFile::convertArray($attachmentsData))
                                                ->make();
 
-                    // Add Recipient(s)
+                    // Create Recipient(s).
                     $message->newRecipients()
                             ->recipientEmails($this->recipientEmails($request, $originalMessage))
+                            ->make();
+
+                    // Create Attachment(s).
+                    $message->newAttachments()
+                            ->attachmentFiles(PostmarkAttachmentFile::convertArray($attachmentsData))
                             ->make();
 
                     event(new ReplyReceived($message, $translator));

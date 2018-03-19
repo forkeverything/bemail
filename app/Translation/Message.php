@@ -263,15 +263,16 @@ class Message extends Model
         return new RecipientFactory($this);
     }
 
+
     /**
      * Add Attachment(s).
      *
      * @param AttachmentFile $attachment
      * @return AttachmentFactory
      */
-    public function newAttachment(AttachmentFile $attachment)
+    public function newAttachments()
     {
-        $factory = new AttachmentFactory($this, $attachment);
+        $factory = new AttachmentFactory($this);
         return $factory;
     }
 

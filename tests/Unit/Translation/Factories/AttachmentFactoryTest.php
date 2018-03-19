@@ -16,11 +16,55 @@ class AttachmentFactoryTest extends TestCase
     use DatabaseTransactions;
 
     /**
+     * @var Message
+     */
+    private $message;
+
+    /**
+     * @var AttachmentFactory
+     */
+    private $factory;
+
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->message = factory(Message::class)->create();
+        $this->factory = new AttachmentFactory($this->message);
+    }
+
+    /**
+     * @test
+     */
+    public function it_instantiates_with_a_message()
+    {
+        $this->assertInstanceOf(AttachmentFactory::class, $this->factory);
+    }
+
+
+    /**
+     * @test
+     */
+    public function it_has_attachment_files()
+    {
+        $attachmentFiles = [
+            'foo',
+            'bar',
+            'baz'
+        ];
+        $this->assertCount(0, $this->factory->attachmentFiles());
+        $this->factory->attachmentFiles($attachmentFiles);
+        $this->assertCount(3, $this->factory->attachmentFiles());
+    }
+
+    /**
      * @test
      */
     public function it_makes_an_attachment()
     {
-        $environment = env('APP_ENV', 'local');
+
+        $this->assertCount(0, $this->message->attachments);
+
+        $attachmentFile = \Mockery::mock(AttachmentFile::class);
 
         $attributes = [
             'file_name' => 'foobar',
@@ -29,31 +73,27 @@ class AttachmentFactoryTest extends TestCase
             'size' => 55555
         ];
 
-        $message = factory(Message::class)->create();
-        $attachmentFile = \Mockery::mock(AttachmentFile::class);
-
-        // Assert that we're moving the file as well as setting the same
-        // directory as we expect here.
+        // Checks both calling store() and the directory is set.
         $attachmentFile->shouldReceive('store')
-                     ->once()
-                     ->with("{$environment}/user/{$message->user_id}/messages/{$message->id}/attachments")
-                     ->andReturn($attributes['path']);
+                       ->once()
+                       ->with("local/user/{$this->message->user_id}/messages/{$this->message->id}/attachments")
+                       ->andReturn($attributes['path']);
         $attachmentFile->shouldReceive('originalName')
-                     ->once()
-                     ->andReturn($attributes['original_file_name']);
+                       ->once()
+                       ->andReturn($attributes['original_file_name']);
         $attachmentFile->shouldReceive('hashName')
-                     ->once()
-                     ->andReturn($attributes['file_name']);
+                       ->once()
+                       ->andReturn($attributes['file_name']);
         $attachmentFile->shouldReceive('fileSize')
-                     ->once()
-                     ->andReturn($attributes['size']);
+                       ->once()
+                       ->andReturn($attributes['size']);
 
-        // Actual attachment model
-        $attachment = $message->newAttachment($attachmentFile)->make();
+        $attachmentFiles = [$attachmentFile];
+        $this->factory->attachmentFiles($attachmentFiles)->make();
 
-        foreach ($attributes as $attribute => $value) {
-            $this->assertEquals($value, $attachment->{$attribute});
-        }
-
+        $this->assertCount(1, $this->message->fresh()->attachments);
     }
+
+
+
 }

@@ -54,14 +54,18 @@ class MessagesController extends Controller
                            ->sendToSelf(!!$request->send_to_self)
                            ->langSrcId(Language::findByCode($request->lang_src)->id)
                            ->langTgtId(Language::findByCode($request->lang_tgt)->id)
-                           ->attachments(FormUploadedFile::convertArray($request->attachments))
                            ->make();
 
-            // Create Message Recipient(s).
-
+            // Create Recipient(s).
             $recipientEmails = RecipientEmails::new()->addListOfStandardEmails($request->recipients);
             $message->newRecipients()
                     ->recipientEmails($recipientEmails)
+                    ->make();
+
+            // Create Attachment(s).
+            $attachmentFiles = FormUploadedFile::convertArray($request->attachments);
+            $message->newAttachments()
+                    ->attachmentFiles($attachmentFiles)
                     ->make();
 
 

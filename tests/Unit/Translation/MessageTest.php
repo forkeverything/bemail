@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Language;
 use App\Payments\Receipt;
 use App\Translation\Attachment;
+use App\Translation\Factories\AttachmentFactory;
 use App\Translation\Factories\RecipientFactory;
 use App\Translation\Message;
 use App\Translation\MessageError;
@@ -226,6 +227,14 @@ class MessageTest extends TestCase
     public function it_instantiates_recipients_factory()
     {
         $this->assertInstanceOf(RecipientFactory::class, $this->message->newRecipients());
+    }
+
+    /**
+     * @test
+     */
+    public function it_instantiates_attachment_factory()
+    {
+        $this->assertInstanceOf(AttachmentFactory::class, $this->message->newAttachments());
     }
 
     /**

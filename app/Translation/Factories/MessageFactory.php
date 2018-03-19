@@ -100,14 +100,6 @@ class MessageFactory
      * @var int
      */
     protected $langTgtId;
-    /**
-     * File attachments to the Email.
-     *
-     * Array that holds instances of AttachmentFile
-     *
-     * @var array
-     */
-    protected $attachments;
 
     /**
      * New MessageFactory for a new Message from given User.
@@ -145,27 +137,6 @@ class MessageFactory
         $factory->langSrcId = $originalMessage->lang_tgt_id;
         $factory->langTgtId = $originalMessage->lang_src_id;
         return $factory;
-    }
-
-    /**
-     * Check whether Message has attachments.
-     *
-     * @return bool
-     */
-    protected function hasAttachments()
-    {
-        return $this->attachments && count($this->attachments) > 0;
-    }
-
-    /**
-     * Create the Attachment(s) to this Message.
-     *
-     */
-    protected function createAttachments()
-    {
-        foreach ($this->attachments as $attachment) {
-            $this->messageModel->newAttachment($attachment)->make();
-        }
     }
 
     /**
@@ -294,23 +265,6 @@ class MessageFactory
     }
 
     /**
-     * File attachments to send with Message.
-     *
-     * This is exptedted to be an array of AttachmentFile(s).
-     *
-     * @param $attachments
-     * @return array|MessageFactory
-     */
-    public function attachments($attachments = null)
-    {
-        if (is_null($attachments)) {
-            return $this->attachments;
-        }
-        $this->attachments = $attachments;
-        return $this;
-    }
-
-    /**
      * User that owns (will be charged for) the Message.
      *
      * @param User $owner
@@ -370,7 +324,6 @@ class MessageFactory
     public function make()
     {
         $this->createModel();
-        if ($this->hasAttachments()) $this->createAttachments();
         return $this->messageModel;
     }
 }
