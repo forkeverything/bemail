@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Translation\Attachments\PostmarkAttachmentFile;
 use App\Translation\Events\ReplyReceived;
 use App\Translation\Contracts\Translator;
+use App\Translation\Factories\MessageFactory;
 use App\Translation\Factories\MessageFactory\RecipientEmails;
 use App\Translation\Message;
 use App\Translation\RecipientType;
@@ -34,7 +35,7 @@ class PostmarkController extends Controller
         $fromAddress = $request["From"];
         $subject = $request["Subject"];
         $strippedTextBody = EmailReplyParser::parse($request["TextBody"]);
-        $attachments = PostmarkAttachmentFile::convertArray($request["Attachments"]);
+        $attachmentsData = $request["Attachments"];
         $action = $this->action($request["OriginalRecipient"]);
         $target = $this->target($request["OriginalRecipient"]);
 
@@ -45,13 +46,16 @@ class PostmarkController extends Controller
 
                     $recipients = $this->recipientEmails($request, $originalMessage);
 
+                    /**
+                     * @var Message $originalMessage
+                     */
                     $message = $originalMessage->newReply()
-                                               ->setSenderEmail($fromAddress)
-                                               ->setSenderName($fromName)
-                                               ->setRecipientEmails($recipients)
-                                               ->setSubject($subject)
-                                               ->setBody($strippedTextBody)
-                                               ->setAttachments($attachments)
+                                               ->senderEmail($fromAddress)
+                                               ->senderName($fromName)
+                                               ->recipientEmails($recipients)
+                                               ->subject($subject)
+                                               ->body($strippedTextBody)
+                                               ->attachments(PostmarkAttachmentFile::convertArray($attachmentsData))
                                                ->make();
                     event(new ReplyReceived($message, $translator));
                 };

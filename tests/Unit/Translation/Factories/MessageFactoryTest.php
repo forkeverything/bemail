@@ -19,7 +19,9 @@ class MessageFactoryTest extends TestCase
     public function it_instantiates_from_a_user()
     {
         $user = factory(User::class)->create();
+        $factory = MessageFactory::newMessageFromUser($user);
         $this->assertInstanceOf(MessageFactory::class, MessageFactory::newMessageFromUser($user));
+
     }
 
     // TODO ::: Test Message Attachments

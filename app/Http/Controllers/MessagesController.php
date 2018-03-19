@@ -48,14 +48,14 @@ class MessagesController extends Controller
         try {
 
             $message = Auth::user()->newMessage()
-                ->setSubject($request->subject)
-                ->setBody($request->body)
-                ->setAutoTranslateReply(!!$request->auto_translate_reply)
-                ->setSendToSelf(!!$request->send_to_self)
-                ->setLangSrcId(Language::findByCode($request->lang_src)->id)
-                ->setLangTgtId(Language::findByCode($request->lang_tgt)->id)
-                ->setRecipientEmails(RecipientEmails::new()->addListToType($request->recipients, RecipientType::standard()))
-                ->setAttachments(FormUploadedFile::convertArray($request->attachments))
+                ->subject($request->subject)
+                ->body($request->body)
+                ->autoTranslateReply(!!$request->auto_translate_reply)
+                ->sendToSelf(!!$request->send_to_self)
+                ->langSrcId(Language::findByCode($request->lang_src)->id)
+                ->langTgtId(Language::findByCode($request->lang_tgt)->id)
+                ->recipientEmails(RecipientEmails::new()->addListToType($request->recipients, RecipientType::standard()))
+                ->attachments(FormUploadedFile::convertArray($request->attachments))
                                    ->make();
 
             event(new NewMessageRequestReceived($message, $translator));

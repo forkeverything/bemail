@@ -186,121 +186,161 @@ class MessageFactory
     }
 
     /**
-     * Set sender email property.
+     * The email of the person who sent the Message.
+     *
+     * This could be the same as owner email. Saved separately
+     * to keep consistency from owner sent Message(s) and
+     * reply Message(s).
      *
      * @param $email
-     * @return $this
+     * @return string|MessageFactory
      */
-    public function setSenderEmail($email)
+    public function senderEmail($email = null)
     {
+        if (is_null($email)) {
+            return $this->senderEmail;
+        }
         $this->senderEmail = $email;
         return $this;
     }
 
     /**
-     * Set sender name property.
+     * The name of the person who sent the Message.
+     *
      *
      * @param $name
-     * @return $this
+     * @return string|MessageFactory
      */
-    public function setSenderName($name)
+    public function senderName($name = null)
     {
+        if(is_null($name)) {
+            return $this->senderName;
+        }
         $this->senderName = $name;
         return $this;
     }
 
     /**
-     * Set recipientEmails.
+     * Custom class that holds recipient emails.
+     *
+     * Use a class over an array because an array could be
+     * wrong and it wouldn't error.
      *
      * @param RecipientEmails $recipientEmails
-     * @return $this
+     * @return RecipientEmails|MessageFactory
      */
-    public function setRecipientEmails($recipientEmails)
+    public function recipientEmails(RecipientEmails $recipientEmails = null)
     {
+        if (is_null($recipientEmails)) {
+            return $this->recipientEmails;
+        }
         $this->recipientEmails = $recipientEmails;
         return $this;
     }
 
     /**
-     * Set subject.
+     * The message subject.
      *
      * @param null $subject
-     * @return $this
+     * @return string|MessageFactory
      */
-    public function setSubject($subject)
+    public function subject($subject = null)
     {
+        if (is_null($subject)) {
+            return $this->subject;
+        }
         $this->subject = $subject;
         return $this;
     }
 
     /**
-     * Set body.
+     * The message body to be translated.
      *
      * @param $body
-     * @return $this
+     * @return string|MessageFactory
      */
-    public function setBody($body)
+    public function body($body = null)
     {
+        if (is_null($body)) {
+            return $this->body;
+        }
         $this->body = $body;
         return $this;
     }
 
     /**
-     * Set autoTranslateReply.
+     * Whether message replies should be translated.
      *
      * @param bool $autoTranslate
-     * @return $this
+     * @return bool|MessageFactory
      */
-    public function setAutoTranslateReply($autoTranslate)
+    public function autoTranslateReply($autoTranslate = null)
     {
+        if (is_null($autoTranslate)) {
+            return $this->autoTranslateReply;
+        }
         $this->autoTranslateReply = $autoTranslate;
         return $this;
     }
 
     /**
-     * Set sendToSelf.
+     * Send back to owner and not to Recipient(s).
      * 
      * @param $sendToSelf
-     * @return $this
+     * @return bool|MessageFactory
      */
-    public function setSendToSelf($sendToSelf)
+    public function sendToSelf($sendToSelf = null)
     {
+        if (is_null($sendToSelf)) {
+            return $this->sendToSelf;
+        }
         $this->sendToSelf = $sendToSelf;
         return $this;
     }
 
     /**
-     * Set source language id.
+     * The language to translate from.
      * 
      * @param $id
-     * @return $this
+     * @return int|MessageFactory
      */
-    public function setLangSrcId($id)
+    public function langSrcId($id = null)
     {
+        if (is_null($id)) {
+            return $this->langSrcId;
+        }
         $this->langSrcId = $id;
         return $this;
     }
 
     /**
-     * Set target language id.
+     * The language to translate to.
      *
      * @param $id
-     * @return $this
+     * @return int|MessageFactory
      */
-    public function setLangTgtId($id)
+    public function langTgtId($id = null)
     {
+        if (is_null($id)) {
+            return $this->langTgtId;
+        }
         $this->langTgtId = $id;
         return $this;
     }
 
     /**
-     * Set attachments.
+     * File attachments to send with Message.
+     *
+     * This is exptedted to be an array of AttachmentFile(s).
      *
      * @param $attachments
-     * @return $this
+     * @return array|MessageFactory
      */
-    public function setAttachments($attachments)
+    public function attachments($attachments = null)
     {
+        if (is_null($attachments)) {
+            return $this->attachments;
+        }
         $this->attachments = $attachments;
         return $this;
     }

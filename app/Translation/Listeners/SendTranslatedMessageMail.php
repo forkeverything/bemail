@@ -2,6 +2,7 @@
 
 namespace App\Translation\Listeners;
 
+use App\Translation\Events\MessageTranslated;
 use App\Translation\Mail\TranslatedMessageForRecipient;
 use App\Translation\Mail\TranslatedMessageForSendToSelf;
 use App\Translation\Message;
@@ -16,7 +17,7 @@ class SendTranslatedMessageMail implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  object  $event
+     * @param  MessageTranslated  $event
      * @return void
      */
     public function handle($event)
@@ -24,7 +25,7 @@ class SendTranslatedMessageMail implements ShouldQueue
         // Send notification emails
         if($event->message->send_to_self) {
             // Send translated message back to sender
-            Mail::to($event->message->user)->send(new TranslatedMessageForSendToSelf($event->message));
+            Mail::to($event->message->owner)->send(new TranslatedMessageForSendToSelf($event->message));
         } else {
             // Send to recipients
             Mail::to($this->buildMailAddresses($event->message, RecipientType::standard()))
