@@ -36,7 +36,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Translation\Listeners\SendReplyNotSentNotification'
         ],
         'App\Translation\Events\TranslationErrorOccurred' => [
-            'App\Translation\Listeners\UpdateMessageStatusOnTranslationError',
+            'App\Translation\Listeners\UpdateOrderStatusToError',
             'App\Translation\Listeners\RecordTranslationError',
             'App\Translation\Listeners\NotifyAdminsOfTranslationError'
         ],

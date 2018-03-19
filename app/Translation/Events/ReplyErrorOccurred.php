@@ -45,18 +45,14 @@ class ReplyErrorOccurred
     public $body;
 
     /**
-     * Create a new event instance.
+     * The reply Message that failed to translate.
      *
-     * @param $from
-     * @param Message $originalMessage
-     * @param $subject
-     * @param $body
+     * @var Message
      */
-    public function __construct($from, Message $originalMessage, $subject, $body)
+    public $message;
+
+    public function __construct(Message $message)
     {
-        $this->from = $from;
-        $this->originalMessage = $originalMessage;
-        $this->subject = $subject;
-        $this->body = $body;
+        $this->message = $message;
     }
 }

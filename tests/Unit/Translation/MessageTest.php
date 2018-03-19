@@ -11,7 +11,6 @@ use App\Translation\MessageThread;
 use App\Translation\Order;
 use App\Translation\OrderStatus;
 use App\Translation\Recipient;
-use App\Translation\Reply;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;

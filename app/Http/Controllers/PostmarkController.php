@@ -8,8 +8,6 @@ use App\Translation\Contracts\Translator;
 use App\Translation\Factories\MessageFactory\RecipientEmails;
 use App\Translation\Message;
 use App\Translation\RecipientType;
-use App\Translation\Reply;
-use App\Translation\Utilities\AttachmentFileBuilder;
 use App\Translation\Utilities\EmailReplyParser;
 use Illuminate\Http\Request;
 

@@ -3,17 +3,10 @@
 
 namespace App\Translation\Factories;
 
-use App\Http\Requests\CreateMessageRequest;
-use App\Language;
-use App\Translation\Attachments\FormUploadedFile;
-use App\Translation\Contracts\AttachmentFile;
 use App\Translation\Factories\MessageFactory\RecipientEmails;
 use App\Translation\Message;
 use App\Translation\RecipientType;
-use App\Translation\Reply;
 use App\User;
-use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
 
 /**
  * MessageFactory - Creates Messages (new and replies).

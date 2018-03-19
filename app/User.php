@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Http\Requests\CreateMessageRequest;
 use App\Payments\CreditTransaction;
 use App\Payments\Plan;
 use App\Translation\Factories\MessageFactory;

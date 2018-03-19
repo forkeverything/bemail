@@ -6,17 +6,12 @@ use App\Language;
 use App\Translation\Attachments\FormUploadedFile;
 use App\Translation\Events\NewMessageRequestReceived;
 use App\Translation\Contracts\Translator;
-use App\Translation\Factories\AttachmentFactory;
-use App\Translation\Factories\MessageFactory;
 use App\Http\Requests\CreateMessageRequest;
-use App\Translation\Exceptions\TranslationException;
 use App\Translation\Factories\MessageFactory\RecipientEmails;
-use App\Translation\Mail\ReceivedNewMessageRequest;
 use App\Translation\RecipientType;
 use Exception;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 
 class MessagesController extends Controller
 {

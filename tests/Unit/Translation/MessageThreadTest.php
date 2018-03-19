@@ -4,7 +4,6 @@ namespace Tests\Unit\Translation;
 
 use App\Translation\Message;
 use App\Translation\MessageThread;
-use App\Translation\Reply;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Stripe\Collection;
 use Tests\TestCase;

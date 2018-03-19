@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use App\Language;
 use App\Payments\CreditTransaction;
-use App\Payments\CreditTransactionType;
 use App\Payments\Plan;
 use App\Translation\Factories\MessageFactory;
 use App\Translation\Message;

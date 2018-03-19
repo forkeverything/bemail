@@ -19,7 +19,7 @@ class SendReplyNotSentNotification implements ShouldQueue
      */
     public function handle($event)
     {
-        Mail::to($event->from)->send(new ErrorSendingReply($event->originalMessage, $event->subject, $event->body));
+        Mail::to($event->from)->send(new ErrorSendingReply($event->message));
     }
 
 }

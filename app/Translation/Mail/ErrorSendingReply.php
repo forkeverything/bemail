@@ -13,56 +13,27 @@ class ErrorSendingReply extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     * Original Message that the sender was trying to reply to.
-     *
      * @var Message
      */
-    public $originalMessage;
-
-    /**
-     * Subject of the email that failed to send.
-     *
-     * @var string
-     */
-    public $subject;
-
-    /**
-     * Body of the email that failed to send.
-     *
-     * @var string
-     */
-    public $body;
+    public $message;
 
     /**
      * Message(s) to be included in message thread.
      *
      * @var
      */
+
     public $messages;
 
     /**
      * Create a new message instance.
      *
-     * @param Message $originalMessage
-     * @param $subject
-     * @param $body
+     * @param Message $message
      */
-    public function __construct(Message $originalMessage, $subject, $body)
+    public function __construct(Message $message)
     {
-
-        // Reason we're passing the subject and body manually (instead of a
-        // Message model, is because creating the model might have
-        // potentially failed.
-
-        // Irrespective of the reason of failure, we still need to notify
-        // sender that their reply will not be sent.
-
-        $this->subject = $subject;
-        $this->body = $body;
-
-        $this->originalMessage = $originalMessage;
-
-        $this->messages = $this->originalMessage->thread()->get();
+        $this->message = $message;
+        $this->messages = $message->thread()->get();
     }
 
     /**
@@ -72,10 +43,10 @@ class ErrorSendingReply extends Mailable
      */
     public function build()
     {
-        $subject = $this->subject ? 'Error Sending Reply: ' . $this->subject : "Error Sending Reply";
+        $subject = $this->message->subject ? 'Error Sending Reply: ' . $this->message->subject : "Error Sending Reply";
 
         return $this->subject($subject)
-            ->view('emails.messages.html.error-sending-reply')
-            ->text('emails.messages.text.error-sending-reply');
+                    ->view('emails.messages.html.error-sending-reply')
+                    ->text('emails.messages.text.error-sending-reply');
     }
 }
