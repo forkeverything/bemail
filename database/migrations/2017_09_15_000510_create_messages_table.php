@@ -31,7 +31,6 @@ class CreateMessagesTable extends Migration
             $table->text('translated_body')->nullable();
             $table->boolean('auto_translate_reply')->default(1);
             $table->boolean('send_to_self')->default(0);
-
             $table->string('sender_email');
             $table->string('sender_name');
 

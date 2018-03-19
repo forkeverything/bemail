@@ -324,6 +324,8 @@ class MessageFactory
             'body' => $this->body,
             'auto_translate_reply' => $this->autoTranslateReply,
             'send_to_self' => $this->sendToSelf,
+            'sender_email' => $this->senderEmail,
+            'sender_name' => $this->senderName,
             'user_id' => $this->owner->id,
             'message_id' => $this->messageId,
             'lang_src_id' => $this->langSrcId,
