@@ -15,6 +15,23 @@ class LanguageTest extends TestCase
     /**
      * @test
      */
+    public function it_is_be_able_to_mass_assign_these_fields()
+    {
+        $fields = [
+            'name' => 'Gibberish',
+            'code' => 'i2y3biy23'
+        ];
+
+        $language = Language::create($fields);
+
+        foreach ($fields as $key => $value) {
+            $this->assertEquals($language->{$key}, $value);
+        }
+    }
+
+    /**
+     * @test
+     */
     public function it_finds_a_language_by_code()
     {
         $languages = Language::all()->toArray();

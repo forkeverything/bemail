@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 class RecipientType extends Model
 {
     /**
-     * No timestamp fields.
+     * No created_at/updated_at columns.
      *
      * @var bool
      */

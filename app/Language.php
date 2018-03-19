@@ -18,6 +18,18 @@ use Illuminate\Database\Eloquent\Model;
 class Language extends Model
 {
 
+    /**
+     * No created_at/updated_at columns.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
+     * Mass-fillable fields.
+     *
+     * @var array
+     */
     protected $fillable = [
         'name',
         'code'

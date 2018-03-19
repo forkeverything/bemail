@@ -17,7 +17,7 @@ class OrderStatus extends Model
 {
 
     /**
-     * No created_at / updated_at.
+     * No created_at/updated_at columns.
      *
      * @var bool
      */
