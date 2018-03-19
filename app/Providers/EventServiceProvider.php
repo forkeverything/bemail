@@ -31,6 +31,8 @@ class EventServiceProvider extends ServiceProvider
             'App\Translation\Listeners\SendMessageHasBeenTranslatedNotificationMail',
         ],
         'App\Translation\Events\ReplyReceived' => [
+            'App\Translation\Listeners\CreateReplyMessageModel',
+            'App\Translation\Listeners\CreateRecipientsForReplyMessage',
             'App\Translation\Listeners\TranslateReply',
             'App\Payments\Listeners\ProcessMessagePayment',
             'App\Translation\Listeners\SendReplyReceivedNotification'

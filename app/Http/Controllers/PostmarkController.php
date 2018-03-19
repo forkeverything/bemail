@@ -33,36 +33,13 @@ class PostmarkController extends Controller
      */
     public function postInboundMail(Request $request, Translator $translator)
     {
-
         $postmarkRequest = new PostmarkInboundMailRequest($request);
-
         switch ($postmarkRequest->action()) {
             case 'reply':
-                // Find message the reply is intended for.
-                if ($originalMessage = Message::findByHash($postmarkRequest->target())) {
-
-                    /**
-                     * @var Message $originalMessage
-                     */
-                    $message = $originalMessage->newReply()
-                                               ->senderEmail($postmarkRequest->fromAddress())
-                                               ->senderName($postmarkRequest->fromName())
-                                               ->subject($postmarkRequest->subject())
-                                               ->body($postmarkRequest->strippedTextBody())
-                                               ->make();
-
-                    // Create Recipient(s).
-                    $message->newRecipients()
-                            ->recipientEmails($this->recipientEmails($postmarkRequest, $originalMessage))
-                            ->make();
-
-                    // Create Attachment(s).
-                    $message->newAttachments()
-                            ->attachmentFiles(PostmarkAttachmentFile::convertArray($postmarkRequest->attachments()))
-                            ->make();
-
-                    event(new ReplyReceived($message, $translator));
-                };
+                if (!$originalMessage = Message::findByHash($postmarkRequest->target())) {
+                    break;
+                }
+                event(new ReplyReceived($postmarkRequest, $originalMessage, $translator));
                 break;
             default:
                 break;
@@ -71,39 +48,6 @@ class PostmarkController extends Controller
         return response("Received Email", 200);
     }
 
-    /**
-     * Creates RecipientEmails.
-     *
-     * @param PostmarkInboundMailRequest $postmarkRequest
-     * @param Message $originalMessage
-     * @return RecipientEmails
-     */
-    protected function recipientEmails(PostmarkInboundMailRequest $postmarkRequest, Message $originalMessage)
-    {
 
-        $recipientEmails = RecipientEmails::new();
-
-        $types = [
-            'standard',
-            'cc',
-            'bcc'
-        ];
-
-        /**
-         * @var $postmarkRecipient PostmarkInboundRecipient
-         */
-        foreach ($types as $type) {
-            $recipients = call_user_func([$postmarkRequest, "{$type}Recipients"]);
-            foreach ($recipients as $postmarkRecipient) {
-                $recipientEmails->addEmailToType($postmarkRecipient->email(), call_user_func("RecipientType::{$type}"));
-            }
-        }
-
-        // Manually add original Message sender email as recipient because
-        // the reply address is bemail's inbound address.
-        $recipientEmails->addEmailToType($originalMessage->sender_email, RecipientType::standard());
-
-        return $recipientEmails;
-    }
 }
 
