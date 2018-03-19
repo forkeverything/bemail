@@ -4,21 +4,19 @@
 namespace App\Translation\Factories;
 
 
+use App\Translation\Factories\RecipientFactory\RecipientEmails;
 use App\Translation\Message;
 use App\Translation\Recipient;
 use App\Translation\RecipientType;
+use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * Class RecipientFactory
+ *
+ * @package App\Translation\Factories
+ */
 class RecipientFactory
 {
-    /**
-     * What kind of recipient?
-     * Corresponds to: (to/cc/bcc) fields of an email. If this
-     * isn't specified we'll just use standard - ie. the a
-     * 'to' email address.
-     *
-     * @var RecipientType
-     */
-    private $type;
 
     /**
      * Message that is intended for this Recipient.
@@ -28,11 +26,18 @@ class RecipientFactory
     private $message;
 
     /**
-     * Email address of the Recipient.
+     * Email addresses to create as Recipient(s).
      *
-     * @var
+     * @var RecipientEmails
      */
-    private $email;
+    private $recipientEmails;
+
+    /**
+     * Newly created Recipient(s).
+     *
+     * @var Collection
+     */
+    private $recipients;
 
     /**
      * Create new RecipientFactory instance.
@@ -41,36 +46,59 @@ class RecipientFactory
      * @param RecipientType $type
      * @param $email
      */
-    public function __construct(Message $message, RecipientType $type, $email)
+    public function __construct(Message $message)
     {
         $this->message = $message;
-        $this->type = $type;
-        $this->email = $email;
+        $this->recipients = new Collection();
     }
 
     /**
-     * Store Recipient info in db.
+     * Recipient emails are only accepted as a custom class.
      *
+     * @param RecipientEmails $recipientEmails
+     * @return $recipientEmails|$this
+     */
+    public function recipientEmails(RecipientEmails $recipientEmails = null)
+    {
+        if (is_null($recipientEmails)) {
+            return $this->recipientEmails;
+        }
+        $this->recipientEmails = $recipientEmails;
+        return $this;
+    }
+
+    /**
+     * Create and store Recipient.
+     *
+     * @param RecipientType $type
+     * @param $email
      * @return $this|\Illuminate\Database\Eloquent\Model
      */
-    protected function createModel()
+    protected function createRecipient(RecipientType $type, $email)
     {
         // TODO ::: Store recipient names too.
         return Recipient::create([
-            'recipient_type_id' => $this->type ? $this->type->id : RecipientType::standard()->id,
+            'recipient_type_id' => $type->id,
             'message_id' => $this->message->id,
-            'email' => $this->email
+            'email' => $email
         ]);
     }
 
     /**
-     * Make Recipient.
+     * Creates multiple Recipient(s).
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Collection
      */
     public function make()
     {
-        return $this->createModel();
+        foreach ($this->recipientEmails->all() as $type => $emails) {
+            $recipientType = RecipientType::whereName($type)->firstOrFail();
+            foreach ($emails as $email) {
+                $recipient = $this->createRecipient($recipientType, $email);
+                $this->recipients->push($recipient);
+            }
+        }
+        return $this->recipients;
     }
 
 }

@@ -30,17 +30,7 @@ class RecipientType extends Model
     protected $fillable = [
         'name'
     ];
-
-    /**
-     * Tracks down the type from given string or fails
-     *
-     * @param $string
-     * @return mixed
-     */
-    public static function findByName($string) {
-        return static::where('name', $string)->firstOrFail();
-    }
-
+    
     /**
      * Retrieves the model for 'standard' type.
      *

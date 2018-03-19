@@ -147,16 +147,6 @@ class Message extends Model
     }
 
     /**
-     * Check whether Message
-     *
-     * @return bool
-     */
-    public function isReply()
-    {
-        return !!$this->message_id;
-    }
-
-    /**
      * Attachment(s) User might want to send with the Message.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -206,6 +196,15 @@ class Message extends Model
         return $this->hasOne(Order::class, 'message_id');
     }
 
+    /**
+     * Check whether Message
+     *
+     * @return bool
+     */
+    public function isReply()
+    {
+        return !!$this->message_id;
+    }
 
     /**
      * Has Recipient(s) attached?
@@ -255,20 +254,17 @@ class Message extends Model
     }
 
     /**
-     * Create new recipient for this Message.
+     * Add Recipient(s).
      *
-     * @param RecipientType $type
-     * @param $email
      * @return RecipientFactory
      */
-    public function newRecipient(RecipientType $type, $email)
+    public function newRecipients()
     {
-        $factory = new RecipientFactory($this, $type, $email);
-        return $factory;
+        return new RecipientFactory($this);
     }
 
     /**
-     * Create an attachment for this Message.
+     * Add Attachment(s).
      *
      * @param AttachmentFile $attachment
      * @return AttachmentFactory

@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Language;
 use App\Payments\Receipt;
 use App\Translation\Attachment;
+use App\Translation\Factories\RecipientFactory;
 use App\Translation\Message;
 use App\Translation\MessageError;
 use App\Translation\MessageThread;
@@ -15,6 +16,7 @@ use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Unit\Translation\Factories\RecipientFactoryTest;
 
 class MessageTest extends TestCase
 {
@@ -129,24 +131,6 @@ class MessageTest extends TestCase
     /**
      * @test
      */
-    public function it_checks_whether_message_is_for_a_reply()
-    {
-        $this->assertTrue($this->message->isReply());
-    }
-
-    /**
-     * @test
-     */
-    public function it_checks_whether_message_has_recipients()
-    {
-        $this->assertFalse($this->message->has_recipients);
-        factory(Recipient::class, 1)->create(['message_id' => $this->message->id]);
-        $this->assertTrue($this->message->fresh()->has_recipients);
-    }
-
-    /**
-     * @test
-     */
     public function it_fetches_message_attachments()
     {
         $this->assertCount(0, $this->message->attachments);
@@ -187,13 +171,43 @@ class MessageTest extends TestCase
     /**
      * @test
      */
+    public function it_fetches_the_translation_order()
+    {
+        $this->assertNull($this->message->order);
+        factory(Order::class)->create([
+            'message_id' => $this->message->id
+        ]);
+        $this->assertNotNull($this->message->fresh()->order);
+    }
+
+    /**
+     * @test
+     */
+    public function it_checks_whether_message_is_for_a_reply()
+    {
+        $this->assertTrue($this->message->isReply());
+    }
+
+    /**
+     * @test
+     */
     public function it_checks_whether_there_are_recipients()
     {
         $this->assertFalse($this->message->has_recipients);
         factory(Recipient::class)->create(['message_id' => $this->message->id]);
         $this->assertTrue($this->message->fresh()->has_recipients);
     }
-    
+
+    /**
+     * @test
+     */
+    public function it_formats_readable_created_at_correctly()
+    {
+        $this->message->created_at = '2018-01-01 00:00:00';
+        $this->message->save();
+        $this->assertEquals('Jan 1, 00:00 UTC', $this->message->fresh()->readable_created_at);
+    }
+
     /**
      * @test
      */
@@ -209,13 +223,9 @@ class MessageTest extends TestCase
     /**
      * @test
      */
-    public function it_fetches_the_translation_order()
+    public function it_instantiates_recipients_factory()
     {
-        $this->assertNull($this->message->order);
-        factory(Order::class)->create([
-            'message_id' => $this->message->id
-        ]);
-        $this->assertNotNull($this->message->fresh()->order);
+        $this->assertInstanceOf(RecipientFactory::class, $this->message->newRecipients());
     }
 
     /**

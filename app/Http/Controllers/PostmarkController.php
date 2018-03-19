@@ -6,7 +6,7 @@ use App\Translation\Attachments\PostmarkAttachmentFile;
 use App\Translation\Events\ReplyReceived;
 use App\Translation\Contracts\Translator;
 use App\Translation\Factories\MessageFactory;
-use App\Translation\Factories\MessageFactory\RecipientEmails;
+use App\Translation\Factories\RecipientFactory\RecipientEmails;
 use App\Translation\Message;
 use App\Translation\RecipientType;
 use App\Translation\Utilities\EmailReplyParser;
@@ -44,19 +44,22 @@ class PostmarkController extends Controller
                 // Find message the reply is intended for.
                 if ($originalMessage = Message::findByHash($target)) {
 
-                    $recipients = $this->recipientEmails($request, $originalMessage);
-
                     /**
                      * @var Message $originalMessage
                      */
                     $message = $originalMessage->newReply()
                                                ->senderEmail($fromAddress)
                                                ->senderName($fromName)
-                                               ->recipientEmails($recipients)
                                                ->subject($subject)
                                                ->body($strippedTextBody)
                                                ->attachments(PostmarkAttachmentFile::convertArray($attachmentsData))
                                                ->make();
+
+                    // Add Recipient(s)
+                    $message->newRecipients()
+                            ->recipientEmails($this->recipientEmails($request, $originalMessage))
+                            ->make();
+
                     event(new ReplyReceived($message, $translator));
                 };
                 break;

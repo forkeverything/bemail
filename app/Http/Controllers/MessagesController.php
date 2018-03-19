@@ -7,7 +7,7 @@ use App\Translation\Attachments\FormUploadedFile;
 use App\Translation\Events\NewMessageRequestReceived;
 use App\Translation\Contracts\Translator;
 use App\Http\Requests\CreateMessageRequest;
-use App\Translation\Factories\MessageFactory\RecipientEmails;
+use App\Translation\Factories\RecipientFactory\RecipientEmails;
 use App\Translation\RecipientType;
 use Exception;
 use Illuminate\Support\Facades\App;
@@ -48,15 +48,22 @@ class MessagesController extends Controller
         try {
 
             $message = Auth::user()->newMessage()
-                ->subject($request->subject)
-                ->body($request->body)
-                ->autoTranslateReply(!!$request->auto_translate_reply)
-                ->sendToSelf(!!$request->send_to_self)
-                ->langSrcId(Language::findByCode($request->lang_src)->id)
-                ->langTgtId(Language::findByCode($request->lang_tgt)->id)
-                ->recipientEmails(RecipientEmails::new()->addListToType($request->recipients, RecipientType::standard()))
-                ->attachments(FormUploadedFile::convertArray($request->attachments))
-                                   ->make();
+                           ->subject($request->subject)
+                           ->body($request->body)
+                           ->autoTranslateReply(!!$request->auto_translate_reply)
+                           ->sendToSelf(!!$request->send_to_self)
+                           ->langSrcId(Language::findByCode($request->lang_src)->id)
+                           ->langTgtId(Language::findByCode($request->lang_tgt)->id)
+                           ->attachments(FormUploadedFile::convertArray($request->attachments))
+                           ->make();
+
+            // Create Message Recipient(s).
+
+            $recipientEmails = RecipientEmails::new()->addListOfStandardEmails($request->recipients);
+            $message->newRecipients()
+                    ->recipientEmails($recipientEmails)
+                    ->make();
+
 
             event(new NewMessageRequestReceived($message, $translator));
         } catch (Exception $e) {

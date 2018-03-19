@@ -3,7 +3,7 @@
 namespace Tests\Unit\Translation\Factories;
 
 use App\Translation\Factories\MessageFactory;
-use App\Translation\Factories\MessageFactory\RecipientEmails;
+use App\Translation\Factories\RecipientFactory\RecipientEmails;
 use App\Translation\Message;
 use App\Translation\RecipientType;
 use App\User;
@@ -60,36 +60,6 @@ class MessageFactoryTest extends TestCase
         $this->assertEquals($message->lang_src_id, $factory->langTgtId());
     }
 
-    /**
-     * @test
-     */
-    public function it_creates_recipients()
-    {
-
-        $recipients = [
-            'foo@example.com',
-            'bar@example.com',
-            'baz@example.com'
-        ];
-
-        $message = factory(Message::class)->create();
-        $factory = MessageFactory::newReplyToMessage($message);
-        $recipientEmails = RecipientEmails::new()->addListToType(implode(',', $recipients), RecipientType::cc());
-        $message = $factory->recipientEmails($recipientEmails)
-                           ->senderEmail($this->faker->email)
-                           ->senderName($this->faker->name)
-                           ->subject('Super Important Message')
-                           ->body($this->faker->paragraph)
-                           ->make();
-        $this->assertCount(3, $message->recipients);
-
-        foreach ($recipients as $recipient) {
-            $this->assertNotNull($message->recipients()->where('email', $recipient)->first());
-        }
-
-    }
-
-    // TODO ::: Test Message Attachments
 }
 
 

@@ -3,7 +3,7 @@
 
 namespace App\Translation\Factories;
 
-use App\Translation\Factories\MessageFactory\RecipientEmails;
+use App\Translation\Factories\RecipientFactory\RecipientEmails;
 use App\Translation\Message;
 use App\Translation\RecipientType;
 use App\User;
@@ -148,23 +148,6 @@ class MessageFactory
     }
 
     /**
-     * Create Message Recipient(s).
-     *
-     * @return $this
-     */
-    protected function createRecipients()
-    {
-        foreach ($this->recipientEmails->all() as $type => $emails) {
-            $recipientType = RecipientType::findByName($type);
-            foreach ($emails as $email) {
-                $this->messageModel->newRecipient($recipientType, $email)->make();
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * Check whether Message has attachments.
      *
      * @return bool
@@ -217,24 +200,6 @@ class MessageFactory
             return $this->senderName;
         }
         $this->senderName = $name;
-        return $this;
-    }
-
-    /**
-     * Custom class that holds recipient emails.
-     *
-     * Use a class over an array because an array could be
-     * wrong and it wouldn't error.
-     *
-     * @param RecipientEmails $recipientEmails
-     * @return RecipientEmails|MessageFactory
-     */
-    public function recipientEmails(RecipientEmails $recipientEmails = null)
-    {
-        if (is_null($recipientEmails)) {
-            return $this->recipientEmails;
-        }
-        $this->recipientEmails = $recipientEmails;
         return $this;
     }
 
@@ -405,7 +370,6 @@ class MessageFactory
     public function make()
     {
         $this->createModel();
-        if (!$this->sendToSelf) $this->createRecipients();
         if ($this->hasAttachments()) $this->createAttachments();
         return $this->messageModel;
     }
