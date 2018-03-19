@@ -213,7 +213,7 @@ class MessageFactory
      */
     public function senderName($name = null)
     {
-        if(is_null($name)) {
+        if (is_null($name)) {
             return $this->senderName;
         }
         $this->senderName = $name;
@@ -285,7 +285,7 @@ class MessageFactory
 
     /**
      * Send back to owner and not to Recipient(s).
-     * 
+     *
      * @param $sendToSelf
      * @return bool|MessageFactory
      */
@@ -300,7 +300,7 @@ class MessageFactory
 
     /**
      * The language to translate from.
-     * 
+     *
      * @param $id
      * @return int|MessageFactory
      */
@@ -342,6 +342,36 @@ class MessageFactory
             return $this->attachments;
         }
         $this->attachments = $attachments;
+        return $this;
+    }
+
+    /**
+     * User that owns (will be charged for) the Message.
+     *
+     * @param User $owner
+     * @return User|MessageFactory
+     */
+    public function owner(User $owner = null)
+    {
+        if (is_null($owner)) {
+            return $this->owner;
+        }
+        $this->owner = $owner;
+        return $this;
+    }
+
+    /**
+     * The id of the original Message (for replies).
+     *
+     * @param null $id
+     * @return $this|int|null
+     */
+    public function messageId($id = null)
+    {
+        if (is_null($id)) {
+            return $this->messageId;
+        }
+        $this->messageId = $id;
         return $this;
     }
 

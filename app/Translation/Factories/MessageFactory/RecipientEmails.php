@@ -54,13 +54,14 @@ class RecipientEmails
      * Adds list a comma separated emails as a specific type of recipient.
      *
      * @param RecipientType $type
-     * @param $emailList
+     * @param string $emailList
      * @return $this
      */
     public function addListToType($emailList, RecipientType $type)
     {
+        $emails = explode(',', $emailList);
         $typeName = $type->name;
-        foreach ($emailList as $email) {
+        foreach ($emails as $email) {
 
             if (!$this->isValidEmail($email)) {
                 continue;
@@ -98,7 +99,7 @@ class RecipientEmails
     protected function isValidEmail($email)
     {
         $domain = explode('@', $email)[1];
-        return $domain !== 'in.bemail.io' || $domain !== 'bemail.io';
+        return $domain !== 'in.bemail.io' && $domain !== 'bemail.io';
     }
 
 }
