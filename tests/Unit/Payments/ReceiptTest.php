@@ -25,6 +25,7 @@ class ReceiptTest extends TestCase
         $fields = [
             'plan' => Plan::FREE,
             'amount_charged' => 150,
+            'reversed' => 1,
             'message_id' => factory(Message::class)->create()->id
         ];
 
@@ -82,23 +83,13 @@ class ReceiptTest extends TestCase
         $this->assertInstanceOf(Receipt::class, Receipt::newForMessage($message));
     }
 
-    /**
-     * @test
-     */
-    public function it_gets_amount_charged()
+    /** @test */
+    public function it_has_amount_charged()
     {
         $receipt = factory(Receipt::class)->create();
-        $this->assertTrue(is_int($receipt->amount_charged));
-    }
-
-    /**
-     * @test
-     */
-    public function it_sets_amount_charged()
-    {
-        $receipt = factory(Receipt::class)->create();
+        $this->assertTrue(is_int($receipt->amountCharged()));
         $newAmount = 99999;
         $receipt->amountCharged($newAmount);
-        $this->assertEquals($newAmount, $receipt->amount_charged);
+        $this->assertEquals($newAmount, $receipt->amountCharged());
     }
 }
