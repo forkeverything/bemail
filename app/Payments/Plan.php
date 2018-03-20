@@ -12,7 +12,7 @@ use InvalidArgumentException;
  * Plan class is NOT an Eloquent Model. By using a custom class,
  * only have to override Subscription class instead of all
  * classes where the 'plan_id' needed to be changed.
- * 
+ *
  * @package App\Payments
  */
 class Plan
@@ -172,7 +172,7 @@ class Plan
     }
 
     /**
-     * All User(s) for given plan.
+     * All User(s) for given plan (EXPENSIVE).
      *
      * This is an expensive query. Should only be used by system and
      * sparingly at that.
