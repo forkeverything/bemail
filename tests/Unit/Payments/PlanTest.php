@@ -43,6 +43,15 @@ class PlanTest extends TestCase
         }
     }
 
+    /**
+     * @test
+     * @expectedException InvalidArgumentException
+     */
+    public function it_does_not_instantiate_with_invalid_plan_names()
+    {
+        new Plan('foobar');
+    }
+
     /** @test */
     public function it_gets_free_plan()
     {
@@ -59,15 +68,6 @@ class PlanTest extends TestCase
     public function it_gets_professional_plan()
     {
         $this->assertEquals(Plan::PROFESSIONAL, plan::professional()->name());
-    }
-
-    /**
-     * @test
-     * @expectedException InvalidArgumentException
-     */
-    public function it_does_not_instantiate_with_invalid_plan_names()
-    {
-        new Plan('foobar');
     }
 
     /** @test */
