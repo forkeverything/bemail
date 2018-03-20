@@ -2,6 +2,7 @@
 
 
 namespace App\Traits;
+use Illuminate\Database\Eloquent\Model;
 use Vinkla\Hashids\Facades\Hashids;
 
 
@@ -29,7 +30,7 @@ trait Hashable
      * Find model using it's hash.
      *
      * @param $hash
-     * @return mixed
+     * @return Model
      * @throws \Exception
      */
     public static function findByHash($hash)
@@ -45,7 +46,7 @@ trait Hashable
     /**
      * Accessor - Model's hash id.
      *
-     * @return mixed
+     * @return string
      */
     public function getHashAttribute()
     {
