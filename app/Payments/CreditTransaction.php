@@ -58,6 +58,16 @@ class CreditTransaction extends Model
     }
 
     /**
+     * The User that had credit adjusted.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
      * The Receipt, if there is one, that this transaction is on.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -82,15 +92,5 @@ class CreditTransaction extends Model
             'credit_transaction_type_id' => $type->id,
             'amount' => $amount
         ]));
-    }
-
-    /**
-     * User that this transaction was for.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
     }
 }

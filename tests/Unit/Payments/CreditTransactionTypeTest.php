@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Payments\CreditTransaction;
 use App\Payments\CreditTransactionType;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -10,6 +11,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreditTransactionTypeTest extends TestCase
 {
+
+    use DatabaseTransactions;
 
     /**
      * @test
@@ -41,5 +44,15 @@ class CreditTransactionTypeTest extends TestCase
     public function it_finds_the_manual_type_using_static_method()
     {
         $this->assertEquals(CreditTransactionType::manual()->name, 'manual');
+    }
+    
+    /** @test */
+    public function it_finds_credit_transactions_of_given_type()
+    {
+        $this->assertCount(0, CreditTransactionType::payment()->transactions);
+        factory(CreditTransaction::class, 5)->create([
+            'credit_transaction_type_id' => CreditTransactionType::payment()->id
+        ]);
+        $this->assertCount(5, CreditTransactionType::payment()->transactions);
     }
 }

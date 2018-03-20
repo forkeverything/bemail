@@ -14,12 +14,15 @@ class CreditTransactionTest extends TestCase
 {
     use DatabaseTransactions;
 
-    private static $transaction;
+    /**
+     * @var CreditTransactionType
+     */
+    private $transaction;
 
     public function setUp()
     {
         parent::setUp();
-        static::$transaction = factory(CreditTransaction::class)->create();
+        $this->transaction = factory(CreditTransaction::class)->create();
     }
 
     /**
@@ -44,7 +47,7 @@ class CreditTransactionTest extends TestCase
      */
     public function it_fetches_the_transaction_type()
     {
-        $this->assertInstanceOf('App\Payments\CreditTransactionType', static::$transaction->type);
+        $this->assertInstanceOf('App\Payments\CreditTransactionType', $this->transaction->type);
     }
 
     /**
@@ -52,7 +55,7 @@ class CreditTransactionTest extends TestCase
      */
     public function it_fetches_the_user_whose_credit_was_adjusted()
     {
-        $this->assertInstanceOf('App\User', static::$transaction->user);
+        $this->assertInstanceOf('App\User', $this->transaction->user);
     }
     
     /**
@@ -60,7 +63,7 @@ class CreditTransactionTest extends TestCase
      */
     public function it_fetches_the_message_receipt()
     {
-        $this->assertInstanceOf(Receipt::class, static::$transaction->receipt);
+        $this->assertInstanceOf(Receipt::class, $this->transaction->receipt);
     }
 
     /**

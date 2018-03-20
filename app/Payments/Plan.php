@@ -3,6 +3,7 @@
 namespace App\Payments;
 
 use App\User;
+use Illuminate\Database\Eloquent\Collection;
 use InvalidArgumentException;
 
 /**
@@ -84,6 +85,36 @@ class Plan
     }
 
     /**
+     * Instantiate a 'free' plan instance.
+     *
+     * @return static
+     */
+    public static function free()
+    {
+        return new static(Plan::FREE);
+    }
+
+    /**
+     * Instantiate a 'regular' plan instance.
+     *
+     * @return static
+     */
+    public static function regular()
+    {
+        return new static(Plan::REGULAR);
+    }
+
+    /**
+     * Instantiate a 'professional' plan instance.
+     *
+     * @return static
+     */
+    public static function professional()
+    {
+        return new static(Plan::PROFESSIONAL);
+    }
+
+    /**
      * Gets the Plan for given user.
      *
      * @param User $user
@@ -91,13 +122,10 @@ class Plan
      */
     public static function forUser(User $user)
     {
-        $subscription = $user->subscription();
-        if(! $subscription || ! $user->subscribed()) {
-            // Default to using free plan when User hasn't subscribed
-            // or subscription has been cancelled.
+        if (!$user->subscribed()) {
             $name = self::FREE;
         } else {
-            $name = $user->subscription()->name;
+            $name = $user->subscription()->stripe_plan;
         }
         return new Plan($name);
     }
@@ -179,6 +207,22 @@ class Plan
         return $this->surcharge;
     }
 
-    // TODO ::: write function that returns all users for given plan
+    /**
+     * All User(s) for given plan.
+     *
+     * This is an expensive query. Should only be used by system and
+     * sparingly at that.
+     *
+     * @return Collection
+     */
+    public function users()
+    {
+        return User::all()->filter(function ($user) {
+            /**
+             * @var User $user
+             */
+            return $user->plan()->name() == self::name();
+        });
+    }
 
 }
