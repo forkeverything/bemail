@@ -15,11 +15,6 @@ class NewMessageFields
 {
 
     /**
-     * @var CreateMessageRequest $request
-     */
-    private $request;
-
-    /**
      * What the message is for.
      *
      *
@@ -76,103 +71,109 @@ class NewMessageFields
      */
     public function __construct(CreateMessageRequest $request)
     {
-        $this->request = $request;
-
-        $this->setSubject()
-             ->setBody()
-             ->setAutoTranslateReply()
-             ->setSendToSelf()
-             ->setLangSrcId()
-             ->setLangTgtId()
-             ->setRecipients()
-             ->setAttachments();
+        $this->setSubject($request)
+             ->setBody($request)
+             ->setAutoTranslateReply($request)
+             ->setSendToSelf($request)
+             ->setLangSrcId($request)
+             ->setLangTgtId($request)
+             ->setRecipients($request)
+             ->setAttachments($request);
     }
 
     /**
      * Set subject field.
      *
+     * @param CreateMessageRequest $request
      * @return $this
      */
-    public function setSubject()
+    public function setSubject(CreateMessageRequest $request)
     {
-        $this->subject = $this->request->subject;
+        $this->subject = $request->subject;
         return $this;
     }
 
     /**
      * Set body field.
      *
+     * @param CreateMessageRequest $request
      * @return $this
      */
-    public function setBody()
+    public function setBody(CreateMessageRequest $request)
     {
-        $this->body = $this->request->body;
+        $this->body = $request->body;
         return $this;
     }
 
     /**
      * Set the auto translate reply field.
      *
+     * @param CreateMessageRequest $request
      * @return $this
      */
-    public function setAutoTranslateReply()
+    public function setAutoTranslateReply(CreateMessageRequest $request)
     {
-        $this->autoTranslateReply = !!$this->request->auto_translate_reply;
+        $this->autoTranslateReply = !!$request->auto_translate_reply;
         return $this;
     }
 
     /**
      * Set the send to self field.
      *
+     * @param CreateMessageRequest $request
      * @return $this
      */
-    public function setSendToSelf()
+    public function setSendToSelf(CreateMessageRequest $request)
     {
-        $this->sendToSelf = !!$this->request->send_to_self;
+        $this->sendToSelf = !!$request->send_to_self;
         return $this;
     }
 
     /**
      * Set the source language ID.
      *
+     * @param CreateMessageRequest $request
      * @return $this
      */
-    public function setLangSrcId()
+    public function setLangSrcId(CreateMessageRequest $request)
     {
-        $this->langSrcId = Language::findByCode($this->request->lang_src)->id;
+        $this->langSrcId = Language::findByCode($request->lang_src)->id;
         return $this;
     }
 
     /**
      * Set the target language ID.
      *
+     * @param CreateMessageRequest $request
      * @return $this
      */
-    public function setLangTgtId()
+    public function setLangTgtId(CreateMessageRequest $request)
     {
-        $this->langTgtId = Language::findByCode($this->request->lang_tgt)->id;
+        $this->langTgtId = Language::findByCode($request->lang_tgt)->id;
         return $this;
     }
 
     /**
      * Set recipients list.
      *
+     * @param CreateMessageRequest $request
      * @return $this
      */
-    public function setRecipients()
+    public function setRecipients(CreateMessageRequest $request)
     {
-        $this->recipients = $this->request->recipients;
+        $this->recipients = $request->recipients;
         return $this;
     }
 
     /**
      * Set attachments array.
      *
+     * @param CreateMessageRequest $request
      * @return $this
      */
-    public function setAttachments()
+    public function setAttachments(CreateMessageRequest $request)
     {
-        $this->attachments = $this->request->attachments;
+        $this->attachments = $request->attachments;
         return $this;
     }
 
