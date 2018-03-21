@@ -15,54 +15,9 @@ class NewMessageFields
 {
 
     /**
-     * What the message is for.
-     *
-     *
-     * @var string
+     * @var CreateMessageRequest
      */
-    public $subject;
-    /**
-     * The text to be translated.
-     *
-     * @var string
-     */
-    public $body;
-    /**
-     * Translate replies from recipients?
-     *
-     * @var bool
-     */
-    public $autoTranslateReply;
-    /**
-     * Don't send to recipients but back to sender instead?
-     *
-     * @var bool
-     */
-    public $sendToSelf;
-    /**
-     * Language Id of the Language to translate from.
-     *
-     * @var int
-     */
-    public $langSrcId;
-    /**
-     * Language Id of the Language to translate to.
-     *
-     * @var int
-     */
-    public $langTgtId;
-    /**
-     * List of emails to send the Message to in a comma separated string.
-     *
-     * @var string
-     */
-    public $recipients;
-    /**
-     * Attachment files to send with Message.
-     *
-     * @var array
-     */
-    public $attachments;
+    private $request;
 
     /**
      * Create NewMessageFields instance.
@@ -71,110 +26,87 @@ class NewMessageFields
      */
     public function __construct(CreateMessageRequest $request)
     {
-        $this->setSubject($request)
-             ->setBody($request)
-             ->setAutoTranslateReply($request)
-             ->setSendToSelf($request)
-             ->setLangSrcId($request)
-             ->setLangTgtId($request)
-             ->setRecipients($request)
-             ->setAttachments($request);
+        $this->request = $request;
     }
 
     /**
-     * Set subject field.
+     * What the message is for.
      *
-     * @param CreateMessageRequest $request
-     * @return $this
+     * @return string
      */
-    public function setSubject(CreateMessageRequest $request)
+    public function subject()
     {
-        $this->subject = $request->subject;
-        return $this;
+        return $this->request->subject;
     }
 
     /**
-     * Set body field.
+     * The text to be translated.
      *
-     * @param CreateMessageRequest $request
-     * @return $this
+     * @return string
      */
-    public function setBody(CreateMessageRequest $request)
+    public function body()
     {
-        $this->body = $request->body;
-        return $this;
+        return $this->request->body;
     }
 
     /**
-     * Set the auto translate reply field.
+     * Translate replies from recipients?
      *
-     * @param CreateMessageRequest $request
-     * @return $this
+     * @return bool
      */
-    public function setAutoTranslateReply(CreateMessageRequest $request)
+    public function autoTranslateReply()
     {
-        $this->autoTranslateReply = !!$request->auto_translate_reply;
-        return $this;
+        return !! $this->request->auto_translate_reply;
     }
 
     /**
-     * Set the send to self field.
+     * Don't send to recipients but back to sender instead?
      *
-     * @param CreateMessageRequest $request
-     * @return $this
+     * @return bool
      */
-    public function setSendToSelf(CreateMessageRequest $request)
+    public function sendToSelf()
     {
-        $this->sendToSelf = !!$request->send_to_self;
-        return $this;
+        return !!$this->request->send_to_self;
     }
 
     /**
-     * Set the source language ID.
+     * Language Id of the Language to translate from.
      *
-     * @param CreateMessageRequest $request
-     * @return $this
+     * @return int
      */
-    public function setLangSrcId(CreateMessageRequest $request)
+    public function langSrcId()
     {
-        $this->langSrcId = Language::findByCode($request->lang_src)->id;
-        return $this;
+        return Language::findByCode($this->request->lang_src)->id;
     }
 
     /**
-     * Set the target language ID.
+     * Language Id of the Language to translate to.
      *
-     * @param CreateMessageRequest $request
-     * @return $this
+     * @return int
      */
-    public function setLangTgtId(CreateMessageRequest $request)
+    public function langTgtId()
     {
-        $this->langTgtId = Language::findByCode($request->lang_tgt)->id;
-        return $this;
+        return Language::findByCode($this->request->lang_tgt)->id;
     }
 
     /**
-     * Set recipients list.
+     * List of emails to send the Message to in a comma separated string.
      *
-     * @param CreateMessageRequest $request
-     * @return $this
+     * @return string
      */
-    public function setRecipients(CreateMessageRequest $request)
+    public function recipients()
     {
-        $this->recipients = $request->recipients;
-        return $this;
+        return $this->request->recipients;
     }
 
     /**
-     * Set attachments array.
+     * Attachment files to send with Message.
      *
-     * @param CreateMessageRequest $request
-     * @return $this
+     * @return null|array
      */
-    public function setAttachments(CreateMessageRequest $request)
+    public function attachments()
     {
-        $this->attachments = $request->attachments;
-        return $this;
+        return $this->request->attachments;
     }
 
 

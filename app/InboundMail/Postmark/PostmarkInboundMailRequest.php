@@ -9,60 +9,12 @@ use Illuminate\Http\Request;
 class PostmarkInboundMailRequest implements InboundMailRequest
 {
 
+
     /**
-     * The name of person who sent the email.
-     *
-     * @return string
+     * @var Request
      */
-    private $fromName;
-    /**
-     * The email address that sent the email.
-     *
-     * @return string
-     */
-    private $fromAddress;
-    /**
-     * The email subject.
-     *
-     * @return string
-     */
-    private $subject;
-    /**
-     * Only the reply (without previous emails or headers) in plain text.
-     *
-     * @return string
-     */
-    private $strippedReplyBody;
-    /**
-     * Email attachments.
-     *
-     * @var array
-     */
-    private $attachments;
-    /**
-     * The emails in standard 'to' field.
-     *
-     * @var array
-     */
-    private $standardRecipients;
-    /**
-     * The emails in 'cc' field.
-     *
-     * @var array
-     */
-    private $ccRecipients;
-    /**
-     * The emails in 'bcc' field.
-     *
-     * @var array
-     */
-    private $bccRecipients;
-    /**
-     * The email address it was intended for.
-     *
-     * @var string
-     */
-    private $inboundAddress;
+    private $request;
+
 
     /**
      * Create PostmarkInboundMailRequest instance.
@@ -71,144 +23,69 @@ class PostmarkInboundMailRequest implements InboundMailRequest
      */
     public function __construct(Request $request)
     {
-
-        // Set fields explicitly without first setting $request as a
-        // property so that it won't be passed along with this
-        // class. Prevents serialization of closure error.
-
-        $this->setFromName($request)
-             ->setFromAddress($request)
-             ->setSubject($request)
-             ->setStrippedReplyBody($request)
-             ->setAttachments($request)
-             ->setStandardRecipients($request)
-             ->setCcRecipients($request)
-             ->setBccRecipients($request)
-             ->setInboundAddress($request);
+        $this->request = $request;
     }
 
     /**
-     * Set fromName.
-     *
-     * @param Request $request
-     * @return $this|string
-     */
-    public function setFromName(Request $request)
-    {
-        $this->fromName = $request["FromName"];
-        return $this;
-    }
-
-    /**
-     * Get fromName.
+     * The name of person who sent the email.
      *
      * @return string
      */
     public function fromName()
     {
-        return $this->fromName;
+        return $this->request["FromName"];
     }
 
     /**
-     * Set sender email.
+     * The email address that sent the email.
      *
-     * @param Request $request
-     * @return $this
-     */
-    public function setFromAddress(Request $request)
-    {
-        $this->fromAddress = $request["From"];
-        return $this;
-    }
-
-    /**
-     * Get sender email.
-     *
-     * @return mixed
+     * @return string
      */
     public function fromAddress()
     {
-        return $this->fromAddress;
-    }
-
-
-    /**
-     * Set message subject.
-     *
-     * @param Request $request
-     * @return $this
-     */
-    public function setSubject(Request $request)
-    {
-        $this->subject = $request["Subject"];
-        return $this;
+        return $this->request["From"];
     }
 
     /**
-     * Get message subject.
+     * The email subject.
      *
      * @return string
      */
     public function subject()
     {
-        return $this->subject;
+        return $this->request["Subject"];
     }
 
     /**
-     * Set the reply message body.
-     *
-     * @param Request $request
-     * @return $this
-     */
-    public function setStrippedReplyBody(Request $request)
-    {
-        $this->strippedReplyBody = EmailReplyParser::parse($request["TextBody"]);
-        return $this;
-    }
-
-    /**
-     * Get the reply message body.
+     * Only the reply (without previous emails or headers) in plain text.
      *
      * @return string
      */
     public function strippedReplyBody()
     {
-        return $this->strippedReplyBody;
+        return EmailReplyParser::parse($this->request["TextBody"]);
     }
 
     /**
-     * Set attachments.
-     *
-     * @param Request $request
-     * @return $this
-     */
-    public function setAttachments(Request $request)
-    {
-        $this->attachments = $request["Attachments"];
-        return $this;
-    }
-
-    /**
-     * Get attachments.
+     * Email attachments.
      *
      * @return array
      */
     public function attachments()
     {
-        return $this->attachments;
+        return $this->request["Attachments"];
     }
 
     /**
      * The recipients for a given field.
      *
-     * @param Request $request
      * @param $field
      * @return array
      */
-    private function recipientsForField($field, Request $request)
+    private function recipientsForField($field)
     {
         $recipients = [];
-        $jsonCollection = $request[$field];
+        $jsonCollection = $this->request[$field];
 
         foreach ($jsonCollection as $json) {
             $recipient = new PostmarkInboundMailRecipient($json);
@@ -219,81 +96,44 @@ class PostmarkInboundMailRequest implements InboundMailRequest
     }
 
     /**
-     * Set standard recipients.
+     * The emails in standard 'to' field.
      *
-     * @param Request $request
-     * @return $this
-     */
-    public function setStandardRecipients(Request $request)
-    {
-        $this->standardRecipients = $this->recipientsForField('ToFull', $request);
-        return $this;
-    }
-
-    /**
-     * Get standard recipients.
-     *
-     * @return array
+     * @return  array
      */
     public function standardRecipients()
     {
-        return $this->standardRecipients;
+        return $this->recipientsForField('ToFull');
     }
 
     /**
-     * Set cc recipients.
+     * The emails in standard 'cc' field.
      *
-     * @param Request $request
-     * @return $this
-     */
-    public function setCcRecipients(Request $request)
-    {
-        $this->ccRecipients = $this->recipientsForField("CcFull", $request);
-        return $this;
-    }
-
-    /**
-     * Get cc recipients.
-     *
-     * @return array
+     * @return  array
      */
     public function ccRecipients()
     {
-        return $this->ccRecipients;
+        return $this->recipientsForField("CcFull");
     }
 
     /**
-     * Set bcc recipients.
+     * The emails in standard 'bcc' field.
      *
-     * @param Request $request
-     * @return PostmarkInboundMailRequest
-     */
-    public function setBccRecipients(Request $request)
-    {
-        $this->bccRecipients = $this->recipientsForField("BccFull", $request);
-        return $this;
-    }
-
-    /**
-     * get bcc recipients.
-     *
-     * @return array
+     * @return  array
      */
     public function bccRecipients()
     {
-        return $this->bccRecipients;
+        return $this->recipientsForField("BccFull");
     }
 
+
     /**
-     * Set inbound address.
+     * The email address it was intended for.
      *
-     * @param Request $request
-     * @return $this
+     * @return  string
      */
-    public function setInboundAddress(Request $request)
+    public function inboundAddress()
     {
-        $this->inboundAddress = $request["OriginalRecipient"];
-        return $this;
+        return $this->request["OriginalRecipient"];
     }
 
 
@@ -309,7 +149,7 @@ class PostmarkInboundMailRequest implements InboundMailRequest
      */
     private function inboundAddressArray()
     {
-        return explode("_", $this->inboundAddress);
+        return explode("_", $this->inboundAddress());
     }
 
     /**

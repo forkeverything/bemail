@@ -19,12 +19,6 @@ class NewMessageRequestReceived
     use Dispatchable, SerializesModels;
 
     /**
-     * Values for the new Message.
-     *
-     * @var NewMessageFields
-     */
-    public $fields;
-    /**
      * @var Translator
      */
     public $translator;
@@ -38,12 +32,12 @@ class NewMessageRequestReceived
     /**
      * NewMessageRequestReceived constructor.
      *
-     * @param NewMessageFields $fields
+     * @param Message $message
      * @param Translator $translator
      */
-    public function __construct(NewMessageFields $fields, Translator $translator)
+    public function __construct(Message $message, Translator $translator)
     {
-        $this->fields = $fields;
+        $this->message = $message;
         $this->translator = $translator;
     }
 }

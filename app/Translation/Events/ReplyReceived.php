@@ -18,38 +18,26 @@ class ReplyReceived
     use Dispatchable, SerializesModels;
 
     /**
-     * @var Request
-     */
-    public $inboundMailRequest;
-    /**
-     * @var Translator
-     */
-    public $translator;
-    /**
      * Reply Message once created.
      *
      * @var Message
      */
     public $message;
     /**
-     * Message being replied to.
-     *
-     * @var Message
+     * @var Translator
      */
-    public $originalMessage;
+    public $translator;
 
     /**
      * Create a new event instance.
      *
-     * @param InboundMailRequest $inboundMailRequest
-     * @param Message $originalMessage
+     * @param Message $message
      * @param Translator $translator
      */
-    public function __construct(InboundMailRequest $inboundMailRequest, Message $originalMessage, Translator $translator)
+    public function __construct(Message $message, Translator $translator)
     {
-        $this->inboundMailRequest = $inboundMailRequest;
         $this->translator = $translator;
-        $this->originalMessage = $originalMessage;
+        $this->message = $message;
     }
 
 }

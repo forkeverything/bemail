@@ -17,9 +17,6 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\SendWelcomeMail'
         ],
         'App\Translation\Events\NewMessageRequestReceived' => [
-            'App\Translation\Listeners\CreateNewMessageModel',
-            'App\Translation\Listeners\CreateRecipientsForNewMessage',
-            'App\Translation\Listeners\CreateAttachmentsForNewMessage',
             'App\Translation\Listeners\TranslateNewMessage',
             'App\Payment\Listeners\ProcessMessagePayment',
             'App\Translation\Listeners\SendNewMessageRequestReceivedNotification'
@@ -31,8 +28,6 @@ class EventServiceProvider extends ServiceProvider
             'App\Translation\Listeners\SendMessageHasBeenTranslatedNotificationMail',
         ],
         'App\Translation\Events\ReplyReceived' => [
-            'App\Translation\Listeners\CreateReplyMessageModel',
-            'App\Translation\Listeners\CreateRecipientsForReplyMessage',
             'App\Translation\Listeners\TranslateReply',
             'App\Payment\Listeners\ProcessMessagePayment',
             'App\Translation\Listeners\SendReplyReceivedNotification'
