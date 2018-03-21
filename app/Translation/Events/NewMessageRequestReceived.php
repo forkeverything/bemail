@@ -5,7 +5,6 @@ namespace App\Translation\Events;
 use App\Http\Requests\CreateMessageRequest;
 use App\Contracts\Translation\Translator;
 use App\Translation\Message;
-use App\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
