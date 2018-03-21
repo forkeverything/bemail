@@ -13,7 +13,7 @@ class CreateAttachmentsForNewMessage
      * Handle the event.
      *
      * @param  NewMessageRequestReceived  $event
-     * @return void
+     * @return bool
      */
     public function handle($event)
     {

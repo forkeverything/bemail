@@ -81,7 +81,7 @@ class FormUploadedFile implements AttachmentFile
     {
 
         if (count($uploadedFiles) == 0) {
-            return $uploadedFiles;
+            return [];
         }
 
         return array_map(function ($uploadedFile) {
