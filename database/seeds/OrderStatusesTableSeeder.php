@@ -1,6 +1,6 @@
 <?php
 
-use App\Translation\OrderStatus;
+use App\Translation\Order\OrderStatus;
 use Illuminate\Database\Seeder;
 
 class OrderStatusesTableSeeder extends Seeder

@@ -2,13 +2,13 @@
 
 namespace App\Translation\Translators;
 
-use App\Translation\Contracts\Translator;
+use App\Contracts\Translation\Translator;
 use App\Language;
 use App\Translation\Exceptions\CouldNotCancelTranslationException;
 use App\Translation\Exceptions\TranslationException;
 use App\Translation\Message;
 use App\Translation\Order;
-use App\Translation\OrderStatus;
+use App\Translation\Order\OrderStatus;
 use App\Translation\Translators\Gengo\GengoErrorResponse;
 use App\Translation\Translators\Gengo\GengoLanguagePair;
 use App\Translation\Translators\Gengo\GengoResponse;

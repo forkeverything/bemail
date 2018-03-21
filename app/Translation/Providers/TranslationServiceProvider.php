@@ -2,7 +2,7 @@
 
 namespace App\Translation\Providers;
 
-use App\Translation\Contracts\Translator;
+use App\Contracts\Translation\Translator;
 use App\Translation\Translators\GengoTranslator;
 use Illuminate\Support\ServiceProvider;
 

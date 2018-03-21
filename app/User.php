@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Payment\CreditTransaction;
+use App\Payment\Credit\CreditTransaction;
 use App\Payment\Plan;
 use App\Translation\Factories\MessageFactory;
 use App\Translation\Message;
@@ -26,7 +26,7 @@ use Laravel\Cashier\Billable;
  * @property string|null $card_last_four
  * @property string|null $trial_ends_at
  * @property int $language_id
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Payment\CreditTransaction[] $creditTransactions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Payment\Transaction[] $creditTransactions
  * @property-read \App\Language $defaultLanguage
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Message[] $messages
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
@@ -101,7 +101,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Recipient(s) that User has sent Message(s) to.
+     * PostmarkInboundMailRecipient(s) that User has sent Message(s) to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */

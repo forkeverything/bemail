@@ -1,18 +1,9 @@
 <?php
 
-namespace App\Translation;
+namespace App\Translation\Order;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\Translation\OrderStatus
- *
- * @mixin \Eloquent
- * @property int $id
- * @property string $description
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\OrderStatus whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\OrderStatus whereId($value)
- */
 class OrderStatus extends Model
 {
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Translation\Contracts;
+namespace App\Contracts\Translation;
 
 interface AttachmentFile
 {

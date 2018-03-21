@@ -29,7 +29,6 @@ class SendWelcomeMail
      */
     public function handle(Registered $event)
     {
-        /** @var User $event */
         Mail::to($event->user)->send(new WelcomeMail($event->user));
     }
 }

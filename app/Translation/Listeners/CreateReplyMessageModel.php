@@ -3,7 +3,6 @@
 namespace App\Translation\Listeners;
 
 use App\Translation\Events\ReplyReceived;
-use App\Translation\Message;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -20,10 +19,10 @@ class CreateReplyMessageModel
     public function handle($event)
     {
         $event->message = $event->originalMessage->newReply()
-                                                 ->senderEmail($event->postmarkRequest->fromAddress())
-                                                 ->senderName($event->postmarkRequest->fromName())
-                                                 ->subject($event->postmarkRequest->subject())
-                                                 ->body($event->postmarkRequest->strippedTextBody())
+                                                 ->senderEmail($event->inboundMailRequest->fromAddress())
+                                                 ->senderName($event->inboundMailRequest->fromName())
+                                                 ->subject($event->inboundMailRequest->subject())
+                                                 ->body($event->inboundMailRequest->strippedReplyBody())
                                                  ->make();
     }
 }

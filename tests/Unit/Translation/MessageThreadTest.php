@@ -3,7 +3,7 @@
 namespace Tests\Unit\Translation;
 
 use App\Translation\Message;
-use App\Translation\MessageThread;
+use App\Translation\Message\MessageThread;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Stripe\Collection;
 use Tests\TestCase;

@@ -4,7 +4,7 @@ namespace Tests\Unit\Translation;
 
 use App\Translation\Message;
 use App\Translation\Order;
-use App\Translation\OrderStatus;
+use App\Translation\Order\OrderStatus;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;

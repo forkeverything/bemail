@@ -1,14 +1,12 @@
 <?php
 
-
 namespace App\Translation\Translators\Gengo;
-
 
 class GengoResponse
 {
 
     /**
-     * Response from Gengo as associative array.
+     * GengoResponse from Gengo as associative array.
      *
      * @var array
      */
@@ -31,7 +29,7 @@ class GengoResponse
     }
 
     /**
-     * Was Request Successful?
+     * Was PostmarkInboundMailRequest Successful?
      *
      * @return bool
      */
@@ -41,7 +39,7 @@ class GengoResponse
     }
 
     /**
-     * Main Response Body.
+     * Main GengoResponse Body.
      *
      * @return array
      */

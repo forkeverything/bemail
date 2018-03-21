@@ -5,11 +5,10 @@ namespace Tests\Unit\Translation\Factories;
 use App\Translation\Factories\RecipientFactory\RecipientEmails;
 use App\Translation\Factories\RecipientFactory;
 use App\Translation\Message;
-use App\Translation\RecipientType;
+use App\Translation\Recipient\RecipientType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-
 
 class RecipientFactoryTest extends TestCase
 {

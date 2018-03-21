@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\User;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -20,9 +21,9 @@ class WelcomeMail extends Mailable implements ShouldQueue
     /**
      * Create a new message instance.
      *
-     * @param User $user
+     * @param Authenticatable $user
      */
-    public function __construct(User $user)
+    public function __construct(Authenticatable $user)
     {
         $this->user = $user;
     }

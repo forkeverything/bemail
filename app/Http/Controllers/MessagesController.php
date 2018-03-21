@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Language;
 use App\Translation\Events\NewMessageRequestReceived;
-use App\Translation\Contracts\Translator;
+use App\Contracts\Translation\Translator;
 use App\Http\Requests\CreateMessageRequest;
 use Exception;
 use Illuminate\Support\Facades\App;

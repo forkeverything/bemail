@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Language;
-use App\Payment\CreditTransaction;
+use App\Payment\Credit\CreditTransaction;
 use App\Payment\Plan;
 use App\Translation\Factories\MessageFactory;
 use App\Translation\Message;

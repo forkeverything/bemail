@@ -1,7 +1,7 @@
 <?php
 
-use App\Payment\CreditTransaction;
-use App\Payment\CreditTransactionType;
+use App\Payment\Credit\CreditTransaction;
+use App\Payment\Credit\Transaction\CreditTransactionType;
 use App\Payment\Receipt;
 use App\User;
 use Faker\Generator as Faker;

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Translation\Attachments;
 
-use App\Translation\Attachments\FormUploadedFile;
+use App\Translation\Factories\AttachmentFactory\FormUploadedFile;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
 use Mockery\Mock;

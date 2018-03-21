@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Translation\Attachments;
+namespace App\Translation\Factories\AttachmentFactory;
 
-use App\Translation\Contracts\AttachmentFile;
+use App\Contracts\Translation\AttachmentFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 

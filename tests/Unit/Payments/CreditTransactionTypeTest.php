@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Payment\CreditTransaction;
-use App\Payment\CreditTransactionType;
+use App\Payment\Credit\CreditTransaction;
+use App\Payment\Credit\Transaction\CreditTransactionType;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;

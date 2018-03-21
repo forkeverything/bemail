@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Language;
 use App\Rules\LanguageCode;
 use App\Rules\ListOfEmails;
 use Illuminate\Foundation\Http\FormRequest;

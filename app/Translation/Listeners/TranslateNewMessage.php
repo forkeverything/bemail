@@ -2,7 +2,6 @@
 
 namespace App\Translation\Listeners;
 
-use App\Translation\Contracts\Translator;
 use App\Translation\Events\NewMessageRequestReceived;
 use App\Translation\Events\TranslationErrorOccurred;
 use App\Translation\Exceptions\TranslationException;

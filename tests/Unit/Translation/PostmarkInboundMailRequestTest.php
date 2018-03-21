@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Translation;
 
-use App\Translation\PostmarkInboundMailRequest;
+use App\InboundMail\Postmark\PostmarkInboundMailRequest;
 use Illuminate\Http\Request;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -74,7 +74,7 @@ class PostmarkInboundMailRequestTest extends TestCase
     {
         $body = 'some text here.';
         $this->request["TextBody"] = $body;
-        $this->assertEquals($body, $this->postmarkRequest->strippedTextBody());
+        $this->assertEquals($body, $this->postmarkRequest->strippedReplyBody());
     }
 
 

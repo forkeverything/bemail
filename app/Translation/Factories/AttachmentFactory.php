@@ -1,9 +1,8 @@
 <?php
 
-
 namespace App\Translation\Factories;
 
-use App\Translation\Contracts\AttachmentFile;
+use App\Contracts\Translation\AttachmentFile;
 use App\Translation\Message;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -120,7 +119,6 @@ class AttachmentFactory
         }
         return $this->attachments;
     }
-
 
 
 }

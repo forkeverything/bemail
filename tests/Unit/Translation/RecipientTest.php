@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use App\Translation\Message;
 use App\Translation\Recipient;
-use App\Translation\RecipientType;
+use App\Translation\Recipient\RecipientType;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;

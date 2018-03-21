@@ -2,9 +2,9 @@
 
 namespace App\Translation\Events;
 
-use App\Translation\Contracts\Translator;
+use App\Contracts\InboundMail\InboundMailRequest;
+use App\Contracts\Translation\Translator;
 use App\Translation\Message;
-use App\Translation\PostmarkInboundMailRequest;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -18,9 +18,9 @@ class ReplyReceived
     use Dispatchable, SerializesModels;
 
     /**
-     * @var PostmarkInboundMailRequest
+     * @var Request
      */
-    public $postmarkRequest;
+    public $inboundMailRequest;
     /**
      * @var Translator
      */
@@ -41,13 +41,13 @@ class ReplyReceived
     /**
      * Create a new event instance.
      *
-     * @param PostmarkInboundMailRequest $postmarkRequest
+     * @param InboundMailRequest $inboundMailRequest
      * @param Message $originalMessage
      * @param Translator $translator
      */
-    public function __construct(PostmarkInboundMailRequest $postmarkRequest, Message $originalMessage, Translator $translator)
+    public function __construct(InboundMailRequest $inboundMailRequest, Message $originalMessage, Translator $translator)
     {
-        $this->postmarkRequest = $postmarkRequest;
+        $this->inboundMailRequest = $inboundMailRequest;
         $this->translator = $translator;
         $this->originalMessage = $originalMessage;
     }

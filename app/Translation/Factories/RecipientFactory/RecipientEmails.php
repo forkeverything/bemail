@@ -1,11 +1,8 @@
 <?php
 
-
 namespace App\Translation\Factories\RecipientFactory;
 
-
-use App\Http\Requests\CreateMessageRequest;
-use App\Translation\RecipientType;
+use App\Translation\Recipient\RecipientType;
 
 class RecipientEmails
 {

@@ -2,11 +2,10 @@
 
 namespace App\Payment\Listeners;
 
-use App\Payment\CreditTransaction;
-use App\Payment\CreditTransactionType;
+use App\Payment\Credit\CreditTransaction;
+use App\Payment\Credit\Transaction\CreditTransactionType;
 use App\Payment\Exceptions\ChargeFailedException;
-use App\Payment\Exceptions\MissingUnitPriceException;
-use App\Translation\Contracts\Translator;
+use App\Contracts\Translation\Translator;
 use App\Translation\Events\NewMessageRequestReceived;
 use App\Translation\Events\ReplyReceived;
 use App\Translation\Message;

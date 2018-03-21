@@ -1,33 +1,12 @@
 <?php
 
-namespace App\Payment;
+namespace App\Payment\Credit;
 
+use App\Payment\Credit\Transaction\CreditTransactionType;
+use App\Payment\Receipt;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
-
-/**
- * App\Payment\CreditTransaction
- *
- * @property-read \App\Payment\Receipt $receipt
- * @property-read \App\Payment\CreditTransactionType $type
- * @property-read \App\User $user
- * @mixin \Eloquent
- * @property int $id
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @property int $amount
- * @property int $credit_transaction_type_id
- * @property int $user_id
- * @property int|null $receipt_id
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransaction whereAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransaction whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransaction whereCreditTransactionTypeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransaction whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransaction whereReceiptId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransaction whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransaction whereUserId($value)
- */
 class CreditTransaction extends Model
 {
 
@@ -44,7 +23,7 @@ class CreditTransaction extends Model
     ];
 
     /**
-     * Type of transaction.
+     * RecipientType of transaction.
      *
      * What was the transaction for? These are pre-defined and seeded
      * to minimize potential errors and make changes easier in

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Translation\Translators\Gengo;
-
 
 use App\Language;
 use App\Translation\Message;

@@ -1,7 +1,7 @@
 <?php
 
-
 namespace App\Traits;
+
 use Illuminate\Database\Eloquent\Model;
 use Vinkla\Hashids\Facades\Hashids;
 

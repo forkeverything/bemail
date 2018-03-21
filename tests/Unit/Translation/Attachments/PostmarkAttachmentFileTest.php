@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Translation\Attachments;
 
-use App\Translation\Attachments\PostmarkAttachmentFile;
+use App\Translation\Factories\AttachmentFactory\PostmarkAttachmentFile;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;

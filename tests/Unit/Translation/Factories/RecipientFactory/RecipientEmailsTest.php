@@ -3,7 +3,7 @@
 namespace Tests\Unit\Translation\Factories\RecipientFactory;
 
 use App\Translation\Factories\RecipientFactory\RecipientEmails;
-use App\Translation\RecipientType;
+use App\Translation\Recipient\RecipientType;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;

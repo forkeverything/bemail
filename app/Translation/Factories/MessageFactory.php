@@ -1,11 +1,9 @@
 <?php
 
-
 namespace App\Translation\Factories;
 
 use App\Translation\Factories\RecipientFactory\RecipientEmails;
 use App\Translation\Message;
-use App\Translation\RecipientType;
 use App\User;
 
 /**
@@ -45,7 +43,7 @@ class MessageFactory
      */
     protected $messageModel;
     /**
-     * Recipient emails
+     * PostmarkInboundMailRecipient emails
      *
      * @var RecipientEmails
      */
@@ -220,7 +218,7 @@ class MessageFactory
     }
 
     /**
-     * Send back to owner and not to Recipient(s).
+     * Send back to owner and not to PostmarkInboundMailRecipient(s).
      *
      * @param $sendToSelf
      * @return bool|MessageFactory

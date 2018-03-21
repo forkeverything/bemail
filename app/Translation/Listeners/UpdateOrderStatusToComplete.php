@@ -2,7 +2,7 @@
 
 namespace App\Translation\Listeners;
 
-use App\Translation\OrderStatus;
+use App\Translation\Order\OrderStatus;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 

@@ -1,27 +1,10 @@
 <?php
 
-namespace App\Payment;
+namespace App\Payment\Credit\Transaction;
 
+use App\Payment\Credit\CreditTransaction;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\Payment\CreditTransactionType
- *
- * @mixin \Eloquent
- * @property int $id
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @property int $add
- * @property string $name
- * @property string $description
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransactionType whereAdd($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransactionType whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransactionType whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransactionType whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransactionType whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransactionType whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Payment\CreditTransaction[] $transactions
- */
 class CreditTransactionType extends Model
 {
 

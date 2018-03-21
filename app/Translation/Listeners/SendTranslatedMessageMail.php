@@ -6,7 +6,7 @@ use App\Translation\Events\MessageTranslated;
 use App\Translation\Mail\TranslatedMessageForRecipient;
 use App\Translation\Mail\TranslatedMessageForSendToSelf;
 use App\Translation\Message;
-use App\Translation\RecipientType;
+use App\Translation\Recipient\RecipientType;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
@@ -36,7 +36,7 @@ class SendTranslatedMessageMail implements ShouldQueue
     }
 
     /**
-     * Building an array of email addresses for given type of Recipient.
+     * Building an array of email addresses for given type of PostmarkInboundMailRecipient.
      *
      * @param Message $message
      * @param RecipientType $type

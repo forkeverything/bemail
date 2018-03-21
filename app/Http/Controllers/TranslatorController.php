@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Language;
-use App\Translation\Contracts\Translator;
+use App\Contracts\Translation\Translator;
 use App\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;

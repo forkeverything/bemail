@@ -1,10 +1,8 @@
 <?php
 
+namespace App\Translation\Factories\AttachmentFactory;
 
-namespace App\Translation\Attachments;
-
-
-use App\Translation\Contracts\AttachmentFile;
+use App\Contracts\Translation\AttachmentFile;
 use Illuminate\Http\UploadedFile;
 
 /**

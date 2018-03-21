@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Payments;
 
-use App\Payment\CreditTransaction;
-use App\Payment\CreditTransactionType;
+use App\Payment\Credit\CreditTransaction;
+use App\Payment\Credit\Transaction\CreditTransactionType;
 use App\Payment\Plan;
 use App\Payment\Receipt;
 use App\Translation\Message;

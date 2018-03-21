@@ -2,20 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Translation\Attachments\PostmarkAttachmentFile;
+use App\InboundMail\Postmark\PostmarkInboundMailRequest;
 use App\Translation\Events\ReplyReceived;
-use App\Translation\Contracts\Translator;
-use App\Translation\Factories\MessageFactory;
-use App\Translation\Factories\RecipientFactory\RecipientEmails;
+use App\Contracts\Translation\Translator;
 use App\Translation\Message;
-use App\Translation\PostmarkInboundMailRequest;
-use App\Translation\PostmarkInboundRecipient;
-use App\Translation\RecipientType;
-use App\Translation\Utilities\EmailReplyParser;
 use Illuminate\Http\Request;
 
 /**
  * PostmarkController
+ *
  * Handles HTTP call-backs from Postmark.
  *
  * @package App\Http\Controllers
@@ -26,7 +21,7 @@ class PostmarkController extends Controller
     /**
      * Handle inbound mail callback from Postmark.
      *
-     * @param Request $request
+     * @param PostmarkInboundMailRequest $request
      * @param Translator $translator
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
@@ -36,6 +31,11 @@ class PostmarkController extends Controller
         $postmarkRequest = new PostmarkInboundMailRequest($request);
         switch ($postmarkRequest->action()) {
             case 'reply':
+                /**
+                 * The Message being replied to.
+                 *
+                 * @var Message $originalMessage
+                 */
                 if (!$originalMessage = Message::findByHash($postmarkRequest->target())) {
                     break;
                 }

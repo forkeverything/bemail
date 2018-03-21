@@ -2,13 +2,14 @@
 
 namespace App\Payment;
 
+use App\Payment\Credit\CreditTransaction;
 use App\Translation\Message;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * App\Payment\Receipt
  *
- * @property-read \App\Payment\CreditTransaction $creditTransaction
+ * @property-read \App\Payment\Transaction $creditTransaction
  * @property-read \App\Translation\Message $message
  * @mixin \Eloquent
  * @property int $id

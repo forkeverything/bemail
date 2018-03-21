@@ -4,9 +4,7 @@ namespace Tests\Unit\Translation\Factories;
 
 use App\Language;
 use App\Translation\Factories\MessageFactory;
-use App\Translation\Factories\RecipientFactory\RecipientEmails;
 use App\Translation\Message;
-use App\Translation\RecipientType;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Mockery;

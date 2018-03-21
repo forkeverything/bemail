@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Translation\Factories;
 
-use App\Translation\Contracts\AttachmentFile;
+use App\Contracts\Translation\AttachmentFile;
 use App\Translation\Factories\AttachmentFactory;
 use App\Translation\Message;
 use App\User;

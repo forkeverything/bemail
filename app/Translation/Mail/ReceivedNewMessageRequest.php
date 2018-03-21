@@ -53,7 +53,7 @@ class ReceivedNewMessageRequest extends Mailable
      */
     public function build()
     {
-        $subject = $this->translationMessage->subject ? $this->translationMessage->subject : "New Translation Request";
+        $subject = $this->translationMessage->subject ? $this->translationMessage->subject : "New Translation PostmarkInboundMailRequest";
 
         return $this->subject($subject)
                     ->view('emails.messages.html.received-new-message-request')

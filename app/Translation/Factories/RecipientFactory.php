@@ -1,13 +1,11 @@
 <?php
 
-
 namespace App\Translation\Factories;
-
 
 use App\Translation\Factories\RecipientFactory\RecipientEmails;
 use App\Translation\Message;
 use App\Translation\Recipient;
-use App\Translation\RecipientType;
+use App\Translation\Recipient\RecipientType;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -19,21 +17,21 @@ class RecipientFactory
 {
 
     /**
-     * Message that is intended for this Recipient.
+     * Message that is intended for this PostmarkInboundMailRecipient.
      *
      * @var Message
      */
     private $message;
 
     /**
-     * Email addresses to create as Recipient(s).
+     * Email addresses to create as PostmarkInboundMailRecipient(s).
      *
      * @var RecipientEmails
      */
     private $recipientEmails;
 
     /**
-     * Newly created Recipient(s).
+     * Newly created PostmarkInboundMailRecipient(s).
      *
      * @var Collection
      */
@@ -53,7 +51,7 @@ class RecipientFactory
     }
 
     /**
-     * Recipient emails are only accepted as a custom class.
+     * PostmarkInboundMailRecipient emails are only accepted as a custom class.
      *
      * @param RecipientEmails $recipientEmails
      * @return $recipientEmails|$this
@@ -68,7 +66,7 @@ class RecipientFactory
     }
 
     /**
-     * Create and store Recipient.
+     * Create and store PostmarkInboundMailRecipient.
      *
      * @param RecipientType $type
      * @param $email
@@ -85,7 +83,7 @@ class RecipientFactory
     }
 
     /**
-     * Creates multiple Recipient(s).
+     * Creates multiple PostmarkInboundMailRecipient(s).
      *
      * @return Collection
      */

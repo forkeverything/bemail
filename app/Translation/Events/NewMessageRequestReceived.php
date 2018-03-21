@@ -3,7 +3,7 @@
 namespace App\Translation\Events;
 
 use App\Http\Requests\CreateMessageRequest;
-use App\Translation\Contracts\Translator;
+use App\Contracts\Translation\Translator;
 use App\Translation\Message;
 use App\User;
 use Illuminate\Broadcasting\Channel;

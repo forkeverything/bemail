@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Translation;
 
-use App\Translation\OrderStatus;
+use App\Translation\Order\OrderStatus;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;

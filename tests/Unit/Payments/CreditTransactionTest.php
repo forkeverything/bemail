@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Payment\CreditTransaction;
-use App\Payment\CreditTransactionType;
+use App\Payment\Credit\CreditTransaction;
+use App\Payment\Credit\Transaction\CreditTransactionType;
 use App\Payment\Receipt;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -15,7 +15,7 @@ class CreditTransactionTest extends TestCase
     use DatabaseTransactions;
 
     /**
-     * @var CreditTransactionType
+     * @var Type
      */
     private $transaction;
 
@@ -47,7 +47,7 @@ class CreditTransactionTest extends TestCase
      */
     public function it_fetches_the_transaction_type()
     {
-        $this->assertInstanceOf('App\Payment\CreditTransactionType', $this->transaction->type);
+        $this->assertInstanceOf(CreditTransactionType::class, $this->transaction->type);
     }
 
     /**
@@ -55,7 +55,7 @@ class CreditTransactionTest extends TestCase
      */
     public function it_fetches_the_user_whose_credit_was_adjusted()
     {
-        $this->assertInstanceOf('App\User', $this->transaction->user);
+        $this->assertInstanceOf(User::class, $this->transaction->user);
     }
     
     /**

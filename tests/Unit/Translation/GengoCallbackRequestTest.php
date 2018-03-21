@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Translation;
 
-use App\Translation\GengoCallbackRequest;
+use App\Translation\Translators\Gengo\GengoCallbackRequest;
 use Illuminate\Http\Request;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;

@@ -1,5 +1,6 @@
 <?php
 
+use App\Translation\Recipient\RecipientType;
 use Illuminate\Database\Seeder;
 
 class RecipientTypesTableSeeder extends Seeder
@@ -24,7 +25,7 @@ class RecipientTypesTableSeeder extends Seeder
     public function run()
     {
         foreach ($this->types as $type) {
-            \App\Translation\RecipientType::create([
+            RecipientType::create([
                 'name' => $type
             ]);
         }

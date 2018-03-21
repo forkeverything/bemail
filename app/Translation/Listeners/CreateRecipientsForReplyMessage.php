@@ -5,9 +5,9 @@ namespace App\Translation\Listeners;
 use App\Translation\Events\ReplyReceived;
 use App\Translation\Factories\RecipientFactory\RecipientEmails;
 use App\Translation\Message;
-use App\Translation\PostmarkInboundMailRequest;
-use App\Translation\PostmarkInboundRecipient;
-use App\Translation\RecipientType;
+use App\Contracts\InboundMail\InboundMailRequest;
+use App\Contracts\InboundMail\InboundMailRecipient;
+use App\Translation\Recipient\RecipientType;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -22,18 +22,18 @@ class CreateRecipientsForReplyMessage
     public function handle($event)
     {
         $event->message->newRecipients()
-                ->recipientEmails($this->recipientEmails($event->postmarkRequest, $event->originalMessage))
+                ->recipientEmails($this->recipientEmails($event->inboundMailRequest, $event->originalMessage))
                 ->make();
     }
 
     /**
      * Creates RecipientEmails.
      *
-     * @param PostmarkInboundMailRequest $postmarkRequest
+     * @param Request $postmarkRequest
      * @param Message $originalMessage
      * @return RecipientEmails
      */
-    protected function recipientEmails(PostmarkInboundMailRequest $postmarkRequest, Message $originalMessage)
+    protected function recipientEmails(InboundMailRequest $postmarkRequest, Message $originalMessage)
     {
 
         $recipientEmails = RecipientEmails::new();
@@ -47,11 +47,11 @@ class CreateRecipientsForReplyMessage
 
         foreach ($types as $type) {
             $recipients = call_user_func([$postmarkRequest, "{$type}Recipients"]);
-            foreach ($recipients as $postmarkRecipient) {
+            foreach ($recipients as $inboundMailRecipient) {
                 /**
-                 * @var $postmarkRecipient PostmarkInboundRecipient
+                 * @var $inboundMailRecipient InboundMailRecipient
                  */
-                $recipientEmails->addEmailToType($postmarkRecipient->email(), call_user_func("RecipientType::{$type}"));
+                $recipientEmails->addEmailToType($inboundMailRecipient->email(), call_user_func("RecipientType::{$type}"));
             }
         }
 

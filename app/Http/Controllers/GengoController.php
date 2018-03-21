@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Translation\Events\MessageTranslated;
-use App\Translation\GengoCallbackRequest;
+use App\Translation\Translators\Gengo\GengoCallbackRequest;
 use App\Translation\Message;
-use App\Translation\OrderStatus;
+use App\Translation\Order\OrderStatus;
 use Illuminate\Http\Request;
 
 
@@ -30,7 +30,11 @@ class GengoController extends Controller
         // Only want job related callbacks currently (not comments).
         if(! $gengoRequest->isJobRequest()) return $response;
 
-        // The Message this callback was for.
+        /**
+         * The Message this callback was for.
+         *
+         * @var Message $message
+         */
         $message = Message::findByHash($gengoRequest->messageHash());
 
         switch ($gengoRequest->status()) {

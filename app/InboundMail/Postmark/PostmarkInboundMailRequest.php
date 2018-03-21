@@ -1,19 +1,18 @@
 <?php
 
+namespace App\InboundMail\Postmark;
 
-namespace App\Translation;
-
-
+use App\Contracts\InboundMail\InboundMailRequest;
 use App\Translation\Utilities\EmailReplyParser;
 use Illuminate\Http\Request;
 
-class PostmarkInboundMailRequest
+class PostmarkInboundMailRequest implements InboundMailRequest
 {
 
     /**
      * The POST request from Postmark for inbound emails.
      *
-     * @var Request
+     * @var PostmarkInboundMailRequest
      */
     private $request;
 
@@ -57,7 +56,7 @@ class PostmarkInboundMailRequest
      *
      * @return string
      */
-    public function strippedTextBody()
+    public function strippedReplyBody()
     {
         return EmailReplyParser::parse($this->request["TextBody"]);
     }
@@ -84,7 +83,7 @@ class PostmarkInboundMailRequest
         $jsonCollection = $this->request[$field];
 
         foreach ($jsonCollection as $json) {
-            $recipient = new PostmarkInboundRecipient($json);
+            $recipient = new PostmarkInboundMailRecipient($json);
             array_push($recipients, $recipient);
         }
 

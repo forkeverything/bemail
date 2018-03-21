@@ -2,7 +2,7 @@
 
 use App\Translation\Message;
 use App\Translation\Recipient;
-use App\Translation\RecipientType;
+use App\Translation\Recipient\RecipientType;
 use Faker\Generator as Faker;
 
 $factory->define(Recipient::class, function (Faker $faker) {

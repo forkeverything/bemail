@@ -1,9 +1,8 @@
 <?php
 
+namespace App\Translation\Message;
 
-namespace App\Translation;
-
-
+use App\Translation\Message;
 use Illuminate\Database\Eloquent\Collection;
 
 class MessageThread

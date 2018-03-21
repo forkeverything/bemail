@@ -1,10 +1,10 @@
 <?php
 
+namespace App\InboundMail\Postmark;
 
-namespace App\Translation;
+use App\Contracts\InboundMail\InboundMailRecipient;
 
-
-class PostmarkInboundRecipient
+class PostmarkInboundMailRecipient implements InboundMailRecipient
 {
     /**
      * @var string
@@ -12,7 +12,7 @@ class PostmarkInboundRecipient
     private $json;
 
     /**
-     * Create PostmarkInboundRecipient instance.
+     * Create PostmarkInboundMailRecipient instance.
      *
      * @param $json
      */
