@@ -139,7 +139,7 @@ class ProcessMessagePayment
     {
 
         // Stripe will error on attempt to charge 0.
-        if(! $this->chargeAmount) {
+        if (!$this->chargeAmount) {
             return $this;
         }
 
@@ -186,7 +186,10 @@ class ProcessMessagePayment
     protected function recordUserCreditTransaction()
     {
         if ($this->isUsingCredits()) {
-            CreditTransaction::record($this->message->owner, CreditTransactionType::payment(), $this->credits);
+            $this->message->owner->recordNewCreditTransaction()
+                                 ->type(CreditTransactionType::payment())
+                                 ->amount($this->credits)
+                                 ->save();
         }
         return $this;
     }
@@ -196,7 +199,10 @@ class ProcessMessagePayment
      */
     protected function createReceipt()
     {
-        $this->message->newReceipt()->amountCharged($this->chargeAmount);
+        $this->message->newReceipt()
+                      ->amountCharged($this->chargeAmount)
+                      ->save();
+
     }
 
     /**

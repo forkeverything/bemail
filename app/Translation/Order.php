@@ -5,6 +5,27 @@ namespace App\Translation;
 use App\Translation\Order\OrderStatus;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Translation\Order
+ *
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property int $id
+ * @property int $unit_count
+ * @property int $unit_price
+ * @property int $message_id
+ * @property int $order_status_id
+ * @property-read \App\Translation\Message $message
+ * @property-read \App\Translation\Order\OrderStatus $status
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Order whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Order whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Order whereMessageId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Order whereOrderStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Order whereUnitCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Order whereUnitPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Order whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Order extends Model
 {
 

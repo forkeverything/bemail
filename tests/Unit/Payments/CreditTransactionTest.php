@@ -15,7 +15,7 @@ class CreditTransactionTest extends TestCase
     use DatabaseTransactions;
 
     /**
-     * @var Type
+     * @var CreditTransaction
      */
     private $transaction;
 
@@ -50,6 +50,16 @@ class CreditTransactionTest extends TestCase
         $this->assertInstanceOf(CreditTransactionType::class, $this->transaction->type);
     }
 
+    /** @test */
+    public function it_sets_credit_transaction_type()
+    {
+        $transaction = factory(CreditTransaction::class)->create([
+            'credit_transaction_type_id' => CreditTransactionType::payment()->id
+        ]);
+        $transaction->type(CreditTransactionType::manual())->save();
+        $this->assertEquals(CreditTransactionType::manual()->id, $transaction->fresh()->credit_transaction_type_id);
+    }
+
     /**
      * @test
      */
@@ -66,15 +76,20 @@ class CreditTransactionTest extends TestCase
         $this->assertInstanceOf(Receipt::class, $this->transaction->receipt);
     }
 
-    /**
-     * @test
-     */
-    public function it_records_a_transaction()
+    /** @test */
+    public function it_instantiates_for_a_user()
     {
         $user = factory(User::class)->create();
-        $type = CreditTransactionType::all()->random();
-        $amount = 18;
-        $transaction = CreditTransaction::record($user, $type, $amount);
-        $this->assertEquals(18, $transaction->amount);
+        $creditTransaction = CreditTransaction::newForUser($user);
+        $this->assertEquals($user->id, $creditTransaction->user_id);
     }
+
+    /** @test */
+    public function it_has_a_transaction_amount()
+    {
+        $this->assertTrue(is_int($this->transaction->amount()));
+        $this->transaction->amount(800);
+        $this->assertEquals(800, $this->transaction->amount());
+    }
+
 }

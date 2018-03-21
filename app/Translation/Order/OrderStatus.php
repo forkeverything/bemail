@@ -4,6 +4,15 @@ namespace App\Translation\Order;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Translation\Order\OrderStatus
+ *
+ * @property int $id
+ * @property string $description
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Order\OrderStatus whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Order\OrderStatus whereId($value)
+ * @mixin \Eloquent
+ */
 class OrderStatus extends Model
 {
 

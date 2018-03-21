@@ -45,6 +45,7 @@ use Laravel\Cashier\Billable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereTrialEndsAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Cashier\Subscription[] $subscriptions
  */
 class User extends Authenticatable
 {
@@ -153,5 +154,15 @@ class User extends Authenticatable
     public function newMessage()
     {
         return MessageFactory::newMessageFromUser($this);
+    }
+
+    /**
+     * Record a new transaction.
+     *
+     * @return CreditTransaction
+     */
+    public function recordNewCreditTransaction()
+    {
+        return CreditTransaction::newForUser($this);
     }
 }

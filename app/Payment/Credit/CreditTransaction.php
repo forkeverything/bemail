@@ -7,6 +7,28 @@ use App\Payment\Receipt;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Payment\Credit\CreditTransaction
+ *
+ * @property int $id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property int $amount
+ * @property int $credit_transaction_type_id
+ * @property int $user_id
+ * @property int|null $receipt_id
+ * @property-read \App\Payment\Receipt|null $receipt
+ * @property-read \App\Payment\Credit\Transaction\CreditTransactionType $type
+ * @property-read \App\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Credit\CreditTransaction whereAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Credit\CreditTransaction whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Credit\CreditTransaction whereCreditTransactionTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Credit\CreditTransaction whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Credit\CreditTransaction whereReceiptId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Credit\CreditTransaction whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Credit\CreditTransaction whereUserId($value)
+ * @mixin \Eloquent
+ */
 class CreditTransaction extends Model
 {
 
@@ -29,11 +51,16 @@ class CreditTransaction extends Model
      * to minimize potential errors and make changes easier in
      * the future.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @param CreditTransactionType|null $creditTransactionType
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|$this
      */
-    public function type()
+    public function type(CreditTransactionType $creditTransactionType = null)
     {
-        return $this->belongsTo(CreditTransactionType::class, 'credit_transaction_type_id', 'id');
+        if (is_null($creditTransactionType)) {
+            return $this->belongsTo(CreditTransactionType::class, 'credit_transaction_type_id', 'id');
+        }
+        $this->credit_transaction_type_id = $creditTransactionType->id;
+        return $this;
     }
 
     /**
@@ -57,19 +84,32 @@ class CreditTransaction extends Model
     }
 
     /**
-     * Records credit transaction.
+     * New CreditTransaction for a given User.
      *
      * @param User $user
-     * @param CreditTransactionType $type
-     * @param $amount
-     * @return $this|Model
+     * @return static
      */
-    public static function record(User $user, CreditTransactionType $type, $amount)
+    public static function newForUser(User $user)
     {
-        return static::create(([
-            'user_id' => $user->id,
-            'credit_transaction_type_id' => $type->id,
-            'amount' => $amount
-        ]));
+        return new static([
+            'user_id' => $user->id
+        ]);
     }
+
+    /**
+     * The amount of credits adjusted.
+     *
+     * @param null $amount
+     * @return $this|int
+     */
+    public function amount($amount = null)
+    {
+        if (is_null($amount)) {
+            return $this->amount;
+        }
+
+        $this->amount = $amount;
+        return $this;
+    }
+
 }

@@ -4,6 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Language
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $code
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Language whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Language whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Language whereName($value)
+ * @mixin \Eloquent
+ */
 class Language extends Model
 {
 

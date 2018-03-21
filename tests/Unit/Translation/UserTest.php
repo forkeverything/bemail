@@ -155,5 +155,11 @@ class UserTest extends TestCase
         $this->assertInstanceOf(MessageFactory::class, $this->user->newMessage());
     }
 
+    /** @test */
+    public function it_instantiates_a_credit_transaction()
+    {
+        $this->assertInstanceOf(CreditTransaction::class, $this->user->recordNewCreditTransaction());
+    }
+
 }
 

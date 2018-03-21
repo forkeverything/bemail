@@ -5,6 +5,18 @@ namespace App\Payment\Credit\Transaction;
 use App\Payment\Credit\CreditTransaction;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Payment\Credit\Transaction\CreditTransactionType
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $description
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Payment\Credit\CreditTransaction[] $transactions
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Credit\Transaction\CreditTransactionType whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Credit\Transaction\CreditTransactionType whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Credit\Transaction\CreditTransactionType whereName($value)
+ * @mixin \Eloquent
+ */
 class CreditTransactionType extends Model
 {
 
