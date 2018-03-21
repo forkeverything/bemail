@@ -27,17 +27,6 @@ class GengoTranslator implements Translator
 {
 
     /**
-     * Testing?
-     *
-     * Set to True from GengoTranslatorTest. This ensures
-     * that tests are sent to the sandbox, regardless
-     * of app environment.
-     *
-     * @var bool
-     */
-    public $test = false;
-
-    /**
      * GengoTranslator constructor.
      *
      * @throws \Gengo\Exception
@@ -49,7 +38,7 @@ class GengoTranslator implements Translator
         GengoConfig::setPrivateKey(env('GENGO_SECRET'));
         GengoConfig::setResponseFormat("json");
         // Production or Sandbox
-        if (env('APP_ENV') == 'production' && !$this->test) GengoConfig::useProduction();
+        if (env('APP_ENV') == 'production') GengoConfig::useProduction();
     }
 
     /**

@@ -38,7 +38,6 @@ class GengoTranslatorTest extends TestCase
     {
         parent::setup();
         $this->gengoTranslator = $this->app->make(Translator::class);
-        $this->gengoTranslator->test = true;
 
         $this->languagePairKeys = [
             'lc_src',
