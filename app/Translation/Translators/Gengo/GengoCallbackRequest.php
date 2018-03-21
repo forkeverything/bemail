@@ -45,11 +45,7 @@ class GengoCallbackRequest
      */
     private function body()
     {
-
-        \Log::info('checking gengo callback resquest body.', json_decode($this->request->all()["job"], true));
-
         return json_decode($this->request->all()["job"], true);
-
     }
 
     /**
@@ -59,7 +55,8 @@ class GengoCallbackRequest
      */
     public function messageHash()
     {
-        return $this->body()["custom_data"]["message_hash"];
+        $customData = json_decode($this->body()["custom_data"], true);
+        return $customData["message_hash"];
     }
 
     /**

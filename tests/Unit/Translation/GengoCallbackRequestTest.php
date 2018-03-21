@@ -50,9 +50,9 @@ class GengoCallbackRequestTest extends TestCase
     {
         $messageHash = "12345";
         $this->request["job"] = json_encode([
-            'custom_data' => [
+            'custom_data' => json_encode([
                 'message_hash' => $messageHash
-            ]
+            ])
         ]);
 
         $this->assertEquals($messageHash, $this->gengoRequest->messageHash());
