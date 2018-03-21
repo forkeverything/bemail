@@ -22,10 +22,46 @@ class PostmarkInboundMailRequestTest extends TestCase
      */
     private $postmarkRequest;
 
+    // Fake fields
+    private $name = "john dough";
+    private $address = 'john@example.com';
+    private $subject = "Please Read";
+    private $body = 'some text here.';
+    private $attachments = [
+        'foo',
+        'bar',
+        'baz',
+    ];
+    private $recipientTypes = [
+        "ToFull" => "standard",
+        "CcFull" => "cc",
+        "BccFull" => "bcc",
+    ];
+    private $emails = [
+        'john@example.com',
+        'sara@example.com'
+    ];
+
     protected function setUp()
     {
         parent::setUp();
+
         $this->request = new Request();
+
+        $this->request["FromName"] = $this->name;
+        $this->request["From"] = $this->address;
+        $this->request["Subject"] = $this->subject;
+        $this->request["TextBody"] = $this->body;
+        $this->request["Attachments"] = $this->attachments;
+
+        $recipients = [
+            ["Email" => $this->emails[0]],
+            ["Email" => $this->emails[1]]
+        ];
+        foreach ($this->recipientTypes as $field => $type) {
+            $this->request[$field] = $recipients;
+        }
+
         $this->postmarkRequest = new PostmarkInboundMailRequest($this->request);
     }
 
@@ -42,9 +78,7 @@ class PostmarkInboundMailRequestTest extends TestCase
      */
     public function it_gets_from_name()
     {
-        $name = "john dough";
-        $this->request["FromName"] = $name;
-        $this->assertEquals($name, $this->postmarkRequest->fromName());
+        $this->assertEquals($this->name, $this->postmarkRequest->fromName());
     }
 
     /**
@@ -52,9 +86,7 @@ class PostmarkInboundMailRequestTest extends TestCase
      */
     public function it_gets_from_address()
     {
-        $address = 'john@example.com';
-        $this->request["From"] = $address;
-        $this->assertEquals($address, $this->postmarkRequest->fromAddress());
+        $this->assertEquals($this->address, $this->postmarkRequest->fromAddress());
     }
 
     /**
@@ -62,9 +94,7 @@ class PostmarkInboundMailRequestTest extends TestCase
      */
     public function it_gets_email_subject()
     {
-        $subject = "Please Read";
-        $this->request["Subject"] = $subject;
-        $this->assertEquals($subject, $this->postmarkRequest->subject());
+        $this->assertEquals($this->subject, $this->postmarkRequest->subject());
     }
 
     /**
@@ -72,9 +102,7 @@ class PostmarkInboundMailRequestTest extends TestCase
      */
     public function it_gets_stripped_text_body()
     {
-        $body = 'some text here.';
-        $this->request["TextBody"] = $body;
-        $this->assertEquals($body, $this->postmarkRequest->strippedReplyBody());
+        $this->assertEquals($this->body, $this->postmarkRequest->strippedReplyBody());
     }
 
 
@@ -83,13 +111,7 @@ class PostmarkInboundMailRequestTest extends TestCase
      */
     public function it_gets_email_attachments()
     {
-        $attachments = [
-            'foo',
-            'bar',
-            'baz',
-        ];
-        $this->request["Attachments"] = $attachments;
-        $this->assertEquals($attachments, $this->postmarkRequest->attachments());
+        $this->assertEquals($this->attachments, $this->postmarkRequest->attachments());
     }
 
     /**
@@ -98,22 +120,8 @@ class PostmarkInboundMailRequestTest extends TestCase
     public function it_gets_various_recipients()
     {
 
-        $emails = [
-            'john@example.com',
-            'sara@example.com'
-        ];
-        $recipients = [
-            "{\"Email\": \"$emails[0]\"}",
-            "{\"Email\": \"$emails[1]\"}"
-        ];
-        $types = [
-            "ToFull" => "standard",
-            "CcFull" => "cc",
-            "BccFull" => "bcc",
-        ];
-        foreach ($types as $key => $type) {
-            $this->request[$key] = $recipients;
-            foreach ($emails as $index => $email) {
+        foreach ($this->recipientTypes as $field => $type) {
+            foreach ($this->emails as $index => $email) {
                 $this->assertEquals($email, call_user_func([$this->postmarkRequest, "{$type}Recipients"])[$index]->email());
             }
         }
@@ -126,6 +134,7 @@ class PostmarkInboundMailRequestTest extends TestCase
     {
         $address = "reply_12345@bemail.io";
         $this->request["OriginalRecipient"] = $address;
+        $this->postmarkRequest = new PostmarkInboundMailRequest($this->request);
         $this->assertEquals('reply', $this->postmarkRequest->action());
     }
 
@@ -136,6 +145,7 @@ class PostmarkInboundMailRequestTest extends TestCase
     {
         $address = "message_12345@bemail.io";
         $this->request["OriginalRecipient"] = $address;
+        $this->postmarkRequest = new PostmarkInboundMailRequest($this->request);
         $this->assertEquals('12345', $this->postmarkRequest->target());
     }
 

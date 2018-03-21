@@ -29,6 +29,9 @@ class PostmarkController extends Controller
     public function postInboundMail(Request $request, Translator $translator)
     {
         $postmarkRequest = new PostmarkInboundMailRequest($request);
+
+
+
         switch ($postmarkRequest->action()) {
             case 'reply':
                 /**
