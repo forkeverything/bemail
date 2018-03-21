@@ -20,12 +20,12 @@ class CreateNewMessageModel
     public function handle($event)
     {
         $event->message = Auth::user()->newMessage()
-                              ->subject($event->request->subject)
-                              ->body($event->request->body)
-                              ->autoTranslateReply(!!$event->request->auto_translate_reply)
-                              ->sendToSelf(!!$event->request->send_to_self)
-                              ->langSrcId(Language::findByCode($event->request->lang_src)->id)
-                              ->langTgtId(Language::findByCode($event->request->lang_tgt)->id)
+                              ->subject($event->fields->subject)
+                              ->body($event->fields->body)
+                              ->autoTranslateReply($event->fields->autoTranslateReply)
+                              ->sendToSelf($event->fields->sendToSelf)
+                              ->langSrcId($event->fields->langSrcId)
+                              ->langTgtId($event->fields->langTgtId)
                               ->make();
     }
 }

@@ -5,6 +5,7 @@ namespace App\Translation\Events;
 use App\Http\Requests\CreateMessageRequest;
 use App\Contracts\Translation\Translator;
 use App\Translation\Message;
+use App\Translation\Message\NewMessageFields;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -18,9 +19,11 @@ class NewMessageRequestReceived
     use Dispatchable, SerializesModels;
 
     /**
-     * @var CreateMessageRequest
+     * Values for the new Message.
+     *
+     * @var NewMessageFields
      */
-    public $request;
+    public $fields;
     /**
      * @var Translator
      */
@@ -35,12 +38,12 @@ class NewMessageRequestReceived
     /**
      * NewMessageRequestReceived constructor.
      *
-     * @param CreateMessageRequest $request
+     * @param NewMessageFields $fields
      * @param Translator $translator
      */
-    public function __construct(CreateMessageRequest $request, Translator $translator)
+    public function __construct(NewMessageFields $fields, Translator $translator)
     {
-        $this->request = $request;
+        $this->fields = $fields;
         $this->translator = $translator;
     }
 }

@@ -17,7 +17,7 @@ class CreateAttachmentsForNewMessage
      */
     public function handle($event)
     {
-        $attachmentFiles = FormUploadedFile::convertArray($event->request->attachments);
+        $attachmentFiles = FormUploadedFile::convertArray($event->fields->attachments);
         $event->message->newAttachments()
                 ->attachmentFiles($attachmentFiles)
                 ->make();

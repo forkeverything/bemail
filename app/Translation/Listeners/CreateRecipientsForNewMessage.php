@@ -18,7 +18,7 @@ class CreateRecipientsForNewMessage
      */
     public function handle($event)
     {
-        $recipientEmails = RecipientEmails::new()->addListOfStandardEmails($event->request->recipients);
+        $recipientEmails = RecipientEmails::new()->addListOfStandardEmails($event->fields->recipients);
         $event->message->newRecipients()
                 ->recipientEmails($recipientEmails)
                 ->make();

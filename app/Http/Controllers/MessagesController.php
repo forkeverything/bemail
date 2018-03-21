@@ -6,6 +6,7 @@ use App\Language;
 use App\Translation\Events\NewMessageRequestReceived;
 use App\Contracts\Translation\Translator;
 use App\Http\Requests\CreateMessageRequest;
+use App\Translation\Message\NewMessageFields;
 use Exception;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -43,7 +44,8 @@ class MessagesController extends Controller
     public function postSendMessage(CreateMessageRequest $request, Translator $translator)
     {
         try {
-            event(new NewMessageRequestReceived($request, $translator));
+            $fields = new NewMessageFields($request);
+            event(new NewMessageRequestReceived($fields, $translator));
         } catch (Exception $e) {
             if (App::environment('production')) {
                 flash()->error('System Error - Your message was not sent and you have not been charged. Please try again or contact us for help.');
