@@ -57,7 +57,10 @@ class GengoTranslationJob
         $job->slug($message->hash)
             ->body($message->body)
             ->languages($message->sourceLanguage->code, $message->targetLanguage->code)
-            ->customData("{\"message_hash\": \"{$message->hash}\"}");
+            ->customData(json_encode([
+                "message_hash" => $message->hash
+            ]));
+
         return $job;
     }
 

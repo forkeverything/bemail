@@ -39,7 +39,9 @@ class GengoCallbackRequestTest extends TestCase
     public function it_checks_whether_callback_is_for_a_job()
     {
         $this->assertFalse($this->gengoRequest->isJobRequest());
-        $this->request["job"] = "{\"job_id\": \"12345\"}";
+        $this->request["job"] = json_encode([
+            "job_id" => 12345
+        ]);
         $this->assertTrue($this->gengoRequest->isJobRequest());
     }
 

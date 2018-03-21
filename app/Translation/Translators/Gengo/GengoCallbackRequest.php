@@ -45,7 +45,11 @@ class GengoCallbackRequest
      */
     private function body()
     {
+
+        \Log::info('checking gengo callback resquest body.', json_decode($this->request->all()["job"], true));
+
         return json_decode($this->request->all()["job"], true);
+
     }
 
     /**
