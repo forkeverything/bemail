@@ -16,16 +16,8 @@ class TranslatorController extends Controller
      */
     private $translator;
 
-    /**
-     * Currently authenticated User.
-     *
-     * @var User
-     */
-    private $user;
-
-    public function __construct(Translator $translator, Guard $guard)
+    public function __construct(Translator $translator)
     {
-        $this->user = $guard->user();
         $this->translator = $translator;
         $this->middleware('auth');
     }
@@ -58,7 +50,7 @@ class TranslatorController extends Controller
         $targetLanguage = Language::findByCode($request->lang_tgt);
 
         $translator = $this->translator->unitPrice($sourceLanguage, $targetLanguage);
-        $bemail = $this->user->plan()->surcharge();
+        $bemail = Auth::user()->plan()->surcharge();
 
         return $translator + $bemail;
     }
