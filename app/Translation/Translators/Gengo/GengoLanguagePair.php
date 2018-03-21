@@ -37,6 +37,22 @@ class GengoLanguagePair
     }
 
     /**
+     * Filter pairs by source language.
+     *
+     * @param null $langSrc
+     * @return $this
+     */
+    public function filterSourceLanguage($langSrc = null)
+    {
+        if ($langSrc) {
+            $this->pairs = array_filter($this->pairs, function ($pair) use ($langSrc) {
+                return $pair["lc_src"] == $langSrc;
+            });
+        }
+        return $this;
+    }
+
+    /**
      * Filter pairs by target language.
      *
      * @param $langTgt

@@ -65,16 +65,10 @@ class GengoTranslator implements Translator
         $api = new GengoService;
         $languagePairs = (new GengoResponse($api->getLanguagePairs($langSrc)))->body();
 
-        \Log::info('CHECKING LANGUAGE PAIR CALL', [
-            'lang_src' => $langSrc,
-            'lang_tgt' => $langTgt,
-            'response' => $api->getLanguagePairs($langSrc),
-            'pairs' => $languagePairs
-        ]);
-
         return (new GengoLanguagePair($languagePairs))
             // Only want to view 'standard' tier level translations on Gengo
             ->filterTier("standard")
+            ->filterSourceLanguage($langSrc)
             ->filterTargetLanguage($langTgt)
             ->result();
     }
