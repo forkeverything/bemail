@@ -6,19 +6,22 @@ use App\Contracts\InboundMail\InboundMailRecipient;
 
 class PostmarkInboundMailRecipient implements InboundMailRecipient
 {
+
     /**
-     * @var string
+     * Recipient data.
+     *
+     * @var array
      */
-    private $json;
+    protected $recipient;
 
     /**
      * Create PostmarkInboundMailRecipient instance.
      *
-     * @param $json
+     * @param array $recipient
      */
-    public function __construct($json)
+    public function __construct($recipient)
     {
-        $this->json = json_decode($json, true);
+        $this->recipient = $recipient;
     }
 
     /**
@@ -28,7 +31,7 @@ class PostmarkInboundMailRecipient implements InboundMailRecipient
      */
     public function email()
     {
-        return $this->json["Email"];
+        return $this->recipient["Email"];
     }
 
     /**
@@ -38,6 +41,6 @@ class PostmarkInboundMailRecipient implements InboundMailRecipient
      */
     public function name()
     {
-        return $this->json["Name"];
+        return $this->recipient["Name"];
     }
 }
