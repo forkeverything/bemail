@@ -6,7 +6,8 @@ use App\Rules\CurrentUserPassword;
 use App\Rules\LanguageCode;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
+use /** @noinspection PhpUndefinedClassInspection */
+    Illuminate\Support\Facades\Auth;
 
 class UpdateAccountRequest extends FormRequest
 {

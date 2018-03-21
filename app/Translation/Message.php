@@ -3,7 +3,7 @@
 namespace App\Translation;
 
 use App\Language;
-use App\Payments\Receipt;
+use App\Payment\Receipt;
 use App\Traits\Hashable;
 use App\Translation\Contracts\AttachmentFile;
 use App\Translation\Factories\AttachmentFactory;
@@ -38,7 +38,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Translation\Order $order
  * @property-read \App\Translation\Message|null $originalMessage
  * @property-read \App\User $owner
- * @property-read \App\Payments\Receipt $receipt
+ * @property-read \App\Payment\Receipt $receipt
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Recipient[] $recipients
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Message[] $replies
  * @property-read \App\Language $sourceLanguage

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Payments\Listeners;
+namespace App\Payment\Listeners;
 
-use App\Payments\Events\CustomerSubscriptionDeleted;
-use App\Payments\Mail\SubscriptionCancelledMail;
+use App\Payment\Events\CustomerSubscriptionDeleted;
+use App\Payment\Mail\SubscriptionCancelledMail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;

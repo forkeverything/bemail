@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Payments\Listeners;
+namespace App\Payment\Listeners;
 
-use App\Payments\Events\CustomerSubscriptionDeleted;
+use App\Payment\Events\CustomerSubscriptionDeleted;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 

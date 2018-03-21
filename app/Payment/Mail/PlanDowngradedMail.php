@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Payments\Mail;
+namespace App\Payment\Mail;
 
 use App\User;
 use Illuminate\Bus\Queueable;

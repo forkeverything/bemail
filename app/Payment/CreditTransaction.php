@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Payments;
+namespace App\Payment;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 
 /**
- * App\Payments\CreditTransaction
+ * App\Payment\CreditTransaction
  *
- * @property-read \App\Payments\Receipt $receipt
- * @property-read \App\Payments\CreditTransactionType $type
+ * @property-read \App\Payment\Receipt $receipt
+ * @property-read \App\Payment\CreditTransactionType $type
  * @property-read \App\User $user
  * @mixin \Eloquent
  * @property int $id
@@ -20,13 +20,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $credit_transaction_type_id
  * @property int $user_id
  * @property int|null $receipt_id
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransaction whereAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransaction whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransaction whereCreditTransactionTypeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransaction whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransaction whereReceiptId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransaction whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransaction whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransaction whereAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransaction whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransaction whereCreditTransactionTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransaction whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransaction whereReceiptId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransaction whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransaction whereUserId($value)
  */
 class CreditTransaction extends Model
 {

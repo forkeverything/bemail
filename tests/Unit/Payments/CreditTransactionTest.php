@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use App\Payments\CreditTransaction;
-use App\Payments\CreditTransactionType;
-use App\Payments\Receipt;
+use App\Payment\CreditTransaction;
+use App\Payment\CreditTransactionType;
+use App\Payment\Receipt;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -47,7 +47,7 @@ class CreditTransactionTest extends TestCase
      */
     public function it_fetches_the_transaction_type()
     {
-        $this->assertInstanceOf('App\Payments\CreditTransactionType', $this->transaction->type);
+        $this->assertInstanceOf('App\Payment\CreditTransactionType', $this->transaction->type);
     }
 
     /**

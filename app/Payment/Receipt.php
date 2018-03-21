@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Payments;
+namespace App\Payment;
 
 use App\Translation\Message;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Payments\Receipt
+ * App\Payment\Receipt
  *
- * @property-read \App\Payments\CreditTransaction $creditTransaction
+ * @property-read \App\Payment\CreditTransaction $creditTransaction
  * @property-read \App\Translation\Message $message
  * @mixin \Eloquent
  * @property int $id
@@ -18,13 +18,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $amount_charged
  * @property int $reversed
  * @property int $message_id
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\Receipt whereAmountCharged($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\Receipt whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\Receipt whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\Receipt whereMessageId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\Receipt wherePlan($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\Receipt whereReversed($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\Receipt whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Receipt whereAmountCharged($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Receipt whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Receipt whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Receipt whereMessageId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Receipt wherePlan($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Receipt whereReversed($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Receipt whereUpdatedAt($value)
  */
 class Receipt extends Model
 {

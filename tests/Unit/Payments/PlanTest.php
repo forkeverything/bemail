@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Payments;
 
-use App\Payments\Plan;
+use App\Payment\Plan;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

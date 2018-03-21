@@ -1,7 +1,5 @@
 <?php
 
-use App\Payments\Plan;
-use App\Payments\Subscription;
 use App\User;
 use Illuminate\Database\Seeder;
 

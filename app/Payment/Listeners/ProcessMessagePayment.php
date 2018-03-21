@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Payments\Listeners;
+namespace App\Payment\Listeners;
 
-use App\Payments\CreditTransaction;
-use App\Payments\CreditTransactionType;
-use App\Payments\Exceptions\ChargeFailedException;
-use App\Payments\Exceptions\MissingUnitPriceException;
+use App\Payment\CreditTransaction;
+use App\Payment\CreditTransactionType;
+use App\Payment\Exceptions\ChargeFailedException;
+use App\Payment\Exceptions\MissingUnitPriceException;
 use App\Translation\Contracts\Translator;
 use App\Translation\Events\NewMessageRequestReceived;
 use App\Translation\Events\ReplyReceived;
@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\App;
 
 /**
  * Class ProcessMessagePayment
- * @package App\Payments\Listeners
+ * @package App\Payment\Listeners
  */
 class ProcessMessagePayment
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Payments;
+namespace App\Payment;
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Payments\CreditTransactionType
+ * App\Payment\CreditTransactionType
  *
  * @mixin \Eloquent
  * @property int $id
@@ -14,13 +14,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $add
  * @property string $name
  * @property string $description
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransactionType whereAdd($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransactionType whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransactionType whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransactionType whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransactionType whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payments\CreditTransactionType whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Payments\CreditTransaction[] $transactions
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransactionType whereAdd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransactionType whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransactionType whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransactionType whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransactionType whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\CreditTransactionType whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Payment\CreditTransaction[] $transactions
  */
 class CreditTransactionType extends Model
 {

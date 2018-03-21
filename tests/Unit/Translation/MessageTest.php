@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Language;
-use App\Payments\Receipt;
+use App\Payment\Receipt;
 use App\Translation\Attachment;
 use App\Translation\Factories\AttachmentFactory;
 use App\Translation\Factories\RecipientFactory;

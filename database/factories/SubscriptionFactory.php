@@ -1,6 +1,6 @@
 <?php
 
-use App\Payments\Plan;
+use App\Payment\Plan;
 use App\Translation\Message;
 use App\User;
 use Carbon\Carbon;

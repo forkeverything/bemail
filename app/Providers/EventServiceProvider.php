@@ -21,7 +21,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Translation\Listeners\CreateRecipientsForNewMessage',
             'App\Translation\Listeners\CreateAttachmentsForNewMessage',
             'App\Translation\Listeners\TranslateNewMessage',
-            'App\Payments\Listeners\ProcessMessagePayment',
+            'App\Payment\Listeners\ProcessMessagePayment',
             'App\Translation\Listeners\SendNewMessageRequestReceivedNotification'
         ],
         'App\Translation\Events\MessageTranslated' => [
@@ -34,7 +34,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Translation\Listeners\CreateReplyMessageModel',
             'App\Translation\Listeners\CreateRecipientsForReplyMessage',
             'App\Translation\Listeners\TranslateReply',
-            'App\Payments\Listeners\ProcessMessagePayment',
+            'App\Payment\Listeners\ProcessMessagePayment',
             'App\Translation\Listeners\SendReplyReceivedNotification'
         ],
         'App\Translation\Events\ReplyErrorOccurred' => [
@@ -45,9 +45,9 @@ class EventServiceProvider extends ServiceProvider
             'App\Translation\Listeners\RecordTranslationError',
             'App\Translation\Listeners\NotifyAdminsOfTranslationError'
         ],
-        'App\Payments\Events\CustomerSubscriptionDeleted' => [
-            'App\Payments\Listeners\CancelSubscription',
-            'App\Payments\Listeners\SendSubscriptionCancelledNotification'
+        'App\Payment\Events\CustomerSubscriptionDeleted' => [
+            'App\Payment\Listeners\CancelSubscription',
+            'App\Payment\Listeners\SendSubscriptionCancelledNotification'
         ]
     ];
 

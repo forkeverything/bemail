@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Payments\Events;
+namespace App\Payment\Events;
 
 use App\User;
 use Illuminate\Broadcasting\Channel;

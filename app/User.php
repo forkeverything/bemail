@@ -2,8 +2,8 @@
 
 namespace App;
 
-use App\Payments\CreditTransaction;
-use App\Payments\Plan;
+use App\Payment\CreditTransaction;
+use App\Payment\Plan;
 use App\Translation\Factories\MessageFactory;
 use App\Translation\Message;
 use Illuminate\Notifications\Notifiable;
@@ -26,12 +26,11 @@ use Laravel\Cashier\Billable;
  * @property string|null $card_last_four
  * @property string|null $trial_ends_at
  * @property int $language_id
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Payments\CreditTransaction[] $creditTransactions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Payment\CreditTransaction[] $creditTransactions
  * @property-read \App\Language $defaultLanguage
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Message[] $messages
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Recipient[] $recipients
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Payments\Subscription[] $subscriptions
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCardBrand($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCardLastFour($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)

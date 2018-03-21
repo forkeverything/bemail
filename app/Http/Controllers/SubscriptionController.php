@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Payments\Plan;
+use App\Payment\Plan;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

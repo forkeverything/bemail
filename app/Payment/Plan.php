@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Payments;
+namespace App\Payment;
 
 use App\User;
 use Illuminate\Database\Eloquent\Collection;
 use InvalidArgumentException;
 
 /**
- * App\Payments\Plan
+ * App\Payment\Plan
  *
  * Plan class is NOT an Eloquent Model. By using a custom class,
  * only have to override Subscription class instead of all
  * classes where the 'plan_id' needed to be changed.
  *
- * @package App\Payments
+ * @package App\Payment
  */
 class Plan
 {
