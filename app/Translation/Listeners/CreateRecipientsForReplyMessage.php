@@ -51,7 +51,7 @@ class CreateRecipientsForReplyMessage
                 /**
                  * @var $inboundMailRecipient InboundMailRecipient
                  */
-                $recipientEmails->addEmailToType($inboundMailRecipient->email(), call_user_func("RecipientType::{$type}"));
+                $recipientEmails->addEmailToType($inboundMailRecipient->email(), call_user_func("App\Translation\Recipient\RecipientType::{$type}"));
             }
         }
 
