@@ -65,6 +65,12 @@ class GengoTranslator implements Translator
         $api = new GengoService;
         $languagePairs = (new GengoResponse($api->getLanguagePairs($langSrc)))->body();
 
+        \Log::info('CHECKING LANGUAGE PAIR CALL', [
+            'lang_src' => $langSrc,
+            'lang_tgt' => $langTgt,
+            'pairs' => $languagePairs
+        ]);
+
         return (new GengoLanguagePair($languagePairs))
             // Only want to view 'standard' tier level translations on Gengo
             ->filterTier("standard")
@@ -104,10 +110,6 @@ class GengoTranslator implements Translator
     {
         // Get relevant pair
         $pair = $this->languagePair($sourceLanguage->code, $targetLanguage->code);
-
-        \Log::info('checking unit price at UnitPrice', [
-            'pair' => $pair
-        ]);
 
         // Manually reset object key pointer to the first index and removes old
         // key.
