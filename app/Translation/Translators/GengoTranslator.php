@@ -68,6 +68,7 @@ class GengoTranslator implements Translator
         \Log::info('CHECKING LANGUAGE PAIR CALL', [
             'lang_src' => $langSrc,
             'lang_tgt' => $langTgt,
+            'response' => $api->getLanguagePairs($langSrc),
             'pairs' => $languagePairs
         ]);
 
