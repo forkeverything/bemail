@@ -124,14 +124,6 @@ class ProcessMessagePayment
         $translator = $this->unitCount * $this->unitPrice;
         $bemail = $this->unitCount * $this->message->owner->plan()->surcharge();
         $this->chargeAmount = $translator + $bemail;
-
-        \Log::info('CHECKING CHARGE AMOUNT', [
-            'unit count' => $this->unitCount,
-            'unit price' => $this->unitPrice,
-            'translator' => $translator,
-            'bemail' => $bemail
-        ]);
-
         return $this;
     }
 

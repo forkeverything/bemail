@@ -135,6 +135,11 @@ class GengoTranslator implements Translator
             // Get unit count and price to store with Order.
             $unitCount = $this->unitCount($message->sourceLanguage, $message->targetLanguage, $message->body);
             $unitPrice = $this->unitPrice($message->sourceLanguage, $message->targetLanguage);
+            \Log::info('CHECKING UNIT PRICE ON TRANSLATE', [
+                'source_lang' => $message->sourceLanguage,
+                'target_lang' => $message->targetLanguage,
+                'unit_price' => $unitPrice
+            ]);
             // Create order using Gengo's order id.
             $message->newOrder()
                     ->id($response->orderId())

@@ -46,5 +46,5 @@ Route::get('test', function (App\Contracts\Translation\Translator $translator) {
     $translator = $translator->unitPrice($sourceLanguage, $targetLanguage);
     $bemail = \App\User::first()->plan()->surcharge();
 
-    return $translator + $bemail;
+    return $translator;
 });
