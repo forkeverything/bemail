@@ -11,6 +11,8 @@
 |
 */
 
+
+
 Route::get('/', function () {
     return view('landing');
 });
@@ -37,3 +39,12 @@ Route::put('/subscription/credit_card', 'SubscriptionController@putUpdateCard');
 Route::delete('/subscription/plan', 'SubscriptionController@deleteCancelPlan');
 Route::put('/subscription/plan', 'SubscriptionController@putResumePlan');
 
+Route::get('test', function (App\Contracts\Translation\Translator $translator) {
+    $sourceLanguage = \App\Language::findByCode('ja');
+    $targetLanguage = \App\Language::findByCode('en');
+
+    $translator = $translator->unitPrice($sourceLanguage, $targetLanguage);
+    $bemail = \App\User::first()->plan()->surcharge();
+
+    return $translator + $bemail;
+});

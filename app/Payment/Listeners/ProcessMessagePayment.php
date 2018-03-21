@@ -100,6 +100,7 @@ class ProcessMessagePayment
         // Chargeable units = total message units - user credits
         // Can't charge less than 0 units.
         $this->unitCount = max($this->message->order->unit_count - $this->credits, 0);
+        \Log::info('unit count', $this->unitCount);
         return $this;
     }
 
@@ -111,6 +112,7 @@ class ProcessMessagePayment
     protected function setUnitPrice()
     {
         $this->unitPrice = $this->message->order->unit_price;
+        \Log::info('unit price', $this->unitPrice);
         return $this;
     }
 
@@ -122,7 +124,9 @@ class ProcessMessagePayment
     protected function setChargeAmount()
     {
         $translator = $this->unitCount * $this->unitPrice;
+        \Log::info('translator fee', $translator);
         $bemail = $this->unitCount * $this->message->owner->plan()->surcharge();
+        \Log::info('bemail fee', $bemail);
         $this->chargeAmount = $translator + $bemail;
         return $this;
     }
