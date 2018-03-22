@@ -5,7 +5,10 @@
         <!-- Recipients -->
         <div class="form-group">
             <label for="message-form-recipient" class="control-label">Recipients</label>
-            <recipients-input :recipients="recipients" :send-to-self="sendToSelf"></recipients-input>
+            <recipients-input :recipients="recipients"
+                              :send-to-self="sendToSelf"
+                              @update-recipients="updateRecipients"
+            ></recipients-input>
             <field-error v-if="recipientsError" :error="recipientsError"></field-error>
         </div>
         <!-- Message Options -->
@@ -47,7 +50,6 @@
         <!-- Body -->
         <div class="form-group"
         >
-            <label class="d-flex justify-content-between align-items-center">Message <small>{{ wordCount }}</small></label>
             <textarea name="body"
                       class="form-control"
                       id="message-form-body"
@@ -65,9 +67,11 @@
             <field-error v-if="attachmentsError" :error="attachmentsError"></field-error>
         </div>
         <!-- Submit -->
-        <button type="button" class="btn btn-block btn-lg btn-primary" @click="showSummaryModal">Send</button>
-        <summary-modal :word-count="wordCount"
-                       @send-form="submit"
+        <div class="form-group mb-5">
+            <button type="button" class="btn btn-block btn-lg btn-primary" @click="showSummaryModal" :disabled="!canSend">Send</button>
+        </div>
+        <summary-modal @send-form="submit"
+                       :body="body"
                        :word-credits="wordCredits"
                        :lang-src="langSrc"
                        :lang-tgt="langTgt"
@@ -81,6 +85,7 @@
             return {
                 autoTranslateReply: true,
                 sendToSelf: false,
+                recipients: '',
                 langSrc: '',
                 langTgt: '',
                 subject: '',
@@ -103,21 +108,30 @@
             bodyError() {
                 return this.errors.body ? this.errors.body[0] : '';
             },
-            wordCount() {
-                if (!this.body) return 0;
-                // Match any unicode Chinese / Japanese character or a space
-                let matches = this.body.match(/[\u00ff-\uffff]|\S+/g);
-                return matches ? matches.length : 0;
-            },
             attachmentsError() {
                 return this.errors.attachments ? this.errors.attachments[0] : '';
+            },
+            hasRecipients() {
+                return !!this.recipients;
+            },
+            hasSubject() {
+                return !!this.subject;
+            },
+            hasValidLanguages() {
+                return !!this.langSrc && !!this.langTgt && this.langSrc !== this.langTgt;
+            },
+            hasBody() {
+                return !!this.body;
+            },
+            canSend() {
+                return this.hasRecipients && this.hasSubject && this.hasValidLanguages && this.hasBody;
             }
         },
         props: [
             'token',
             'word-credits',
             'errors',
-            'recipients',
+            'recipients-old',
             'subject-old',
             'languages',
             'user-lang',
@@ -139,11 +153,15 @@
                 this.$refs.form.submit();
             },
             updateLang(name, val) {
-                if (name == 'lang_tgt') this.langTgt = val;
-                if (name == 'lang_src') this.langSrc = val;
+                if (name === 'lang_tgt') this.langTgt = val;
+                if (name === 'lang_src') this.langSrc = val;
+            },
+            updateRecipients(recipients) {
+                this.recipients = recipients;
             }
         },
         mounted() {
+            this.recipients = this.recipientsOld || '';
             this.langSrc = this.langSrcOld || this.userLang.code;
             this.langTgt = this.langTgtOld || '';
             this.subject = this.subjectOld || '';

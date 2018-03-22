@@ -1,13 +1,33 @@
 <template>
     <div class="modal" tabindex="-1" role="dialog" ref="modal">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
+            <div class="modal-content"
+                 :class="{
+                    'justify-content-center': loading,
+                    'align-items-center': loading
+                }"
+            >
+                <div class="loader position-absolute"
+                     :class="{
+                        'd-none': !loading
+                     }"
+                >
+                    <span class="text-muted">Calculating message cost...</span>
+                </div>
+                <div class="modal-header"
+                     :class="{
+                        'invisible': loading
+                     }"
+                >
                     <h4 class="modal-title">Translate and send message?</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body"
+                     :class="{
+                        'invisible': loading
+                     }"
+                >
                     <p>Please review the costs below for your message and hit send to confirm.</p>
 
                     <table class="table table-bordered">
@@ -19,16 +39,16 @@
                                     v-else>-</span></td>
                         </tr>
                         <tr>
-                            <td>Word Count</td>
-                            <td>{{ wordCount }}</td>
-                        </tr>
-                        <tr>
                             <td>Credits Available</td>
                             <td>{{ wordCredits }}</td>
                         </tr>
                         <tr>
                             <td>Words Charged</td>
                             <td>{{ wordsCharged }}</td>
+                        </tr>
+                        <tr>
+                            <td>Unit Count</td>
+                            <td>{{ unitCount }}</td>
                         </tr>
                         <tr :class="{ 'bg-light': !receivedUnitPrice }">
                             <td>Unit Price</td>
@@ -41,9 +61,13 @@
                         </tbody>
                     </table>
                     <p><strong>'Auto-Translate Reply' is on.</strong> Your account will be charged for any translated
-                        replies for from any of your recipients.</p>
+                        replies from any of your recipients.</p>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer"
+                     :class="{
+                        'invisible': loading
+                     }"
+                >
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" @click="sendForm">Send</button>
                 </div>
@@ -55,6 +79,7 @@
     export default {
         data: function () {
             return {
+                unitCount: 0,
                 unitPrice: 0,
             }
         },
@@ -63,32 +88,41 @@
                 return this.unitPrice !== 0;
             },
             wordsCharged() {
-                let chargeable = this.wordCount - this.wordCredits;
+                let chargeable = this.unitcount - this.wordCredits;
                 return chargeable > 0 ? chargeable : 0;
             },
             totalCost() {
                 if (isNaN(this.unitPrice)) return '-';
                 return "$ " + (this.wordsCharged * this.unitPrice).toFixed(2);
+            },
+            loading() {
+                if (!this.unitCount || !this.unitPrice) return true;
+                return false;
             }
         },
         props: [
-            'word-count',
+            'body',
             'word-credits',
             'lang-src',
             'lang-tgt',
             'auto-translate-reply'
         ],
-        watch: {
-            langSrc(val) {
-                if (val && this.langTgt) this.fetchUnitPrice();
-            },
-            langTgt(val) {
-                if (val && this.langSrc) this.fetchUnitPrice();
-            }
-        },
+        watch: {},
         methods: {
             sendForm() {
                 this.$emit('send-form');
+            },
+            fetchUnitCount() {
+                this.unitCount = 0;
+                axios.post('/translator/unit_count', {
+                    body: this.body,
+                    lang_src: this.langSrc,
+                    lang_tgt: this.langTgt
+                }).then(res => {
+                    this.unitCount = res.data;
+                }).catch(err => {
+                    this.unitcount = 0;
+                });
             },
             fetchUnitPrice() {
                 this.unitPrice = 0;
@@ -116,6 +150,8 @@
         },
         mounted() {
             vueGlobalEventBus.$on('show-summary-modal', () => {
+                this.fetchUnitCount();
+                this.fetchUnitPrice();
                 $(this.$refs.modal).modal();
             });
         }

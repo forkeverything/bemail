@@ -30,7 +30,6 @@
                     // 0.25rem runway for calculating width time, needed to kill the flicker.
                     let remWidth = $(this.$refs.sizer).width() / parseFloat($("body").css("font-size"));
                     this.inputWidth = remWidth + 0.50 + "rem";
-                    console.log(this.inputWidth);
                 });
             }
         },

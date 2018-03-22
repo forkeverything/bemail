@@ -60,7 +60,9 @@
                 return this.tags.length < 1;
             },
             value: function () {
-                return this.tags.join(",");
+                let recipients = this.tags.join(",");
+                this.$emit('update-recipients', recipients);
+                return recipients;
             }
         },
         props: ['recipients', 'send-to-self'],
@@ -77,8 +79,6 @@
                     this.displayError("Please enter a valid email.");
                     return
                 }
-
-
                 // No empty tag with spaces
                 if (!this.newTag.trim()) return;
                 // insert it to where the input is

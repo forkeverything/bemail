@@ -51,6 +51,18 @@ if (token) {
 }
 
 /**
+ * Font Awesome Icons
+ */
+// Icon loader
+const fontawesome = require('@fortawesome/fontawesome');
+// Import icons needed
+const faCog = require('@fortawesome/fontawesome-free-solid/faCog');
+// Add icons to library
+fontawesome.library.add(faCog);
+
+
+
+/**
  * Custom Language Object
  * Currently unimplemented - template for when methods/props
  * increase for a Language. Also just a simple example of
