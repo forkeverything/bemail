@@ -16,16 +16,12 @@ use Illuminate\Support\Facades\Auth;
  *
  * @package App\Translation\Message
  */
-class NewMessageBuilder
+class NewMessageBuilder extends MessageBuilder
 {
     /**
      * @var NewMessageFields
      */
     private $fields;
-    /**
-     * @var Message
-     */
-    private $message;
 
     /**
      * Create NewMessageBuilder instance.
@@ -66,9 +62,7 @@ class NewMessageBuilder
     public function buildRecipients()
     {
 
-        if (is_null($this->message)) {
-            throw new \Exception("Must build Message model before Recipient(s).");
-        }
+        $this->checkForMessageBeforeBuildingRecipients();
 
         $recipientEmails = RecipientEmails::new()->addListOfStandardEmails($this->fields->recipients());
         $this->message->newRecipients()
@@ -86,9 +80,7 @@ class NewMessageBuilder
     public function buildAttachments()
     {
 
-        if (is_null($this->message)) {
-            throw new \Exception("Must build Message model before Attachment(s).");
-        }
+        $this->checkForMessageBeforeBuildingAttachments();
 
         $attachmentFiles = FormUploadedFile::convertArray($this->fields->attachments());
         $this->message->newAttachments()
@@ -97,13 +89,4 @@ class NewMessageBuilder
         return $this;
     }
 
-    /**
-     * Get the built Message.
-     *
-     * @return Message
-     */
-    public function message()
-    {
-        return $this->message;
-    }
 }
