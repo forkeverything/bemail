@@ -14,6 +14,9 @@ class MessageThreadTest extends TestCase
 {
     use DatabaseTransactions;
 
+    /**
+     * @var Message
+     */
     protected $message;
 
     protected function setUp()
