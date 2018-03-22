@@ -56,9 +56,9 @@ if (token) {
 // Icon loader
 const fontawesome = require('@fortawesome/fontawesome');
 // Import icons needed
-const faCog = require('@fortawesome/fontawesome-free-solid/faCog');
+const faExclamationCircle = require('@fortawesome/fontawesome-free-solid/faExclamationCircle');
 // Add icons to library
-fontawesome.library.add(faCog);
+fontawesome.library.add(faExclamationCircle);
 
 
 

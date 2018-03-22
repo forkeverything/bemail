@@ -88,7 +88,7 @@
                 return this.unitPrice !== 0;
             },
             wordsCharged() {
-                let chargeable = this.unitcount - this.wordCredits;
+                let chargeable = this.unitCount - this.wordCredits;
                 return chargeable > 0 ? chargeable : 0;
             },
             totalCost() {
