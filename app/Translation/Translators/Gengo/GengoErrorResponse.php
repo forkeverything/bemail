@@ -53,7 +53,7 @@ class GengoErrorResponse
      *
      * @return mixed
      */
-    public function description()
+    public function msg()
     {
         if($this->isJobError()) {
             return $this->error["job_01"][0]["msg"];

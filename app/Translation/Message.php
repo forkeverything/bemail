@@ -2,6 +2,7 @@
 
 namespace App\Translation;
 
+use App\Error;
 use App\Language;
 use App\Payment\Receipt;
 use App\Traits\Hashable;
@@ -31,7 +32,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $lang_src_id
  * @property int $lang_tgt_id
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Attachment[] $attachments
- * @property-read \App\Translation\MessageError $error
  * @property-read bool $has_recipients
  * @property-read string $hash
  * @property-read string $readable_created_at
@@ -227,14 +227,9 @@ class Message extends Model
         return $this->created_at->format('M j, H:i e');
     }
 
-    /**
-     * Error when trying to translate Message.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
     public function error()
     {
-        return $this->hasOne(MessageError::class, 'message_id');
+        return $this->morphOne(Error::class, 'errorable');
     }
 
     /**
@@ -315,6 +310,16 @@ class Message extends Model
     public function newReply()
     {
         return MessageFactory::newReplyToMessage($this);
+    }
+
+    /**
+     * Instantiate a new Error for this Message.
+     *
+     * @return Error
+     */
+    public function newError()
+    {
+        return Error::newForMessage($this);
     }
 
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMessageErrorsTable extends Migration
+class CreateErrorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateMessageErrorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('message_errors', function (Blueprint $table) {
+        Schema::create('errors', function (Blueprint $table) {
 
             /**
              * Auto
@@ -27,14 +27,14 @@ class CreateMessageErrorsTable extends Migration
              */
 
             $table->integer('code');
-            $table->string('description');
+            $table->string('msg');
 
             /**
              * Relationship
              */
 
-            $table->integer('message_id')->unsigned();
-            $table->foreign('message_id')->references('id')->on('messages');
+            $table->integer('errorable_id')->unsigned();
+            $table->string('errorable_type');
 
         });
     }
@@ -46,6 +46,6 @@ class CreateMessageErrorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('message_errors');
+        Schema::dropIfExists('errors');
     }
 }

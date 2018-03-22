@@ -133,7 +133,7 @@ class GengoTranslator implements Translator
                     ->save();
         } else {
             $error = new GengoErrorResponse($response->error());
-            throw new TranslationException($error->description(), $error->code());
+            throw new TranslationException($error->msg(), $error->code());
         };
     }
 

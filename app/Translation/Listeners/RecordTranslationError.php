@@ -3,7 +3,6 @@
 namespace App\Translation\Listeners;
 
 use App\Translation\Events\TranslationErrorOccurred;
-use App\Translation\MessageError;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -18,10 +17,9 @@ class RecordTranslationError
      */
     public function handle($event)
     {
-        MessageError::create([
-            'code' => $event->exception->getCode(),
-            'description' => $event->exception->getMessage(),
-            'message_id' => $event->message->id
-        ]);
+        $event->message->newError()
+        ->code($event->exception->getCode())
+        ->msg($event->exception->getMessage())
+        ->save();
     }
 }

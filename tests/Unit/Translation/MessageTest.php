@@ -2,13 +2,13 @@
 
 namespace Tests\Unit;
 
+use App\Error;
 use App\Language;
 use App\Payment\Receipt;
 use App\Translation\Attachment;
 use App\Translation\Factories\AttachmentFactory;
 use App\Translation\Factories\RecipientFactory;
 use App\Translation\Message;
-use App\Translation\MessageError;
 use App\Translation\Message\MessageThread;
 use App\Translation\Order;
 use App\Translation\Recipient;
@@ -208,17 +208,23 @@ class MessageTest extends TestCase
         $this->assertEquals('Jan 1, 00:00 UTC', $this->message->fresh()->readable_created_at);
     }
 
-    /**
-     * @test
-     */
-    public function it_fetches_message_error()
+    /** @test */
+    public function it_fetches_error()
     {
         $this->assertNull($this->message->error);
-        factory(MessageError::class)->create([
-            'message_id' => $this->message->id
-        ]);
+        $this->message->newError()
+                      ->code('8888')
+                      ->msg('something terrible happened.')
+                      ->save();
         $this->assertNotNull($this->message->fresh()->error);
     }
+
+    /** @test */
+    public function it_instantiates_a_new_error()
+    {
+        $this->assertInstanceOf(Error::class, $this->message->newError());
+    }
+
 
     /**
      * @test

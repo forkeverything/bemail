@@ -7,7 +7,7 @@
 {{ $messageWithError->error->code }}
 <br>
 <h4>Description</h4>
-{{ $messageWithError->error->description }}
+{{ $messageWithError->error->msg }}
 <br>
 <h4>Sender</h4>
 {{ $messageWithError->sender_email }}
