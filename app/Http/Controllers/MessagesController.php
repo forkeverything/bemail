@@ -65,6 +65,7 @@ class MessagesController extends Controller
             }
         }
 
+        event(new NewMessageRequestReceived($message, $translator));
         flash()->success('Success! Your message will be translated shortly.');
         // Return to compose screen
         return redirect()->back();
