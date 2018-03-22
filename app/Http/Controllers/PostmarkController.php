@@ -29,51 +29,56 @@ class PostmarkController extends Controller
      * @param PostmarkInboundMailRequest $request
      * @param Translator $translator
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
      */
     public function postInboundMail(Request $request, Translator $translator)
     {
 
         $postmarkRequest = new PostmarkInboundMailRequest($request);
 
-        switch ($postmarkRequest->action()) {
+        try {
+            switch ($postmarkRequest->action()) {
 
-            case 'reply':
+                case 'reply':
 
-                /**
-                 * The Message being replied to.
-                 *
-                 * @var Message $originalMessage
-                 */
-                if (!$originalMessage = Message::findByHash($postmarkRequest->target())) {
+                    /**
+                     * The Message being replied to.
+                     *
+                     * @var Message $originalMessage
+                     */
+                    if (!$originalMessage = Message::findByHash($postmarkRequest->target())) {
+                        break;
+                    }
+                    // Purposely create models here (out of event listener) to
+                    // avoid serialization of closure error.
+                    $message = $originalMessage->newReply()
+                                               ->senderEmail($postmarkRequest->fromAddress())
+                                               ->senderName($postmarkRequest->fromName())
+                                               ->subject($postmarkRequest->subject())
+                                               ->body($postmarkRequest->strippedReplyBody())
+                                               ->make();
+
+                    $message->newRecipients()
+                            ->recipientEmails($this->recipientEmailsFromInboundMailRequest($postmarkRequest, $originalMessage))
+                            ->make();
+
+                    $message->newAttachments()
+                            ->attachmentFiles(PostmarkAttachmentFile::convertArray($postmarkRequest->attachments()))
+                            ->make();
+
+                    event(new ReplyReceived($message, $translator));
+
                     break;
-                }
-
-                // Purposely create models here (out of event listener) to
-                // avoid serialization of closure error.
-
-                $message = $originalMessage->newReply()
-                                           ->senderEmail($postmarkRequest->fromAddress())
-                                           ->senderName($postmarkRequest->fromName())
-                                           ->subject($postmarkRequest->subject())
-                                           ->body($postmarkRequest->strippedReplyBody())
-                                           ->make();
-
-                $message->newRecipients()
-                        ->recipientEmails($this->recipientEmailsFromInboundMailRequest($postmarkRequest, $originalMessage))
-                        ->make();
-
-                $message->newAttachments()
-                               ->attachmentFiles(PostmarkAttachmentFile::convertArray($postmarkRequest->attachments()))
-                               ->make();
-
-                event(new ReplyReceived($message, $translator));
-
-                break;
-            default:
-                break;
+                default:
+                    break;
+            }
+        } catch (\Exception $e) {
+            // Log error here but don't re-throw. Must return 200, otherwise
+            // Postmark will keep trying.
+            \Log::error('POSTMARK INBOUND MAIL EXCEPTION', [
+                'message' => $e->getMessage(),
+                'exception' => $e
+            ]);
         }
-
         return response("Received Email", 200);
     }
 

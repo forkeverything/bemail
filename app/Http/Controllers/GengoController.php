@@ -21,33 +21,42 @@ class GengoController extends Controller
     public function postCallback(Request $request)
     {
 
-        $gengoRequest = new GengoCallbackRequest($request);
+        // In case returning early...
+        $response = response("Got it.", 200);
 
-        // Need response as might return early. Without
-        // a 200, Gengo will keep trying.
-        $response = response("Got it", 200);
+        try {
 
-        // Only want job related callbacks currently (not comments).
-        if(! $gengoRequest->isJobRequest()) return $response;
+            $gengoRequest = new GengoCallbackRequest($request);
 
-        /**
-         * The Message this callback was for.
-         *
-         * @var Message $message
-         */
-        $message = Message::findByHash($gengoRequest->messageHash());
+            // Only want job related callbacks currently (not comments).
+            if(! $gengoRequest->isJobRequest()) return $response;
 
-        switch ($gengoRequest->status()) {
-            // Pending: Translator has begun work.
-            case "pending":
-                $message->order->updateStatus(OrderStatus::pending());
-                break;
-            // Approved: Completed translation job.
-            case "approved":
-                event(new MessageTranslated($message, $gengoRequest->translatedBody()));
-                break;
-            default:
-                break;
+            /**
+             * The Message this callback was for.
+             *
+             * @var Message $message
+             */
+            $message = Message::findByHash($gengoRequest->messageHash());
+
+            switch ($gengoRequest->status()) {
+                // Pending: Translator has begun work.
+                case "pending":
+                    $message->order->updateStatus(OrderStatus::pending());
+                    break;
+                // Approved: Completed translation job.
+                case "approved":
+                    event(new MessageTranslated($message, $gengoRequest->translatedBody()));
+                    break;
+                default:
+                    break;
+            }
+
+        } catch (\Exception $e) {
+
+            \Log::error('GENGO CALLBACK EXCEPTION', [
+                'message' => $e->getMessage(),
+                'exception' => $e
+            ]);
         }
 
         // Much success!
