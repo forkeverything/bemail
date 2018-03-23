@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Language;
-use App\Translation\Events\NewMessageRequestReceived;
+use App\Translation\Events\NewMessageCreated;
 use App\Contracts\Translation\Translator;
 use App\Http\Requests\CreateMessageRequest;
 use App\Translation\Exceptions\FailedCreatingMessageException;
@@ -41,11 +41,10 @@ class MessagesController extends Controller
      * Send the Message.
      *
      * @param CreateMessageRequest $request
-     * @param Translator $translator
      * @return \Illuminate\Http\RedirectResponse
      * @throws Exception
      */
-    public function postSendMessage(CreateMessageRequest $request, Translator $translator)
+    public function postSendMessage(CreateMessageRequest $request)
     {
         try {
             // Create models outside of event listeners because Laravel doesn't allow
@@ -56,7 +55,6 @@ class MessagesController extends Controller
                                ->buildRecipients()
                                ->buildAttachments()
                                ->message();
-
         } catch(\Exception $e) {
             if (App::environment('production')) {
                 throw new FailedCreatingMessageException($e->getMessage());
@@ -65,7 +63,7 @@ class MessagesController extends Controller
             }
         }
 
-        event(new NewMessageRequestReceived($message, $translator));
+        event(new NewMessageCreated($message));
         flash()->success('Success! Your message will be translated shortly.');
         // Return to compose screen
         return redirect()->back();

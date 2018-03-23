@@ -16,29 +16,35 @@ class EventServiceProvider extends ServiceProvider
         'Illuminate\Auth\Events\Registered' => [
             'App\Listeners\SendWelcomeMail'
         ],
-        'App\Translation\Events\NewMessageRequestReceived' => [
+        'App\Translation\Events\NewMessageCreated' => [
             'App\Translation\Listeners\TranslateNewMessage',
             'App\Payment\Listeners\ProcessMessagePayment',
-            'App\Translation\Listeners\SendNewMessageRequestReceivedNotification'
+            'App\Translation\Listeners\SendNewMessageWillBeTranslatedNotification'
         ],
         'App\Translation\Events\MessageTranslated' => [
             'App\Translation\Listeners\SaveTranslatedMessage',
             'App\Translation\Listeners\UpdateOrderStatusToComplete',
-            'App\Translation\Listeners\SendTranslatedMessageMail',
-            'App\Translation\Listeners\SendMessageHasBeenTranslatedNotificationMail',
+            'App\Translation\Listeners\SendTranslatedMessageToRecipients',
+            'App\Translation\Listeners\SendMessageTranslatedNotification',
         ],
-        'App\Translation\Events\ReplyReceived' => [
+        'App\Translation\Events\ReplyMessageCreated' => [
             'App\Translation\Listeners\TranslateReply',
             'App\Payment\Listeners\ProcessMessagePayment',
-            'App\Translation\Listeners\SendReplyReceivedNotification'
+            'App\Translation\Listeners\SendReplyMessageWillBeTranslatedNotification'
         ],
-        'App\Translation\Events\ReplyErrorOccurred' => [
-            'App\Translation\Listeners\SendReplyNotSentNotification'
+        'App\Translation\Events\FailedCreatingReply' => [
+            // Tell sender that reply not sent due to system error
+            // Notify admin
         ],
         'App\Translation\Events\TranslationErrorOccurred' => [
-            'App\Translation\Listeners\UpdateOrderStatusToError',
+            'App\Translation\Listeners\NotifySenderOfTranslationFailureDueToSystemError',
             'App\Translation\Listeners\RecordTranslationError',
             'App\Translation\Listeners\NotifyAdminsOfTranslationError'
+        ],
+        'App\Payment\Events\FailedChargingUserForMessage' => [
+            'App\Translation\Listeners\CancelTranslationOrder',
+            'App\Payment\Listeners\NotifySenderThatMessageNotSentDueToChargeFailure'
+            // TODO ::: Record Charge error on User
         ],
         'App\Payment\Events\CustomerSubscriptionDeleted' => [
             'App\Payment\Listeners\CancelSubscription',

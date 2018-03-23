@@ -2,7 +2,10 @@
 
 namespace App\Translation\Events;
 
+use App\Http\Requests\CreateMessageRequest;
+use App\Contracts\Translation\Translator;
 use App\Translation\Message;
+use App\Translation\Message\NewMessageFields;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -11,46 +14,22 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class ReplyErrorOccurred
+class NewMessageCreated
 {
     use Dispatchable, SerializesModels;
 
     /**
-     * Email address of sender who sent reply.
-     *
-     * @var String
-     */
-    public $from;
-
-    /**
-     * Message that the reply was intended for.
-     *
-     *
-     * @var Message
-     */
-    public $originalMessage;
-
-    /**
-     * Reply subject
-     *
-     * @var String
-     */
-    public $subject;
-
-    /**
-     * Reply message body
-     *
-     * @var String
-     */
-    public $body;
-
-    /**
-     * The reply Message that failed to translate.
+     * Message being translated.
      *
      * @var Message
      */
     public $message;
 
+    /**
+     * NewMessageCreated constructor.
+     *
+     * @param Message $message
+     */
     public function __construct(Message $message)
     {
         $this->message = $message;

@@ -85,4 +85,54 @@ class OrderStatus extends Model
         return static::where('description', 'error')->first();
     }
 
+    /**
+     * Whether Order is open for translators to start.
+     *
+     * @return bool
+     */
+    public function isAvailable()
+    {
+        return $this->id == OrderStatus::available()->id;
+    }
+
+    /**
+     * Whether a translator has started working on order.
+     *
+     * @return bool
+     */
+    public function isPending()
+    {
+        return $this->id == OrderStatus::pending()->id;
+    }
+
+    /**
+     * Whether translation is complete.
+     *
+     * @return bool
+     */
+    public function isComplete()
+    {
+        return $this->id == OrderStatus::complete()->id;
+    }
+
+    /**
+     * Whether order has been cancelled.
+     *
+     * @return bool
+     */
+    public function isCancelled()
+    {
+        return $this->id == OrderStatus::cancelled()->id;
+    }
+
+    /**
+     * Whether Order has an error.
+     *
+     * @return bool
+     */
+    public function isError()
+    {
+        return $this->id == OrderStatus::error()->id;
+    }
+
 }

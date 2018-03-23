@@ -45,25 +45,6 @@ class CreditTransaction extends Model
     ];
 
     /**
-     * RecipientType of transaction.
-     *
-     * What was the transaction for? These are pre-defined and seeded
-     * to minimize potential errors and make changes easier in
-     * the future.
-     *
-     * @param CreditTransactionType|null $creditTransactionType
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|$this
-     */
-    public function type(CreditTransactionType $creditTransactionType = null)
-    {
-        if (is_null($creditTransactionType)) {
-            return $this->belongsTo(CreditTransactionType::class, 'credit_transaction_type_id', 'id');
-        }
-        $this->credit_transaction_type_id = $creditTransactionType->id;
-        return $this;
-    }
-
-    /**
      * The User that had credit adjusted.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -81,6 +62,25 @@ class CreditTransaction extends Model
     public function receipt()
     {
         return $this->belongsTo(Receipt::class, 'receipt_id');
+    }
+
+    /**
+     * RecipientType of transaction.
+     *
+     * What was the transaction for? These are pre-defined and seeded
+     * to minimize potential errors and make changes easier in
+     * the future.
+     *
+     * @param CreditTransactionType|null $creditTransactionType
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|$this
+     */
+    public function type(CreditTransactionType $creditTransactionType = null)
+    {
+        if (is_null($creditTransactionType)) {
+            return $this->belongsTo(CreditTransactionType::class, 'credit_transaction_type_id', 'id');
+        }
+        $this->credit_transaction_type_id = $creditTransactionType->id;
+        return $this;
     }
 
     /**

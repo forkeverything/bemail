@@ -45,6 +45,22 @@ class CreditTransactionTest extends TestCase
     /**
      * @test
      */
+    public function it_fetches_the_user_whose_credit_was_adjusted()
+    {
+        $this->assertInstanceOf(User::class, $this->transaction->user);
+    }
+
+    /**
+     * @test
+     */
+    public function it_fetches_the_message_receipt()
+    {
+        $this->assertInstanceOf(Receipt::class, $this->transaction->receipt);
+    }
+
+    /**
+     * @test
+     */
     public function it_fetches_the_transaction_type()
     {
         $this->assertInstanceOf(CreditTransactionType::class, $this->transaction->type);
@@ -58,22 +74,6 @@ class CreditTransactionTest extends TestCase
         ]);
         $transaction->type(CreditTransactionType::manual())->save();
         $this->assertEquals(CreditTransactionType::manual()->id, $transaction->fresh()->credit_transaction_type_id);
-    }
-
-    /**
-     * @test
-     */
-    public function it_fetches_the_user_whose_credit_was_adjusted()
-    {
-        $this->assertInstanceOf(User::class, $this->transaction->user);
-    }
-    
-    /**
-     * @test
-     */
-    public function it_fetches_the_message_receipt()
-    {
-        $this->assertInstanceOf(Receipt::class, $this->transaction->receipt);
     }
 
     /** @test */

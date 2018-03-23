@@ -2,7 +2,7 @@
 
 namespace App\Translation\Events;
 
-use App\Translation\Exceptions\TranslationException;
+use App\Translation\Exceptions\TranslatorException\MessageCouldNotBeTranslatedException;
 use App\Translation\Message;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
@@ -22,7 +22,7 @@ class TranslationErrorOccurred
     public $message;
 
     /**
-     * @var TranslationException
+     * @var MessageCouldNotBeTranslatedException
      */
     public $exception;
 
@@ -30,9 +30,9 @@ class TranslationErrorOccurred
      * Create a new event instance.
      *
      * @param Message $message
-     * @param TranslationException $exception
+     * @param MessageCouldNotBeTranslatedException $exception
      */
-    public function __construct(Message $message, TranslationException $exception)
+    public function __construct(Message $message, \Exception $exception)
     {
         $this->message = $message;
         $this->exception = $exception;

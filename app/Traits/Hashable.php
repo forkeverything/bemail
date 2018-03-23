@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -31,14 +32,14 @@ trait Hashable
      *
      * @param $hash
      * @return Model
-     * @throws \Exception
+     * @throws Exception
      */
     public static function findByHash($hash)
     {
         try {
             $id = Hashids::connection(static::getHashConnection())->decode($hash)[0];
-        } catch (\Exception $e){
-            throw new \Exception("Couldn't decode hash into ID");
+        } catch (Exception $e){
+            throw new Exception("Couldn't decode hash into ID");
         }
         return static::findOrFail($id);
     }

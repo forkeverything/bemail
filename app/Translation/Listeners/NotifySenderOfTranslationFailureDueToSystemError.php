@@ -3,11 +3,12 @@
 namespace App\Translation\Listeners;
 
 use App\Translation\Events\TranslationErrorOccurred;
-use App\Translation\Order\OrderStatus;
+use App\Translation\Mail\MessageWillNotTranslateNotification;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Mail;
 
-class UpdateOrderStatusToError
+class NotifySenderOfTranslationFailureDueToSystemError implements ShouldQueue
 {
 
     /**
@@ -18,6 +19,6 @@ class UpdateOrderStatusToError
      */
     public function handle($event)
     {
-        $event->message->order->updateStatus(OrderStatus::error());
+        Mail::to($event->message->sender_email)->send(new MessageWillNotTranslateNotification($event->message));
     }
 }

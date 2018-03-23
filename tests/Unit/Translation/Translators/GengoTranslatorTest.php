@@ -4,8 +4,6 @@ namespace Tests\Unit\Translation\Translators;
 
 use App\Language;
 use App\Contracts\Translation\Translator;
-use App\Translation\Exceptions\CouldNotCancelTranslationException;
-use App\Translation\Exceptions\TranslationException;
 use App\Translation\Message;
 use App\Translation\Order\OrderStatus;
 use App\Translation\Translators\GengoTranslator;

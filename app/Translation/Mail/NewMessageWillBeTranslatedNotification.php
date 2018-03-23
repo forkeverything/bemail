@@ -8,20 +8,14 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-/**
- * Notifies the sender of a reply to a Message that
- * their reply has been received and will be
- * translated and sent shortly.
- *
- * Class MessageReplyReceivedNotification
- * @package App\Translation\Mail
- */
-class MessageReplyReceivedNotification extends Mailable
+class NewMessageWillBeTranslatedNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
-     * Message to be translated.
+     * Message that will be translated.
+     * If we just named it $message, Laravel pulls the
+     * wrong class (probably due to name conflict).
      *
      * @var Message
      */
@@ -41,12 +35,14 @@ class MessageReplyReceivedNotification extends Mailable
      */
     public function __construct(Message $message)
     {
+        // Eager-load relations
         $this->translationMessage = $message->load([
+            'owner',
             'recipients',
             'sourceLanguage',
-            'targetLanguage'
+            'targetLanguage',
+            'receipt.creditTransaction'
         ]);
-
         $this->messages = $this->translationMessage->thread()->get();
     }
 
@@ -57,9 +53,11 @@ class MessageReplyReceivedNotification extends Mailable
      */
     public function build()
     {
-        $subject = $this->translationMessage->subject ?: 'Received Message Reply';
+        $subject = $this->translationMessage->subject ? $this->translationMessage->subject : "New Translation PostmarkInboundMailRequest";
+
         return $this->subject($subject)
-                    ->view('emails.messages.html.message-reply-received-notification')
-                    ->text('emails.messages.text.message-reply-received-notification');
+                    ->view('emails.messages.html.new-message-will-be-translated-notification')
+                    ->text('emails.messages.text.new-message-will-be-translated-notification');
+
     }
 }

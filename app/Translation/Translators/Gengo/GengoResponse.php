@@ -61,7 +61,7 @@ class GengoResponse
     /**
      * Gengo order id from response.
      *
-     * @return mixed
+     * @return int
      */
     public function orderId()
     {

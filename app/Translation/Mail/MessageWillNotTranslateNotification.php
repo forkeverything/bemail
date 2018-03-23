@@ -7,22 +7,24 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Stripe\Collection;
 
-class ErrorSendingReply extends Mailable
+class MessageWillNotTranslateNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
+     * The Message that will not be translated.
+     *
      * @var Message
      */
     public $message;
 
     /**
-     * Message(s) to be included in message thread.
+     * Message thread with previous messages.
      *
-     * @var
+     * @var Collection
      */
-
     public $messages;
 
     /**
@@ -33,7 +35,7 @@ class ErrorSendingReply extends Mailable
     public function __construct(Message $message)
     {
         $this->message = $message;
-        $this->messages = $message->thread()->get();
+        $this->messages = $this->message->thread()->get();
     }
 
     /**
@@ -43,10 +45,7 @@ class ErrorSendingReply extends Mailable
      */
     public function build()
     {
-        $subject = $this->message->subject ? 'Error Sending Reply: ' . $this->message->subject : "Error Sending Reply";
-
-        return $this->subject($subject)
-                    ->view('emails.messages.html.error-sending-reply')
-                    ->text('emails.messages.text.error-sending-reply');
+        return $this->view('emails.messages.html.message-will-not-translate-notification')
+            ->text('emails.messages.text.message-will-not-translate-notification');
     }
 }

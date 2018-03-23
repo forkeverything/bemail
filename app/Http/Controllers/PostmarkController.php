@@ -4,15 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Contracts\InboundMail\InboundMailRecipient;
 use App\Contracts\InboundMail\InboundMailRequest;
+use App\InboundMail\Postmark\CanHandleReplies;
 use App\InboundMail\Postmark\PostmarkInboundMailRequest;
-use App\Translation\Events\ReplyReceived;
+use App\InboundMail\Postmark\Reportable;
+use App\Translation\Events\FailedCreatingReply;
+use App\Translation\Events\ReplyMessageCreated;
 use App\Contracts\Translation\Translator;
 use App\Translation\Factories\AttachmentFactory\PostmarkAttachmentFile;
 use App\Translation\Factories\RecipientFactory\RecipientEmails;
+use App\Translation\Mail\OriginalMessageNotFoundNotification;
 use App\Translation\Message;
 use App\Translation\Message\ReplyMessageBuilder;
 use App\Translation\Recipient\RecipientType;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * PostmarkController
@@ -24,49 +30,29 @@ use Illuminate\Http\Request;
 class PostmarkController extends Controller
 {
 
+    use CanHandleReplies, Reportable;
+
     /**
      * Handle inbound mail callback from Postmark.
      *
-     * @param PostmarkInboundMailRequest $request
-     * @param Translator $translator
+     * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function postInboundMail(Request $request, Translator $translator)
+    public function postInboundMail(Request $request)
     {
         try {
             $postmarkRequest = new PostmarkInboundMailRequest($request);
             switch ($postmarkRequest->action()) {
                 case 'reply':
-
-                    /**
-                     * The Message being replied to.
-                     *
-                     * @var Message $originalMessage
-                     */
-                    if (!$originalMessage = Message::findByHash($postmarkRequest->target())) {
-                        break;
-                    }
-
-                    // Purposely create models here (out of event listener) to
-                    // avoid serialization of closure error.
-                    $builder = new ReplyMessageBuilder($postmarkRequest, $originalMessage);
-                    $message = $builder->buildMessage()
-                                       ->buildRecipients()
-                                       ->buildAttachments()
-                                       ->message();
-
-                    event(new ReplyReceived($message, $translator));
+                    $this->handleReply($postmarkRequest);
                     break;
                 default:
                     break;
             }
-        } catch (\Exception $e) {
-            // Log error here but don't re-throw. Must return 200, otherwise
-            // Postmark will keep trying.
-            \Log::error('POSTMARK INBOUND MAIL EXCEPTION', [
-                'message' => $e->getMessage(),
-                'exception' => $e
-            ]);
+        } catch (Exception $e) {
+            $this->reportException($e);
+            // Don't re-throw - must return 200 or Postmark will
+            // keep trying.
         }
         return response("Received Email", 200);
     }

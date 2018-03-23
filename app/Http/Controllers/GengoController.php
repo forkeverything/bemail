@@ -45,21 +45,20 @@ class GengoController extends Controller
                     break;
                 // Approved: Completed translation job.
                 case "approved":
-                    event(new MessageTranslated($message, $gengoRequest->translatedBody()));
+                    if ($message->order->status->isAvailable() || $message->order->status->isPending()) {
+                        event(new MessageTranslated($message, $gengoRequest->translatedBody()));
+                    }
                     break;
                 default:
                     break;
             }
 
         } catch (\Exception $e) {
-
             \Log::error('GENGO CALLBACK EXCEPTION', [
-                'message' => $e->getMessage(),
                 'exception' => $e
             ]);
         }
 
-        // Much success!
         return $response;
     }
 }

@@ -121,6 +121,23 @@ class ReplyMessageBuilderTest extends TestCase
 
     /**
      * @test
+     * @expectedException \Exception
+     * @expectedExceptionMessage Something went wrong.
+     */
+    public function it_deletes_message_when_failing_to_build_recipients()
+    {
+        $message = factory(Message::class)->create();
+        $this->assertDatabaseHas('messages', ['id' => $message->id]);
+        $this->it_builds_message_model($message);
+        $this->request->shouldReceive('standardRecipients')
+                      ->andThrowExceptions([new \Exception("Something went wrong.")]);
+        $this->builder->buildRecipients();
+        $this->assertDatabaseMissing('messages', ['id' => $message->id]);
+    }
+
+    /**
+     * @test
+     * @throws \Exception
      */
     public function it_builds_attachments()
     {
@@ -140,6 +157,26 @@ class ReplyMessageBuilderTest extends TestCase
         $this->it_builds_message_model($message);
 
         $this->builder->buildAttachments();
+    }
+
+    /**
+     * @test
+     * @expectedException \Exception
+     * @expectedExceptionMessage Something went wrong.
+     */
+    public function it_deletes_message_when_failing_to_build_attachments()
+    {
+        $message = factory(Message::class)->create();
+        $this->assertDatabaseHas('messages', ['id' => $message->id]);
+        $this->it_builds_message_model($message);
+
+
+        $this->request->shouldReceive('attachments')
+                      ->andThrowExceptions([new \Exception("Something went wrong.")]);
+
+        $this->builder->buildAttachments();
+
+        $this->assertDatabaseMissing('messages', ['id' => $message->id]);
     }
 
     /**

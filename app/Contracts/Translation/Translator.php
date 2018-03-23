@@ -3,7 +3,8 @@
 namespace App\Contracts\Translation;
 
 use App\Language;
-use App\Translation\Exceptions\TranslationException;
+use App\Translation\Exceptions\CouldNotCancelTranslationException;
+use App\Translation\Exceptions\TranslatorException\MessageCouldNotBeTranslatedException;
 use App\Translation\Message;
 use App\Translation\Order;
 
@@ -14,7 +15,7 @@ interface Translator
      *
      * @param Message $message
      * @return mixed
-     * @throws TranslationException
+     * @throws MessageCouldNotBeTranslatedException
      */
     public function translate(Message $message);
 
@@ -44,8 +45,9 @@ interface Translator
     /**
      * Cancels the translation Order.
      *
-     * @param Order $order
+     * @param $order
      * @return mixed
+     * @throws CouldNotCancelTranslationException
      */
-    public function cancelTranslating(Order $order);
+    public function cancelTranslating($order);
 }

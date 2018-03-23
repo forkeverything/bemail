@@ -10,6 +10,7 @@ use App\Translation\Factories\AttachmentFactory\PostmarkAttachmentFile;
 use App\Translation\Factories\RecipientFactory\RecipientEmails;
 use App\Translation\Message;
 use App\Translation\Recipient\RecipientType;
+use Exception;
 
 /**
  * Class ReplyMessageBuilder
@@ -64,12 +65,15 @@ class ReplyMessageBuilder extends MessageBuilder
      */
     public function buildRecipients()
     {
-
-        $this->checkForMessageBeforeBuildingRecipients();
-
-        $this->message->newRecipients()
-                ->recipientEmails($this->recipientEmailsFromInboundMailRequest())
-                ->make();
+        try {
+            $this->checkForMessageBeforeBuildingRecipients();
+            $this->message->newRecipients()
+                          ->recipientEmails($this->recipientEmailsFromInboundMailRequest())
+                          ->make();
+        } catch (Exception $e) {
+            $this->deleteBuiltMessage();
+            throw $e;
+        }
         return $this;
     }
 
@@ -81,13 +85,15 @@ class ReplyMessageBuilder extends MessageBuilder
      */
     public function buildAttachments()
     {
-
-        $this->checkForMessageBeforeBuildingAttachments();
-
-        $this->message->newAttachments()
-                ->attachmentFiles(PostmarkAttachmentFile::convertArray($this->request->attachments()))
-                ->make();
-
+        try {
+            $this->checkForMessageBeforeBuildingAttachments();
+            $this->message->newAttachments()
+                          ->attachmentFiles(PostmarkAttachmentFile::convertArray($this->request->attachments()))
+                          ->make();
+        } catch (Exception $e) {
+            $this->deleteBuiltMessage();
+            throw $e;
+        }
         return $this;
     }
 
@@ -106,8 +112,7 @@ class ReplyMessageBuilder extends MessageBuilder
             'cc',
             'bcc'
         ];
-
-
+        
         foreach ($types as $type) {
             $recipients = call_user_func([$this->request, "{$type}Recipients"]);
             foreach ($recipients as $inboundMailRecipient) {
@@ -123,6 +128,23 @@ class ReplyMessageBuilder extends MessageBuilder
         $recipientEmails->addEmailToType($this->originalMessage->sender_email, RecipientType::standard());
 
         return $recipientEmails;
+    }
+
+
+    /**
+     * Delete the Message model that's been built.
+     *
+     * If we leave the Message on failing to create Recipient(s) or
+     * Attachment(s), it could be confusing in future messages
+     * threads if it got included as if it were sent.
+     *
+     * @throws Exception
+     */
+    private function deleteBuiltMessage()
+    {
+        if ($this->message) {
+            $this->message->delete();
+        }
     }
 
 }

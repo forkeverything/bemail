@@ -2,29 +2,26 @@
 
 namespace App\Payment\Listeners;
 
-use App\Payment\Credit\CreditTransaction;
+use Exception;
+use Illuminate\Support\Facades\App;
+use App\Payment\Events\FailedChargingUserForMessage;
 use App\Payment\Credit\Transaction\CreditTransactionType;
-use App\Payment\Exceptions\ChargeFailedException;
+use App\Payment\Exceptions\CouldNotChargeUserException;
 use App\Contracts\Translation\Translator;
-use App\Translation\Events\NewMessageRequestReceived;
-use App\Translation\Events\ReplyReceived;
+use App\Translation\Events\NewMessageCreated;
+use App\Translation\Events\ReplyMessageCreated;
 use App\Translation\Message;
+use App\Translation\Order\OrderStatus;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\App;
 
 /**
  * Class ProcessMessagePayment
  * @package App\Payment\Listeners
  */
-class ProcessMessagePayment
+class ProcessMessagePayment implements ShouldQueue
 {
 
-    /**
-     * Translator
-     * @var Translator
-     */
-    protected $translator;
     /**
      * Message
      * @var Message
@@ -58,13 +55,11 @@ class ProcessMessagePayment
     /**
      * Handle the event.
      *
-     * @param NewMessageRequestReceived|ReplyReceived $event
-     * @throws ChargeFailedException
-     * @throws \Exception
+     * @param NewMessageCreated|ReplyMessageCreated $event
+     * @throws CouldNotChargeUserException
      */
     public function handle($event)
     {
-        $this->translator = $event->translator;
         $this->message = $event->message;
 
         $this->setCredits()
@@ -75,6 +70,7 @@ class ProcessMessagePayment
              ->adjustUserCredits()
              ->recordUserCreditTransaction()
              ->createReceipt();
+
     }
 
 
@@ -132,8 +128,7 @@ class ProcessMessagePayment
      * Actually charge the User.
      *
      * @return ProcessMessagePayment
-     * @throws ChargeFailedException
-     * @throws \Exception
+     * @throws CouldNotChargeUserException
      */
     protected function chargeUser()
     {
@@ -146,10 +141,8 @@ class ProcessMessagePayment
         try {
             $this->message->owner->charge($this->chargeAmount);
         } catch (\Exception $e) {
-            $this->cancelTranslation();
-            throw new ChargeFailedException();
-            // TODO ::: Implement handling ChargeFailedException to tell User that message won't be sent
-            // because we couldn't charge him.
+            event(new FailedChargingUserForMessage($this->message));
+            throw new CouldNotChargeUserException($e->getMessage(), $e->getCode());
         }
 
         return $this;
@@ -203,19 +196,5 @@ class ProcessMessagePayment
                       ->amountCharged($this->chargeAmount)
                       ->save();
 
-    }
-
-    /**
-     * Cancel the translation for an Order.
-     *
-     * @throws \Exception
-     */
-    protected function cancelTranslation()
-    {
-        try {
-            $this->translator->cancelTranslating($this->message->order);
-        } catch (\Exception $e) {
-            if (App::environment('local')) throw $e;
-        }
     }
 }

@@ -1,9 +1,7 @@
 <?php
 
-namespace App\Translation\Events;
+namespace App\Payment\Events;
 
-use App\Contracts\InboundMail\InboundMailRequest;
-use App\Contracts\Translation\Translator;
 use App\Translation\Message;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
@@ -13,30 +11,24 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class ReplyReceived
+class FailedChargingUserForMessage
 {
-    use Dispatchable, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * Reply Message once created.
+     * The Message that failed to charge.
      *
      * @var Message
      */
     public $message;
-    /**
-     * @var Translator
-     */
-    public $translator;
 
     /**
      * Create a new event instance.
      *
      * @param Message $message
-     * @param Translator $translator
      */
-    public function __construct(Message $message, Translator $translator)
+    public function __construct(Message $message)
     {
-        $this->translator = $translator;
         $this->message = $message;
     }
 
