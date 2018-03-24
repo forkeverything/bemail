@@ -2,6 +2,31 @@
 
 namespace App\Providers;
 
+use App\Listeners\SendWelcomeMail;
+use App\Payment\Events\CustomerSubscriptionDeleted;
+use App\Payment\Events\FailedChargingUserForMessage;
+use App\Payment\Listeners\CancelSubscription;
+use App\Payment\Listeners\NotifyUsersThatMessageNotSentDueToChargeFailure;
+use App\Payment\Listeners\ProcessMessagePayment;
+use App\Payment\Listeners\SendSubscriptionCancelledNotification;
+use App\Translation\Events\FailedCreatingReply;
+use App\Translation\Events\MessageTranslated;
+use App\Translation\Events\NewMessageCreated;
+use App\Translation\Events\ReplyMessageCreated;
+use App\Translation\Events\TranslationErrorOccurred;
+use App\Translation\Listeners\CancelTranslationOrder;
+use App\Translation\Listeners\NotifyAdminsOfTranslationError;
+use App\Translation\Listeners\NotifySenderOfTranslationFailureDueToSystemError;
+use App\Translation\Listeners\RecordTranslationError;
+use App\Translation\Listeners\SaveTranslatedMessage;
+use App\Translation\Listeners\SendMessageTranslatedNotification;
+use App\Translation\Listeners\SendNewMessageWillBeTranslatedNotification;
+use App\Translation\Listeners\SendReplyMessageWillBeTranslatedNotification;
+use App\Translation\Listeners\SendTranslatedMessageToRecipients;
+use App\Translation\Listeners\TranslateNewMessage;
+use App\Translation\Listeners\TranslateReply;
+use App\Translation\Listeners\UpdateOrderStatusToComplete;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -13,42 +38,42 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'Illuminate\Auth\Events\Registered' => [
-            'App\Listeners\SendWelcomeMail'
+        Registered::class => [
+            SendWelcomeMail::class
         ],
-        'App\Translation\Events\NewMessageCreated' => [
-            'App\Translation\Listeners\TranslateNewMessage',
-            'App\Payment\Listeners\ProcessMessagePayment',
-            'App\Translation\Listeners\SendNewMessageWillBeTranslatedNotification'
+        NewMessageCreated::class => [
+            TranslateNewMessage::class,
+            ProcessMessagePayment::class,
+            SendNewMessageWillBeTranslatedNotification::class
         ],
-        'App\Translation\Events\MessageTranslated' => [
-            'App\Translation\Listeners\SaveTranslatedMessage',
-            'App\Translation\Listeners\UpdateOrderStatusToComplete',
-            'App\Translation\Listeners\SendTranslatedMessageToRecipients',
-            'App\Translation\Listeners\SendMessageTranslatedNotification',
+        MessageTranslated::class => [
+            SaveTranslatedMessage::class,
+            UpdateOrderStatusToComplete::class,
+            SendTranslatedMessageToRecipients::class,
+            SendMessageTranslatedNotification::class,
         ],
-        'App\Translation\Events\ReplyMessageCreated' => [
-            'App\Translation\Listeners\TranslateReply',
-            'App\Payment\Listeners\ProcessMessagePayment',
-            'App\Translation\Listeners\SendReplyMessageWillBeTranslatedNotification'
+        ReplyMessageCreated::class => [
+            TranslateReply::class,
+            ProcessMessagePayment::class,
+            SendReplyMessageWillBeTranslatedNotification::class
         ],
-        'App\Translation\Events\FailedCreatingReply' => [
+        FailedCreatingReply::class => [
             // Tell sender that reply not sent due to system error
             // Notify admin
         ],
-        'App\Translation\Events\TranslationErrorOccurred' => [
-            'App\Translation\Listeners\NotifySenderOfTranslationFailureDueToSystemError',
-            'App\Translation\Listeners\RecordTranslationError',
-            'App\Translation\Listeners\NotifyAdminsOfTranslationError'
+        TranslationErrorOccurred::class => [
+            NotifySenderOfTranslationFailureDueToSystemError::class,
+            RecordTranslationError::class,
+            NotifyAdminsOfTranslationError::class
         ],
-        'App\Payment\Events\FailedChargingUserForMessage' => [
-            'App\Translation\Listeners\CancelTranslationOrder',
-            'App\Payment\Listeners\NotifySenderThatMessageNotSentDueToChargeFailure'
+        FailedChargingUserForMessage::class => [
+            CancelTranslationOrder::class,
+            NotifyUsersThatMessageNotSentDueToChargeFailure::class
             // TODO ::: Record Charge error on User
         ],
-        'App\Payment\Events\CustomerSubscriptionDeleted' => [
-            'App\Payment\Listeners\CancelSubscription',
-            'App\Payment\Listeners\SendSubscriptionCancelledNotification'
+        CustomerSubscriptionDeleted::class => [
+            CancelSubscription::class,
+            SendSubscriptionCancelledNotification::class
         ]
     ];
 
