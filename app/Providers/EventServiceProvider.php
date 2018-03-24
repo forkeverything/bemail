@@ -24,7 +24,7 @@ use App\Translation\Listeners\SendNewMessageWillBeTranslatedNotification;
 use App\Translation\Listeners\SendReplyMessageWillBeTranslatedNotification;
 use App\Translation\Listeners\SendTranslatedMessageToRecipients;
 use App\Translation\Listeners\TranslateNewMessage;
-use App\Translation\Listeners\TranslateReply;
+use App\Translation\Listeners\TranslateReplyMessage;
 use App\Translation\Listeners\UpdateOrderStatusToComplete;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Event;
@@ -32,6 +32,18 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 
 class EventServiceProvider extends ServiceProvider
 {
+    /**
+     * Register any events for your application.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        parent::boot();
+
+        //
+    }
+
     /**
      * The event listener mappings for the application.
      *
@@ -46,16 +58,16 @@ class EventServiceProvider extends ServiceProvider
             ProcessMessagePayment::class,
             SendNewMessageWillBeTranslatedNotification::class
         ],
+        ReplyMessageCreated::class => [
+            TranslateReplyMessage::class,
+            ProcessMessagePayment::class,
+            SendReplyMessageWillBeTranslatedNotification::class
+        ],
         MessageTranslated::class => [
             SaveTranslatedMessage::class,
             UpdateOrderStatusToComplete::class,
             SendTranslatedMessageToRecipients::class,
             SendMessageTranslatedNotification::class,
-        ],
-        ReplyMessageCreated::class => [
-            TranslateReply::class,
-            ProcessMessagePayment::class,
-            SendReplyMessageWillBeTranslatedNotification::class
         ],
         FailedCreatingReply::class => [
             // Tell sender that reply not sent due to system error
@@ -76,16 +88,4 @@ class EventServiceProvider extends ServiceProvider
             SendSubscriptionCancelledNotification::class
         ]
     ];
-
-    /**
-     * Register any events for your application.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        parent::boot();
-
-        //
-    }
 }

@@ -11,7 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\App;
 
-class TranslateReply implements ShouldQueue
+class TranslateReplyMessage implements ShouldQueue
 {
 
     /**
