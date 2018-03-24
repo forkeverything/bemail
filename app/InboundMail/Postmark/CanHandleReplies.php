@@ -29,7 +29,7 @@ trait CanHandleReplies
          * @var Message $originalMessage
          */
         if (!$originalMessage = Message::findByHash($postmarkRequest->target())) {
-            Mail::to($postmarkRequest->fromAddress())->send(new OriginalMessageNotFoundNotification());
+            Mail::to($postmarkRequest->fromAddress())->send(new OriginalMessageNotFoundNotification($postmarkRequest->strippedReplyBody()));
             return;
         }
 

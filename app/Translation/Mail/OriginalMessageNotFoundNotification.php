@@ -12,13 +12,20 @@ class OriginalMessageNotFoundNotification extends Mailable
     use Queueable, SerializesModels;
 
     /**
+     * The reply email's body that wasn't sent.
+     *
+     * @var string
+     */
+    public $replyBody;
+
+    /**
      * Create a new message instance.
      *
-     * @return void
+     * @param string $replyBody
      */
-    public function __construct()
+    public function __construct($replyBody)
     {
-        //
+        $this->replyBody = $replyBody;
     }
 
     /**
@@ -28,6 +35,7 @@ class OriginalMessageNotFoundNotification extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->view('emails.messages.html.original-message-not-found-notification')
+                    ->text('emails.messages.text.original-message-not-found-notification');
     }
 }
