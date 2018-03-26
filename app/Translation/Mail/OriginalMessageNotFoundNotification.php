@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class OriginalMessageNotFoundNotification extends Mailable
+class OriginalMessageNotFoundNotification extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -35,7 +35,7 @@ class OriginalMessageNotFoundNotification extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.messages.html.original-message-not-found-notification')
-                    ->text('emails.messages.text.original-message-not-found-notification');
+        return $this->view('emails.translation.html.original-message-not-found-notification')
+                    ->text('emails.translation.text.original-message-not-found-notification');
     }
 }

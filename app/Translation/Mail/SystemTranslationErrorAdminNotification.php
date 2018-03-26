@@ -46,6 +46,7 @@ class SystemTranslationErrorAdminNotification extends Mailable
     public function build()
     {
         return $this->subject("SYSTEM ERROR - TRANSLATE")
-                    ->view('emails.system.translation-error-admin-notification');
+            ->view('emails.system.html.translation-error-admin-notification');
+
     }
 }

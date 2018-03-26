@@ -275,4 +275,15 @@ class MessageTest extends TestCase
         $this->assertInstanceOf(Receipt::class, $this->message->newReceipt());
     }
 
+    /**
+     * @test
+     */
+    public function it_checks_whether_the_sender_is_the_owner()
+    {
+        $this->assertFalse($this->message->senderIsTheOwner());
+        $ownerEmail = $this->message->owner->email;
+        $this->message->sender_email = $ownerEmail;
+        $this->assertTrue($this->message->senderIsTheOwner());
+    }
+
 }

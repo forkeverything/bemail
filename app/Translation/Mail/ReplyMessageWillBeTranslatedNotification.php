@@ -59,7 +59,7 @@ class ReplyMessageWillBeTranslatedNotification extends Mailable
     {
         $subject = $this->translationMessage->subject ?: 'Received Message Reply';
         return $this->subject($subject)
-                    ->view('emails.messages.html.reply-message-will-be-translated-notification')
-                    ->text('emails.messages.text.reply-message-will-be-translated-notification');
+                    ->view('emails.translation.html.reply-message-will-be-translated-notification')
+                    ->text('emails.translation.text.reply-message-will-be-translated-notification');
     }
 }

@@ -53,8 +53,8 @@ class MessageTranslatedNotification extends Mailable
         $subject = $this->translatedMessage->subject ? 'SENT : ' . $this->translatedMessage->subject : "MESSAGE SENT";
         return $this->subject($subject)
             ->includeAttachments()
-            ->view('emails.messages.html.message-translated-notification')
-            ->text('emails.messages.text.message-translated-notification');
+            ->view('emails.translation.html.message-translated-notification')
+            ->text('emails.translation.text.message-translated-notification');
 
     }
 }

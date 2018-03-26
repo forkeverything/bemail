@@ -6,7 +6,7 @@ use App\Listeners\SendWelcomeMail;
 use App\Payment\Events\CustomerSubscriptionDeleted;
 use App\Payment\Events\FailedChargingUserForMessage;
 use App\Payment\Listeners\CancelSubscription;
-use App\Payment\Listeners\SendMessageNotSentDueToChargeFailureNotifications;
+use App\Payment\Listeners\SendChargeFailureNotifications;
 use App\Payment\Listeners\ProcessMessagePayment;
 use App\Payment\Listeners\SendSubscriptionCancelledNotification;
 use App\Translation\Events\FailedCreatingReply;
@@ -80,7 +80,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         FailedChargingUserForMessage::class => [
             CancelTranslationOrder::class,
-            SendMessageNotSentDueToChargeFailureNotifications::class
+            SendChargeFailureNotifications::class
             // TODO ::: Record Charge error on User
         ],
         CustomerSubscriptionDeleted::class => [

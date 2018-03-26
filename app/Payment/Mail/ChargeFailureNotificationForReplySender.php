@@ -1,28 +1,32 @@
 <?php
 
-namespace App\Translation\Mail;
+namespace App\Payment\Mail;
 
 use App\Translation\Message;
 use Illuminate\Bus\Queueable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Stripe\Collection;
 
-class MessageNotTranslatedDueToSystemErrorNotification extends Mailable
+/**
+ * Class ChargeFailureNotificationForReplySender
+ *
+ * Let the reply sender know that their reply was not sent
+ * because the owner could not be charged for the fees.
+ *
+ * @package App\Translation\Mail
+ */
+class ChargeFailureNotificationForReplySender extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
-     * The Message that will not be translated.
-     *
      * @var Message
      */
     public $message;
 
     /**
-     * Message thread with previous messages.
-     *
      * @var Collection
      */
     public $messages;
@@ -35,7 +39,7 @@ class MessageNotTranslatedDueToSystemErrorNotification extends Mailable
     public function __construct(Message $message)
     {
         $this->message = $message;
-        $this->messages = $this->message->thread()->get();
+        $this->messages = $message->thread()->get();
     }
 
     /**
@@ -45,8 +49,8 @@ class MessageNotTranslatedDueToSystemErrorNotification extends Mailable
      */
     public function build()
     {
-        return $this->subject("Message Could Not Be Translated")
-            ->view('emails.translation.html.message-not-translated-due-to-system-error-notification')
-            ->text('emails.translation.text.message-not-translated-due-to-system-error-notification');
+        return $this->subject("Reply Not Translated")
+            ->view('emails.payment.html.charge-failure-notification-for-reply-sender')
+            ->text('emails.payment.text.charge-failure-notification-for-reply-sender');
     }
 }

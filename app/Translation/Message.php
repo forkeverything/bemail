@@ -322,4 +322,14 @@ class Message extends Model
         return Error::newForMessage($this);
     }
 
+    /**
+     * Is the sender also the owner?
+     *
+     * @return bool
+     */
+    public function senderIsTheOwner()
+    {
+        return $this->sender_email === $this->owner->email;
+    }
+
 }

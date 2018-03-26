@@ -71,7 +71,7 @@ class GengoTranslator implements Translator
      *
      * This is different for various languages because for
      * certain languages, multiple characters make up
-     * one single word.
+     * one single-message word.
      *
      * @param Language $sourceLanguage
      * @param Language $targetLanguage

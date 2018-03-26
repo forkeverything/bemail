@@ -47,7 +47,7 @@ class TranslatedMessageForSendToSelf extends Mailable
     {
         return $this->setSubject()
                     ->includeAttachments()
-                    ->view('emails.messages.html.translated-message-for-send-to-self')
-                    ->text('emails.messages.text.translated-message-for-send-to-self');
+                    ->view('emails.translation.html.translated-message-for-send-to-self')
+                    ->text('emails.translation.text.translated-message-for-send-to-self');
     }
 }

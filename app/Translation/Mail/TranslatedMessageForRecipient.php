@@ -51,7 +51,7 @@ class TranslatedMessageForRecipient extends Mailable
 
         return $this->setSubject()
                     ->includeAttachments()
-                    ->view('emails.messages.html.translated-message-for-recipient')
-                    ->text('emails.messages.text.translated-message-for-recipient');
+                    ->view('emails.translation.html.translated-message-for-recipient')
+                    ->text('emails.translation.text.translated-message-for-recipient');
     }
 }
