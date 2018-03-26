@@ -29,7 +29,7 @@ class ChargeFailureNotificationForReplyOwner extends Mailable
     /**
      * @var Collection
      */
-    public $messages;
+    public $threadMessages;
 
     /**
      * Create a new message instance.
@@ -39,7 +39,7 @@ class ChargeFailureNotificationForReplyOwner extends Mailable
     public function __construct(Message $message)
     {
         $this->message = $message;
-        $this->messages = $message->thread()->get();
+        $this->threadMessages = $message->thread()->get();
     }
 
     /**

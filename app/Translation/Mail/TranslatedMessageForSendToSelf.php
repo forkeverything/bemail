@@ -2,9 +2,9 @@
 
 namespace App\Translation\Mail;
 
-use App\Translation\Mail\Traits\TranslatedMail;
 use App\Translation\Message;
 use Illuminate\Bus\Queueable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,14 +18,21 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  */
 class TranslatedMessageForSendToSelf extends Mailable
 {
-    use Queueable, SerializesModels, TranslatedMail;
+    use Queueable, SerializesModels, SendsTranslatedMessage;
+
+    /**
+     * Message that has been translated.
+     *
+     * @var Message
+     */
+    public $translatedMessage;
 
     /**
      * Message(s) to be included in messages thread.
      *
-     * @var
+     * @var Collection
      */
-    public $messages;
+    public $threadMessages;
 
     /**
      * Create a new message instance.
@@ -35,7 +42,7 @@ class TranslatedMessageForSendToSelf extends Mailable
     public function __construct(Message $translatedMessage)
     {
         $this->translatedMessage = $translatedMessage;
-        $this->messages = $this->translatedMessage->thread()->get();
+        $this->threadMessages = $this->translatedMessage->thread()->get();
     }
 
     /**

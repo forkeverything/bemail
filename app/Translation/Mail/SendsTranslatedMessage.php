@@ -1,20 +1,9 @@
 <?php
 
+namespace App\Translation\Mail;
 
-namespace App\Translation\Mail\Traits;
-
-
-use App\Translation\Message;
-
-trait TranslatedMail
+trait SendsTranslatedMessage
 {
-    /**
-     * Message that has been translated.
-     *
-     * @var
-     */
-    public $translatedMessage;
-
     /**
      * Sets the subject of the message.
      *

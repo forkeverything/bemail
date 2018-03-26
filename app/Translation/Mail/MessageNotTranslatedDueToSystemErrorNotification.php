@@ -4,10 +4,10 @@ namespace App\Translation\Mail;
 
 use App\Translation\Message;
 use Illuminate\Bus\Queueable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Stripe\Collection;
 
 class MessageNotTranslatedDueToSystemErrorNotification extends Mailable
 {
@@ -21,11 +21,9 @@ class MessageNotTranslatedDueToSystemErrorNotification extends Mailable
     public $message;
 
     /**
-     * Message thread with previous messages.
-     *
      * @var Collection
      */
-    public $messages;
+    public $threadMessages;
 
     /**
      * Create a new message instance.
@@ -35,7 +33,7 @@ class MessageNotTranslatedDueToSystemErrorNotification extends Mailable
     public function __construct(Message $message)
     {
         $this->message = $message;
-        $this->messages = $this->message->thread()->get();
+        $this->threadMessages = $this->message->thread()->get();
     }
 
     /**

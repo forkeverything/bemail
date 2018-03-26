@@ -4,6 +4,7 @@ namespace App\Translation\Mail;
 
 use App\Translation\Message;
 use Illuminate\Bus\Queueable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -28,11 +29,9 @@ class ReplyMessageWillBeTranslatedNotification extends Mailable
     public $translationMessage;
 
     /**
-     * Message(s) to be included in message thread.
-     *
-     * @var
+     * @var Collection
      */
-    public $messages;
+    public $threadMessages;
 
     /**
      * Create a new message instance.
@@ -47,7 +46,7 @@ class ReplyMessageWillBeTranslatedNotification extends Mailable
             'targetLanguage'
         ]);
 
-        $this->messages = $this->translationMessage->thread()->get();
+        $this->threadMessages = $this->translationMessage->thread()->get();
     }
 
     /**

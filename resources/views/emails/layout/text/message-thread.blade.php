@@ -1,4 +1,4 @@
-@foreach($messages as $message)
+@foreach($threadMessages as $message)
 @if($loop->first)
 ============================================================
 
