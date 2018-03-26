@@ -9,7 +9,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Stripe\Collection;
 
-class MessageWillNotTranslateNotification extends Mailable
+class MessageNotTranslatedDueToSystemErrorNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -45,7 +45,7 @@ class MessageWillNotTranslateNotification extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.messages.html.message-will-not-translate-notification')
-            ->text('emails.messages.text.message-will-not-translate-notification');
+        return $this->view('emails.messages.html.message-not-translated-due-to-system-error-notification')
+            ->text('emails.messages.text.message-not-translated-due-to-system-error-notification');
     }
 }

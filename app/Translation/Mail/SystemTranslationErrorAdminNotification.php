@@ -13,10 +13,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  * This mail is  sent when the error is caused by the system.
  * Skip mark-down formatting.
  *
- * Class SystemTranslationError
+ * Class SystemTranslationErrorAdminNotification
  * @package App\Translation\Mail
  */
-class SystemTranslationError extends Mailable
+class SystemTranslationErrorAdminNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -46,6 +46,6 @@ class SystemTranslationError extends Mailable
     public function build()
     {
         return $this->subject("SYSTEM ERROR - TRANSLATE")
-                    ->view('emails.system.translation-error');
+                    ->view('emails.system.translation-error-admin-notification');
     }
 }

@@ -6,7 +6,7 @@ use App\Payment\Events\FailedChargingUserForMessage;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class NotifyUsersThatMessageNotSentDueToChargeFailure
+class SendMessageNotSentDueToChargeFailureNotifications
 {
 
     /**

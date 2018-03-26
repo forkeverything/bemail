@@ -3,12 +3,13 @@
 namespace App\Translation\Listeners;
 
 use App\Translation\Events\TranslationErrorOccurred;
-use App\Translation\Mail\MessageWillNotTranslateNotification;
+use App\Translation\Mail\blade;
+use App\Translation\Mail\MessageNotTranslatedDueToSystemErrorNotification;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 
-class NotifySenderOfTranslationFailureDueToSystemError implements ShouldQueue
+class SendMessageNotTranslatedDueToSystemErrorNotification implements ShouldQueue
 {
 
     /**
@@ -19,6 +20,6 @@ class NotifySenderOfTranslationFailureDueToSystemError implements ShouldQueue
      */
     public function handle($event)
     {
-        Mail::to($event->message->sender_email)->send(new MessageWillNotTranslateNotification($event->message));
+        Mail::to($event->message->sender_email)->send(new MessageNotTranslatedDueToSystemErrorNotification($event->message));
     }
 }

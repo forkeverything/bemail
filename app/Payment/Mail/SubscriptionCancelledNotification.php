@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SubscriptionCancelledMail extends Mailable
+class SubscriptionCancelledNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -24,7 +24,6 @@ class SubscriptionCancelledMail extends Mailable
      */
     public function __construct(User $user)
     {
-        //
         $this->user = $user;
     }
 
@@ -35,6 +34,6 @@ class SubscriptionCancelledMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('payments.subscription-cancelled');
+        return $this->markdown('payments.subscription-cancelled-notification');
     }
 }

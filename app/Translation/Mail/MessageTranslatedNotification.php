@@ -13,10 +13,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  * Notifies the sender that the email has been translated and sent.
  * Sent for messages with recipients.
  *
- * Class MessageHasBeenTranslatedNotification
+ * Class MessageTranslatedNotification
  * @package App\Translation\Mail
  */
-class MessageHasBeenTranslatedNotification extends Mailable
+class MessageTranslatedNotification extends Mailable
 {
     use Queueable, SerializesModels, TranslatedMail;
 
@@ -53,8 +53,8 @@ class MessageHasBeenTranslatedNotification extends Mailable
         $subject = $this->translatedMessage->subject ? 'SENT : ' . $this->translatedMessage->subject : "MESSAGE SENT";
         return $this->subject($subject)
             ->includeAttachments()
-            ->view('emails.messages.html.message-has-been-translated-notification')
-            ->text('emails.messages.text.message-has-been-translated-notification');
+            ->view('emails.messages.html.message-translated-notification')
+            ->text('emails.messages.text.message-translated-notification');
 
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Payment\Listeners;
 
 use App\Payment\Events\CustomerSubscriptionDeleted;
-use App\Payment\Mail\SubscriptionCancelledMail;
+use App\Payment\Mail\SubscriptionCancelledNotification;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
@@ -19,6 +19,6 @@ class SendSubscriptionCancelledNotification implements ShouldQueue
      */
     public function handle($event)
     {
-        Mail::to($event->user)->send(new SubscriptionCancelledMail($event->user));
+        Mail::to($event->user)->send(new SubscriptionCancelledNotification($event->user));
     }
 }

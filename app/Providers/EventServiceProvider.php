@@ -6,7 +6,7 @@ use App\Listeners\SendWelcomeMail;
 use App\Payment\Events\CustomerSubscriptionDeleted;
 use App\Payment\Events\FailedChargingUserForMessage;
 use App\Payment\Listeners\CancelSubscription;
-use App\Payment\Listeners\NotifyUsersThatMessageNotSentDueToChargeFailure;
+use App\Payment\Listeners\SendMessageNotSentDueToChargeFailureNotifications;
 use App\Payment\Listeners\ProcessMessagePayment;
 use App\Payment\Listeners\SendSubscriptionCancelledNotification;
 use App\Translation\Events\FailedCreatingReply;
@@ -15,14 +15,14 @@ use App\Translation\Events\NewMessageCreated;
 use App\Translation\Events\ReplyMessageCreated;
 use App\Translation\Events\TranslationErrorOccurred;
 use App\Translation\Listeners\CancelTranslationOrder;
-use App\Translation\Listeners\NotifyAdminsOfTranslationError;
-use App\Translation\Listeners\NotifySenderOfTranslationFailureDueToSystemError;
+use App\Translation\Listeners\SendSystemTranslationErrorAdminNotification;
+use App\Translation\Listeners\SendMessageNotTranslatedDueToSystemErrorNotification;
 use App\Translation\Listeners\RecordTranslationError;
 use App\Translation\Listeners\SaveTranslatedMessage;
 use App\Translation\Listeners\SendMessageTranslatedNotification;
 use App\Translation\Listeners\SendNewMessageWillBeTranslatedNotification;
 use App\Translation\Listeners\SendReplyMessageWillBeTranslatedNotification;
-use App\Translation\Listeners\SendTranslatedMessageToRecipients;
+use App\Translation\Listeners\SendTranslatedMessage;
 use App\Translation\Listeners\TranslateNewMessage;
 use App\Translation\Listeners\TranslateReplyMessage;
 use App\Translation\Listeners\UpdateOrderStatusToComplete;
@@ -66,7 +66,7 @@ class EventServiceProvider extends ServiceProvider
         MessageTranslated::class => [
             SaveTranslatedMessage::class,
             UpdateOrderStatusToComplete::class,
-            SendTranslatedMessageToRecipients::class,
+            SendTranslatedMessage::class,
             SendMessageTranslatedNotification::class,
         ],
         FailedCreatingReply::class => [
@@ -74,13 +74,13 @@ class EventServiceProvider extends ServiceProvider
             // Notify admin
         ],
         TranslationErrorOccurred::class => [
-            NotifySenderOfTranslationFailureDueToSystemError::class,
             RecordTranslationError::class,
-            NotifyAdminsOfTranslationError::class
+            SendMessageNotTranslatedDueToSystemErrorNotification::class,
+            SendSystemTranslationErrorAdminNotification::class
         ],
         FailedChargingUserForMessage::class => [
             CancelTranslationOrder::class,
-            NotifyUsersThatMessageNotSentDueToChargeFailure::class
+            SendMessageNotSentDueToChargeFailureNotifications::class
             // TODO ::: Record Charge error on User
         ],
         CustomerSubscriptionDeleted::class => [

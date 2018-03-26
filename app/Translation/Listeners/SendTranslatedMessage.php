@@ -11,7 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 
-class SendTranslatedMessageToRecipients implements ShouldQueue
+class SendTranslatedMessage implements ShouldQueue
 {
 
     /**
