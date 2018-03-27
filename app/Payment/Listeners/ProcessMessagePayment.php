@@ -2,11 +2,11 @@
 
 namespace App\Payment\Listeners;
 
+use App\Traits\LogsExceptions;
 use Exception;
 use Illuminate\Support\Facades\App;
 use App\Payment\Events\FailedChargingUserForMessage;
 use App\Payment\Credit\Transaction\CreditTransactionType;
-use App\Payment\Exceptions\CouldNotChargeUserException;
 use App\Contracts\Translation\Translator;
 use App\Translation\Events\NewMessageCreated;
 use App\Translation\Events\ReplyMessageCreated;
@@ -21,6 +21,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  */
 class ProcessMessagePayment implements ShouldQueue
 {
+
+    use LogsExceptions;
 
     /**
      * Message
@@ -56,7 +58,7 @@ class ProcessMessagePayment implements ShouldQueue
      * Handle the event.
      *
      * @param NewMessageCreated|ReplyMessageCreated $event
-     * @throws CouldNotChargeUserException
+     * @throws Exception
      */
     public function handle($event)
     {
@@ -70,7 +72,18 @@ class ProcessMessagePayment implements ShouldQueue
              ->adjustUserCredits()
              ->recordUserCreditTransaction()
              ->createReceipt();
+    }
 
+    /**
+     * Handle job failure.
+     *
+     * @param NewMessageCreated|ReplyMessageCreated $event
+     * @param Exception $exception
+     */
+    public function failed($event, Exception $exception)
+    {
+        event(new FailedChargingUserForMessage($event->message));
+        $this->logException('FAILED_PROCESSING_MESSAGE_PAYMENT', $exception);
     }
 
 
@@ -128,7 +141,7 @@ class ProcessMessagePayment implements ShouldQueue
      * Actually charge the User.
      *
      * @return ProcessMessagePayment
-     * @throws CouldNotChargeUserException
+     * @throws Exception
      */
     protected function chargeUser()
     {
@@ -138,12 +151,7 @@ class ProcessMessagePayment implements ShouldQueue
             return $this;
         }
 
-        try {
-            $this->message->owner->charge($this->chargeAmount);
-        } catch (\Exception $e) {
-            event(new FailedChargingUserForMessage($this->message));
-            throw new CouldNotChargeUserException($e->getMessage(), $e->getCode());
-        }
+        $this->message->owner->charge($this->chargeAmount);
 
         return $this;
     }

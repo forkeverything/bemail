@@ -4,9 +4,9 @@ namespace App\Translation\Translators;
 
 use App\Contracts\Translation\Translator;
 use App\Language;
-use App\Translation\Exceptions\CouldNotCancelTranslationException;
+use App\Translation\Exceptions\FailedCancellingTranslationException;
 use App\Translation\Exceptions\TranslatorException\FailedCreatingOrderException;
-use App\Translation\Exceptions\TranslatorException\MessageCouldNotBeTranslatedException;
+use App\Translation\Exceptions\TranslatorException\FailedTranslatingMessageException;
 use App\Translation\Exceptions\TranslatorException\FailedGettingUnitCountException;
 use App\Translation\Exceptions\TranslatorException\FailedGettingUnitPriceException;
 use App\Translation\Message;
@@ -125,23 +125,47 @@ class GengoTranslator implements Translator
      *
      * @param Message $message
      * @throws Exception
-     * @throws MessageCouldNotBeTranslatedException
-     * @throws FailedCreatingOrderException
+     * @throws FailedTranslatingMessageException
      * @throws \Gengo\Exception
      */
     public function translate(Message $message)
     {
-        $api = new GengoJobs;
-        // Create and post job according to Gengo's API
-        $job = GengoTranslationJob::forMessage($message)->build();
-        $response = new GengoResponse($api->postJobs($job));
+        try {
+            $response = $this->postTranslationJob($message);
+        } catch (Exception $exception) {
+            throw new FailedTranslatingMessageException($exception->getMessage(), $exception->getCode(), $exception);
+        }
 
         if (!$response->wasSuccessful()) {
             $error = new GengoErrorResponse($response->error());
-            throw new MessageCouldNotBeTranslatedException($error->msg(), $error->code());
+            throw new FailedTranslatingMessageException($error->msg(), $error->code());
         }
 
-        $this->createTranslationOrder($message, $response);
+        try {
+            $this->createTranslationOrder($message, $response);
+        } catch (Exception $exception) {
+            try {
+                $this->cancelTranslating($response->orderId());
+            } catch (FailedCancellingTranslationException $cancelTranslatingException) {
+                $cancelTranslatingException->report();
+            }
+            throw new FailedTranslatingMessageException($exception->getMessage(), $exception->getCode(), $exception);
+        }
+    }
+
+    /**
+     * Post a job to Gengo to translate.
+     *
+     * @param Message $message
+     * @return GengoResponse
+     * @throws \Gengo\Exception
+     */
+    private function postTranslationJob(Message $message)
+    {
+        $api = new GengoJobs;
+        // Create and post job according to Gengo's API
+        $job = GengoTranslationJob::forMessage($message)->build();
+        return new GengoResponse($api->postJobs($job));
     }
 
     /**
@@ -155,8 +179,6 @@ class GengoTranslator implements Translator
      */
     private function createTranslationOrder(Message $message, GengoResponse $response)
     {
-        // Create Order in a try-catch because if it fails, need
-        // to cancel translation job.
         try {
             // Get unit count and price to store with Order.
             $unitCount = $this->unitCount($message->sourceLanguage, $message->targetLanguage, $message->body);
@@ -167,15 +189,8 @@ class GengoTranslator implements Translator
                     ->unitCount($unitCount)
                     ->unitPrice($unitPrice)
                     ->save();
-        } catch (Exception $e) {
-
-            try {
-                $this->cancelTranslating($response->orderId());
-            } catch (Exception $cancelTranslatingException) {
-                // Don't care why cancelling didn't work.
-            }
-
-            throw new FailedCreatingOrderException($e->getMessage(), $e->getCode(), $e);
+        } catch (Exception $exception) {
+            throw new FailedCreatingOrderException($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 
@@ -184,7 +199,7 @@ class GengoTranslator implements Translator
      *
      * @param Order|int $order
      * @return bool|mixed
-     * @throws CouldNotCancelTranslationException
+     * @throws FailedCancellingTranslationException
      * @throws \Gengo\Exception
      */
     public function cancelTranslating($order)
@@ -211,7 +226,7 @@ class GengoTranslator implements Translator
             // but encountered error response from Gengo.
             if (!$response->wasSuccessful()) {
                 $error = new GengoErrorResponse($response->error());
-                throw new CouldNotCancelTranslationException($error->msg(), $error->code());
+                throw new FailedCancellingTranslationException($error->msg(), $error->code());
             }
 
             if ($order instanceof Order) {
@@ -223,7 +238,7 @@ class GengoTranslator implements Translator
 
             return true;
         } catch (Exception $e) {
-            throw new CouldNotCancelTranslationException($e->getMessage(), $e->getCode(), $e);
+            throw new FailedCancellingTranslationException($e->getMessage(), $e->getCode(), $e);
         }
     }
 }

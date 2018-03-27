@@ -5,16 +5,17 @@ namespace App\Translation\Exceptions\TranslatorException;
 use App\Translation\Exceptions\TranslatorException;
 
 /**
- * Class MessageCouldNotBeTranslatedException
+ * Class FailedTranslatingMessageException
  *
  * @package App\Translation\Exceptions
  */
-class MessageCouldNotBeTranslatedException extends TranslatorException
+class FailedTranslatingMessageException extends TranslatorException
 {
     public function report()
     {
-        parent::report();
-        \Log::error('Could Not Cancel Translation Job', [
+        \Log::error('FAILED_TRANSLATING_MESSAGE', [
+            'code' => $this->code,
+            'message' => $this->message,
             'exception' => $this
         ]);
     }

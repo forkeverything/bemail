@@ -10,8 +10,9 @@ class FailedCreatingOrderException extends TranslatorException
 {
     public function report()
     {
-        parent::report();
-        \Log::error('Failed Creating Order', [
+        \Log::error('FAILED_CREATING_ORDER_MODEL', [
+            'code' => $this->code,
+            'message' => $this->message,
             'exception' => $this
         ]);
     }

@@ -8,8 +8,9 @@ class FailedGettingUnitCountException extends TranslatorException
 {
     public function report()
     {
-        parent::report();
-        \Log::error('Failed Getting Unit Count For Message', [
+        \Log::error('FAILED_GETTING_UNIT_COUNT', [
+            'code' => $this->code,
+            'message' => $this->message,
             'exception' => $this
         ]);
     }

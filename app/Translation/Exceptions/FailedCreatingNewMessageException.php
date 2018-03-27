@@ -4,7 +4,7 @@
 namespace App\Translation\Exceptions;
 
 
-class FailedCreatingMessageException extends \Exception
+class FailedCreatingNewMessageException extends \Exception
 {
     /**
      * Report the exception.
@@ -13,7 +13,9 @@ class FailedCreatingMessageException extends \Exception
      */
     public function report()
     {
-        \Log::error("Failed Creating New Message Models", [
+        \Log::error("FAILED_CREATING_NEW_MESSAGE_MODELS", [
+            'code' => $this->code,
+            'msg' => $this->message,
             'exception' => $this
         ]);
     }

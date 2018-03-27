@@ -3,8 +3,10 @@
 namespace App\Contracts\Translation;
 
 use App\Language;
-use App\Translation\Exceptions\CouldNotCancelTranslationException;
-use App\Translation\Exceptions\TranslatorException\MessageCouldNotBeTranslatedException;
+use App\Translation\Exceptions\FailedCancellingTranslationException;
+use App\Translation\Exceptions\TranslatorException\FailedGettingUnitCountException;
+use App\Translation\Exceptions\TranslatorException\FailedGettingUnitPriceException;
+use App\Translation\Exceptions\TranslatorException\FailedTranslatingMessageException;
 use App\Translation\Message;
 use App\Translation\Order;
 
@@ -15,7 +17,7 @@ interface Translator
      *
      * @param Message $message
      * @return mixed
-     * @throws MessageCouldNotBeTranslatedException
+     * @throws FailedTranslatingMessageException
      */
     public function translate(Message $message);
 
@@ -30,6 +32,7 @@ interface Translator
      * @param Language $targetLanguage
      * @param $text
      * @return int
+     * @throws FailedGettingUnitCountException
      */
     public function unitCount(Language $sourceLanguage, Language $targetLanguage, $text);
 
@@ -39,6 +42,7 @@ interface Translator
      * @param Language $sourceLanguage
      * @param Language $targetLanguage
      * @return int
+     * @throws FailedGettingUnitPriceException
      */
     public function unitPrice(Language $sourceLanguage, Language $targetLanguage);
 
@@ -47,7 +51,7 @@ interface Translator
      *
      * @param $order
      * @return mixed
-     * @throws CouldNotCancelTranslationException
+     * @throws FailedCancellingTranslationException
      */
     public function cancelTranslating($order);
 }

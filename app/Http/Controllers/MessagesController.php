@@ -6,7 +6,7 @@ use App\Language;
 use App\Translation\Events\NewMessageCreated;
 use App\Contracts\Translation\Translator;
 use App\Http\Requests\CreateMessageRequest;
-use App\Translation\Exceptions\FailedCreatingMessageException;
+use App\Translation\Exceptions\FailedCreatingNewMessageException;
 use App\Translation\Factories\AttachmentFactory\FormUploadedFile;
 use App\Translation\Factories\RecipientFactory\RecipientEmails;
 use App\Translation\Message\NewMessageBuilder;
@@ -57,7 +57,7 @@ class MessagesController extends Controller
                                ->message();
         } catch(\Exception $e) {
             if (App::environment('production')) {
-                throw new FailedCreatingMessageException($e->getMessage());
+                throw new FailedCreatingNewMessageException($e->getMessage());
             } else {
                 throw $e;
             }

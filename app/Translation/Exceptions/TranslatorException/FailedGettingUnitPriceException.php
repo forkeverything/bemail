@@ -8,8 +8,9 @@ class FailedGettingUnitPriceException extends TranslatorException
 {
     public function report()
     {
-        parent::report();
-        \Log::error('Failed Getting Unit Price For Message', [
+        \Log::error('FAILED_GETTING_UNIT_PRICE', [
+            'code' => $this->code,
+            'message' => $this->message,
             'exception' => $this
         ]);
     }

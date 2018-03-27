@@ -7,6 +7,7 @@ use App\Contracts\InboundMail\InboundMailRequest;
 use App\InboundMail\Postmark\CanHandleReplies;
 use App\InboundMail\Postmark\PostmarkInboundMailRequest;
 use App\InboundMail\Postmark\Reportable;
+use App\Traits\LogsExceptions;
 use App\Translation\Events\FailedCreatingReply;
 use App\Translation\Events\ReplyMessageCreated;
 use App\Contracts\Translation\Translator;
@@ -30,7 +31,7 @@ use Illuminate\Support\Facades\Mail;
 class PostmarkController extends Controller
 {
 
-    use CanHandleReplies, Reportable;
+    use CanHandleReplies, LogsExceptions;
 
     /**
      * Handle inbound mail callback from Postmark.
@@ -40,21 +41,29 @@ class PostmarkController extends Controller
      */
     public function postInboundMail(Request $request)
     {
+
         try {
+
             $postmarkRequest = new PostmarkInboundMailRequest($request);
+
             switch ($postmarkRequest->action()) {
+
                 case 'reply':
+
                     $this->handleReply($postmarkRequest);
                     break;
+
                 default:
                     break;
+
             }
         } catch (Exception $e) {
-            $this->reportException($e);
-            // Don't re-throw - must return 200 or Postmark will
-            // keep trying.
+            $this->logException('FAILED_HANDLING_INBOUND_POSTMARK_MAIL', $e);
         }
+
+        // Need to return 200 or Postmark will keep trying.
         return response("Received Email", 200);
+
     }
 
 }
