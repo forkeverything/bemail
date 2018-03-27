@@ -2,7 +2,9 @@
 
 namespace App\Translation\Providers;
 
+use App\Contracts\InboundMail\ReplyHandler;
 use App\Contracts\Translation\Translator;
+use App\InboundMail\Postmark\PostmarkReplyHandler;
 use App\Translation\Translators\GengoTranslator;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,7 +17,7 @@ class TranslationServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->singleton(Translator::class, GengoTranslator::class);
+        //
     }
 
     /**
@@ -25,6 +27,13 @@ class TranslationServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // Translating using Gengo
+        $this->app->singleton(Translator::class, GengoTranslator::class);
+
+        // Inbound mail using Postmark
+        $this->app->bind(
+            ReplyHandler::class,
+            PostmarkReplyHandler::class
+        );
     }
 }
