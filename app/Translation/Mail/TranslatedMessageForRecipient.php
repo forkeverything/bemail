@@ -2,43 +2,24 @@
 
 namespace App\Translation\Mail;
 
+use App\Mail\Translation\Mail\TranslatedMessageMailer;
 use App\Translation\Message;
 use Illuminate\Bus\Queueable;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class TranslatedMessageForRecipient extends Mailable
+class TranslatedMessageForRecipient extends TranslatedMessageMailer
 {
-    use Queueable, SerializesModels, SendsTranslatedMessage;
-
-    /**
-     * Message that has been translated.
-     *
-     * @var Message
-     */
-    public $translatedMessage;
-
-    /**
-     * @var Collection
-     */
-    public $threadMessages;
 
     /**
      * Create a new message instance.
      *
-     * @param Message $translatedMessage
+     * @param Message $message
      */
-    public function __construct(Message $translatedMessage)
+    public function __construct(Message $message)
     {
-        $this->translatedMessage = $translatedMessage->load([
-            'owner',
-            'sourceLanguage'
-        ]);
-
-        // Build thread
-        $this->threadMessages = $this->translatedMessage->thread()->get();
+        parent::__construct($message);
     }
 
     /**
@@ -48,15 +29,48 @@ class TranslatedMessageForRecipient extends Mailable
      */
     public function build()
     {
-        if ($this->translatedMessage->auto_translate_reply) {
-            $this->from("reply_{$this->translatedMessage->hash}@in.bemail.io", $this->translatedMessage->owner->name);
+        if ($this->autoTranslateReply()) {
+            $this->setFromInboundReplyAddress();
         } else {
-            $this->from($this->translatedMessage->owner->email, $this->translatedMessage->owner->name);
+            $this->setFromOwnerAddress();
         }
 
         return $this->setSubject()
                     ->includeAttachments()
                     ->view('emails.translation.html.translated-message-for-recipient')
                     ->text('emails.translation.text.translated-message-for-recipient');
+    }
+
+    /**
+     * Automatically translate any replies?
+     *
+     * @return bool
+     */
+    private function autoTranslateReply()
+    {
+        return !!$this->message->auto_translate_reply;
+    }
+
+
+    /**
+     * Set from address to bemail's inbound reply address.
+     *
+     * @return $this
+     */
+    private function setFromInboundReplyAddress()
+    {
+        $this->from("reply_{$this->message->hash}@in.bemail.io", $this->message->owner->name);
+        return $this;
+    }
+
+    /**
+     * Set to the sender's own email address.
+     *
+     * @return $this
+     */
+    private function setFromOwnerAddress()
+    {
+        $this->from($this->message->owner->email, $this->message->owner->name);
+        return $this;
     }
 }

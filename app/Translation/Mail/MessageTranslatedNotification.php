@@ -2,6 +2,7 @@
 
 namespace App\Translation\Mail;
 
+use App\Mail\Translation\Mail\TranslatedMessageMailer;
 use App\Translation\Message;
 use Illuminate\Bus\Queueable;
 use Illuminate\Database\Eloquent\Collection;
@@ -16,19 +17,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  * Class MessageTranslatedNotification
  * @package App\Translation\Mail
  */
-class MessageTranslatedNotification extends Mailable
+class MessageTranslatedNotification extends TranslatedMessageMailer
 {
-    use Queueable, SerializesModels, SendsTranslatedMessage;
-
-    /**
-     * @var Message
-     */
-    public $translatedMessage;
-
-    /**
-     * @var Collection
-     */
-    public $threadMessages;
+    use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
@@ -37,8 +28,7 @@ class MessageTranslatedNotification extends Mailable
      */
     public function __construct(Message $message)
     {
-        $this->translatedMessage = $message->load(['recipients', 'sourceLanguage', 'targetLanguage']);
-        $this->threadMessages = $this->translatedMessage->thread()->get();
+        parent::__construct($message);
     }
 
     /**
@@ -48,11 +38,12 @@ class MessageTranslatedNotification extends Mailable
      */
     public function build()
     {
-        $subject = $this->translatedMessage->subject ? 'SENT : ' . $this->translatedMessage->subject : "MESSAGE SENT";
+        $subject = $this->message->subject ? 'SENT : ' . $this->message->subject : "MESSAGE SENT";
         return $this->subject($subject)
             ->includeAttachments()
             ->view('emails.translation.html.message-translated-notification')
             ->text('emails.translation.text.message-translated-notification');
 
     }
+
 }
