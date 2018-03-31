@@ -15,6 +15,7 @@ use App\Translation\Events\NewMessageCreated;
 use App\Translation\Events\ReplyMessageCreated;
 use App\Translation\Events\TranslationErrorOccurred;
 use App\Translation\Listeners\CancelTranslationOrder;
+use App\Translation\Listeners\SendReplyNotSentDueToSystemErrorNotification;
 use App\Translation\Listeners\SendSystemTranslationErrorAdminNotification;
 use App\Translation\Listeners\SendMessageNotTranslatedDueToSystemErrorNotification;
 use App\Translation\Listeners\RecordTranslationError;
@@ -70,7 +71,7 @@ class EventServiceProvider extends ServiceProvider
             SendMessageTranslatedNotification::class,
         ],
         FailedCreatingReply::class => [
-            // Tell sender that reply not sent due to system error
+            SendReplyNotSentDueToSystemErrorNotification::class
             // Notify admin
         ],
         TranslationErrorOccurred::class => [

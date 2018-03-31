@@ -109,6 +109,7 @@ class PostmarkReplyHandler implements ReplyHandler
     protected function dispatchFailedCreatingReplyEvent(Message $originalMessage)
     {
         event(new FailedCreatingReply(
+            $this->request->fromAddress(),
             $originalMessage,
             $this->request->standardRecipients(),
             $this->request->ccRecipients(),

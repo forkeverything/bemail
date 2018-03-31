@@ -17,23 +17,17 @@ class FailedCreatingReply
     use Dispatchable, SerializesModels;
 
     /**
-     * Include thread from the original Message.
-     *
-     * @var Collection
-     */
-    public $threadMessages;
-    /**
-     * The subject of the reply.
+     * The reply sender's email.
      *
      * @var string
      */
-    public $subject;
+    public $senderEmail;
     /**
-     * The reply body.
+     * Message that was being replied to.
      *
-     * @var string
+     * @var Message
      */
-    public $body;
+    public $originalMessage;
     /**
      * Reply email standard 'to' recipients.
      *
@@ -52,25 +46,39 @@ class FailedCreatingReply
      * @var array
      */
     public $bccRecipients;
+    /**
+     * The email subject.
+     *
+     * @var string
+     */
+    public $replySubject;
+    /**
+     * The email body.
+     *
+     * @var string
+     */
+    public $replyBody;
 
     /**
      * Create a new event instance.
      *
+     * @param $senderEmail
      * @param Message $originalMessage
      * @param array $standardRecipients
      * @param array $ccRecipients
      * @param array $bccRecipients
-     * @param string $subject
-     * @param string $body
+     * @param $replySubject
+     * @param $replyBody
      */
-    public function __construct(Message $originalMessage, array $standardRecipients, array $ccRecipients, array $bccRecipients, $subject, $body)
+    public function __construct($senderEmail, Message $originalMessage, array $standardRecipients, array $ccRecipients, array $bccRecipients, $replySubject, $replyBody)
     {
-        $this->threadMessages = $originalMessage->thread()->get();
-        $this->subject = $subject;
-        $this->body = $body;
+        $this->senderEmail = $senderEmail;
+        $this->originalMessage = $originalMessage;
         $this->standardRecipients = $standardRecipients;
         $this->ccRecipients = $ccRecipients;
         $this->bccRecipients = $bccRecipients;
+        $this->replySubject = $replySubject;
+        $this->replyBody = $replyBody;
     }
 
 }
