@@ -9,12 +9,10 @@ use Illuminate\Http\Request;
 class PostmarkInboundMailRequest implements InboundMailRequest
 {
 
-
     /**
      * @var Request
      */
     private $request;
-
 
     /**
      * Create PostmarkInboundMailRequest instance.

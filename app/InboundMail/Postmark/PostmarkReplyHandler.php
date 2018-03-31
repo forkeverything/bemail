@@ -45,7 +45,7 @@ class PostmarkReplyHandler implements ReplyHandler
         $replyMessage = $this->replyMessage($originalMessage);
 
         if (is_null($replyMessage)) {
-            event(new FailedCreatingReply());
+            $this->dispatchFailedCreatingReplyEvent($originalMessage);
             return;
         }
 
@@ -99,5 +99,22 @@ class PostmarkReplyHandler implements ReplyHandler
         } catch (Exception $e) {
             $this->logException('FAILED_CREATING_REPLY_MODELS', $e);
         }
+    }
+
+    /**
+     * When reply models weren't successfully created.
+     *
+     * @param Message $originalMessage
+     */
+    protected function dispatchFailedCreatingReplyEvent(Message $originalMessage)
+    {
+        event(new FailedCreatingReply(
+            $originalMessage,
+            $this->request->standardRecipients(),
+            $this->request->ccRecipients(),
+            $this->request->bccRecipients(),
+            $this->request->subject(),
+            $this->request->strippedReplyBody()
+        ));
     }
 }

@@ -10,7 +10,7 @@ interface InboundMailRequest
     /**
      * Instantiate InboundMail\PostmarkInboundMailRequest from a normal HTTP request.
      *
-     * @param HttpRequest $request
+     * @param Request $request
      */
     public function __construct(Request $request);
 

@@ -25,7 +25,7 @@ class PostmarkController extends Controller
      *
      * @param Request $request
      * @param ReplyHandler $replyHandler
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     * @return \Illuminate\Http\Response
      */
     public function postInboundMail(Request $request, ReplyHandler $replyHandler)
     {
