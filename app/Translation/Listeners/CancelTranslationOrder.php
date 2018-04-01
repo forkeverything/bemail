@@ -52,7 +52,7 @@ class CancelTranslationOrder implements ShouldQueue
     public function failed(FailedChargingUserForMessage $event, $exception)
     {
 
-        // Mark Order as cancelled even if the actually cancelation failed.
+        // Mark Order as cancelled even if the actually cancellation failed.
         // This makes sure the Message won't be updated or sent when
         // the translation is complete.
         $event->message->order->updateStatus(OrderStatus::cancelled());
