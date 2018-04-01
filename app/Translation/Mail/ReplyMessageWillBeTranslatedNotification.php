@@ -46,7 +46,7 @@ class ReplyMessageWillBeTranslatedNotification extends Mailable
             'targetLanguage'
         ]);
 
-        $this->threadMessages = $this->translationMessage->thread()->get();
+        $this->threadMessages = $this->translationMessage->thread();
     }
 
     /**

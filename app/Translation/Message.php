@@ -12,6 +12,7 @@ use App\Translation\Factories\MessageFactory;
 use App\Translation\Factories\RecipientFactory;
 use App\Translation\Message\MessageThread;
 use App\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -275,11 +276,11 @@ class Message extends Model
      * MessageThread of Message(s) in a collection, starting with
      * this Message.
      *
-     * @return MessageThread
+     * @return Collection
      */
     public function thread()
     {
-        return new MessageThread($this);
+        return (new MessageThread($this))->get();
     }
 
     /**

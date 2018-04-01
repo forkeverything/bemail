@@ -33,7 +33,7 @@ class MessageNotTranslatedDueToSystemErrorNotification extends Mailable
     public function __construct(Message $message)
     {
         $this->message = $message;
-        $this->threadMessages = $this->message->thread()->get();
+        $this->threadMessages = $this->message->thread();
     }
 
     /**

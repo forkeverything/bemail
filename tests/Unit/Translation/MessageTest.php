@@ -3,20 +3,18 @@
 namespace Tests\Unit;
 
 use App\Error;
-use App\Language;
 use App\Payment\Receipt;
 use App\Translation\Attachment;
 use App\Translation\Factories\AttachmentFactory;
 use App\Translation\Factories\RecipientFactory;
 use App\Translation\Message;
-use App\Translation\Message\MessageThread;
 use App\Translation\Order;
 use App\Translation\Recipient;
 use App\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Unit\Translation\Factories\RecipientFactoryTest;
 
 class MessageTest extends TestCase
 {
@@ -256,7 +254,7 @@ class MessageTest extends TestCase
      */
     public function it_gets_the_message_thread()
     {
-        $this->assertInstanceOf(MessageThread::class, $this->message->thread());
+        $this->assertInstanceOf(Collection::class, $this->message->thread());
     }
 
     /**

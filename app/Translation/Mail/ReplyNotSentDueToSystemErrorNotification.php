@@ -51,7 +51,7 @@ class ReplyNotSentDueToSystemErrorNotification extends Mailable
      */
     public function __construct(Message $originalMessage, array $standardRecipients, array $ccRecipients, array $bccRecipients, $replySubject, $replyBody)
     {
-        $this->threadMessages = $originalMessage->thread()->get();
+        $this->threadMessages = $originalMessage->thread();
         $this->standardRecipients = $standardRecipients;
         $this->ccRecipients = $ccRecipients;
         $this->bccRecipients = $bccRecipients;

@@ -39,7 +39,7 @@ class ChargeFailureNotificationForReplySender extends Mailable
     public function __construct(Message $message)
     {
         $this->message = $message;
-        $this->threadMessages = $message->thread()->get();
+        $this->threadMessages = $message->thread();
     }
 
     /**

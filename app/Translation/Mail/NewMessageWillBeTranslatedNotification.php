@@ -42,7 +42,7 @@ class NewMessageWillBeTranslatedNotification extends Mailable
             'targetLanguage',
             'receipt.creditTransaction'
         ]);
-        $this->threadMessages = $this->translationMessage->thread()->get();
+        $this->threadMessages = $this->translationMessage->thread();
     }
 
     /**

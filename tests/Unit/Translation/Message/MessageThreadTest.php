@@ -38,7 +38,7 @@ class MessageThreadTest extends TestCase
      */
     public function it_adds_current_message_to_thread()
     {
-        $thread = $this->message->thread()->get();
+        $thread = $this->message->thread();
         $this->assertEquals($this->message->id, $thread->first()->id);
     }
 
@@ -50,8 +50,8 @@ class MessageThreadTest extends TestCase
         $replyMessage = factory(Message::class)->create([
             'message_id' => $this->message->id
         ]);
-        $ids = $replyMessage->thread()->get()->pluck('id')->toArray();
-        $this->assertCount(2, $replyMessage->thread()->get());
+        $ids = $replyMessage->thread()->pluck('id')->toArray();
+        $this->assertCount(2, $replyMessage->thread());
         $this->assertEquals($replyMessage->id, $ids[0]);
         $this->assertEquals($this->message->id, $ids[1]);
     }
@@ -65,7 +65,7 @@ class MessageThreadTest extends TestCase
         $messages = factory(Message::class, 3)->create([
             'message_id' => $this->message->id
         ]);
-        $threadIds = $messages[1]->thread()->get()->pluck('id')->toArray();
+        $threadIds = $messages[1]->thread()->pluck('id')->toArray();
         $this->assertEquals($messages[1]->id, $threadIds[0]);
         $this->assertEquals($messages[0]->id, $threadIds[1]);
         $this->assertEquals($messages[2]->id, $threadIds[2]);
@@ -96,7 +96,7 @@ class MessageThreadTest extends TestCase
             ]));
         }
 
-        $threadIds = $thirdReplies[1]->thread()->get()->pluck('id')->toArray();
+        $threadIds = $thirdReplies[1]->thread()->pluck('id')->toArray();
 
         $this->assertCount(8, $threadIds);
 

@@ -4,6 +4,7 @@ namespace App\Mail\Translation\Mail;
 
 use App\Translation\Message;
 use Illuminate\Bus\Queueable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -35,7 +36,7 @@ abstract class TranslatedMessageMailer extends Mailable
             'owner',
             'sourceLanguage'
         ]);
-        $this->threadMessages = $this->message->thread()->get();
+        $this->threadMessages = $this->message->thread();
     }
 
     /**
