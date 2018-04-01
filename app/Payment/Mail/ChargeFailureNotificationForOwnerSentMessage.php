@@ -41,8 +41,9 @@ class ChargeFailureNotificationForOwnerSentMessage extends Mailable
      */
     public function build()
     {
-        return $this->subject('Message Not Translated')
-            ->view('emails.payment.html.charge-failure-notification-for-owner-sent-message')
-        ->text('emails.payment.html.charge-failure-notification-for-owner-sent-message');
+        $subject = $this->message->subject ? "CHARGE FAILED: {$this->message->subject}" : "CHARGE FAILED";
+        return $this->subject($subject)
+                    ->view('emails.payment.html.charge-failure-notification-for-owner-sent-message')
+                    ->text('emails.payment.html.charge-failure-notification-for-owner-sent-message');
     }
 }

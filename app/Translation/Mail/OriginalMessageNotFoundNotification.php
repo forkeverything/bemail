@@ -35,7 +35,8 @@ class OriginalMessageNotFoundNotification extends Mailable implements ShouldQueu
      */
     public function build()
     {
-        return $this->view('emails.translation.html.original-message-not-found-notification')
+        return $this->subject("MESSAGE NOT FOUND")
+                    ->view('emails.translation.html.original-message-not-found-notification')
                     ->text('emails.translation.text.original-message-not-found-notification');
     }
 }

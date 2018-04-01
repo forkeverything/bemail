@@ -34,6 +34,7 @@ class SubscriptionCancelledNotification extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.payment.markdown.subscription-cancelled-notification');
+        return $this->subject('Subscription Cancelled')
+            ->markdown('emails.payment.markdown.subscription-cancelled-notification');
     }
 }

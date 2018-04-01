@@ -38,7 +38,7 @@ class MessageTranslatedNotification extends TranslatedMessageMailer
      */
     public function build()
     {
-        $subject = $this->message->subject ? 'SENT : ' . $this->message->subject : "MESSAGE SENT";
+        $subject = $this->message->subject ? "SENT: {$this->message->subject}" : "MESSAGE SENT";
         return $this->subject($subject)
             ->includeAttachments()
             ->view('emails.translation.html.message-translated-notification')

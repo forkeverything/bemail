@@ -46,7 +46,8 @@ abstract class TranslatedMessageMailer extends Mailable
      */
     protected function setSubject()
     {
-        $this->subject($this->message->subject);
+        $subject = $this->message->subject ?: 'TRANSLATED MESSAGE';
+        $this->subject($subject);
         return $this;
     }
 

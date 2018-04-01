@@ -49,7 +49,8 @@ class ChargeFailureNotificationForReplyOwner extends Mailable
      */
     public function build()
     {
-        return $this->subject("Couldn't Translate Reply (Charge Failed)")
+        $subject = $this->message->subject ? "REPLY CHARGE FAILED: {$this->message->subject}" : "REPLY CHARGE FAILED";
+        return $this->subject($subject)
                     ->view('emails.payment.html.charge-failure-notification-for-reply-owner')
                     ->text('emails.payment.html.charge-failure-notification-for-reply-owner');
     }

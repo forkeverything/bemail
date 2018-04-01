@@ -66,8 +66,9 @@ class ReplyNotSentDueToSystemErrorNotification extends Mailable
      */
     public function build()
     {
-        return $this->subject('REPLY ERROR: ' . $this->replySubject)
-                    ->view('emails.translation.html.reply-not-sent-due-to-system-error-notification')
-                    ->text('emails.translation.html.reply-not-sent-due-to-system-error-notification');
+        $subject = $this->replySubject ? "REPLY NOT SENT: {$this->replySubject}" : 'REPLY NOT SENT';
+        $this->subject($subject)
+             ->view('emails.translation.html.reply-not-sent-due-to-system-error-notification')
+             ->text('emails.translation.html.reply-not-sent-due-to-system-error-notification');
     }
 }

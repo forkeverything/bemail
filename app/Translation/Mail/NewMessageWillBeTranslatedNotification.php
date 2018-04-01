@@ -52,7 +52,7 @@ class NewMessageWillBeTranslatedNotification extends Mailable
      */
     public function build()
     {
-        $subject = $this->translationMessage->subject ? $this->translationMessage->subject : "Translate Message Request Received";
+        $subject = $this->translationMessage->subject ? "TRANSLATE: {$this->translationMessage->subject}" : "TRANSLATE MESSAGE";
 
         return $this->subject($subject)
                     ->view('emails.translation.html.new-message-will-be-translated-notification')

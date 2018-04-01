@@ -43,7 +43,7 @@ class MessageNotTranslatedDueToSystemErrorNotification extends Mailable
      */
     public function build()
     {
-        return $this->subject("Message Could Not Be Translated")
+        return $this->subject("MESSAGE NOT SENT: {$this->message->subject}")
             ->view('emails.translation.html.message-not-translated-due-to-system-error-notification')
             ->text('emails.translation.text.message-not-translated-due-to-system-error-notification');
     }
