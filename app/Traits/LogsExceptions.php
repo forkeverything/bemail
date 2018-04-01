@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Trait LogsExceptions
@@ -21,7 +22,7 @@ trait LogsExceptions
      */
     private function logException($name, Exception $exception)
     {
-        \LOG::error($name, [
+        Log::error($name, [
             'code' => $exception->getCode(),
             'msg' => $exception->getMessage(),
             'exception' => $exception
