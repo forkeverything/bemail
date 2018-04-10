@@ -82,7 +82,7 @@ class ProcessMessagePayment implements ShouldQueue
      */
     public function failed($event, Exception $exception)
     {
-        event(new FailedChargingUserForMessage($event->message));
+        event(new FailedChargingUserForMessage($event->message, $this->chargeAmount));
         $this->logException('FAILED_PROCESSING_MESSAGE_PAYMENT', $exception);
     }
 

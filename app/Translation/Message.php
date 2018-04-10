@@ -59,6 +59,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Message whereUserId($value)
  * @mixin \Eloquent
+ * @property-read \App\Error $error
  */
 class Message extends Model
 {
@@ -228,6 +229,11 @@ class Message extends Model
         return $this->created_at->format('M j, H:i e');
     }
 
+    /**
+     * The reason why a Message wasn't handled properly.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
     public function error()
     {
         return $this->morphOne(Error::class, 'errorable');

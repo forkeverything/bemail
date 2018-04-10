@@ -21,15 +21,23 @@ class FailedChargingUserForMessage
      * @var Message
      */
     public $message;
+    /**
+     * Attempted charge amount.
+     *
+     * @var int
+     */
+    public $chargeAmount;
 
     /**
      * Create a new event instance.
      *
      * @param Message $message
+     * @param $chargeAmount
      */
-    public function __construct(Message $message)
+    public function __construct(Message $message, $chargeAmount)
     {
         $this->message = $message;
+        $this->chargeAmount = $chargeAmount;
     }
 
 }

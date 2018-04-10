@@ -26,11 +26,13 @@ use Laravel\Cashier\Billable;
  * @property string|null $card_last_four
  * @property string|null $trial_ends_at
  * @property int $language_id
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Payment\Transaction[] $creditTransactions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Payment\Credit\CreditTransaction[] $creditTransactions
  * @property-read \App\Language $defaultLanguage
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Error[] $errors
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Message[] $messages
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Translation\Recipient[] $recipients
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Cashier\Subscription[] $subscriptions
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCardBrand($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCardLastFour($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
@@ -45,7 +47,6 @@ use Laravel\Cashier\Billable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereTrialEndsAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Cashier\Subscription[] $subscriptions
  */
 class User extends Authenticatable
 {
@@ -122,6 +123,16 @@ class User extends Authenticatable
     }
 
     /**
+     * User errors.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function errors()
+    {
+        return $this->morphMany(Error::class, 'errorable');
+    }
+
+    /**
      * Payment plan.
      *
      * @return Plan
@@ -165,4 +176,16 @@ class User extends Authenticatable
     {
         return CreditTransaction::newForUser($this);
     }
+
+    /**
+     * Record new error.
+     *
+     * @return Error
+     */
+    public function newError()
+    {
+        return Error::newForUser($this);
+    }
+
+
 }

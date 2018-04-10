@@ -5,6 +5,26 @@ namespace App;
 use App\Translation\Message;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Error
+ *
+ * @property int $id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property int $code
+ * @property string $msg
+ * @property int $errorable_id
+ * @property string $errorable_type
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $errorable
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Error whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Error whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Error whereErrorableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Error whereErrorableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Error whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Error whereMsg($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Error whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Error extends Model
 {
 
@@ -44,6 +64,21 @@ class Error extends Model
         return new static([
             'errorable_id' => $message->id,
             'errorable_type' => get_class($message)
+        ]);
+    }
+
+
+    /**
+     * Instantiate for given User.
+     *
+     * @param User $user
+     * @return static
+     */
+    public static function newForUser(User $user)
+    {
+        return new static([
+            'errorable_id' => $user->id,
+            'errorable_type' => get_class($user)
         ]);
     }
 
