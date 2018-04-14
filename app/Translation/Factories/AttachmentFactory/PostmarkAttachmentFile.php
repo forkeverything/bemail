@@ -161,8 +161,12 @@ class PostmarkAttachmentFile implements AttachmentFile
      * @param array $attachments
      * @return array
      */
-    public static function convertArray($attachments = [])
+    public static function convertArray($attachments)
     {
+
+        if(is_null($attachments)) {
+            $attachments = [];
+        }
 
         if(count($attachments) == 0 ) {
             return $attachments;
