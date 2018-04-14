@@ -9,23 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Payment\Receipt
  *
- * @property-read \App\Payment\Transaction $creditTransaction
+ * @property-read \App\Payment\Credit\CreditTransaction $creditTransaction
  * @property-read \App\Translation\Message $message
  * @mixin \Eloquent
- * @property int $id
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @property string $plan
- * @property int $amount_charged
- * @property int $reversed
- * @property int $message_id
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Receipt whereAmountCharged($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Receipt whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Receipt whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Receipt whereMessageId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Receipt wherePlan($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Receipt whereReversed($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Payment\Receipt whereUpdatedAt($value)
  */
 class Receipt extends Model
 {

@@ -8,23 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Translation\Recipient
  *
- * @property int $id
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @property string $email
- * @property int $recipient_type_id
- * @property int $message_id
  * @property-read \App\Translation\Message $message
  * @property-read \App\Translation\Recipient\RecipientType $type
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Recipient bcc()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Recipient cc()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Recipient standard()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Recipient whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Recipient whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Recipient whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Recipient whereMessageId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Recipient whereRecipientTypeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Translation\Recipient whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Recipient extends Model
