@@ -20,7 +20,7 @@ class NewMessageWillBeTranslatedNotification extends Mailable
      *
      * @var Message
      */
-    public $translationMessage;
+    public $message;
 
     /**
      * @var Collection
@@ -35,14 +35,14 @@ class NewMessageWillBeTranslatedNotification extends Mailable
     public function __construct(Message $message)
     {
         // Eager-load relations
-        $this->translationMessage = $message->load([
+        $this->message = $message->load([
             'owner',
             'recipients',
             'sourceLanguage',
             'targetLanguage',
             'receipt.creditTransaction'
         ]);
-        $this->threadMessages = $this->translationMessage->thread();
+        $this->threadMessages = $this->message->thread();
     }
 
     /**
@@ -52,7 +52,7 @@ class NewMessageWillBeTranslatedNotification extends Mailable
      */
     public function build()
     {
-        $subject = $this->translationMessage->subject ? "TRANSLATE: {$this->translationMessage->subject}" : "TRANSLATE MESSAGE";
+        $subject = $this->message->subject ? "TRANSLATE: {$this->message->subject}" : "TRANSLATE MESSAGE";
 
         return $this->subject($subject)
                     ->view('emails.translation.html.new-message-will-be-translated-notification')

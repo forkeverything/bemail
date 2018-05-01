@@ -26,7 +26,7 @@ class ReplyMessageWillBeTranslatedNotification extends Mailable
      *
      * @var Message
      */
-    public $translationMessage;
+    public $message;
 
     /**
      * @var Collection
@@ -40,13 +40,13 @@ class ReplyMessageWillBeTranslatedNotification extends Mailable
      */
     public function __construct(Message $message)
     {
-        $this->translationMessage = $message->load([
+        $this->message = $message->load([
             'recipients',
             'sourceLanguage',
             'targetLanguage'
         ]);
 
-        $this->threadMessages = $this->translationMessage->thread();
+        $this->threadMessages = $this->message->thread();
     }
 
     /**
@@ -56,7 +56,7 @@ class ReplyMessageWillBeTranslatedNotification extends Mailable
      */
     public function build()
     {
-        $subject = $this->translationMessage->subject ? "TRANSLATE REPLY: {$this->translationMessage->subject}" : 'TRANSLATE REPLY';
+        $subject = $this->message->subject ? "TRANSLATE REPLY: {$this->message->subject}" : 'TRANSLATE REPLY';
         return $this->subject($subject)
                     ->view('emails.translation.html.reply-message-will-be-translated-notification')
                     ->text('emails.translation.text.reply-message-will-be-translated-notification');

@@ -1,6 +1,6 @@
 @component('emails.layout.text.main')
 
-	Message: {{ $translationMessage->hash }}
+	Message: {{ $message->hash }}
 	Received request to translate message.
 
 	Messages usually take between 1-2 hours to be translated and sent. Once your message has been sent, you will receive another confirmation email from us.

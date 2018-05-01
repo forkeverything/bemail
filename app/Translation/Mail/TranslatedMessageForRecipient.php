@@ -4,10 +4,6 @@ namespace App\Translation\Mail;
 
 use App\Mail\Translation\Mail\TranslatedMessageMailer;
 use App\Translation\Message;
-use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class TranslatedMessageForRecipient extends TranslatedMessageMailer
 {

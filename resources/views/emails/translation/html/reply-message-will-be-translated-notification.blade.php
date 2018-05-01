@@ -1,5 +1,5 @@
 @component('emails.layout.html.main')
-	@component('emails.layout.html.main.header', ['hash' => $translationMessage->hash])
+	@component('emails.layout.html.main.header', ['hash' => $message->hash])
 		Received reply to message.
 	@endcomponent
 	@component('emails.layout.html.main.body')

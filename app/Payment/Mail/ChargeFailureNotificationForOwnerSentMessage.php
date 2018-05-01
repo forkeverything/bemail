@@ -44,6 +44,6 @@ class ChargeFailureNotificationForOwnerSentMessage extends Mailable
         $subject = $this->message->subject ? "CHARGE FAILED: {$this->message->subject}" : "CHARGE FAILED";
         return $this->subject($subject)
                     ->view('emails.payment.html.charge-failure-notification-for-owner-sent-message')
-                    ->text('emails.payment.html.charge-failure-notification-for-owner-sent-message');
+                    ->text('emails.payment.text.charge-failure-notification-for-owner-sent-message');
     }
 }

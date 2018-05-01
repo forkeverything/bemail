@@ -21,20 +21,22 @@ class SystemTranslationErrorAdminNotification extends Mailable
     use Queueable, SerializesModels;
 
     /**
+     * Message with error.
+     *
      * @var Message
      */
-    public $messageWithError;
+    public $message;
 
     /**
      * Create a new message instance.
      *
-     * @param Message $messageWithError
+     * @param Message $message
      */
-    public function __construct(Message $messageWithError)
+    public function __construct(Message $message)
     {
-        $this->messageWithError = $messageWithError->load([
+        $this->message = $message->load([
             'error',
-            'user'
+            'owner'
         ]);
     }
 

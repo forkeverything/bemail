@@ -4,11 +4,6 @@ namespace App\Translation\Mail;
 
 use App\Mail\Translation\Mail\TranslatedMessageMailer;
 use App\Translation\Message;
-use Illuminate\Bus\Queueable;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Mail\Mailable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 /**
  * Notifies the sender that the email has been translated and sent.
@@ -19,7 +14,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  */
 class MessageTranslatedNotification extends TranslatedMessageMailer
 {
-    use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
@@ -43,7 +37,6 @@ class MessageTranslatedNotification extends TranslatedMessageMailer
             ->includeAttachments()
             ->view('emails.translation.html.message-translated-notification')
             ->text('emails.translation.text.message-translated-notification');
-
     }
 
 }

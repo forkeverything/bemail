@@ -4,11 +4,6 @@ namespace App\Translation\Mail;
 
 use App\Mail\Translation\Mail\TranslatedMessageMailer;
 use App\Translation\Message;
-use Illuminate\Bus\Queueable;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Mail\Mailable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 /**
  * Mail for the Sender when Message has been translated.
@@ -19,7 +14,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  */
 class TranslatedMessageForSendToSelf extends TranslatedMessageMailer
 {
-    use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.

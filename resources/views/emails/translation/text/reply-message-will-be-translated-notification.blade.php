@@ -1,6 +1,6 @@
 @component('emails.layout.text.main')
 
-	Message: {{ $translationMessage->hash }}
+	Message: {{ $message->hash }}
 	Received reply to message.
 
 	We've received your reply to a translated message. We will automatically translate your reply and send it out to all recipients when complete. Translations usually take between 1-2 hours.
