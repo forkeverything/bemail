@@ -20,5 +20,7 @@
     </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <!-- Stripe JS -->
+    <script src="https://js.stripe.com/v3/"></script>
 </body>
 </html>
