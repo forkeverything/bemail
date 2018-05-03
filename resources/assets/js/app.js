@@ -12,7 +12,7 @@ window.Vue = require('vue');
 /**
  * Components
  */
-// Compose
+// Compose Message
 Vue.component('compose-form', require('./components/compose/ComposeForm.vue'));
 Vue.component('language-picker', require('./components/compose/LanguagePicker.vue'));
 Vue.component('recipients-input', require('./components/compose/RecipientsInput.vue'));
@@ -22,6 +22,8 @@ Vue.component('message-options', require('./components/compose/MessageOptions.vu
 Vue.component('summary-modal', require('./components/compose/SummaryModal.vue'));
 // Account
 Vue.component('change-password-field', require('./components/account/ChangePasswordField.vue'));
+// Payment
+Vue.component('credit-card-form', require('./components/payment/CreditCardForm.vue'));
 // System
 Vue.component('field-error', require('./components/layout/FieldError.vue'));
 

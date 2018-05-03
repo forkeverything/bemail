@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- Stripe -->
+    <meta name="stripe-key" content="{{ env('STRIPE_KEY') }}">
     <title>bemail</title>
     <link rel="icon" type="image/png" href="/images/logo/favicon.png">
     <!-- Styles -->
@@ -18,9 +20,9 @@
             @yield('content')
         </div>
     </div>
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
     <!-- Stripe JS -->
     <script src="https://js.stripe.com/v3/"></script>
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

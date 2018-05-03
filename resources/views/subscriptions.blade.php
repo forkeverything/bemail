@@ -6,7 +6,9 @@
 
 	<p>You currently don't have a credit card saved.</p>
 
-	<button type="button" class="btn btn-primary mb-5">Add Card</button>
+	<button type="button" class="btn btn-outline-primary mb-5">Add Card</button>
+
+	<credit-card-form></credit-card-form>
 
 	<h5>Subscription</h5>
 
