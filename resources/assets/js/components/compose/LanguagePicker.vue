@@ -29,8 +29,6 @@
                 this.$emit('picked-language', this.name, lang);
             }
         },
-        mounted() {
-
-        }
+        mounted() {}
     };
 </script>

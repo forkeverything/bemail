@@ -10432,3 +10432,37 @@ a.text-dark:focus {
   margin: 0.125rem 0;
 }
 
+.StripeElement {
+  display: block;
+  width: 100%;
+  padding: 0.575rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  -webkit-transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+}
+
+.StripeElement--focus {
+  color: #495057;
+  background-color: white;
+  -webkit-box-shadow: rgba(0, 123, 255, 0.25) 0px 0px 0px 0.2rem;
+          box-shadow: rgba(0, 123, 255, 0.25) 0px 0px 0px 0.2rem;
+  border-color: #80bdff;
+  outline: 0px;
+}
+
+.StripeElement--invalid {
+  border-color: #dc3545;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fff !important;
+}
+

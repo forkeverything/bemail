@@ -13972,8 +13972,8 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(13);
-__webpack_require__(70);
-module.exports = __webpack_require__(71);
+__webpack_require__(73);
+module.exports = __webpack_require__(74);
 
 
 /***/ }),
@@ -14005,9 +14005,9 @@ Vue.component('summary-modal', __webpack_require__(61));
 // Account
 Vue.component('change-password-field', __webpack_require__(64));
 // Payment
-Vue.component('credit-card-form', __webpack_require__(77));
+Vue.component('credit-card-form', __webpack_require__(67));
 // System
-Vue.component('field-error', __webpack_require__(67));
+Vue.component('field-error', __webpack_require__(70));
 
 // Event
 window.vueGlobalEventBus = new Vue();
@@ -51377,108 +51377,6 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/layout/FieldError.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-aed50268", Component.options)
-  } else {
-    hotAPI.reload("data-v-aed50268", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 68 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['error']
-});
-
-/***/ }),
-/* 69 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("span", { staticClass: "field-error text-danger" }, [
-    _c("small", [_vm._v(_vm._s(_vm.error))])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-aed50268", module.exports)
-  }
-}
-
-/***/ }),
-/* 70 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 71 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(78)
-/* template */
-var __vue_template__ = __webpack_require__(79)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
 Component.options.__file = "resources/assets/js/components/payment/CreditCardForm.vue"
 
 /* hot reload */
@@ -51501,11 +51399,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 78 */
+/* 68 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__stripe_js__ = __webpack_require__(81);
 //
 //
 //
@@ -51523,40 +51422,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            apiKey: 'pk_test_AxvwvLmtzAdD3DJYKHeu7l4G'
+            card: ''
         };
     },
-    methods: {},
+    methods: {
+        getToken: function getToken() {
+            console.log('submit');
+            __WEBPACK_IMPORTED_MODULE_0__stripe_js__["a" /* Stripe */].instance.createToken(this.card).then(function (result) {
+                console.log(result);
+            });
+        }
+    },
     mounted: function mounted() {
-        var key = $('meta[name="stripe-key"]').attr('content');
-        var stripe = Stripe(key);
-        var elements = stripe.elements();
-
-        // Custom styling can be passed to options when creating an Element.
-        var style = {
-            base: {
-                // Add your base input styles here. For example:
-                fontSize: '16px',
-                color: "#32325d"
-            }
-        };
-
         // Create an instance of the card Element.
-        var card = elements.create('card', {
-            style: style
-        });
-
+        this.card = Object(__WEBPACK_IMPORTED_MODULE_0__stripe_js__["b" /* createStripe */])('card');
         // Add an instance of the card Element into the `card-element` <div>.
-        card.mount(this.$refs.card);
+        this.card.mount(this.$refs.card);
     }
 });
 
 /***/ }),
-/* 79 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -51567,11 +51459,17 @@ var render = function() {
     _c(
       "form",
       {
-        attrs: { action: "/payment/card", method: "post", id: "payment-form" }
+        attrs: { action: "/payment/card", method: "post", id: "payment-form" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.getToken($event)
+          }
+        }
       },
       [
         _c("label", { attrs: { for: "card-element" } }, [
-          _vm._v("\n                Credit or debit card\n            ")
+          _vm._v("\n            Credit or debit card\n        ")
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "form-group" }, [
@@ -51582,7 +51480,7 @@ var render = function() {
         _vm._v(" "),
         _c(
           "button",
-          { staticClass: "btn btn-primary", attrs: { type: "button" } },
+          { staticClass: "btn btn-primary", attrs: { type: "submit" } },
           [_vm._v("Save Card Payment")]
         )
       ]
@@ -51597,6 +51495,170 @@ if (false) {
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-085e6da6", module.exports)
   }
+}
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(71)
+/* template */
+var __vue_template__ = __webpack_require__(72)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/layout/FieldError.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-aed50268", Component.options)
+  } else {
+    hotAPI.reload("data-v-aed50268", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 71 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['error']
+});
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("span", { staticClass: "field-error text-danger" }, [
+    _c("small", [_vm._v(_vm._s(_vm.error))])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-aed50268", module.exports)
+  }
+}
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 74 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Stripe; });
+/* unused harmony export baseStyle */
+/* harmony export (immutable) */ __webpack_exports__["b"] = createStripe;
+
+var Stripe = {
+    key: null,
+    instance: null,
+    elements: null
+};
+
+var baseStyle = {
+    base: {
+        color: '#32325d',
+        lineHeight: '18px',
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+            color: '#aab7c4'
+        }
+    },
+    invalid: {
+        color: '#fa755a',
+        iconColor: '#fa755a'
+    }
+};
+
+function init() {
+
+    var libraryNotLoadedMessage = 'Stripe V3 lib not loaded!';
+
+    if (Stripe.key === null) {
+        Stripe.key = $('meta[name="stripe-key"]').attr('content');
+    }
+
+    if (window.Stripe === undefined && Stripe.instance === null) {
+        console.error(libraryNotLoadedMessage);
+    } else if (Stripe.instance === null) {
+        Stripe.instance = window.Stripe(Stripe.key);
+    }
+
+    if (!Stripe.instance.elements) {
+        console.error(libraryNotLoadedMessage);
+    } else if (Stripe.elements === null) {
+        Stripe.elements = Stripe.instance.elements();
+    }
+}
+
+function createStripe(elementType) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    init();
+    options.style = Object.assign(baseStyle, options.style || {});
+    return Stripe.elements.create(elementType, options);
 }
 
 /***/ })

@@ -1,0 +1,33 @@
+.StripeElement {
+  display: block;
+  width: 100%;
+  padding: 0.575rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  -webkit-transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+}
+
+.StripeElement--focus {
+  color: rgb(73, 80, 87);
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(0, 123, 255, 0.25) 0px 0px 0px 0.2rem;
+  border-color: rgb(128, 189, 255);
+  outline: 0px;
+}
+
+.StripeElement--invalid {
+  border-color: $danger;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fff !important;
+}
+

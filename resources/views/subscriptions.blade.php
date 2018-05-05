@@ -42,7 +42,7 @@
 							Send to Self
 						</li>
 						<li class="list-group-item">
-							Send Attachments
+							Send AttachmentsbaseStyle
 						</li>
 					</ul>
 				</div>
