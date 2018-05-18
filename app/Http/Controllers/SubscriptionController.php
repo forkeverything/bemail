@@ -12,8 +12,21 @@ use Laravel\Cashier\Subscription;
 class SubscriptionController extends Controller
 {
 
+    public function __construct()
+    {
+        // Need to be authenticated to have a susbcription.
+        $this->middleware('auth');
+    }
+
+    /**
+     * Page to change subscription details such as the User
+     * Plan or modify saved Credit Card.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getSubscriptionsPage()
     {
+
         return view('subscriptions');
     }
 

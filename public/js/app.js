@@ -13972,8 +13972,8 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(13);
-__webpack_require__(73);
-module.exports = __webpack_require__(74);
+__webpack_require__(74);
+module.exports = __webpack_require__(75);
 
 
 /***/ }),
@@ -14005,9 +14005,10 @@ Vue.component('summary-modal', __webpack_require__(61));
 // Account
 Vue.component('change-password-field', __webpack_require__(64));
 // Payment
+Vue.component('credit-card', __webpack_require__(81));
 Vue.component('credit-card-form', __webpack_require__(67));
 // System
-Vue.component('field-error', __webpack_require__(70));
+Vue.component('field-error', __webpack_require__(71));
 
 // Event
 window.vueGlobalEventBus = new Vue();
@@ -51360,7 +51361,7 @@ var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(68)
 /* template */
-var __vue_template__ = __webpack_require__(69)
+var __vue_template__ = __webpack_require__(70)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -51404,7 +51405,49 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__stripe_js__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__stripe_js__ = __webpack_require__(69);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -51428,15 +51471,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            card: ''
+            card: '',
+            name: '',
+            addressLine1: '',
+            addressLine2: '',
+            addressCity: '',
+            addressState: '',
+            addressZip: '',
+            addressCountry: ''
         };
     },
     methods: {
         getToken: function getToken() {
-            console.log('submit');
-            __WEBPACK_IMPORTED_MODULE_0__stripe_js__["a" /* Stripe */].instance.createToken(this.card).then(function (result) {
+            __WEBPACK_IMPORTED_MODULE_0__stripe_js__["a" /* Stripe */].instance.createToken(this.card, {
+                "name": this.name,
+                "address_line_1": this.addressLine1,
+                "address_line_2": this.addressLine2,
+                "address_city": this.addressCity,
+                "addressState": this.addressState,
+                "addressZip": this.addressZip,
+                "addressCountry": this.addressCountry
+            }).then(function (result) {
                 console.log(result);
             });
+        },
+        cancelAddingCard: function cancelAddingCard() {
+            this.card.clear();
+            this.$emit('cancel');
         }
     },
     mounted: function mounted() {
@@ -51449,159 +51510,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 /* 69 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "add-credit-card" }, [
-    _c(
-      "form",
-      {
-        attrs: { action: "/payment/card", method: "post", id: "payment-form" },
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.getToken($event)
-          }
-        }
-      },
-      [
-        _c("label", { attrs: { for: "card-element" } }, [
-          _vm._v("\n            Credit or debit card\n        ")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("div", { ref: "card", attrs: { id: "card-element" } })
-        ]),
-        _vm._v(" "),
-        _c("div", { attrs: { id: "card-errors", role: "alert" } }),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-          [_vm._v("Save Card Payment")]
-        )
-      ]
-    )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-085e6da6", module.exports)
-  }
-}
-
-/***/ }),
-/* 70 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(71)
-/* template */
-var __vue_template__ = __webpack_require__(72)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/layout/FieldError.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-aed50268", Component.options)
-  } else {
-    hotAPI.reload("data-v-aed50268", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 71 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['error']
-});
-
-/***/ }),
-/* 72 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("span", { staticClass: "field-error text-danger" }, [
-    _c("small", [_vm._v(_vm._s(_vm.error))])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-aed50268", module.exports)
-  }
-}
-
-/***/ }),
-/* 73 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 74 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 75 */,
-/* 76 */,
-/* 77 */,
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51659,6 +51567,545 @@ function createStripe(elementType) {
     init();
     options.style = Object.assign(baseStyle, options.style || {});
     return Stripe.elements.create(elementType, options);
+}
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "add-credit-card" }, [
+    _c(
+      "form",
+      {
+        attrs: { action: "/payment/card", method: "post", id: "payment-form" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.getToken($event)
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "add-card-name" } }, [
+            _vm._v("Cardholder Name")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.name,
+                expression: "name"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", id: "add-card-name" },
+            domProps: { value: _vm.name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.name = $event.target.value
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "add-card-address-1" } }, [
+            _vm._v("Address")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.addressLine1,
+                expression: "addressLine1"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", id: "add-card-address-1" },
+            domProps: { value: _vm.addressLine1 },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.addressLine1 = $event.target.value
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.addressLine2,
+                expression: "addressLine2"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", id: "add-card-address-2" },
+            domProps: { value: _vm.addressLine2 },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.addressLine2 = $event.target.value
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-row" }, [
+          _c("div", { staticClass: "form-group col-sm-4" }, [
+            _c("label", { attrs: { for: "add-card-city" } }, [_vm._v("City")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.addressCity,
+                  expression: "addressCity"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", id: "add-card-city" },
+              domProps: { value: _vm.addressCity },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.addressCity = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group col-sm-4" }, [
+            _c("label", { attrs: { for: "add-card-state" } }, [
+              _vm._v("State")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.addressState,
+                  expression: "addressState"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", id: "add-card-state" },
+              domProps: { value: _vm.addressState },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.addressState = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group col-sm-4" }, [
+            _c("label", { attrs: { for: "add-card-zip" } }, [
+              _vm._v("Postal Code")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.addressZip,
+                  expression: "addressZip"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", id: "add-card-zip" },
+              domProps: { value: _vm.addressZip },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.addressZip = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "add-card-country" } }, [
+            _vm._v("Country")
+          ]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.addressCountry,
+                  expression: "addressCountry"
+                }
+              ],
+              staticClass: "custom-select",
+              attrs: { name: "", id: "add-card-country" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.addressCountry = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            [
+              _c(
+                "option",
+                { attrs: { value: "", selected: "", disabled: "" } },
+                [_vm._v("Select a country")]
+              ),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "JP" } }, [_vm._v("Japan")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "US" } }, [
+                _vm._v("United States")
+              ])
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("label", { attrs: { for: "card-element" } }, [
+          _vm._v("\n             Credit or Debit Card\n        ")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("div", { ref: "card", attrs: { id: "card-element" } })
+        ]),
+        _vm._v(" "),
+        _c("div", { attrs: { id: "card-errors", role: "alert" } }),
+        _vm._v(" "),
+        _c("div", { staticClass: "mb-5" }, [
+          _c(
+            "button",
+            { staticClass: "btn btn-success mr-2", attrs: { type: "submit" } },
+            [_vm._v("Save Card")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-outline-secondary",
+              attrs: { type: "button" },
+              on: { click: _vm.cancelAddingCard }
+            },
+            [_vm._v("Cancel")]
+          )
+        ])
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-085e6da6", module.exports)
+  }
+}
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(72)
+/* template */
+var __vue_template__ = __webpack_require__(73)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/layout/FieldError.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-aed50268", Component.options)
+  } else {
+    hotAPI.reload("data-v-aed50268", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 72 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['error']
+});
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("span", { staticClass: "field-error text-danger" }, [
+    _c("small", [_vm._v(_vm._s(_vm.error))])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-aed50268", module.exports)
+  }
+}
+
+/***/ }),
+/* 74 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(82)
+/* template */
+var __vue_template__ = __webpack_require__(83)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/payment/CreditCard.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6403dac9", Component.options)
+  } else {
+    hotAPI.reload("data-v-6403dac9", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 82 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            showCardForm: true
+        };
+    },
+    computed: {
+        hasCard: function hasCard() {
+            return !!this.cardBrand;
+        }
+    },
+    props: ['card-brand', 'card-last-four'],
+    methods: {
+        toggleCardForm: function toggleCardForm() {
+            this.showCardForm = !this.showCardForm;
+        }
+    }
+});
+
+/***/ }),
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "credit-card" }, [
+    !_vm.hasCard
+      ? _c(
+          "div",
+          { staticClass: "no-card" },
+          [
+            _c(
+              "p",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: !_vm.showCardForm,
+                    expression: "!showCardForm"
+                  }
+                ]
+              },
+              [_vm._v("You haven't added a credit or debit card.")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: !_vm.showCardForm,
+                    expression: "!showCardForm"
+                  }
+                ],
+                staticClass: "btn btn-outline-primary mb-5",
+                attrs: { type: "button" },
+                on: { click: _vm.toggleCardForm }
+              },
+              [_vm._v("Add Card")]
+            ),
+            _vm._v(" "),
+            _c("credit-card-form", {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.showCardForm,
+                  expression: "showCardForm"
+                }
+              ],
+              on: { cancel: _vm.toggleCardForm }
+            })
+          ],
+          1
+        )
+      : _c("div", { staticClass: "existing-card" }, [
+          _vm._v("\n        Current Card!\n    ")
+        ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6403dac9", module.exports)
+  }
 }
 
 /***/ })

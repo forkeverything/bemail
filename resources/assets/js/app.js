@@ -23,6 +23,7 @@ Vue.component('summary-modal', require('./components/compose/SummaryModal.vue'))
 // Account
 Vue.component('change-password-field', require('./components/account/ChangePasswordField.vue'));
 // Payment
+Vue.component('credit-card', require('./components/payment/CreditCard.vue'));
 Vue.component('credit-card-form', require('./components/payment/CreditCardForm.vue'));
 // System
 Vue.component('field-error', require('./components/layout/FieldError.vue'));
